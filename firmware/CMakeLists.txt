@@ -52,4 +52,5 @@ target_link_libraries(master
 	pico_stdlib
 	scpi_parser
 	fts_scpi
+	hardware_i2c
 )
