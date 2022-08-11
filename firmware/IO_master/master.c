@@ -158,11 +158,11 @@ int main() {
    // TEST_SCPI_INPUT("TEST:CHANnellist (@1!2:3!4,5!6)\r\n");
    
     send_master (PICO_PORT_ADDRESS,01,0x00); // test command 
-    send_master (PICO_PORT_ADDRESS,02,0x00); // test command 
+    //send_master (PICO_PORT_ADDRESS,02,0x00); // test command 
 
-    TEST_SCPI_INPUT("*IDN?\r\n"); 
-    TEST_SCPI_INPUT("ROUT:CLOSE:EXCL (@120:125)\r\n"); 
-    TEST_SCPI_INPUT("ROUT:CLOSE (@100:105)\r\n"); 
+   TEST_SCPI_INPUT("*IDN?\r\n"); 
+   TEST_SCPI_INPUT("ROUT:CLOSE:EXCL (@120:125)\r\n"); 
+   // TEST_SCPI_INPUT("ROUT:CLOSE (@100:105)\r\n"); 
     
 
     
