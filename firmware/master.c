@@ -121,6 +121,8 @@ static void send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata)  {
 
 
 int main() {
+
+    MESSAGE rec;
     int result;
 
 	bi_decl(bi_program_description("This is a test binary, including the SCPI library."));
@@ -183,7 +185,7 @@ int main() {
 
     while (deque(&rec)) {
       gpio_put(PICO_DEFAULT_LED_PIN, 0); // Turn OFF board led
-      uart_puts(UART_ID, &rec.data[0] + "\n");
+      uart_puts(UART_ID, &rec.data[0]);
       //printf("Pico Master: %s\n",&rec.data[0]);  // send message to serial port
       sleep_ms(5);
       gpio_put(PICO_DEFAULT_LED_PIN, 1); // Turn ON board led
