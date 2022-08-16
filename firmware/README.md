@@ -44,9 +44,9 @@ ROUTE:OPEN:ALL[{1-4|ALL}]
 
 SYSTem:BEEPer
 
-## Relay numbering. Differential relay will be located on even address, odd address wil toggle de single ended relay
+## Relay numbering. Differential relay will be located on even address, odd address will toggle de single ended relay
 
     Relay bank A   100 @ 115
     Relay bank B   120 @ 135
     Relay bank C   200 @ 215
-    Relay bank C   220 @ 235
+    Relay bank D   220 @ 235

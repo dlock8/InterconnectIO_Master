@@ -39,6 +39,11 @@ add_library(fts_scpi INTERFACE) #DL
 target_include_directories(fts_scpi INTERFACE ./include)
 target_sources(fts_scpi INTERFACE fts_scpi.c)
 
+add_library(i2c_com INTERFACE) #DL
+target_include_directories(i2c_com INTERFACE ./include)
+target_sources(i2c_com INTERFACE i2c_com.c)
+
+
 add_executable(master
 	master.c
 )
@@ -53,4 +58,5 @@ target_link_libraries(master
 	scpi_parser
 	fts_scpi
 	hardware_i2c
+	i2c_com
 )
