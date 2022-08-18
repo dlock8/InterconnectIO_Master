@@ -12,7 +12,10 @@
 extern "C" {
 #endif
 
-#define PICO_PORT_ADDRESS 0x22  // Pico address where genierci port A and Port B are used
+#define PICO_PORT_ADDRESS 0x21  // Pico address where generic port A and Port B are used
+#define PICO_RELAY1_ADDRESS 0x22
+#define PICO_RELAY2_ADDRESS 0x23
+
 #define REG_STATUS 100  // Register used to report Status
 
 #define I2C_BAUDRATE 100000   // 100 k
@@ -21,10 +24,34 @@ extern "C" {
 
 
 // GPIO Index for relay position. SE Relay located at index 16 
-# define relay {0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,0,0,0,10,10,11,11,12,12,13,13,14,14,15,15,16,16,17,17,18}
+#define RBK {{0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7}, \
+{10,10,11,11,12,12,13,13,14,14,15,15,16,16,17,17}, \
+{0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7}, \
+{10,10,11,11,12,12,13,13,14,14,15,15,16,16,17,17}}
+
+#define SE_BK1 19   // Relay single ended for bank 1 located at gpio x
+#define SE_BK2 18   // Relay single ended for bank 2 located at gpio x
+#define SE_BK3 19   // Relay single ended for bank 3 located at gpio x
+#define SE_BK4 18   // Relay single ended for bank 4 located at gpio x
+
+
+// I2C Command code to send to slave
+
+#define MJR_VERSION 01
+#define MNR_VERSION 02
+#define OPEN_RELAY 10
+#define CLOSE_RELAY 11
+#define OPEN_RELAY_BANK 12
+
+
+
+
+
 
 void setup_master();
 
 void send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata);
+
+bool  relay_execute(int32_t *list,int8_t action);
 
 #endif // 

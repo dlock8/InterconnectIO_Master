@@ -5,6 +5,7 @@
 
 #include "hardware/i2c.h"
 #include "include/i2c_com.h"
+#include "include/fts_scpi.h"
 
 
 
@@ -57,3 +58,82 @@ void send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata)  {
           
 }
 
+bool  relay_execute(int32_t *list,int8_t action) {
+    size_t i = 0;
+    volatile uint8_t i2c_add,gpio,relay,ser;
+    bool rfd, exf;
+    volatile int gpior[4][16]= RBK;  // table of gpio corresponding to relay
+
+    fprintf(stdout, "On relay execute");
+
+
+    do {
+            relay = list[i];
+            rfd = false;    // set flag for relay found
+            fprintf(stdout, "Channel: %d,", list[i]);
+            if (relay >= 100 && relay <= 115) {
+                i2c_add = PICO_RELAY1_ADDRESS;   // assign card to send command
+                gpio = gpior[0][relay-100]; // get gpio reference to execute  
+                ser = SE_BK1;  // assign gpio for Single ended relay
+                rfd =true;  // set flag true (relay found)
+            }
+            if (relay >= 200 && relay <= 215) {
+                i2c_add = PICO_RELAY1_ADDRESS;   // assign card to send command
+                gpio = gpior[1][relay-200]; // get gpio reference to execute  
+                ser = SE_BK2;  // assign gpio for Single ended relay
+                rfd =true;  // set flag true (relay found)  
+            }
+            if (relay >= 300 && relay <= 315) {
+                i2c_add = PICO_RELAY2_ADDRESS;   // assign card to send command
+                gpio = gpior[2][relay-300]; // get gpio reference to execute  
+                ser = SE_BK3;  // assign gpio for Single ended relay
+                rfd =true;  // set flag true (relay found) 
+            }
+            if (relay >= 400 && relay <= 415) {
+                i2c_add = PICO_RELAY2_ADDRESS;   // assign card to send command
+                gpio = gpior[3][relay-400]; // get gpio reference to execute
+                ser = SE_BK4;  // assign gpio for Single ended relay
+                rfd =true;  // set flag true (relay found)   
+            }
+        
+            if (rfd == true) { // if relay is valid
+
+              switch (action)
+              {
+                case RCLEX:
+                case RCLOSE:
+                   if (action == RCLEX) {
+                      send_master(i2c_add, OPEN_RELAY_BANK, gpio);
+                   }
+                   send_master(i2c_add, CLOSE_RELAY, gpio);
+                   if (relay % 2  != 0 ) { // if required close the SE relay
+                      send_master(i2c_add, CLOSE_RELAY, ser);
+                   }
+                break;
+
+
+                case ROPEN:
+                    send_master(i2c_add, OPEN_RELAY, gpio);
+                    if (relay % 2  != 0 ) { // if required open the SE relay
+                      send_master(i2c_add, OPEN_RELAY, ser);
+                   }
+                break;
+                
+              }
+
+
+            } else {
+                // relay is not fund on list
+            }
+
+            i++;
+        } while (list[i] > 0);
+        //fprintf(stdout, "\r\n Channel List completed \r\n ");
+
+     
+     puts("On relay execute");
+
+     return true;
+
+
+}

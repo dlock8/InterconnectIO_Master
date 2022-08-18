@@ -3,13 +3,11 @@
 #include "pico/binary_info.h"
 #include "scpi/scpi.h"
 #include "include/fts_scpi.h"
+#include "include/i2c_com.h"
 
 // This will hold the SCPI "instance".
 scpi_t scpi_context;
 
-
-// This will hold the SCPI "instance".
-scpi_t scpi_context;
 
 // Input buffer for reading SCPI commands.
 
@@ -153,20 +151,22 @@ static scpi_result_t Relay_scpi(scpi_t *context) {
     scpi_parameter_t channel_list_param;
     volatile scpi_bool_t ValMatch;
     int32_t Valtag, Vcomp, *px;
-    char cdat;
+    char cdat,fres;
     volatile scpi_result_t  flag;
     int32_t array[MAXROW * MAXCOL]; /* array which holds values in order (2D) */
 
 
- fprintf(stdout,"tag test\r\n");
-
- //fprintf(stdout,"raw: %s\r\n", context->param_list.cmd_raw.data);
+    fprintf(stdout,"tag test\r\n");
   
-  Valtag = SCPI_CmdTag(context);
+    Valtag = SCPI_CmdTag(context);   //extract tag from the command
 
-  fprintf(stdout,"tagvalue: %d\r\n", Valtag);
+    fprintf(stdout,"tagvalue: %d\r\n", Valtag);
 
-   flag = Relay_Chanlst(context, array);
+    flag = Relay_Chanlst(context, array);  // extract list of relay
+    
+    fres =  relay_execute(array,Valtag); // Perform action requested
+
+
    size_t i = 0;
         fprintf(stdout, "Channel List from main: ");
         do {
@@ -195,10 +195,15 @@ static scpi_result_t Relay_scpi(scpi_t *context) {
 scpi_command_t scpi_commands[] = {
 	{ .pattern = "*IDN?", .callback = SCPI_CoreIdnQ, },
 	{ .pattern = "*RST",  .callback = SCPI_CoreRst, },
-    {.pattern = "ROUTe:CLOSE", .callback = Relay_scpi,1},
-    {.pattern = "ROUTe:CLOSE[:EXCLusive]", .callback = Relay_scpi,2},
-    {.pattern = "ROUTe:OPEN", .callback = Relay_scpi,3},
-    {.pattern = "ROUTe:OPEN:ALL", .callback = Relay_scpi,4},
+    {.pattern = "ROUTe:CLOSE", .callback = Relay_scpi,RCLOSE},
+    {.pattern = "ROUTe:CLOSE[:EXCLusive]", .callback = Relay_scpi,RCLEX},
+    {.pattern = "ROUTe:OPEN", .callback = Relay_scpi,ROPEN},
+    {.pattern = "ROUTe:OPEN:ALL", .callback = Relay_scpi,ROPALL},
+
+     /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
+    { .pattern = "SYSTem:ERRor[:NEXT]?", .callback = SCPI_SystemErrorNextQ,},
+    { .pattern = "SYSTem:ERRor:COUNt?", .callback = SCPI_SystemErrorCountQ,},
+    { .pattern = "SYSTem:VERSion?", .callback = SCPI_SystemVersionQ,},
 	SCPI_CMD_LIST_END
 };
 

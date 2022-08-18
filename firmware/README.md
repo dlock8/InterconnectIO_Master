@@ -46,7 +46,7 @@ SYSTem:BEEPer
 
 ## Relay numbering. Differential relay will be located on even address, odd address will toggle de single ended relay
 
-    Relay bank A   100 @ 115
-    Relay bank B   120 @ 135
-    Relay bank C   200 @ 215
-    Relay bank D   220 @ 235
+    Relay bank 1   100 @ 115      
+    Relay bank 2   200 @ 215
+    Relay bank 3   300 @ 315
+    Relay bank 4   400 @ 415

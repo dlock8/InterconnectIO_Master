@@ -20,7 +20,7 @@ static const uint MINOR_VERSION = 2;    // Minor version of Pico_Master
 /*
 Portable array-based cyclic FIFO queue.
 Copy from Internet
-*/
+
 
 #define MESSAGE_SIZE 64
 #define QUEUE_SIZE 64 // set high for development
@@ -70,13 +70,14 @@ bool deque(MESSAGE *message) {
     }
 }
 
+*/
 
 
 
 
 int main() {
 
-    MESSAGE rec;
+   // MESSAGE rec;
     int result;
 
 	bi_decl(bi_program_description("This is a test binary, including the SCPI library."));
@@ -115,8 +116,13 @@ int main() {
     //send_master (PICO_PORT_ADDRESS,02,0x00); // test command 
 
    TEST_SCPI_INPUT("*IDN?\r\n"); 
-   TEST_SCPI_INPUT("ROUT:CLOSE:EXCL (@120:125)\r\n"); 
-   // TEST_SCPI_INPUT("ROUT:CLOSE (@100:105)\r\n"); 
+   TEST_SCPI_INPUT("SYST:VERS?\r\n"); 
+   TEST_SCPI_INPUT("ROUT:OPEN:ALL (@100)\r\n"); 
+   TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
+   TEST_SCPI_INPUT("ROUT:CLOSE (@104,106)\r\n"); 
+   
+   TEST_SCPI_INPUT("ROUT:CLOSE:EXCL (@208)\r\n"); 
+   TEST_SCPI_INPUT("ROUT:OPEN (@104)\r\n"); 
     
 
     
@@ -124,7 +130,7 @@ int main() {
    // TEST_SCPI_INPUT("TEST:CHANnellist:EXCL (@120:125)\r\n");
 
 	while (1) {
-        printf("Hello, world!\n");
+        //printf("Hello, world!\n");
         uart_puts(UART_ID, "Hello UART!\n");
         gpio_put(LED_PIN, 1);
         sleep_ms(500);
@@ -137,6 +143,7 @@ int main() {
 		//* char c = fgetc(stdin);  // TODO: Error handling.
 		//*SCPI_Input(&scpi_context, &c, 1);
 
+/*
     while (deque(&rec)) {
       gpio_put(PICO_DEFAULT_LED_PIN, 0); // Turn OFF board led
       uart_puts(UART_ID, &rec.data[0]);
@@ -144,6 +151,7 @@ int main() {
       sleep_ms(5);
       gpio_put(PICO_DEFAULT_LED_PIN, 1); // Turn ON board led
     }
+    */
 	}
 	
     printf("program terminated\r");

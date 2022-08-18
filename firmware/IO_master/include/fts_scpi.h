@@ -33,6 +33,11 @@ extern "C" {
 #define MAXCOL 40    /* maximum number of columns */
 #define MAXDIM 1    /* maximum number of dimensions */
 
+#define RCLOSE 1     // Close relay tag
+#define RCLEX 2     // Close Exclusive relay tag
+#define ROPEN 3     // Open relay tag
+#define ROPALL 4     // Open all relay tag
+
 extern scpi_t scpi_context;
 extern char scpi_input_buffer[];
 extern scpi_error_t scpi_error_queue[];
