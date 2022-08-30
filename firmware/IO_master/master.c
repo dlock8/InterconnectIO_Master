@@ -112,12 +112,18 @@ int main() {
 
    // TEST_SCPI_INPUT("TEST:CHANnellist (@1!2:3!4,5!6)\r\n");
    
-    send_master (PICO_PORT_ADDRESS,01,0x00); // test command 
+ //   send_master (PICO_PORT_ADDRESS,01,0x00); // test command 
     //send_master (PICO_PORT_ADDRESS,02,0x00); // test command 
 
    TEST_SCPI_INPUT("*IDN?\r\n"); 
-   TEST_SCPI_INPUT("SYST:VERS?\r\n"); 
-   TEST_SCPI_INPUT("ROUT:OPEN:ALL (@100)\r\n"); 
+ //  TEST_SCPI_INPUT("SYST:VERS?\r\n"); 
+ //  TEST_SCPI_INPUT("ROUT:OPEN (@301)\r\n"); 
+   TEST_SCPI_INPUT("SYST:ERR:COUNT?\r\n");
+   TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK2\r\n"); 
+   TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
+   TEST_SCPI_INPUT("ROUT:OPEN:ALL BOOK2\r\n");
+   TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
+   TEST_SCPI_INPUT("ROUT:OPEN:ALL \r\n");
    TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
    TEST_SCPI_INPUT("ROUT:CLOSE (@104,106)\r\n"); 
    

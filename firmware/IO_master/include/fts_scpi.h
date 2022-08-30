@@ -38,6 +38,14 @@ extern "C" {
 #define ROPEN 3     // Open relay tag
 #define ROPALL 4     // Open all relay tag
 
+
+#define SCPI_BANK1 1     // Open BK1 relay tag
+#define SCPI_BANK2 2     // Open BK2 relay tag
+#define SCPI_BANK3 3     // Open BK3 relay tag
+#define SCPI_BANK4 4     // Open BK4 relay tag
+#define SCPI_BANK_ALL 5     // Open all relay tag
+
+
 extern scpi_t scpi_context;
 extern char scpi_input_buffer[];
 extern scpi_error_t scpi_error_queue[];

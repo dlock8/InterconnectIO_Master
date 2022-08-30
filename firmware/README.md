@@ -1,16 +1,10 @@
 # First TestStation Interconnect IO SCPI firmware
 
-It's based on the webusb 
-This will become the firmware for the [cronologic WebUSB project](https://github.com/cronologic-de/webusb).
-It’s based on the Raspberry Pi Pico’s C/C++ SDK and [Jan Breuer’s `scpi-parser` library](https://github.com/j123b567/scpi-parser).
+
 
 ## Project setup
 
-When cloning the repository, make sure to also initialize the SCPI parser library submodule at `lib/scpi-parser`, else the firmware won’t build.
-If you use `git clone` on the command line, adding `--recurse-submodules` should suffice.
 
-Follow the [Pico SDK’s “Getting Started” documentation](https://rptl.io/pico-get-started) to install the SDK on your machine, in a location outside of this repository.
-You could for example put the SDK and the WebUSB repo alongside each other in a common parent folder.
 
 ## Building
 
@@ -40,7 +34,8 @@ However, there are two caveats:
 ROUTe:CLOSe (@<ch_list>)  
 ROUTe:CLOSe:EXCLusive (@<ch_list>) 
 ROUTe:OPEN (@<ch_list>)
-ROUTE:OPEN:ALL[{1-4|ALL}] 
+ROUTE:OPEN:ALL[{BANK1-BANK4|ALL}] 
+
 
 SYSTem:BEEPer
 

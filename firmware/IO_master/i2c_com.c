@@ -39,10 +39,11 @@ void send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata)  {
     buf[1] = wdata;    // gpio
 
 
-
+    printf("on sendmaster cmd: 0x%02d: add 0x%02x\r\n", cmd,i2c_add);
     count = i2c_write_blocking(i2c1, i2c_add, buf, buflgth, false);
     if (count < 0) {
         puts("Couldn't write Register to slave");
+        printf("MAS: ERROR Write at register 0x%02d: %02d\n", buf[0], buf[1]);
         return;
     }
     printf("MAS: Write at register 0x%02d: %02d\n", buf[0], buf[1]);
@@ -60,17 +61,17 @@ void send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata)  {
 
 bool  relay_execute(int32_t *list,int8_t action) {
     size_t i = 0;
-    volatile uint8_t i2c_add,gpio,relay,ser;
+    volatile uint8_t i2c_add,gpio,ser;
+    volatile uint16_t relay;
     bool rfd, exf;
     volatile int gpior[4][16]= RBK;  // table of gpio corresponding to relay
 
-    fprintf(stdout, "On relay execute");
-
+    printf("On relay execute begin \r\n");
 
     do {
             relay = list[i];
             rfd = false;    // set flag for relay found
-            fprintf(stdout, "Channel: %d,", list[i]);
+            printf("Channel: %d \r\n,", list[i]);
             if (relay >= 100 && relay <= 115) {
                 i2c_add = PICO_RELAY1_ADDRESS;   // assign card to send command
                 gpio = gpior[0][relay-100]; // get gpio reference to execute  
@@ -102,36 +103,43 @@ bool  relay_execute(int32_t *list,int8_t action) {
               {
                 case RCLEX:
                 case RCLOSE:
-                   if (action == RCLEX) {
+                   if (action == RCLEX) { // Open relay bank
                       send_master(i2c_add, OPEN_RELAY_BANK, gpio);
                    }
-                   send_master(i2c_add, CLOSE_RELAY, gpio);
+                   send_master(i2c_add, CLOSE_RELAY, gpio); // close required relay
                    if (relay % 2  != 0 ) { // if required close the SE relay
                       send_master(i2c_add, CLOSE_RELAY, ser);
                    }
                 break;
 
-
                 case ROPEN:
-                    send_master(i2c_add, OPEN_RELAY, gpio);
+                    send_master(i2c_add, OPEN_RELAY, gpio); // open relay bank
                     if (relay % 2  != 0 ) { // if required open the SE relay
                       send_master(i2c_add, OPEN_RELAY, ser);
                    }
                 break;
-                
+
+                case ROPALL:
+                    send_master(i2c_add, OPEN_RELAY_BANK, gpio); // open relay bank
+                    if (relay % 2  != 0 ) { // if required open the SE relay
+                      send_master(i2c_add, OPEN_RELAY, ser);
+                   }
+                break;
+       
               }
 
 
             } else {
+                printf ("Error relay execute \r\n");
                 // relay is not fund on list
+                
             }
 
             i++;
-        } while (list[i] > 0);
-        //fprintf(stdout, "\r\n Channel List completed \r\n ");
+        } while (list[i] > 0); // Loop for all relay on the list
 
      
-     puts("On relay execute");
+     puts("On relay execute end\r\n");
 
      return true;
 

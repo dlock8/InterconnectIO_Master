@@ -4,6 +4,9 @@
 #include "scpi/scpi.h"
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
+#include "scpi/expression.h"
+#include "scpi/error.h"
+#include "scpi/parser.h"
 
 // This will hold the SCPI "instance".
 scpi_t scpi_context;
@@ -183,11 +186,92 @@ static scpi_result_t Relay_scpi(scpi_t *context) {
  // Vcomp = strcmp( context->param_list.cmd_raw.data, "TATA");
  // fprintf(stdout,"Vcomp: %d\r\n", Vcomp);
 
+    //SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
+    SCPI_ErrorPush(context, SCPI_ERROR_DATA_TYPE_ERROR);
     SCPI_ResultText(context, "termine avec succes");
 
     return SCPI_RES_OK;
 
 }
+
+// List of special string not already define on SCPI parser
+const scpi_choice_def_t scpi_special_all_numbers_def[] = {
+    {/* name */ "ALL", /* type */ SCPI_BANK_ALL},
+    {/* name */ "BANK1", /* type */ SCPI_BANK1},
+    {/* name */ "BANK2", /* type */ SCPI_BANK2},
+    {/* name */ "BANK3", /* type */ SCPI_BANK3},
+    {/* name */ "BANK4", /* type */ SCPI_BANK4},
+    SCPI_CHOICE_LIST_END,
+};
+
+
+
+// Open  particular Relay bank or all relay
+static scpi_result_t Relay_all_scpi(scpi_t *context) {
+    scpi_bool_t res;
+    scpi_number_t paramRelay;
+    int32_t array[5], Valtag;
+    size_t i = 0;
+
+    Valtag = SCPI_CmdTag(context);   //extract tag from the command
+
+    while(SCPI_ParamNumber(context, scpi_special_all_numbers_def, &paramRelay, FALSE)){
+        printf("on switch \r\n");
+        if (paramRelay.special) {
+            switch (paramRelay.content.tag) {
+                case SCPI_BANK1: 
+                    array[i] = 101;    //  Add Bank1 on array list to open
+                    i++;  
+                    break;
+                case SCPI_BANK2:        //  Add Bank2 on array list to open
+                    array[i] = 201;
+                    i++;  
+                    break;
+                case SCPI_BANK3: 
+                    array[i] = 301;
+                    i++;  
+                    break;
+                case SCPI_BANK4: 
+                    array[i] = 401;
+                    i++;  
+                    break;
+
+                case SCPI_BANK_ALL: 
+                    array[i] = 101;     // Add all banks to the list
+                    array[i+1] = 201;
+                    array[i+2] = 301;
+                    array[i+3] = 401;
+                    i +=4;  
+                    break;
+                
+                default: 
+                    SCPI_ErrorPush(context, SCPI_ERROR_ILLEGAL_PARAMETER_VALUE);
+                    return SCPI_RES_ERR;
+            }
+        }    
+
+    }
+    array[i] = 0;   // flag for end of array
+    
+
+    if (i > 0) {
+       res =  relay_execute(array,Valtag); // Perform action requested
+    } else {
+        if (SCPI_ParamErrorOccurred(context)) {
+            SCPI_ErrorPush(context, SCPI_ERROR_MISSING_PARAMETER);
+        } else {
+            SCPI_ErrorPush(context, SCPI_ERROR_ILLEGAL_PARAMETER_VALUE);
+        }
+        return SCPI_RES_ERR;
+    }
+
+return SCPI_RES_OK;
+}
+
+
+
+
+
 
 
 
@@ -198,7 +282,7 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "ROUTe:CLOSE", .callback = Relay_scpi,RCLOSE},
     {.pattern = "ROUTe:CLOSE[:EXCLusive]", .callback = Relay_scpi,RCLEX},
     {.pattern = "ROUTe:OPEN", .callback = Relay_scpi,ROPEN},
-    {.pattern = "ROUTe:OPEN:ALL", .callback = Relay_scpi,ROPALL},
+    {.pattern = "ROUTe:OPEN:ALL", .callback = Relay_all_scpi,ROPALL},
 
      /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
     { .pattern = "SYSTem:ERRor[:NEXT]?", .callback = SCPI_SystemErrorNextQ,},
