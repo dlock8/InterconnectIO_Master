@@ -47,7 +47,7 @@ scpi_interface_t scpi_interface = {
  *
  * @param channel_list channel list, compare to SCPI99 Vol 1 Ch. 8.3.2
  */
-scpi_result_t Relay_Chanlst(scpi_t *context, int32_t *array) {
+scpi_result_t Relay_Chanlst(scpi_t *context, uint16_t *array) {
     scpi_parameter_t channel_list_param;
 
    // scpi_channel_value_t array[MAXROW * MAXCOL]; /* array which holds values in order (2D) */
@@ -89,11 +89,11 @@ scpi_result_t Relay_Chanlst(scpi_t *context, int32_t *array) {
                     if (arr_idx >= MAXROW * MAXCOL) {
                         return SCPI_RES_ERR;
                     }
-                } else if (is_range == TRUE) {
+                } else if (is_range == TRUE) { // step changed to 2 due to SE relay
                     if (values_from[0] > values_to[0]) {
-                        dir_row = -1; /* we have to decrement from values_from */
+                        dir_row = -2; /* we have to decrement from values_from */
                     } else { /* if (values_from[0] < values_to[0]) */
-                        dir_row = +1; /* default, we increment from values_from */
+                        dir_row = +2; /* default, we increment from values_from */
                     }
 
                     /* iterating over rows, do it once -> set for_stop_row = false
@@ -113,13 +113,11 @@ scpi_result_t Relay_Chanlst(scpi_t *context, int32_t *array) {
                                 return SCPI_RES_ERR;
                             }
                         }
-                        if (n == (size_t)values_to[0]) {
+                        if (n >= (size_t)values_to[0]-1) { // added -1 due to SE
                             /* endpoint reached, stop row for-loop */
                             for_stop_row = TRUE;
                         }
                     }
-
-
                 } else {
                     return SCPI_RES_ERR;
                 }
@@ -153,10 +151,11 @@ scpi_result_t Relay_Chanlst(scpi_t *context, int32_t *array) {
 static scpi_result_t Relay_scpi(scpi_t *context) {
     scpi_parameter_t channel_list_param;
     volatile scpi_bool_t ValMatch;
-    int32_t Valtag, Vcomp, *px;
+    uint16_t Valtag, Vcomp, *px;
     char cdat,fres;
     volatile scpi_result_t  flag;
-    int32_t array[MAXROW * MAXCOL]; /* array which holds values in order (2D) */
+    uint16_t array[MAXROW * MAXCOL]; /* array which holds values in order (2D) */
+    uint8_t answer[8];
 
 
     fprintf(stdout,"tag test\r\n");
@@ -166,8 +165,12 @@ static scpi_result_t Relay_scpi(scpi_t *context) {
     fprintf(stdout,"tagvalue: %d\r\n", Valtag);
 
     flag = Relay_Chanlst(context, array);  // extract list of relay
+    if (flag == SCPI_RES_ERR) {
+        SCPI_ErrorPush(context, SCPI_ERROR_INVALID_CHARACTER);
+        return SCPI_RES_ERR;
+    }
     
-    fres =  relay_execute(array,Valtag); // Perform action requested
+    fres =  relay_execute(array,Valtag,answer); // Perform action requested
 
 
    size_t i = 0;
@@ -187,7 +190,7 @@ static scpi_result_t Relay_scpi(scpi_t *context) {
  // fprintf(stdout,"Vcomp: %d\r\n", Vcomp);
 
     //SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
-    SCPI_ErrorPush(context, SCPI_ERROR_DATA_TYPE_ERROR);
+  //  SCPI_ErrorPush(context, SCPI_ERROR_DATA_TYPE_ERROR);
     SCPI_ResultText(context, "termine avec succes");
 
     return SCPI_RES_OK;
@@ -210,7 +213,8 @@ const scpi_choice_def_t scpi_special_all_numbers_def[] = {
 static scpi_result_t Relay_all_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_number_t paramRelay;
-    int32_t array[5], Valtag;
+    uint16_t array[5];
+    uint8_t answer[MAXROW * MAXCOL], Valtag;
     size_t i = 0;
 
     Valtag = SCPI_CmdTag(context);   //extract tag from the command
@@ -255,7 +259,7 @@ static scpi_result_t Relay_all_scpi(scpi_t *context) {
     
 
     if (i > 0) {
-       res =  relay_execute(array,Valtag); // Perform action requested
+       res =  relay_execute(array,Valtag,answer); // Perform action requested
     } else {
         if (SCPI_ParamErrorOccurred(context)) {
             SCPI_ErrorPush(context, SCPI_ERROR_MISSING_PARAMETER);
@@ -279,10 +283,15 @@ return SCPI_RES_OK;
 scpi_command_t scpi_commands[] = {
 	{ .pattern = "*IDN?", .callback = SCPI_CoreIdnQ, },
 	{ .pattern = "*RST",  .callback = SCPI_CoreRst, },
+
+    /* Created for Interconnect IO board */
     {.pattern = "ROUTe:CLOSE", .callback = Relay_scpi,RCLOSE},
     {.pattern = "ROUTe:CLOSE[:EXCLusive]", .callback = Relay_scpi,RCLEX},
     {.pattern = "ROUTe:OPEN", .callback = Relay_scpi,ROPEN},
     {.pattern = "ROUTe:OPEN:ALL", .callback = Relay_all_scpi,ROPALL},
+    {.pattern = "ROUTe:CHANnel:STATe?", .callback = Relay_scpi,RSTATE},
+    {.pattern = "ROUTe:BANK:STATe?", .callback = Relay_all_scpi,BSTATE},
+    {.pattern = "ROUTe:SE:STATe?", .callback = Relay_all_scpi,SESTATE},
 
      /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
     { .pattern = "SYSTem:ERRor[:NEXT]?", .callback = SCPI_SystemErrorNextQ,},

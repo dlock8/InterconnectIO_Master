@@ -116,12 +116,12 @@ int main() {
     //send_master (PICO_PORT_ADDRESS,02,0x00); // test command 
 
    TEST_SCPI_INPUT("*IDN?\r\n"); 
- //  TEST_SCPI_INPUT("SYST:VERS?\r\n"); 
- //  TEST_SCPI_INPUT("ROUT:OPEN (@301)\r\n"); 
+   TEST_SCPI_INPUT("*OPC?\r\n"); 
+   TEST_SCPI_INPUT("SYST:VERS?\r\n"); 
+   TEST_SCPI_INPUT("ROUT:OPEN (@100:107)\r\n"); 
+   TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
    TEST_SCPI_INPUT("SYST:ERR:COUNT?\r\n");
    TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK2\r\n"); 
-   TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
-   TEST_SCPI_INPUT("ROUT:OPEN:ALL BOOK2\r\n");
    TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
    TEST_SCPI_INPUT("ROUT:OPEN:ALL \r\n");
    TEST_SCPI_INPUT("SYST:ERR?\r\n"); 

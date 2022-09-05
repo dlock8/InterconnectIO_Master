@@ -89,7 +89,7 @@ extern "C" {
  * 1 = Use also LIST_OF_USER_ERRORS
  */
 #ifndef USE_USER_ERROR_LIST
-#define USE_USER_ERROR_LIST 0
+#define USE_USER_ERROR_LIST 1
 #endif
 
 #ifndef USE_DEVICE_DEPENDENT_ERROR_INFORMATION

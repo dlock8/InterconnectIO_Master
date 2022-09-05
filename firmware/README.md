@@ -34,12 +34,23 @@ However, there are two caveats:
 ROUTe:CLOSe (@<ch_list>)  
 ROUTe:CLOSe:EXCLusive (@<ch_list>) 
 ROUTe:OPEN (@<ch_list>)
-ROUTE:OPEN:ALL[{BANK1-BANK4|ALL}] 
-
+ROUTE:OPEN:ALL[{BANK1-BANK4|ALL}]
+ROUTE:CHANnel:STATe? (@<ch_list>)
+ROUTE:BANK:STATe? [{BANK1-BANK4}]
+ROUTE:SE:STATe? [{BANK1-BANK4}]  
 
 SYSTem:BEEPer
 
-## Relay numbering. Differential relay will be located on even address, odd address will toggle de single ended relay
+## SCPI example:
+ROUTe:CLOSe (@101)            --> Close relay 100 and close relay Single ended (SE)
+ROUTe:CLOSe:EXC (@102)        --> open relay on bank1, including relay SE and close relay 102
+ROUTe:CLOSe (@100,108)        --> close relay 100 and 108
+ROUTe:CLOSe (@100:108)        --> close relay 100,102,104,106, and 108
+ROUTe:OPEN:ALL BANK1,BANK2    --> open relay  on bank1 and bank2
+ROUTe:OPEN:ALL ALL            --> open relay  on all banks
+ROUTE:SE:STATe? BANK1         --> read which side of diff relay we are connected (H or L)
+
+## Relay numbering. Differential relay will be located on even address, odd address will toggle de single ended (SE) relay 
 
     Relay bank 1   100 @ 115      
     Relay bank 2   200 @ 215

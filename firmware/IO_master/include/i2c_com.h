@@ -42,16 +42,16 @@ extern "C" {
 #define OPEN_RELAY 10
 #define CLOSE_RELAY 11
 #define OPEN_RELAY_BANK 12
-
-
+#define STATE_RELAY 15
+#define STATE_BANK 13
 
 
 
 
 void setup_master();
 
-void send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata);
+bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint8_t *rback);
 
-bool  relay_execute(int32_t *list,int8_t action);
+bool  relay_execute(uint16_t *list,uint8_t action, uint8_t *answer);
 
 #endif // 
