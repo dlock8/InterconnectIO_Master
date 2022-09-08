@@ -118,6 +118,7 @@ int main() {
    TEST_SCPI_INPUT("*IDN?\r\n"); 
    TEST_SCPI_INPUT("*OPC?\r\n"); 
    TEST_SCPI_INPUT("SYST:VERS?\r\n"); 
+   TEST_SCPI_INPUT("ROUT:CHAN:STAT? (@100:104)\r\n"); 
    TEST_SCPI_INPUT("ROUT:OPEN (@100:107)\r\n"); 
    TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
    TEST_SCPI_INPUT("SYST:ERR:COUNT?\r\n");

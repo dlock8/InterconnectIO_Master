@@ -155,7 +155,8 @@ static scpi_result_t Relay_scpi(scpi_t *context) {
     char cdat,fres;
     volatile scpi_result_t  flag;
     uint16_t array[MAXROW * MAXCOL]; /* array which holds values in order (2D) */
-    uint8_t answer[8];
+    uint16_t answer[MAXROW * MAXCOL];
+    size_t i = 0;
 
 
     fprintf(stdout,"tag test\r\n");
@@ -172,8 +173,15 @@ static scpi_result_t Relay_scpi(scpi_t *context) {
     
     fres =  relay_execute(array,Valtag,answer); // Perform action requested
 
+    if (Valtag == RSTATE) {
+        do {
+            fprintf(stdout, "%d,", answer[i]);
+            i++;
+        } while (answer[i] > 0);
+    }
 
-   size_t i = 0;
+
+  
         fprintf(stdout, "Channel List from main: ");
         do {
             fprintf(stdout, "%d,", array[i]);
@@ -214,7 +222,8 @@ static scpi_result_t Relay_all_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_number_t paramRelay;
     uint16_t array[5];
-    uint8_t answer[MAXROW * MAXCOL], Valtag;
+    uint16_t answer[MAXROW * MAXCOL];
+    uint8_t Valtag;
     size_t i = 0;
 
     Valtag = SCPI_CmdTag(context);   //extract tag from the command

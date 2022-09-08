@@ -49,8 +49,9 @@ ROUTe:CLOSe (@100:108)        --> close relay 100,102,104,106, and 108
 ROUTe:OPEN:ALL BANK1,BANK2    --> open relay  on bank1 and bank2
 ROUTe:OPEN:ALL ALL            --> open relay  on all banks
 ROUTE:SE:STATe? BANK1         --> read which side of diff relay we are connected (H or L)
+ROUTE:CHAN:STATe? (@100)
 
-## Relay numbering. Differential relay will be located on even address, odd address will toggle de single ended (SE) relay 
+## Relay numbering. Differential relay will be located on even address, odd address will toggle de single ended (SE) relay to be connected on the lower side of the differential relay
 
     Relay bank 1   100 @ 115      
     Relay bank 2   200 @ 215

@@ -55,11 +55,11 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint8_t *rback)  {
 
         
     printf("MAS:Read Register 0x%02d = %d \r\n", cmd,ird[0]);
-    rback = (uint8_t) ird[0];  // save readback value
+    *rback = (uint8_t) ird[0];  // save readback value
     return true;     
 }
 
-bool  relay_execute(uint16_t *list,uint8_t action, uint8_t *answer) {
+bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
     size_t i = 0;
     volatile uint8_t i2c_add,gpio,ser;
     volatile uint16_t relay;
@@ -128,7 +128,9 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint8_t *answer) {
                 break;
 
                 case RSTATE:
-                    answer[i] = send_master(i2c_add, STATE_RELAY, gpio,&rdata); // read required relay
+                     send_master(i2c_add, STATE_RELAY, gpio,&rdata); // read required relay
+                     answer[i] = rdata;
+
 
               }
 
@@ -142,6 +144,7 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint8_t *answer) {
 
             i++;
         } while (list[i] > 0); // Loop for all relay on the list
+        answer[i] = 0;  // add flag to terminate the answer array
 
      
      puts("On relay execute end\r\n");
