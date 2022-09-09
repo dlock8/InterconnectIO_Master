@@ -52,9 +52,10 @@ extern "C" {
 
 
 #define LIST_OF_USER_ERRORS \
-    X(SCPI_SLAVE_COM_ERROR,      101,  "Communication error with the I2C slave")            \
-    X(SCPI_USER_ERROR_INTERLOCK_OPEN,  102,  "Switching output to on is not allowed when interlock is open")   \
-#endif
+    XE(SCPI_SLAVE_COM_ERROR,      101,  "Communication error with the I2C slave")            \
+    XE(SCPI_USER_ERROR_INTERLOCK_OPEN,  102,  "Switching output to on is not allowed when interlock is open")   \
+
+
 
 
 
