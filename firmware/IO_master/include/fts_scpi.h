@@ -51,13 +51,6 @@ extern "C" {
 #define SCPI_BANK_ALL 5     // Open all relay tag
 
 
-#define LIST_OF_USER_ERRORS \
-    XE(SCPI_SLAVE_COM_ERROR,      101,  "Communication error with the I2C slave")            \
-    XE(SCPI_USER_ERROR_INTERLOCK_OPEN,  102,  "Switching output to on is not allowed when interlock is open")   \
-
-
-
-
 
 extern scpi_t scpi_context;
 extern char scpi_input_buffer[];
