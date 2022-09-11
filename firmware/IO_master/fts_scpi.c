@@ -173,16 +173,18 @@ static scpi_result_t Relay_scpi(scpi_t *context) {
     
     fres =  relay_execute(array,Valtag,answer); // Perform action requested
 
-    if (Valtag == RSTATE) {
-        do {
+    if (Valtag == RSTATE) { // if returned value is expected
+        do {  // loop on array until list of value is completed
             fprintf(stdout, "%d,", answer[i]);
             i++;
-        } while (answer[i] > 0);
+        } while (array[i] > 0);
+        fprintf(stdout, "\r\n");  
     }
 
 
   
         fprintf(stdout, "Channel List from main: ");
+        i = 0;
         do {
             fprintf(stdout, "%d,", array[i]);
             i++;
