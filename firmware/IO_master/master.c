@@ -8,6 +8,7 @@
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
 #include "include/master.h"
+#include "include/scpi_user_config.h"
 
 
 
