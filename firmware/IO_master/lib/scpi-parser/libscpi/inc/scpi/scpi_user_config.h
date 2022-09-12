@@ -47,7 +47,7 @@ extern "C" {
 #define USE_USER_ERROR_LIST 1
 
 #define LIST_OF_USER_ERRORS \
-    X(SCPI_USER_ERROR_WARMUP_NOT_FINISHED,      101,  "Test1 device has not finished the warm up process yet")            \
+    X(SCPI_USER_ERROR_WARMUP_NOT_FINISHED,      101,  "Test1 he device has not finished the warm up process yet")            \
     X(SCPI_USER_ERROR_INTERLOCK_OPEN,           102,  "Test2 Switching output to on is not allowed when interlock is open")   \
 
 

@@ -57,3 +57,8 @@ ROUTE:CHAN:STATe? (@100)
     Relay bank 2   200 @ 215
     Relay bank 3   300 @ 315
     Relay bank 4   400 @ 415
+
+    Relay bank 1   Differential: 10 @ 17    Single: 100 @ 115      
+    Relay bank 2   Differential: 20 @ 27    Single: 200 @ 215 
+    Relay bank 3   Differential: 30 @ 37    Single: 300 @ 315 
+    Relay bank 4   Differential: 40 @ 47    Single: 400 @ 415 
