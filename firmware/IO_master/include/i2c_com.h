@@ -22,12 +22,19 @@ extern "C" {
 #define I2C_MASTER_SDA_PIN  6
 #define I2C_MASTER_SCL_PIN 7
 
-
+/*
 // GPIO Index for relay position. SE Relay located at index 16 
 #define RBK {{0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7}, \
 {10,10,11,11,12,12,13,13,14,14,15,15,16,16,17,17}, \
 {0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7}, \
 {10,10,11,11,12,12,13,13,14,14,15,15,16,16,17,17}}
+*/
+
+#define RBK {{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7}, \
+{10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17}, \
+{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7}, \
+{10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17}, }
+
 
 #define SE_BK1 19   // Relay single ended for bank 1 located at gpio x
 #define SE_BK2 18   // Relay single ended for bank 2 located at gpio x

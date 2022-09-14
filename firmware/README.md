@@ -33,7 +33,9 @@ However, there are two caveats:
 
 ROUTe:CLOSe (@<ch_list>)  
 ROUTe:CLOSe:EXCLusive (@<ch_list>) 
+ROUTe:CLOSe:Se [{BANK1-BANK4}]
 ROUTe:OPEN (@<ch_list>)
+ROUTe:OPEN:Se [{BANK1-BANK4}]
 ROUTE:OPEN:ALL[{BANK1-BANK4|ALL}]
 ROUTE:CHANnel:STATe? (@<ch_list>)
 ROUTE:BANK:STATe? [{BANK1-BANK4}]
@@ -48,17 +50,24 @@ ROUTe:CLOSe (@100,108)        --> close relay 100 and 108
 ROUTe:CLOSe (@100:108)        --> close relay 100,102,104,106, and 108
 ROUTe:OPEN:ALL BANK1,BANK2    --> open relay  on bank1 and bank2
 ROUTe:OPEN:ALL ALL            --> open relay  on all banks
-ROUTE:SE:STATe? BANK1         --> read which side of diff relay we are connected (H or L)
-ROUTE:CHAN:STATe? (@100)
+ROUTe:SE:STATe? BANK1         --> read which side of diff relay we are connected (H or L)
+ROUTe:CHAN:STATe? (@100)
 
-## Relay numbering. Differential relay will be located on even address, odd address will toggle de single ended (SE) relay to be connected on the lower side of the differential relay
-
+## Relay numbering. Differential relay will be located on lower address. Single ended relay to be connected to high or low side following the address.
     Relay bank 1   100 @ 115      
     Relay bank 2   200 @ 215
     Relay bank 3   300 @ 315
     Relay bank 4   400 @ 415
 
-    Relay bank 1   Differential: 10 @ 17    Single: 100 @ 115      
-    Relay bank 2   Differential: 20 @ 27    Single: 200 @ 215 
-    Relay bank 3   Differential: 30 @ 37    Single: 300 @ 315 
-    Relay bank 4   Differential: 40 @ 47    Single: 400 @ 415 
+    Relay bank 1   Differential: 10 @ 17    Single: 100 @ 107 (High) 108 @ 115 (Low)      
+    Relay bank 2   Differential: 20 @ 27    Single: 200 @ 215 (High) 208 @ 215 (Low) 
+    Relay bank 3   Differential: 30 @ 37    Single: 300 @ 315 (High) 308 @ 315 (Low) 
+    Relay bank 4   Differential: 40 @ 47    Single: 400 @ 415 (High) 108 @ 415 (Low) 
+
+## SE relay numbering for actuation without other relay
+    Relay SE bank 1  116    
+    Relay SE bank 2  216
+    Relay SE bank 3  216
+    Relay SE bank 4  216
+
+

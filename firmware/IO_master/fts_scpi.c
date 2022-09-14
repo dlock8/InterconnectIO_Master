@@ -37,7 +37,6 @@ scpi_interface_t scpi_interface = {
 };
 
 
-
 /**
  * @brief
  * parses lists
@@ -89,11 +88,11 @@ scpi_result_t Relay_Chanlst(scpi_t *context, uint16_t *array) {
                     if (arr_idx >= MAXROW * MAXCOL) {
                         return SCPI_RES_ERR;
                     }
-                } else if (is_range == TRUE) { // step changed to 2 due to SE relay
+                } else if (is_range == TRUE) { 
                     if (values_from[0] > values_to[0]) {
-                        dir_row = -2; /* we have to decrement from values_from */
+                        dir_row = -1; /* we have to decrement from values_from */
                     } else { /* if (values_from[0] < values_to[0]) */
-                        dir_row = +2; /* default, we increment from values_from */
+                        dir_row = +1; /* default, we increment from values_from */
                     }
 
                     /* iterating over rows, do it once -> set for_stop_row = false
@@ -113,8 +112,7 @@ scpi_result_t Relay_Chanlst(scpi_t *context, uint16_t *array) {
                                 return SCPI_RES_ERR;
                             }
                         }
-                        if (n >= (size_t)values_to[0]-1) { // added -1 due to SE
-                            /* endpoint reached, stop row for-loop */
+                        if (n >= (size_t)values_to[0]) {  /* endpoint reached, stop row for-loop */
                             for_stop_row = TRUE;
                         }
                     }
@@ -148,7 +146,7 @@ scpi_result_t Relay_Chanlst(scpi_t *context, uint16_t *array) {
 
 
 
-static scpi_result_t Relay_scpi(scpi_t *context) {
+static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
     scpi_parameter_t channel_list_param;
     volatile scpi_bool_t ValMatch;
     uint16_t Valtag, Vcomp, *px;
@@ -182,7 +180,6 @@ static scpi_result_t Relay_scpi(scpi_t *context) {
     }
 
 
-  
         fprintf(stdout, "Channel List from main: ");
         i = 0;
         do {
@@ -191,16 +188,6 @@ static scpi_result_t Relay_scpi(scpi_t *context) {
         } while (array[i] > 0);
         fprintf(stdout, "\r\n Channel List completed \r\n ");
 
-  //ValMatch = SCPI_IsCmd(context,SCPI_EXCL);
- // fprintf(stdout,"ValMatch: %dn\r\n", ValMatch);
-
- // ValMatch = SCPI_Match( context->param_list.cmd_raw.data, "EXCL",15);
- // fprintf(stdout,"ValMatch: %dn\r\n", ValMatch);
- // Vcomp = strcmp( context->param_list.cmd_raw.data, "TATA");
- // fprintf(stdout,"Vcomp: %d\r\n", Vcomp);
-
-    //SCPI_ErrorPush(context, SCPI_ERROR_DATA_OUT_OF_RANGE);
-  //  SCPI_ErrorPush(context, SCPI_ERROR_DATA_TYPE_ERROR);
     SCPI_ResultText(context, "termine avec succes");
 
     return SCPI_RES_OK;
@@ -220,10 +207,10 @@ const scpi_choice_def_t scpi_special_all_numbers_def[] = {
 
 
 // Open  particular Relay bank or all relay
-static scpi_result_t Relay_all_scpi(scpi_t *context) {
+static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_number_t paramRelay;
-    uint16_t array[5];
+    uint16_t array[5], se[5];
     uint16_t answer[MAXROW * MAXCOL];
     uint8_t Valtag;
     size_t i = 0;
@@ -235,27 +222,31 @@ static scpi_result_t Relay_all_scpi(scpi_t *context) {
         if (paramRelay.special) {
             switch (paramRelay.content.tag) {
                 case SCPI_BANK1: 
-                    array[i] = 101;    //  Add Bank1 on array list to open
+                    array[i] = 10;    //  Add Bank1 on array list to open
+                    se[i] = SE_BK1;
                     i++;  
                     break;
                 case SCPI_BANK2:        //  Add Bank2 on array list to open
-                    array[i] = 201;
+                    array[i] = 20;
+                    se[i] = SE_BK2;
                     i++;  
                     break;
                 case SCPI_BANK3: 
-                    array[i] = 301;
+                    array[i] = 30;
+                    se[i] = SE_BK3;
                     i++;  
                     break;
                 case SCPI_BANK4: 
-                    array[i] = 401;
+                    array[i] = 40;
+                    se[i] = SE_BK4;
                     i++;  
                     break;
 
                 case SCPI_BANK_ALL: 
-                    array[i] = 101;     // Add all banks to the list
-                    array[i+1] = 201;
-                    array[i+2] = 301;
-                    array[i+3] = 401;
+                    array[i] = 10;     // Add all banks to the list
+                    array[i+1] = 20;
+                    array[i+2] = 30;
+                    array[i+3] = 40;
                     i +=4;  
                     break;
                 
@@ -280,14 +271,18 @@ static scpi_result_t Relay_all_scpi(scpi_t *context) {
         return SCPI_RES_ERR;
     }
 
+    i=0;  // reset loop counter
+    if (Valtag == BSTATE || Valtag == SESTATE) { // if returned value is expected
+        do {  // loop on array until list of value is completed
+            fprintf(stdout, "%d,", answer[i]);
+            i++;
+        } while (array[i] > 0);
+        fprintf(stdout, "\r\n");  
+    }
+
+
 return SCPI_RES_OK;
 }
-
-
-
-
-
-
 
 
     // The SCPI commands we support and the callbacks they use.
@@ -296,13 +291,15 @@ scpi_command_t scpi_commands[] = {
 	{ .pattern = "*RST",  .callback = SCPI_CoreRst, },
 
     /* Created for Interconnect IO board */
-    {.pattern = "ROUTe:CLOSE", .callback = Relay_scpi,RCLOSE},
-    {.pattern = "ROUTe:CLOSE[:EXCLusive]", .callback = Relay_scpi,RCLEX},
-    {.pattern = "ROUTe:OPEN", .callback = Relay_scpi,ROPEN},
-    {.pattern = "ROUTe:OPEN:ALL", .callback = Relay_all_scpi,ROPALL},
-    {.pattern = "ROUTe:CHANnel:STATe?", .callback = Relay_scpi,RSTATE},
-    {.pattern = "ROUTe:BANK:STATe?", .callback = Relay_all_scpi,BSTATE},
-    {.pattern = "ROUTe:SE:STATe?", .callback = Relay_all_scpi,SESTATE},
+    {.pattern = "ROUTe:CLOSE", .callback = Callback_Relay_scpi,RCLOSE},
+    {.pattern = "ROUTe:CLOSE[:EXCLusive]", .callback = Callback_Relay_scpi,RCLEX},
+    {.pattern = "ROUTe:OPEN", .callback = Callback_Relay_scpi,ROPEN},
+    {.pattern = "ROUTe:OPEN:ALL", .callback = Callback_Relay_all_scpi,ROPALL},
+    {.pattern = "ROUTe:CHANnel:STATe?", .callback = Callback_Relay_scpi,RSTATE},
+    {.pattern = "ROUTe:BANK:STATe?", .callback = Callback_Relay_all_scpi,BSTATE},
+    {.pattern = "ROUTe:SE:STATe?", .callback = Callback_Relay_all_scpi,SESTATE},
+    {.pattern = "ROUTe:CLOSE:Se", .callback = Callback_Relay_all_scpi,SECLOSE},
+    {.pattern = "ROUTe:OPEN:Se", .callback = Callback_Relay_all_scpi,SEOPEN},
 
      /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
     { .pattern = "SYSTem:ERRor[:NEXT]?", .callback = SCPI_SystemErrorNextQ,},

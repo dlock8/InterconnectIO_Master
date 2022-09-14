@@ -27,7 +27,7 @@ extern "C" {
 
 //PICO Definition
 #define BANK {2,3,4,5,6,7,8,9,0}  // GPIO Relay position, could be 4 dimension
-#define SE {4}   // could be for diemnsion
+#define SE {4}   // could be for dimension
 #define DIGIO {12,13,14,15,16,17,18,19}  // Digital IO position, could be 4 dimension
 
 

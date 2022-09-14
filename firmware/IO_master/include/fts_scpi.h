@@ -40,6 +40,9 @@ extern "C" {
 #define RSTATE 5     // Read relay state tag
 #define BSTATE 6     // Read relay bank state tag
 #define SESTATE 7     // Read relay single ended state tag
+#define SECLOSE 8     // Close SE relay tag
+#define SEOPEN 9     // Open SE relay tag
+
 
 
 
