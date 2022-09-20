@@ -47,7 +47,7 @@ extern "C" {
 #define USE_USER_ERROR_LIST 1
 
 #define LIST_OF_USER_ERRORS \
-    X(SCPI_I2C_COMMUNICATION_SLAVE_21,      101,  "The Pico slave at address #21 is not answering I2C communication")            \
+    X(SCPI_I2C_COMMUNICATION_SLAVE,      101,  "The Pico slave at address #21 is not answering I2C communication")            \
     X(SCPI_USER_ERROR_INTERLOCK_OPEN,           102,  "Test2 Switching output to on is not allowed when interlock is open")   \
 
 

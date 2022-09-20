@@ -39,14 +39,16 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint8_t *rback)  {
     buf[1] = wdata;    // gpio
 
 
-    printf("on sendmaster cmd: 0x%02d: add 0x%02x\r\n", cmd,i2c_add);
+    fprintf(stdout,"on sendmaster cmd: 0x%02d: add 0x%02x\r\n", cmd,i2c_add);
     count = i2c_write_blocking(i2c1, i2c_add, buf, buflgth, false);
     if (count < 0) {
         puts("Couldn't write Register to slave");
-        printf("MAS: ERROR Write at register 0x%02d: %02d\n", buf[0], buf[1]);
+        fprintf(stdout,"MAS: ERROR Write at register 0x%02d: %02d\n", buf[0], buf[1]);
+        //*rback = SCPI_I2C_COMMUNICATION_SLAVE;
+;
         return false;
     }
-    printf("MAS: Write at register 0x%02d: %02d\n", buf[0], buf[1]);
+    fprintf(stdout,"MAS: Write at register 0x%02d: %02d\n", buf[0], buf[1]);
 
 
     uint8_t ird[2];
@@ -54,7 +56,7 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint8_t *rback)  {
     i2c_read_blocking(i2c1, i2c_add, ird, buflgth-1, false);
 
         
-    printf("MAS:Read Register 0x%02d = %d \r\n", cmd,ird[0]);
+    fprintf(stdout,"MAS:Read Register 0x%02d = %d \r\n", cmd,ird[0]);
     *rback = (uint8_t) ird[0];  // save readback value
     return true;     
 }
@@ -64,17 +66,17 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint8_t *rback)  {
     the sub will perform the action (close, open or read) for each relay on the list
 */
 
-bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
+bool  relay_execute(uint16_t *list,uint8_t action, uint8_t *answer) {
     size_t i = 0;
     volatile uint8_t i2c_add,gpio,ser;
     volatile uint16_t relay;
-    bool rfd, exf,se;
+    bool rfd,smf, exf,se;
     bool seflg[4] = {false,false,false,false}; // SE flag to close or open the SE relay
     bool sestate[4] = {false,false,false,false}; // actual value of se relay state
     volatile int gpior[4][16]= RBK;  // table of gpio corresponding to relay
-    uint8_t rdata = 0xff;
+    uint8_t rdata;
 
-    printf("On relay execute begin \r\n");
+    fprintf(stdout,"On relay execute begin \r\n");
 
     do {
             relay = list[i];
@@ -186,14 +188,20 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                 case RCLEX:
                 case RCLOSE:
                    if (action == RCLEX) { // Open relay bank on exclusive command
-                      send_master(i2c_add, OPEN_RELAY_BANK,gpio,&rdata);
+                      smf = send_master(i2c_add, OPEN_RELAY_BANK,gpio,&rdata);
+                      if (!smf) { 
+                        answer[0] = rdata;  // save error on answer
+                        return false;       // return
+                      }   
                    }
                    send_master(i2c_add, CLOSE_RELAY, gpio,&rdata); // close required relay
                    if (ser > 0) { //if valid SE number
                         if (se) { // close or open the SE relay
-                            send_master(i2c_add, CLOSE_RELAY, ser,&rdata);
+                            smf = send_master(i2c_add, CLOSE_RELAY, ser,&rdata);
+                            if (!smf) { answer[0] = rdata; return false;}
                         } else {
-                            send_master(i2c_add, OPEN_RELAY, ser,&rdata);
+                            smf = send_master(i2c_add, OPEN_RELAY, ser,&rdata);
+                            if (!smf) { answer[0] = rdata; return false;}
                         }
                     }
 
@@ -203,9 +211,11 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                     send_master(i2c_add, OPEN_RELAY, gpio,&rdata); // open relay bank
                     if (ser > 0) { //if valid SE number
                         if (se) { // close or open the SE relay
-                            send_master(i2c_add, CLOSE_RELAY, ser,&rdata);
+                            smf =send_master(i2c_add, CLOSE_RELAY, ser,&rdata);
+                            if (!smf) { answer[0] = rdata; return false;}
                         } else {
-                            send_master(i2c_add, OPEN_RELAY, ser,&rdata);
+                            smf= send_master(i2c_add, OPEN_RELAY, ser,&rdata);
+                            if (!smf) { answer[0] = rdata; return false;}
                         }
                     }
 
@@ -215,30 +225,39 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                     send_master(i2c_add, OPEN_RELAY_BANK, gpio,&rdata); // open relay bank
                     if (ser > 0) { //if valid SE number
                         if (se) { // close or open the SE relay
-                            send_master(i2c_add, CLOSE_RELAY, ser,&rdata);
+                            smf= send_master(i2c_add, CLOSE_RELAY, ser,&rdata);
+                            if (!smf) { answer[0] = rdata; return false;}
                         } else {
-                            send_master(i2c_add, OPEN_RELAY, ser,&rdata);
+                            smf= send_master(i2c_add, OPEN_RELAY, ser,&rdata);
+                            if (!smf) { answer[0] = rdata; return false;}
                         }
                     }
                 break;
 
                 case RSTATE:
-                     send_master(i2c_add, STATE_RELAY, gpio,&rdata); // read required relay
+                     smf= send_master(i2c_add, STATE_RELAY, gpio,&rdata); // read required relay
+                     if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      answer[i] = rdata;
+                     break;
 
                 case BSTATE:
-                     send_master(i2c_add, STATE_BANK, gpio,&rdata); // read required bank
+                     smf= send_master(i2c_add, STATE_BANK, gpio,&rdata); // read required bank
+                     if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      answer[i] = rdata;
+                     break;
                 
                 case SESTATE:
-                     send_master(i2c_add, STATE_RELAY, ser,&rdata); // read required SE relay
+                     smf= send_master(i2c_add, STATE_RELAY, ser,&rdata); // read required SE relay
+                     if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      answer[i] = rdata;
+                     break;
 
               }
 
 
             } else {
-                printf ("Error relay execute \r\n");
+                fprintf (stdout,"Error relay execute \r\n");
+                answer[0] = RELAY_NUM_ERROR;
                 return false;
                 // relay is not fund on list
                 
@@ -249,7 +268,7 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
         //answer[i] = 0;  // add flag to terminate the answer array
 
      
-     puts("On relay execute end\r\n");
+     fprintf(stdout,"On relay execute end\r\n");
 
      return true;
 

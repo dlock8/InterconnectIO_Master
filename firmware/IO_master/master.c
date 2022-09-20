@@ -8,7 +8,7 @@
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
 #include "include/master.h"
-#include "include/scpi_user_config.h"
+//#include "include/scpi_user_config.h"
 
 
 
@@ -100,7 +100,7 @@ int main() {
 
     // Send out a string, with CR/LF conversions
     uart_puts(UART_ID, "UART Connected!\n");
-    printf("USB CONNECTED \r\n");
+    fprintf(stdout,"USB CONNECTED \r\n");
 
     #define LED_PIN 16
     gpio_init(LED_PIN);
@@ -119,14 +119,22 @@ int main() {
    TEST_SCPI_INPUT("*IDN?\r\n"); 
    TEST_SCPI_INPUT("*OPC?\r\n"); 
    TEST_SCPI_INPUT("SYST:VERS?\r\n");
-   TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK1,BANK2\r\n"); 
-   TEST_SCPI_INPUT("ROUT:SE:STAT? BANK1,BANK2 \r\n");
-   TEST_SCPI_INPUT("ROUT:CLOSE (@100,208)\r\n");
-   TEST_SCPI_INPUT("ROUT:SE:STAT? BANK1,BANK2 \r\n");
+   TEST_SCPI_INPUT("ROUT:CLOSE (@700)\r\n");
 
-  TEST_SCPI_INPUT("ROUT:CLOSE (@100:107)\r\n");
-  TEST_SCPI_INPUT("ROUT:BANK:STAT? BANK1 \r\n");
+   TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK3\r\n"); 
+   TEST_SCPI_INPUT("SYST:ERR:COUNT?\r\n");
+   TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
+
+   TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK1,BANK2\r\n"); 
+ //  TEST_SCPI_INPUT("ROUT:SE:STAT? BANK1,BANK2 \r\n");
+ //  TEST_SCPI_INPUT("ROUT:CLOSE (@100,208)\r\n");
+  // TEST_SCPI_INPUT("ROUT:SE:STAT? BANK1,BANK2 \r\n");
+
+  TEST_SCPI_INPUT("ROUT:CLOSE (@100:105)\r\n");
+  TEST_SCPI_INPUT("ROUT:BANK:STAT? BANK1,BANK2 \r\n");
+  TEST_SCPI_INPUT("ROUT:SE:STAT? BANK1,BANK2 \r\n");
   TEST_SCPI_INPUT("ROUT:OPEN (@10,17)\r\n"); 
+
   TEST_SCPI_INPUT("ROUT:BANK:STAT? BANK1 \r\n");
   
 
@@ -153,15 +161,16 @@ int main() {
    
    TEST_SCPI_INPUT("ROUT:CLOSE:EXCL (@208)\r\n"); 
    TEST_SCPI_INPUT("ROUT:OPEN (@104)\r\n"); 
-    
 
-    
+
    // TEST_SCPI_INPUT("TEST:CHANnellist (@100:105)\r\n");
    // TEST_SCPI_INPUT("TEST:CHANnellist:EXCL (@120:125)\r\n");
 
 	while (1) {
         //printf("Hello, world!\n");
         uart_puts(UART_ID, "Hello UART!\n");
+        fprintf(stdout,"USB CONNECTED \r\n");
+
         gpio_put(LED_PIN, 1);
         sleep_ms(500);
         gpio_put(LED_PIN, 0);
@@ -184,5 +193,5 @@ int main() {
     */
 	}
 	
-    printf("program terminated\r");
+    fprintf(stdout,"program terminated\r");
 }

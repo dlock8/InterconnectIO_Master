@@ -153,8 +153,9 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
     char cdat,fres;
     volatile scpi_result_t  flag;
     uint16_t array[MAXROW * MAXCOL]; /* array which holds values in order (2D) */
-    uint16_t answer[MAXROW * MAXCOL];
+    uint8_t answer[MAXROW * MAXCOL];
     size_t i = 0;
+    char str[80];
 
 
     fprintf(stdout,"tag test\r\n");
@@ -168,15 +169,23 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
         SCPI_ErrorPush(context, SCPI_ERROR_INVALID_CHARACTER);
         return SCPI_RES_ERR;
     }
+
+
     
     fres =  relay_execute(array,Valtag,answer); // Perform action requested
+    if (!fres) {
+        //Raise_i2c_error(answer); // set SCPI error 
+        return false;
+    }
 
     if (Valtag == RSTATE) { // if returned value is expected
         do {  // loop on array until list of value is completed
-            fprintf(stdout, "%d,", answer[i]);
+            sprintf(str, "%d,", answer[i]);
+            SCPI_ResultUInt8(context,answer[i]); // return SCPI value 
             i++;
         } while (array[i] > 0);
-        fprintf(stdout, "\r\n");  
+        printf(str);
+        printf ("\r\n");  
     }
 
 
@@ -211,9 +220,10 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_number_t paramRelay;
     uint16_t array[5], se[5];
-    uint16_t answer[MAXROW * MAXCOL];
+    uint8_t answer[MAXROW * MAXCOL];
     uint8_t Valtag;
     size_t i = 0;
+    char str[80];
 
     Valtag = SCPI_CmdTag(context);   //extract tag from the command
 
@@ -271,16 +281,23 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
         return SCPI_RES_ERR;
     }
 
+
     i=0;  // reset loop counter
     if (Valtag == BSTATE || Valtag == SESTATE) { // if returned value is expected
         do {  // loop on array until list of value is completed
-            fprintf(stdout, "%d,", answer[i]);
+           sprintf(str, " 0x%x,", answer[i]);
+           SCPI_ResultUInt8(context,answer[i]); // return SCPI value 
             i++;
         } while (array[i] > 0);
-        fprintf(stdout, "\r\n");  
+        //sprintf(str, "\r\n"); // print on debug port
+        printf(str);
+        printf ("\r\n"); 
+
     }
+  
 
 
+ 
 return SCPI_RES_OK;
 }
 

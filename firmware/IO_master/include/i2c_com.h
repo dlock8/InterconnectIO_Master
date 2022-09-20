@@ -44,14 +44,18 @@ extern "C" {
 
 // I2C Command code to send to slave
 
-#define MJR_VERSION 01
-#define MNR_VERSION 02
-#define OPEN_RELAY 10
-#define CLOSE_RELAY 11
-#define OPEN_RELAY_BANK 12
-#define STATE_RELAY 15
-#define STATE_BANK 13
+#define MJR_VERSION         01
+#define MNR_VERSION         02
+#define OPEN_RELAY          10
+#define CLOSE_RELAY         11
+#define OPEN_RELAY_BANK     12
+#define STATE_RELAY         15
+#define STATE_BANK          13
 
+// Error codefrom I2C sub
+
+#define I2C_COM_ERROR       125  // I2C communication error
+#define RELAY_NUM_ERROR     126  // Relay numbering erro
 
 
 
@@ -59,6 +63,6 @@ void setup_master();
 
 bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint8_t *rback);
 
-bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer);
+bool  relay_execute(uint16_t *list,uint8_t action, uint8_t *answer);
 
 #endif // 
