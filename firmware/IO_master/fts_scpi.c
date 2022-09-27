@@ -1,12 +1,16 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
-#include "scpi/scpi.h"
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
-#include "scpi/expression.h"
-#include "scpi/error.h"
-#include "scpi/parser.h"
+
+
+//#include "scpi/scpi.h"
+//#include "scpi/expression.h"
+
+//#include "scpi/error.h"
+//#include "scpi/parser.h"
+//#include "include/scpi_user_config.h"
 
 // This will hold the SCPI "instance".
 scpi_t scpi_context;
@@ -170,7 +174,8 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
         return SCPI_RES_ERR;
     }
 
-
+ //SCPI_ErrorPush(&scpi_context, SCPI_ERROR_USER_REQUEST);
+ SCPI_ErrorPush(&scpi_context, SCPI_I2C_COMMUNICATION_SLAVE);
     
     fres =  relay_execute(array,Valtag,answer); // Perform action requested
     if (!fres) {
