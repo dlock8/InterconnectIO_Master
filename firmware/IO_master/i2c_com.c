@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
-
-
 #include "hardware/i2c.h"
 #include "include/i2c_com.h"
 #include "include/fts_scpi.h"

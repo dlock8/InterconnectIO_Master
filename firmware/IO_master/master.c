@@ -1,14 +1,14 @@
 #include <stdio.h>
+
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
-#include "scpi/scpi.h"
-
 #include "hardware/uart.h"
 #include "hardware/i2c.h"
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
 #include "include/master.h"
-//#include "include/scpi_user_config.h"
+
+
 
 
 
@@ -175,6 +175,8 @@ int main() {
         sleep_ms(500);
         gpio_put(LED_PIN, 0);
         sleep_ms(500);
+
+       
 
 		// Feed single characters into the SCPI library.
 		// This is somewhat discouraged, since (according to the docs) it will

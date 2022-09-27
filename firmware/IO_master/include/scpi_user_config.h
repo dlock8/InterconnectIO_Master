@@ -43,12 +43,25 @@ extern "C" {
 
 // #define SCPI_LINE_ENDING    "\r\n"    /*   use <CR><LF> carriage return + line feed as termination charcters */
 
-#define USE_FULL_ERROR_LIST 1
+
+//#ifndef  USE_FULL_ERROR_LIST 
+//#define USE_FULL_ERROR_LIST  1
+//#endif
+
+//#ifdef  SCPI_USER_CONFIG 
+//#define SCPI_USER_CONFIG   1
+
+
+// Added to use the custom list of errors
+#ifndef  USE_USER_ERROR_LIST 
 #define USE_USER_ERROR_LIST 1
+#endif
+
+
 
 #define LIST_OF_USER_ERRORS \
-    X(SCPI_I2C_COMMUNICATION_SLAVE,      101,  "The Pico slave at address #21 is not answering I2C communication")            \
-    X(SCPI_USER_ERROR_INTERLOCK_OPEN,           102,  "Test2 Switching output to on is not allowed when interlock is open")   \
+    X(SCPI_I2C_COMMUNICATION_SLAVE,      901,  "The Pico slave is not answering I2C communication")            \
+    X(SCPI_USER_ERROR_INTERLOCK_OPEN,           902,  "Test2 Switching output to on is not allowed when interlock is open")   \
 
 
 

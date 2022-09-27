@@ -7,7 +7,10 @@
 #set(CMAKE_CXX_STANDARD 17)
 #pico_sdk_init()
 
-## add_definitions(-DSCPI_USER_CONFIG)
+
+
+add_definitions(-DSCPI_USER_CONFIG=1)  #DL  flag to add scpi_user_config.h
+
 # Build the SCPI parsing library (a Git submodule) as an external project.
 # We'll build it in its source directory using its own Makefile, then place the
 # .a file and the library's headers in scpi-parser for including/linking it.
@@ -36,6 +39,7 @@ set_property(TARGET scpi_parser PROPERTY IMPORTED_LOCATION "${scpi_parser_PREFIX
 add_dependencies(scpi_parser scpi_parser_build)
 target_link_libraries(scpi_parser INTERFACE "${scpi_parser_PREFIX}/libscpi.a")
 target_include_directories(scpi_parser INTERFACE "${scpi_parser_SOURCE_DIR}/inc")
+
 
 add_library(fts_scpi INTERFACE) #DL
 target_include_directories(fts_scpi INTERFACE ./include)

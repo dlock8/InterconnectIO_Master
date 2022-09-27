@@ -50,15 +50,6 @@ extern "C" {
 #define SCPI_BANK4 4     // Open BK4 relay tag
 #define SCPI_BANK_ALL 5     // Open all relay tag
 
-#define USE_USER_ERROR_LIST 1
-#define LIST_OF_USER_ERRORS \
-    X(SCPI_I2C_COMMUNICATION_SLAVE,      101,  "The Pico slave is not answering I2C communication")            \
-    X(SCPI_USER_ERROR_INTERLOCK_OPEN,       102,  "Test2 Switching output to on is not allowed when interlock is open")   \
-
-
-
-
-
 
 extern scpi_t scpi_context;
 extern char scpi_input_buffer[];
