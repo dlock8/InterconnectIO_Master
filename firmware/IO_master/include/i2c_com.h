@@ -52,7 +52,7 @@ extern "C" {
 #define STATE_RELAY         15
 #define STATE_BANK          13
 
-// Error codefrom I2C sub
+// Error code from I2C sub
 
 #define I2C_COM_ERROR       125  // I2C communication error
 #define RELAY_NUM_ERROR     126  // Relay numbering erro
@@ -61,8 +61,8 @@ extern "C" {
 
 void setup_master();
 
-bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint8_t *rback);
+bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback);
 
-bool  relay_execute(uint16_t *list,uint8_t action, uint8_t *answer);
+bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer);
 
 #endif // 

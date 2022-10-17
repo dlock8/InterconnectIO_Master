@@ -25,20 +25,60 @@ char scpi_input_buffer[SCPI_INPUT_BUFFER_SIZE];
 scpi_error_t scpi_error_queue[SCPI_ERROR_QUEUE_SIZE];
 
 
+
+
 // The function called by the SCPI library when it wants to send data.
-size_t write_scpi(scpi_t *context, const char *data, size_t len) {
+size_t SCPI_write(scpi_t *context, const char *data, size_t len) {
 	return fwrite(data, 1, len, stdout);
 }
 
+// execute reset of all Pico
+scpi_result_t SCPI_Reset(scpi_t * context) {
+    (void) context;
+    // to be added
+    fprintf(stdout, "**Reset\r\n");
+    return SCPI_RES_OK;
+}
 
+static scpi_result_t SCPI_Flush(scpi_t * context) {
+    (void) context;
+    fprintf(stdout, "SCPI Flush\r\n");
+    return SCPI_RES_OK;
+}
+
+int SCPI_Error(scpi_t * context, int_fast16_t err) {
+    (void) context;
+    /* BEEP */
+    fprintf(stdout, "BEEP\r\n");
+    fprintf(stdout, "**ERROR: %d, \"%s\"\r\n", (int16_t) err, SCPI_ErrorTranslate(err));
+    return 0;
+}
+
+
+scpi_reg_val_t srq_val = 0;
+
+static scpi_result_t SCPI_Control(scpi_t * context, scpi_ctrl_name_t ctrl, scpi_reg_val_t val) {
+    (void) context;
+
+    if (SCPI_CTRL_SRQ == ctrl) {
+        srq_val = val;
+    } else {
+        fprintf(stdout, "**CTRL %02x: 0x%X (%d)\r\n", ctrl, val, val);
+    }
+    return SCPI_RES_OK;
+}
 
 
 // Additional callbacks to be used by the library.
 scpi_interface_t scpi_interface = {
-	.write = write_scpi,
-	.error = NULL,
-	.reset = NULL,
+	.write = SCPI_write,
+	.error = SCPI_Error,
+    .control = SCPI_Control,
+    .flush = SCPI_Flush, 
+	.reset = SCPI_Reset,
 };
+
+
 
 
 /**
@@ -157,7 +197,7 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
     char cdat,fres;
     volatile scpi_result_t  flag;
     uint16_t array[MAXROW * MAXCOL]; /* array which holds values in order (2D) */
-    uint8_t answer[MAXROW * MAXCOL];
+    uint16_t answer[MAXROW * MAXCOL];
     size_t i = 0;
     char str[80];
 
@@ -170,16 +210,15 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
 
     flag = Relay_Chanlst(context, array);  // extract list of relay
     if (flag == SCPI_RES_ERR) {
-        SCPI_ErrorPush(context, SCPI_ERROR_INVALID_CHARACTER);
+        SCPI_ErrorPush(context, SCPI_RELAYS_LIST_ERROR);
         return SCPI_RES_ERR;
     }
 
- //SCPI_ErrorPush(&scpi_context, SCPI_ERROR_USER_REQUEST);
- SCPI_ErrorPush(&scpi_context, SCPI_I2C_COMMUNICATION_SLAVE);
     
     fres =  relay_execute(array,Valtag,answer); // Perform action requested
     if (!fres) {
-        //Raise_i2c_error(answer); // set SCPI error 
+        fprintf(stdout,"Relay error: %d\r\n", answer);
+        SCPI_ErrorPush(context, answer[0]);
         return false;
     }
 
@@ -225,7 +264,7 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_number_t paramRelay;
     uint16_t array[5], se[5];
-    uint8_t answer[MAXROW * MAXCOL];
+    uint16_t answer[MAXROW * MAXCOL];
     uint8_t Valtag;
     size_t i = 0;
     char str[80];
@@ -309,10 +348,28 @@ return SCPI_RES_OK;
 
     // The SCPI commands we support and the callbacks they use.
 scpi_command_t scpi_commands[] = {
-	{ .pattern = "*IDN?", .callback = SCPI_CoreIdnQ, },
-	{ .pattern = "*RST",  .callback = SCPI_CoreRst, },
+	
+    /* IEEE Mandated Commands (SCPI std V1999.0 4.1.1) */
+    { .pattern = "*CLS", .callback = SCPI_CoreCls,},  // Clear Status
+    { .pattern = "*ESE", .callback = SCPI_CoreEse,},  // Event Status enable
+    { .pattern = "*ESE?", .callback = SCPI_CoreEseQ,}, // query Event Status
+    { .pattern = "*ESR?", .callback = SCPI_CoreEsrQ,}, // event status register query
+    { .pattern = "*IDN?", .callback = SCPI_CoreIdnQ,}, // Instrument Identification
+    { .pattern = "*OPC", .callback = SCPI_CoreOpc,},  // Set operation complete bit 
+    { .pattern = "*OPC?", .callback = SCPI_CoreOpcQ,}, // wait for operation to complete
+    { .pattern = "*RST", .callback = SCPI_CoreRst,}, // Reset instrument
+    { .pattern = "*SRE", .callback = SCPI_CoreSre,}, // Service request enable
+    { .pattern = "*SRE?", .callback = SCPI_CoreSreQ,}, // Service request query
+    { .pattern = "*STB?", .callback = SCPI_CoreStbQ,}, // read status byte
+    { .pattern = "*TST?", .callback = SCPI_CoreTstQ,}, // self-test
+    { .pattern = "*WAI", .callback = SCPI_CoreWai,}, // wait for all pending operation to complete
 
-    /* Created for Interconnect IO board */
+     /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
+    { .pattern = "SYSTem:ERRor[:NEXT]?", .callback = SCPI_SystemErrorNextQ,},
+    { .pattern = "SYSTem:ERRor:COUNt?", .callback = SCPI_SystemErrorCountQ,},
+    { .pattern = "SYSTem:VERSion?", .callback = SCPI_SystemVersionQ,},
+
+    /* Added to communicate with Interconnect IO board */
     {.pattern = "ROUTe:CLOSE", .callback = Callback_Relay_scpi,RCLOSE},
     {.pattern = "ROUTe:CLOSE[:EXCLusive]", .callback = Callback_Relay_scpi,RCLEX},
     {.pattern = "ROUTe:OPEN", .callback = Callback_Relay_scpi,ROPEN},
@@ -322,11 +379,6 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "ROUTe:SE:STATe?", .callback = Callback_Relay_all_scpi,SESTATE},
     {.pattern = "ROUTe:CLOSE:Se", .callback = Callback_Relay_all_scpi,SECLOSE},
     {.pattern = "ROUTe:OPEN:Se", .callback = Callback_Relay_all_scpi,SEOPEN},
-
-     /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
-    { .pattern = "SYSTem:ERRor[:NEXT]?", .callback = SCPI_SystemErrorNextQ,},
-    { .pattern = "SYSTem:ERRor:COUNt?", .callback = SCPI_SystemErrorCountQ,},
-    { .pattern = "SYSTem:VERSion?", .callback = SCPI_SystemVersionQ,},
 	SCPI_CMD_LIST_END
 };
 

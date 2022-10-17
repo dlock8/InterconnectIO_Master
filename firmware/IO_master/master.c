@@ -18,62 +18,6 @@ static const uint MINOR_VERSION = 2;    // Minor version of Pico_Master
 
 
 
-/*
-Portable array-based cyclic FIFO queue.
-Copy from Internet
-
-
-#define MESSAGE_SIZE 64
-#define QUEUE_SIZE 64 // set high for development
-
-typedef struct {
-char data[MESSAGE_SIZE];
-} MESSAGE;
-
-struct {   // global structure
-    MESSAGE messages[QUEUE_SIZE];
-    int begin;
-    int end;
-    int current_load;
-} queue;
-
-bool enque(MESSAGE *message) {
-    if (queue.current_load < QUEUE_SIZE) {
-        if (queue.end == QUEUE_SIZE) {
-            queue.end = 0;
-        }
-        queue.messages[queue.end] = *message;
-        queue.end++;
-        queue.current_load++;
-        return true;
-    } else {
-        return false;
-    }
-}
-
-void init_queue() {
-    queue.begin = 0;
-    queue.end = 0;
-    queue.current_load = 0;
-    memset(&queue.messages[0], 0, QUEUE_SIZE * sizeof(MESSAGE_SIZE));
-}
-
-
-bool deque(MESSAGE *message) {
-    if (queue.current_load > 0) {
-        *message = queue.messages[queue.begin];
-        memset(&queue.messages[queue.begin], 0, sizeof(MESSAGE));
-        queue.begin = (queue.begin + 1) % QUEUE_SIZE;
-        queue.current_load--;
-        return true;
-    } else {
-        return false;
-    }
-}
-
-*/
-
-
 
 
 int main() {
@@ -117,12 +61,21 @@ int main() {
     //send_master (PICO_PORT_ADDRESS,02,0x00); // test command 
 
    TEST_SCPI_INPUT("*IDN?\r\n"); 
-   TEST_SCPI_INPUT("*OPC?\r\n"); 
+   //TEST_SCPI_INPUT("*OPC?\r\n"); 
+   TEST_SCPI_INPUT("*WAI\r\n");      // do nothing
+   //TEST_SCPI_INPUT("*RST\r\n");   // trig reset, to be added
    TEST_SCPI_INPUT("SYST:VERS?\r\n");
-   TEST_SCPI_INPUT("ROUT:CLOSE (@700)\r\n");
 
-   TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK3\r\n"); 
+   TEST_SCPI_INPUT("ROUT:OPEN (@30)\r\n"); // error -11 if Pico #23 not present
+   //TEST_SCPI_INPUT("ROUT:OPEN (@10!30)\r\n"); // error -12  2-dimension list
+  // TEST_SCPI_INPUT("ROUT:OPEN (@10:18)\r\n"); // error -13
+  TEST_SCPI_INPUT("ROUT:CLOSE (@100:102)\r\n");
+
+
+  // TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK3\r\n"); 
+
    TEST_SCPI_INPUT("SYST:ERR:COUNT?\r\n");
+   TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
    TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
 
    TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK1,BANK2\r\n"); 

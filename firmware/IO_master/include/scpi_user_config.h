@@ -60,8 +60,11 @@ extern "C" {
 
 
 #define LIST_OF_USER_ERRORS \
-    X(SCPI_I2C_COMMUNICATION_SLAVE,      901,  "The Pico slave is not answering I2C communication")            \
-    X(SCPI_USER_ERROR_INTERLOCK_OPEN,           902,  "Test2 Switching output to on is not allowed when interlock is open")   \
+    X(SCPI_I2C_COMMUNICATION_SLAVE,      -11,  "The Pico slave is not answering I2C communication")            \
+    X(SCPI_RELAYS_LIST_ERROR,           -12,  "Relays channel list error. single dimension only")   \
+    X(RELAY_NUMBERING_ERROR,           -13,  "A Relay channel is invalid and raise an error")   \
+
+
 
 
 
