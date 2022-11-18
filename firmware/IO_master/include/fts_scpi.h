@@ -33,15 +33,23 @@ extern "C" {
 #define MAXCOL 1    /* maximum number of columns */
 #define MAXDIM 1    /* maximum number of dimensions */
 
-#define RCLOSE 1     // Close relay tag
-#define RCLEX 2     // Close Exclusive relay tag
-#define ROPEN 3     // Open relay tag
-#define ROPALL 4     // Open all relay tag
-#define RSTATE 5     // Read relay state tag
-#define BSTATE 6     // Read relay bank state tag
+#define RCLOSE  1     // Close relay tag
+#define RCLEX   2     // Close Exclusive relay tag
+#define ROPEN   3     // Open relay tag
+#define ROPALL  4     // Open all relay tag
+#define RSTATE  5     // Read relay state tag
+#define BSTATE  6     // Read relay bank state tag
 #define SESTATE 7     // Read relay single ended state tag
 #define SECLOSE 8     // Close SE relay tag
-#define SEOPEN 9     // Open SE relay tag
+#define SEOPEN  9     // Open SE relay tag
+#define SDIR    10     // Set direction of digital IO
+#define SBDIR   11    // Set direction of digital IO Bit
+#define SPAD    12     // Set digital IO PAD parameter
+#define SOUT    13     // Set digital Output
+#define RIN     14     // Read digital input
+#define RDIR    15     // Read direction of digital IO
+#define RPAD    16     // Read PAd value from a digital IO
+
 
 
 #define SCPI_BANK1 1     // Open BK1 relay tag

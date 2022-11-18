@@ -19,7 +19,7 @@ void setup_master() {
     gpio_set_function(I2C_MASTER_SCL_PIN, GPIO_FUNC_I2C);
     gpio_pull_up(I2C_MASTER_SCL_PIN);
 
-    i2c_init(i2c1, I2C_BAUDRATE);
+    i2c_init(i2c0, I2C_BAUDRATE);
 }
 
 
@@ -38,7 +38,7 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback)  
 
 
     fprintf(stdout,"on sendmaster cmd: 0x%02d: add 0x%02x\r\n", cmd,i2c_add);
-    count = i2c_write_blocking(i2c1, i2c_add, buf, buflgth, false);
+    count = i2c_write_blocking(i2c0, i2c_add, buf, buflgth, false);
     if (count < 0) {
         //puts("Couldn't write Register to slave");
         fprintf(stdout,"MAS: ERROR Write at register 0x%02d: %02d\n", buf[0], buf[1]);
@@ -50,8 +50,8 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback)  
 
    //read register value and return to caller on pointer rback    
     uint8_t ird[2];
-    i2c_write_blocking(i2c1, i2c_add, buf, 1, false);
-    i2c_read_blocking(i2c1, i2c_add, ird, buflgth-1, false);
+    i2c_write_blocking(i2c0, i2c_add, buf, 1, false);
+    i2c_read_blocking(i2c0, i2c_add, ird, buflgth-1, false);
     
     fprintf(stdout,"MAS:Read Register 0x%02d = %d \r\n", cmd,ird[0]);
     *rback = (uint8_t) ird[0];  // save readback value
@@ -271,6 +271,57 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
      fprintf(stdout,"On relay execute end\r\n");
 
      return true;
+}
+
+bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, uint16_t *answer) {
+    size_t i = 0;
+    volatile int gpiod[4][16]= DIGP;
+    bool smf;
+    uint16_t rdata;
+    uint8_t  command;
+    uint8_t  gp;
+
+    
+
+    fprintf(stdout,"On digital execute begin\r\n");
+
+    switch (action)
+    {
+        case SDIR:
+          command = DIG_DIR_MASK + (port * 10); // change command number following port selected
+          smf= send_master(PICO_PORT_ADDRESS, command, value,&rdata); // send command
+          if (!smf) { answer[0] = rdata; return false;}  // Save error and return
+          break;
+
+        case SBDIR:
+          gp = gpiod[port][bit]; // get Gpio associated to bit and port
+          if (value) {          // set command based on direction direction 
+            command = DIR_GP_OUT;  // command number for set GPIO direction OUT
+          } else { 
+            command = DIR_GP_IN; // command number for set GPIO direction IN
+          }
+          smf= send_master(PICO_PORT_ADDRESS, command, gp,&rdata); // send command
+          if (!smf) { answer[0] = rdata; return false;}  // Save error and return
+          break;
+
+        case SOUT:
+          command = DIG_OUT + (port * 10); // change command number following port selected
+          smf= send_master(PICO_PORT_ADDRESS, command, value,&rdata); // send command
+          if (!smf) { answer[0] = rdata; return false;}  // Save error and return
+          break;
+
+        case RIN:
+          command = DIG_IN + (port * 10); // change command number following port selected
+          smf= send_master(PICO_PORT_ADDRESS, command, value,&rdata); // send command
+          if (!smf) { answer[0] = rdata; return false;}  // Save error and return
+          answer[0] = rdata;  // return read value
+          break;
 
 
+            
+
+    }
+
+    fprintf(stdout,"On digital execute end\r\n");
+    return true;
 }

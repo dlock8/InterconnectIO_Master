@@ -41,6 +41,17 @@ ROUTE:CHANnel:STATe? (@<ch_list>)
 ROUTE:BANK:STATe? [{BANK1-BANK4}]
 ROUTE:SE:STATe? [{BANK1-BANK4}]  
 
+DIGital:PORTn? [{PORT0-PORT1}]
+DIGital:PORTn:BIT [Value] 
+DIGital:PORTn [VALue]   0x, 0b 
+DIGital:PORTn:BIT [VALue] 
+DIGital:DATA:BIT? 3, (@<ch_list>)
+DIGital:DIG:DIR PORTn [Value]       
+DIGital:DIG:PARameter:PORTn:BIT [Value] 
+
+
+
+
 SYSTem:BEEPer
 
 ## SCPI example:
@@ -50,8 +61,10 @@ ROUTe:CLOSe (@100,108)        --> close relay 100 and 108
 ROUTe:CLOSe (@100:108)        --> close relay 100,102,104,106, and 108
 ROUTe:OPEN:ALL BANK1,BANK2    --> open relay  on bank1 and bank2
 ROUTe:OPEN:ALL ALL            --> open relay  on all banks
-ROUTe:SE:STATe? BANK1         --> read which side of diff relay we are connected (H or L)
+ROUTe:SE:STATe? BANK1         --> read which side of diff relay we are connected (0 = H or 1 = L)
 ROUTe:CHAN:STATe? (@100)
+DIGital:DIG:DIR PORT0 0xFF    --> set the 8 bit of port0 to output  ( 0 = in, 1 = out)
+
 
 ## Relay numbering. Differential relay will be located on lower address. Single ended relay to be connected to high or low side following the address.
     Relay bank 1   100 @ 115      

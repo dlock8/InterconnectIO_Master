@@ -19,21 +19,21 @@ extern "C" {
 #define REG_STATUS 100  // Register used to report Status
 
 #define I2C_BAUDRATE 100000   // 100 k
-#define I2C_MASTER_SDA_PIN  6
-#define I2C_MASTER_SCL_PIN 7
+#define I2C_MASTER_SDA_PIN  20 // 
+#define I2C_MASTER_SCL_PIN  21 // 
 
-/*
-// GPIO Index for relay position. SE Relay located at index 16 
-#define RBK {{0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7}, \
-{10,10,11,11,12,12,13,13,14,14,15,15,16,16,17,17}, \
-{0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7}, \
-{10,10,11,11,12,12,13,13,14,14,15,15,16,16,17,17}}
-*/
 
+// Array of relay index to pico GPx 
 #define RBK {{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7}, \
 {10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17}, \
 {0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7}, \
 {10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17}, }
+
+// Array of digital bit index to pico GPx 
+#define DIGP {{0,1,2,3,4,5,6,7}, \
+{10,11,12,13,14,15,16,17},}
+
+
 
 
 #define SE_BK1 19   // Relay single ended for bank 1 located at gpio x
@@ -51,18 +51,24 @@ extern "C" {
 #define OPEN_RELAY_BANK     12
 #define STATE_RELAY         15
 #define STATE_BANK          13
+#define DIG_DIR_MASK        80
+#define DIG_OUT             81
+#define DIG_IN              85
+#define DIR_GP_OUT          20
+#define DIR_GP_IN           21 
+
 
 // Error code from I2C sub
 
-#define I2C_COM_ERROR       125  // I2C communication error
-#define RELAY_NUM_ERROR     126  // Relay numbering erro
+//#define I2C_COM_ERROR       125  // I2C communication error
+//#define RELAY_NUM_ERROR     126  // Relay numbering erro
 
 
 
 void setup_master();
 
 bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback);
-
-bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer);
+bool relay_execute(uint16_t *list,uint8_t action, uint16_t *answer);
+bool digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, uint16_t *answer);
 
 #endif // 

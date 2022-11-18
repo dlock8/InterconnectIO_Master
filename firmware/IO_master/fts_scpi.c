@@ -42,7 +42,7 @@ scpi_result_t SCPI_Reset(scpi_t * context) {
 
 static scpi_result_t SCPI_Flush(scpi_t * context) {
     (void) context;
-    fprintf(stdout, "SCPI Flush\r\n");
+    //fprintf(stdout, "SCPI Flush\r\n");
     return SCPI_RES_OK;
 }
 
@@ -338,10 +338,42 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
         printf ("\r\n"); 
 
     }
-  
+   
+return SCPI_RES_OK;
+}
 
 
- 
+// Digital Scpi command execution
+static scpi_result_t Callback_Digital_scpi(scpi_t *context) {
+    scpi_bool_t res;
+    scpi_parameter_t param1;
+    uint16_t answer[80];
+ //   uint16_t array[5], se[5];
+ //   uint16_t answer[MAXROW * MAXCOL];
+ volatile   uint8_t Valtag;
+//    size_t i = 0;
+ //   char str[80];
+uint32_t value = 0;
+
+res = SCPI_Parameter(context, &param1, TRUE);
+
+if (res) {
+    // Is parameter a number without suffix?
+    if (SCPI_ParamIsNumber(&param1, FALSE)) {
+        // Convert parameter to unsigned int. Result is in value.
+        SCPI_ParamToUInt32(context, &param1, &value);
+    }
+}
+
+    int32_t numbers[2];
+    SCPI_CommandNumbers(context, numbers, 2, 12);
+
+    fprintf(stdout, "TEST numbers %d %d\r\n", numbers[0], numbers[1]);
+
+    Valtag = SCPI_CmdTag(context);   //extract tag from the command
+
+    res = digital_execute(Valtag, numbers[0], numbers[1], value,answer); 
+
 return SCPI_RES_OK;
 }
 
@@ -379,6 +411,16 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "ROUTe:SE:STATe?", .callback = Callback_Relay_all_scpi,SESTATE},
     {.pattern = "ROUTe:CLOSE:Se", .callback = Callback_Relay_all_scpi,SECLOSE},
     {.pattern = "ROUTe:OPEN:Se", .callback = Callback_Relay_all_scpi,SEOPEN},
+
+    {.pattern = "DIGital:DIRection:PORT#", .callback = Callback_Digital_scpi,SDIR},
+    {.pattern = "DIGital:DIRection:PORT#:BIT#", .callback = Callback_Digital_scpi,SBDIR},
+    {.pattern = "DIGital:PADs:PORT#", .callback = Callback_Digital_scpi,SPAD},
+    {.pattern = "DIGital:Out:PORT#", .callback = Callback_Digital_scpi,SOUT},
+    {.pattern = "DIGital:In:PORT#?", .callback = Callback_Digital_scpi,RIN},
+    {.pattern = "DIGital:DIRection:PORT#?", .callback = Callback_Digital_scpi,RDIR},
+    {.pattern = "DIGital:PADs:PORT#?", .callback = Callback_Digital_scpi,RPAD},
+
+
 	SCPI_CMD_LIST_END
 };
 

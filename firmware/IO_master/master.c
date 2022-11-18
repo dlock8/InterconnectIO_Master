@@ -50,6 +50,11 @@ int main() {
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
 
+    gpio_init(PICO_DEFAULT_LED_PIN);
+    gpio_set_dir(PICO_DEFAULT_LED_PIN,GPIO_OUT);
+
+    gpio_put(PICO_DEFAULT_LED_PIN, 1); // Turn ON board led
+
     setup_master();  // I2C_communication
    
 
@@ -60,6 +65,30 @@ int main() {
  //   send_master (PICO_PORT_ADDRESS,01,0x00); // test command 
     //send_master (PICO_PORT_ADDRESS,02,0x00); // test command 
 
+
+   TEST_SCPI_INPUT("*IDN?\r\n"); 
+   
+   //TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port 1
+   //TEST_SCPI_INPUT("DIG:OUT:PORT1 #H55 \r\n");  
+   //TEST_SCPI_INPUT("DIG:OUT:PORT1 #HAA \r\n"); 
+
+   TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n"); 
+   TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n"); 
+  // TEST_SCPI_INPUT("DIG:OUT:PORT1 #HAA \r\n"); 
+
+   //TEST_SCPI_INPUT("DIG:DIR:PORT1:BIT1 0\r\n"); 
+
+  //TEST_SCPI_INPUT("ROUT:CLOSE (@10)\r\n");  // test com i2c #22
+  //TEST_SCPI_INPUT("ROUT:CLOSE (@30)\r\n");  // test com i2c #23
+
+
+  TEST_SCPI_INPUT("SYST:ERR:COUNT?\r\n");
+  TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
+  TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
+ 
+   
+   
+   
    TEST_SCPI_INPUT("*IDN?\r\n"); 
    //TEST_SCPI_INPUT("*OPC?\r\n"); 
    TEST_SCPI_INPUT("*WAI\r\n");      // do nothing
