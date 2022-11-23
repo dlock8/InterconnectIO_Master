@@ -352,10 +352,11 @@ static scpi_result_t Callback_Digital_scpi(scpi_t *context) {
  //   uint16_t answer[MAXROW * MAXCOL];
  volatile   uint8_t Valtag;
 //    size_t i = 0;
- //   char str[80];
-uint32_t value = 0;
+ //char str[80];
+ uint32_t value = 0;
 
-res = SCPI_Parameter(context, &param1, TRUE);
+fprintf(stdout, "On digital execute \r\n");
+res = SCPI_Parameter(context, &param1, FALSE);
 
 if (res) {
     // Is parameter a number without suffix?
@@ -373,6 +374,13 @@ if (res) {
     Valtag = SCPI_CmdTag(context);   //extract tag from the command
 
     res = digital_execute(Valtag, numbers[0], numbers[1], value,answer); 
+
+    if (Valtag == RDIR || Valtag == RBDIR || Valtag == RIN  || Valtag == RBIN  ) { // if returned value is expected
+    
+        fprintf(stdout, "Value read:  0x%x,\r\n", answer[0]); // return value on debug port
+        SCPI_ResultUInt8(context,answer[0]); // return SCPI value 
+
+    }
 
 return SCPI_RES_OK;
 }
@@ -414,11 +422,15 @@ scpi_command_t scpi_commands[] = {
 
     {.pattern = "DIGital:DIRection:PORT#", .callback = Callback_Digital_scpi,SDIR},
     {.pattern = "DIGital:DIRection:PORT#:BIT#", .callback = Callback_Digital_scpi,SBDIR},
-    {.pattern = "DIGital:PADs:PORT#", .callback = Callback_Digital_scpi,SPAD},
     {.pattern = "DIGital:Out:PORT#", .callback = Callback_Digital_scpi,SOUT},
+    {.pattern = "DIGital:Out:PORT#:BIT#", .callback = Callback_Digital_scpi,SBOUT},
     {.pattern = "DIGital:In:PORT#?", .callback = Callback_Digital_scpi,RIN},
+    {.pattern = "DIGital:In:PORT#:BIT#?", .callback = Callback_Digital_scpi,RBIN},
     {.pattern = "DIGital:DIRection:PORT#?", .callback = Callback_Digital_scpi,RDIR},
-    {.pattern = "DIGital:PADs:PORT#?", .callback = Callback_Digital_scpi,RPAD},
+    {.pattern = "DIGital:DIRection:PORT#:BIT#?", .callback = Callback_Digital_scpi,RBDIR},
+
+    {.pattern = "DIGital:PADs:PICO#:GPIO#", .callback = Callback_Digital_scpi,SPAD},
+    {.pattern = "DIGital:PADs:PICO#:GPIO#?", .callback = Callback_Digital_scpi,RPAD},
 
 
 	SCPI_CMD_LIST_END

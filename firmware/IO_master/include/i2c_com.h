@@ -55,7 +55,13 @@ extern "C" {
 #define DIG_OUT             81
 #define DIG_IN              85
 #define DIR_GP_OUT          20
-#define DIR_GP_IN           21 
+#define DIR_GP_IN           21
+#define DIR_GP_READ         25
+#define DIG_GP_OUT_CLEAR    10
+#define DIG_GP_OUT_SET      11
+#define DIG_GP_IN           15
+
+
 
 
 // Error code from I2C sub

@@ -42,13 +42,19 @@ extern "C" {
 #define SESTATE 7     // Read relay single ended state tag
 #define SECLOSE 8     // Close SE relay tag
 #define SEOPEN  9     // Open SE relay tag
+
 #define SDIR    10     // Set direction of digital IO
 #define SBDIR   11    // Set direction of digital IO Bit
-#define SPAD    12     // Set digital IO PAD parameter
-#define SOUT    13     // Set digital Output
-#define RIN     14     // Read digital input
-#define RDIR    15     // Read direction of digital IO
-#define RPAD    16     // Read PAd value from a digital IO
+#define SOUT    12     // Set port digital Output
+#define SBOUT   13     // Set bit on port digital Output
+#define RIN     14     // Read port digital input
+#define RBIN    15     // Read port bit  digital input
+#define RDIR    16     // Read direction of digital IO port
+#define RBDIR   17     // Read direction for a bit on a port
+
+
+#define SPAD    20     // Set digital IO PAD parameter
+#define RPAD    21     // Read digital IO PAD parameter
 
 
 

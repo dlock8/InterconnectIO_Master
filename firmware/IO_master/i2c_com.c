@@ -274,12 +274,13 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
 }
 
 bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, uint16_t *answer) {
-    size_t i = 0;
-    volatile int gpiod[4][16]= DIGP;
+    size_t i;
+    volatile int gpiod[2][8]= DIGP;
     bool smf;
     uint16_t rdata;
     uint8_t  command;
-    uint8_t  gp;
+    uint8_t  gp, portd;
+
 
     
 
@@ -293,7 +294,19 @@ bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, 
           if (!smf) { answer[0] = rdata; return false;}  // Save error and return
           break;
 
-        case SBDIR:
+        case RDIR: // command to read port direction exist only by bit and not by port.
+          command =  DIR_GP_READ;  // command to send to read direction
+          portd = 0;   // register to save value read
+          for (i = 0; i <= 7; i++) {  // loop to read each bit of the port
+              gp = gpiod[port][i]; // get Gpio associated to bit and port
+              smf= send_master(PICO_PORT_ADDRESS, command, gp,&rdata); // send command
+              if (!smf) { answer[0] = rdata; return false;}  // Save error and return
+              portd += (rdata << i); // save value based on bit position  
+          }
+          answer[0]= portd;
+          break;
+
+        case SBDIR: // read gpio direction
           gp = gpiod[port][bit]; // get Gpio associated to bit and port
           if (value) {          // set command based on direction direction 
             command = DIR_GP_OUT;  // command number for set GPIO direction OUT
@@ -303,10 +316,29 @@ bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, 
           smf= send_master(PICO_PORT_ADDRESS, command, gp,&rdata); // send command
           if (!smf) { answer[0] = rdata; return false;}  // Save error and return
           break;
+        
+        case RBDIR:
+          command =  DIR_GP_READ;  // command to send to read direction
+          gp = gpiod[port][bit]; // get Gpio associated to bit and port
+          smf= send_master(PICO_PORT_ADDRESS, command, gp,&rdata); // send command
+          if (!smf) { answer[0] = rdata; return false;}  // Save error and return
+          answer[0]= rdata; // return answer
+          break;
 
         case SOUT:
           command = DIG_OUT + (port * 10); // change command number following port selected
           smf= send_master(PICO_PORT_ADDRESS, command, value,&rdata); // send command
+          if (!smf) { answer[0] = rdata; return false;}  // Save error and return
+          break;
+
+        case SBOUT:  // set Bit 
+          gp = gpiod[port][bit]; // get Gpio associated to bit and port
+          if (value) {          // set command based on direction direction 
+            command = DIG_GP_OUT_SET;  // command number for set GPIO at High
+          } else { 
+            command = DIG_GP_OUT_CLEAR; // command number for set GPIO at low
+          }
+          smf= send_master(PICO_PORT_ADDRESS, command, gp,&rdata); // send command
           if (!smf) { answer[0] = rdata; return false;}  // Save error and return
           break;
 
@@ -317,8 +349,13 @@ bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, 
           answer[0] = rdata;  // return read value
           break;
 
-
-            
+        case RBIN:
+          command = DIG_GP_IN; // command to sent for read gpio
+          gp = gpiod[port][bit]; // get Gpio associated to bit and port
+          smf= send_master(PICO_PORT_ADDRESS, command, gp,&rdata); // send command
+          if (!smf) { answer[0] = rdata; return false;}  // Save error and return
+          answer[0] = rdata;  // return read value
+          break;
 
     }
 

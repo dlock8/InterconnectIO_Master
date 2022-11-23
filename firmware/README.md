@@ -41,13 +41,18 @@ ROUTE:CHANnel:STATe? (@<ch_list>)
 ROUTE:BANK:STATe? [{BANK1-BANK4}]
 ROUTE:SE:STATe? [{BANK1-BANK4}]  
 
-DIGital:PORTn? [{PORT0-PORT1}]
-DIGital:PORTn:BIT [Value] 
-DIGital:PORTn [VALue]   0x, 0b 
+DIGital:In:PORTn? [{0-1}]
+DIGital:Out:PORTn [VALue]   0x, 0b
+DIGital:DIRection:PORTn [[{0-1}] 
+DIGital:DIRection:PORTn:BITn [Value] 
+DIGital:DIRection:PORTn? [Value] 
+DIGital:DIRection:PORTn:BITn? 
+
+
 DIGital:PORTn:BIT [VALue] 
 DIGital:DATA:BIT? 3, (@<ch_list>)
-DIGital:DIG:DIR PORTn [Value]       
-DIGital:DIG:PARameter:PORTn:BIT [Value] 
+ 
+
 
 
 
