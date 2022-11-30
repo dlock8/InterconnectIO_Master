@@ -193,7 +193,7 @@ scpi_result_t Relay_Chanlst(scpi_t *context, uint16_t *array) {
 static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
     scpi_parameter_t channel_list_param;
     volatile scpi_bool_t ValMatch;
-    uint16_t Valtag, Vcomp, *px;
+    uint16_t tag, Vcomp, *px;
     char cdat,fres;
     volatile scpi_result_t  flag;
     uint16_t array[MAXROW * MAXCOL]; /* array which holds values in order (2D) */
@@ -204,9 +204,9 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
 
     fprintf(stdout,"tag test\r\n");
   
-    Valtag = SCPI_CmdTag(context);   //extract tag from the command
+    tag = SCPI_CmdTag(context);   //extract tag from the command
 
-    fprintf(stdout,"tagvalue: %d\r\n", Valtag);
+    fprintf(stdout,"tagvalue: %d\r\n", tag);
 
     flag = Relay_Chanlst(context, array);  // extract list of relay
     if (flag == SCPI_RES_ERR) {
@@ -215,14 +215,14 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
     }
 
     
-    fres =  relay_execute(array,Valtag,answer); // Perform action requested
+    fres =  relay_execute(array,tag,answer); // Perform action requested
     if (!fres) {
         fprintf(stdout,"Relay error: %d\r\n", answer);
         SCPI_ErrorPush(context, answer[0]);
         return false;
     }
 
-    if (Valtag == RSTATE) { // if returned value is expected
+    if (tag == RSTATE) { // if returned value is expected
         do {  // loop on array until list of value is completed
             sprintf(str, "%d,", answer[i]);
             SCPI_ResultUInt8(context,answer[i]); // return SCPI value 
@@ -265,11 +265,11 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
     scpi_number_t paramRelay;
     uint16_t array[5], se[5];
     uint16_t answer[MAXROW * MAXCOL];
-    uint8_t Valtag;
+    uint8_t tag;
     size_t i = 0;
     char str[80];
 
-    Valtag = SCPI_CmdTag(context);   //extract tag from the command
+    tag = SCPI_CmdTag(context);   //extract tag from the command
 
     while(SCPI_ParamNumber(context, scpi_special_all_numbers_def, &paramRelay, FALSE)){
         printf("on switch \r\n");
@@ -315,7 +315,7 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
     
 
     if (i > 0) {
-       res =  relay_execute(array,Valtag,answer); // Perform action requested
+       res =  relay_execute(array,tag,answer); // Perform action requested
     } else {
         if (SCPI_ParamErrorOccurred(context)) {
             SCPI_ErrorPush(context, SCPI_ERROR_MISSING_PARAMETER);
@@ -327,7 +327,7 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
 
 
     i=0;  // reset loop counter
-    if (Valtag == BSTATE || Valtag == SESTATE) { // if returned value is expected
+    if (tag == BSTATE || tag == SESTATE) { // if returned value is expected
         do {  // loop on array until list of value is completed
            sprintf(str, " 0x%x,", answer[i]);
            SCPI_ResultUInt8(context,answer[i]); // return SCPI value 
@@ -348,12 +348,8 @@ static scpi_result_t Callback_Digital_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_parameter_t param1;
     uint16_t answer[80];
- //   uint16_t array[5], se[5];
- //   uint16_t answer[MAXROW * MAXCOL];
- volatile   uint8_t Valtag;
-//    size_t i = 0;
- //char str[80];
- uint32_t value = 0;
+    uint8_t tag;
+    uint32_t value = 0;
 
 fprintf(stdout, "On digital execute \r\n");
 res = SCPI_Parameter(context, &param1, FALSE);
@@ -367,17 +363,67 @@ if (res) {
 }
 
     int32_t numbers[2];
-    SCPI_CommandNumbers(context, numbers, 2, 12);
+    SCPI_CommandNumbers(context, numbers, 2, 2);
 
-    fprintf(stdout, "TEST numbers %d %d\r\n", numbers[0], numbers[1]);
+    fprintf(stdout, "Digital TEST numbers %d %d\r\n", numbers[0], numbers[1]);
 
-    Valtag = SCPI_CmdTag(context);   //extract tag from the command
+    tag = SCPI_CmdTag(context);   //extract tag from the command
 
-    res = digital_execute(Valtag, numbers[0], numbers[1], value,answer); 
+    res = digital_execute(tag, numbers[0], numbers[1], value,answer); 
+    if (!res) {   // if failure found during command
+        fprintf(stdout,"Digital error: %d\r\n", answer);
+        SCPI_ErrorPush(context, answer[0]);
+        return false;
+    }
 
-    if (Valtag == RDIR || Valtag == RBDIR || Valtag == RIN  || Valtag == RBIN  ) { // if returned value is expected
+
+    if (tag==RDIR|| tag==RBDIR|| tag==RIN|| tag==RBIN) { // if returned value is expected
     
         fprintf(stdout, "Value read:  0x%x,\r\n", answer[0]); // return value on debug port
+        SCPI_ResultUInt8(context,answer[0]); // return SCPI value 
+
+    }
+
+return SCPI_RES_OK;
+}
+
+// Low level command
+static scpi_result_t Callback_gpio_scpi(scpi_t *context) {
+    scpi_bool_t res;
+    scpi_parameter_t param1;
+    uint16_t answer[80];
+    uint8_t tag;
+    uint32_t value = 0;
+
+fprintf(stdout, "On gpio execute \r\n");
+res = SCPI_Parameter(context, &param1, FALSE);
+
+if (res) {
+    // Is parameter a number without suffix?
+    if (SCPI_ParamIsNumber(&param1, FALSE)) {
+        // Convert parameter to unsigned int. Result is in value.
+        SCPI_ParamToUInt32(context, &param1, &value);
+    }
+}
+
+    int32_t numbers[2];
+    SCPI_CommandNumbers(context, numbers, 2, 2); //Create array of number
+
+    fprintf(stdout, "GPIO TEST numbers %d %d\r\n", numbers[0], numbers[1]);
+
+    tag = SCPI_CmdTag(context);   //extract tag from the command
+
+    res = gpio_execute(tag, numbers[0], numbers[1], value,answer); // execute command
+    if (!res) {   // if failure found during command
+        fprintf(stdout,"Gpio error: %d\r\n", answer);
+        SCPI_ErrorPush(context, answer[0]);
+        return false;
+    }
+
+
+    if (tag==GPIN||  tag==GPRDIR|| tag==GPGPAD) { // if returned value is expected
+    
+        fprintf(stdout, "GPIO Value read:  0x%x,\r\n", answer[0]); // return value on debug port
         SCPI_ResultUInt8(context,answer[0]); // return SCPI value 
 
     }
@@ -429,8 +475,14 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "DIGital:DIRection:PORT#?", .callback = Callback_Digital_scpi,RDIR},
     {.pattern = "DIGital:DIRection:PORT#:BIT#?", .callback = Callback_Digital_scpi,RBDIR},
 
-    {.pattern = "DIGital:PADs:PICO#:GPIO#", .callback = Callback_Digital_scpi,SPAD},
-    {.pattern = "DIGital:PADs:PICO#:GPIO#?", .callback = Callback_Digital_scpi,RPAD},
+    {.pattern = "GPIO:DIRection:DEVice#:GP#", .callback = Callback_gpio_scpi,GPSDIR},
+    {.pattern = "GPIO:DIRection:DEVice#:GP#?", .callback = Callback_gpio_scpi,GPRDIR},
+    {.pattern = "GPIO:Out:DEVice#:GP#", .callback = Callback_gpio_scpi,GPOUT},
+    {.pattern = "GPIO:In:DEVice#:GP#?", .callback = Callback_gpio_scpi,GPIN},
+    {.pattern = "GPIO:SETPads:DEVice#:GP#", .callback = Callback_gpio_scpi,GPSPAD},
+    {.pattern = "GPIO:GETPads:DEVice#:GP#?", .callback = Callback_gpio_scpi,GPGPAD},
+
+    {.pattern = "SYSTEM:BEEPer", .callback = Callback_Digital_scpi,SBEEP},
 
 
 	SCPI_CMD_LIST_END

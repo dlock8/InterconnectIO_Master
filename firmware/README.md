@@ -42,20 +42,21 @@ ROUTE:BANK:STATe? [{BANK1-BANK4}]
 ROUTE:SE:STATe? [{BANK1-BANK4}]  
 
 DIGital:In:PORTn? [{0-1}]
-DIGital:Out:PORTn [VALue]   0x, 0b
+DIGital:In:PORTn:BITn? [{0-1}]
+DIGital:Out:PORTn [Value]   0x, 0b
+DIGital:Out:PORTn:BItn [Value] 
 DIGital:DIRection:PORTn [[{0-1}] 
 DIGital:DIRection:PORTn:BITn [Value] 
 DIGital:DIRection:PORTn? [Value] 
 DIGital:DIRection:PORTn:BITn? 
 
+GPIO:DIRection:DEVice#:GP# [VALue] 
+GPIO:Out:DEVice#:GP# [VALue] 
+GPIO:In:DEVice#:GP#? 
+GPIO:SETPads:DEVice#:GP# [VALue] 
+GPIO:GETPads:DEVice#:GP#?
 
-DIGital:PORTn:BIT [VALue] 
-DIGital:DATA:BIT? 3, (@<ch_list>)
- 
-
-
-
-
+SYSTem:READ:1WIRE?
 
 SYSTem:BEEPer
 

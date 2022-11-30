@@ -16,7 +16,7 @@ static const uint MAJOR_VERSION = 1;    // Major version of Pico_Master
 static const uint MINOR_VERSION = 2;    // Minor version of Pico_Master
 
 
-
+static const uint32_t GPIO_BOOT_MASK = 0b000011110010011111111111100000000;
 
 
 
@@ -27,8 +27,9 @@ int main() {
 
 	bi_decl(bi_program_description("This is a test binary, including the SCPI library."));
 
+  gpio_init_mask(GPIO_BOOT_MASK); // set which lines will be GPIO 
 	stdio_init_all();
-    init_scpi();
+  init_scpi();
 
 
 // Set up our UART with the required speed.
@@ -67,6 +68,25 @@ int main() {
 
 
    TEST_SCPI_INPUT("*IDN?\r\n"); 
+
+  TEST_SCPI_INPUT("GPIO:GETP:DEV1:GP22?   \r\n");  //Set Gp22 as output
+  //TEST_SCPI_INPUT("GPIO:SETP:DEV0:GP22  #H06 \r\n");  //Set Gp22 as output
+  TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22  0 \r\n");  //Set Gp22 as output
+  TEST_SCPI_INPUT("GPIO:GETP:DEV1:GP22?   \r\n");  //Set Gp22 as output
+  TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP22  0 \r\n");  //Set Gp22 as output
+  TEST_SCPI_INPUT("GPIO:GETP:DEV0:GP22?   \r\n");  //Set Gp22 as output
+  //TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP22  1 \r\n");  //Set Gp22 as output
+  //TEST_SCPI_INPUT("GPIO:IN:DEV0:GP22?   \r\n");  //Set Gp22 as output
+  //  TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP22  0 \r\n");  //Set Gp22 as output
+  //TEST_SCPI_INPUT("GPIO:IN:DEV0:GP22?   \r\n");  //Set Gp22 as output
+
+  // TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22  1 \r\n");  //Set Gp22 as output
+  // TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22?  \r\n");  //Get Gp22 direction
+  // TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP22  1 \r\n");  //Set Gp22 as output
+  // TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP22?  \r\n");  //Get Gp22 direction
+
+  // TEST_SCPI_INPUT("GPIO:DIR:DEV2:GP22  1 \r\n");  //Set Gp22 as output
+  // TEST_SCPI_INPUT("GPIO:DIR:DEV3:GP22  1 \r\n");  //Set Gp22 as output
 
    //TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port 1
    //TEST_SCPI_INPUT("DIG:OUT:PORT1 #H55 \r\n");  

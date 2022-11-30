@@ -51,10 +51,14 @@ extern "C" {
 #define RBIN    15     // Read port bit  digital input
 #define RDIR    16     // Read direction of digital IO port
 #define RBDIR   17     // Read direction for a bit on a port
+#define GPSDIR  18    // Set direction for a single GPIO on a particular device
+#define GPRDIR  19     // Read direction for a single GPIO on a particular device
+#define GPOUT   20     // Set output for a single gpio on a particular device
+#define GPIN    21     // Read a single gpio on a particular device
+#define GPSPAD  22     // Set digital IO PAD parameter
+#define GPGPAD  23     // Read digital IO PAD parameter
+#define SBEEP   24     // Send Beep pulse
 
-
-#define SPAD    20     // Set digital IO PAD parameter
-#define RPAD    21     // Read digital IO PAD parameter
 
 
 

@@ -281,9 +281,6 @@ bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, 
     uint8_t  command;
     uint8_t  gp, portd;
 
-
-    
-
     fprintf(stdout,"On digital execute begin\r\n");
 
     switch (action)
@@ -360,5 +357,111 @@ bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, 
     }
 
     fprintf(stdout,"On digital execute end\r\n");
+    return true;
+}
+
+bool  gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, uint16_t *answer) {
+    bool smf;
+    uint8_t  command;
+    int address[4] = {PICO_MASTER_ADDRESS,PICO_PORT_ADDRESS,PICO_RELAY1_ADDRESS,PICO_RELAY2_ADDRESS};
+    uint8_t slave, pval;
+    uint32_t  maskvalue;
+    bool rval;
+
+    fprintf(stdout,"On gpio execute begin\r\n");
+
+    switch (action)
+    {
+        case GPSDIR: // Set GPIO Direction
+            slave = address[device]; /// Set I2C address
+            if (value) {          // set command based on direction requested
+                command = DIR_GP_OUT;  // command number for set GPIO direction OUT
+            } else { 
+                command = DIR_GP_IN; // command number for set GPIO direction IN
+            }
+          
+            if (slave == PICO_MASTER_ADDRESS) {
+                gpio_set_dir(gpio,1);  // send direct command to set direction = output
+                fprintf(stdout,"Cmd %02d, Set Dir Out Gpio: %02d \r\n ", command, gpio);
+            } else {
+                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                if (!smf) { return false;}  // Error return
+            }
+            break;
+
+        case GPRDIR: // Get GPIO Direction
+            slave = address[device]; /// Set I2C address
+            command =  DIR_GP_READ;  // command to send to read direction
+            if (slave == PICO_MASTER_ADDRESS) {
+                rval = gpio_get_dir(gpio);  // send direct command to read direction
+                answer[0] = rval;
+                fprintf(stdout,"Cmd %02d, read Direction Gpio: %02d. State: %01d \r\n ", command, gpio,rval);
+            } else {
+                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                if (!smf) { return false;}  // Error return
+            }
+            break;
+
+        case GPOUT:// Set GPIO Output State
+            slave = address[device]; /// Set I2C address
+            if (value) {          // set command based on direction direction 
+                command = DIG_GP_OUT_SET;  // command number for set GPIO at High
+            } else { 
+                command = DIG_GP_OUT_CLEAR; // command number for set GPIO at low
+            }
+
+            if (slave == PICO_MASTER_ADDRESS) {
+                gpio_put(gpio,value);  // send direct command to read direction
+                fprintf(stdout,"Cmd %02d, Set Output Gpio: %02d. State: %01d \r\n ", command, gpio,value);
+            } else {
+                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                if (!smf) { return false;}  // Error return
+            }
+            break;
+
+        case GPIN: // Get GPIO Input state
+            slave = address[device]; /// Set I2C address
+            command =  DIG_GP_IN;  // command to send to read gpio value
+            if (slave == PICO_MASTER_ADDRESS) {
+                rval = gpio_get(gpio);  // send direct command to read gpio state
+                answer[0] = rval;
+                fprintf(stdout,"Cmd %02d, read value Gpio: %02d. State: %01d \r\n ", command, gpio,rval);
+            } else {
+                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                if (!smf) { return false;}  // Error return
+            }
+            break;
+
+        case GPSPAD: // Set GPIO PAD State
+            slave = address[device]; /// Set I2C address
+            maskvalue = 0xfful; // change only the lower 8 bits
+            command =  GP_PAD_SET;  // command to send to read gpio value
+            if (slave == PICO_MASTER_ADDRESS) {
+                hw_write_masked(&padsbank0_hw ->io[gpio],value,maskvalue); // Set Pad state
+                fprintf(stdout,"Cmd %02d, Set Pad State to Gpio: %02d ,State: 0x%01x \r\n",command,  gpio, value);
+            } else { // 2 commands required to set PAD value
+                smf= send_master(slave, GP_PAD_VALUE, gpio,answer); // send i2c command to slave
+                if (!smf) { return false;}  // Error return
+                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                if (!smf) { return false;}  // Error return
+            }
+            break;
+            
+        case GPGPAD: // Read GPIO PAD State
+            slave = address[device]; /// Set I2C address
+            maskvalue = 0xfful; // change only the lower 8 bits
+            command =  GP_PAD_READ;  // command to send to read gpio pad value
+            if (slave == PICO_MASTER_ADDRESS) {
+                pval =  padsbank0_hw ->io[gpio] &maskvalue; // Read gpio PAD Value
+                answer[0] = pval;  // save value to be returned
+                fprintf(stdout,"Cmd %02d, Gpio: %02d ,Read PAD State: 0x%01x \r\n",command,  gpio,pval);
+            } else {
+                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                if (!smf) { return false;}  // Error return
+            }
+    }
+
+
+    fprintf(stdout,"On gpio execute end\r\n");
     return true;
 }
