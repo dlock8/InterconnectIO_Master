@@ -247,13 +247,18 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
 
 }
 
-// List of special string not already define on SCPI parser
+// List of special string not already defined on SCPI parser
 const scpi_choice_def_t scpi_special_all_numbers_def[] = {
     {/* name */ "ALL", /* type */ SCPI_BANK_ALL},
     {/* name */ "BANK1", /* type */ SCPI_BANK1},
     {/* name */ "BANK2", /* type */ SCPI_BANK2},
     {/* name */ "BANK3", /* type */ SCPI_BANK3},
     {/* name */ "BANK4", /* type */ SCPI_BANK4},
+    {/* name */ "LPR1", /* type */ SCPI_LPR1},
+    {/* name */ "LPR2", /* type */ SCPI_LPR2},
+    {/* name */ "HPR1", /* type */ SCPI_HPR1},
+    {/* name */ "SSD1", /* type */ SCPI_SSD1},
+
     SCPI_CHOICE_LIST_END,
 };
 
@@ -263,7 +268,7 @@ const scpi_choice_def_t scpi_special_all_numbers_def[] = {
 static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_number_t paramRelay;
-    uint16_t array[5], se[5];
+    uint16_t array[5]; //, se[5];
     uint16_t answer[MAXROW * MAXCOL];
     uint8_t tag;
     size_t i = 0;
@@ -272,27 +277,27 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
     tag = SCPI_CmdTag(context);   //extract tag from the command
 
     while(SCPI_ParamNumber(context, scpi_special_all_numbers_def, &paramRelay, FALSE)){
-        printf("on switch \r\n");
+        fprintf(stdout,"on switch \r\n");
         if (paramRelay.special) {
             switch (paramRelay.content.tag) {
                 case SCPI_BANK1: 
-                    array[i] = 10;    //  Add Bank1 on array list to open
-                    se[i] = SE_BK1;
+                    array[i] = 10;    //  Add Bank1 on array list to open/close
+                    //se[i] = SE_BK1;
                     i++;  
                     break;
-                case SCPI_BANK2:        //  Add Bank2 on array list to open
+                case SCPI_BANK2:        //  Add Bank2 on array list to open/close
                     array[i] = 20;
-                    se[i] = SE_BK2;
+                    //se[i] = SE_BK2;
                     i++;  
                     break;
-                case SCPI_BANK3: 
+                case SCPI_BANK3:        //  Add Bank3 on array list to open/close
                     array[i] = 30;
-                    se[i] = SE_BK3;
+                    //se[i] = SE_BK3;
                     i++;  
                     break;
-                case SCPI_BANK4: 
+                case SCPI_BANK4:        //  Add Bank4 on array list to open/close
                     array[i] = 40;
-                    se[i] = SE_BK4;
+                    //se[i] = SE_BK4;
                     i++;  
                     break;
 
@@ -302,6 +307,31 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
                     array[i+2] = 30;
                     array[i+3] = 40;
                     i +=4;  
+                    break;
+
+                // Powe relay. offset of 500 is added to distinguishe from bank relay numbering
+                case SCPI_LPR1: 
+                    array[i] = 500 +GPIO_LPR1;    //  Add gpio of lpr1  on array list to open/close
+                    //se[i] = 0;
+                    i++;  
+                    break;
+
+                case SCPI_LPR2: 
+                    array[i] = 500 +GPIO_LPR2;    //  Add gpio of lpr2  on array list to open/close
+                    //se[i] = 0;
+                    i++;  
+                    break;
+
+                case SCPI_HPR1: 
+                    array[i] = 500 +GPIO_HPR1;    //  Add gpio of HPR1  on array list to open/close
+                    //se[i] = 0;
+                    i++;  
+                    break;
+                
+                case SCPI_SSD1:
+                    array[i] = 500 +GPIO_SSD1;    //  Add gpio of SSD1 on array list to open/close
+                    //se[i] = 0;
+                    i++;  
                     break;
                 
                 default: 
@@ -327,15 +357,13 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
 
 
     i=0;  // reset loop counter
-    if (tag == BSTATE || tag == SESTATE) { // if returned value is expected
+    if (tag == BSTATE || tag == SESTATE || tag == PWSTATE) { // if returned value is expected
         do {  // loop on array until list of value is completed
-           sprintf(str, " 0x%x,", answer[i]);
+           fprintf(stdout, " 0x%x,", answer[i]); // print value on debug port
            SCPI_ResultUInt8(context,answer[i]); // return SCPI value 
             i++;
         } while (array[i] > 0);
-        //sprintf(str, "\r\n"); // print on debug port
-        printf(str);
-        printf ("\r\n"); 
+        fprintf (stdout,"\r\n"); // send new line
 
     }
    
@@ -347,9 +375,10 @@ return SCPI_RES_OK;
 static scpi_result_t Callback_Digital_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_parameter_t param1;
-    uint16_t answer[80];
+    uint16_t answer[1];
     uint8_t tag;
     uint32_t value = 0;
+    int32_t numbers[2] = {0,0};  // initialise array to get a know value in case of only 1 number
 
 fprintf(stdout, "On digital execute \r\n");
 res = SCPI_Parameter(context, &param1, FALSE);
@@ -361,19 +390,26 @@ if (res) {
         SCPI_ParamToUInt32(context, &param1, &value);
     }
 }
-
-    int32_t numbers[2];
-    SCPI_CommandNumbers(context, numbers, 2, 2);
+    
+    SCPI_CommandNumbers(context, numbers, 2, 2); // fill array with command number
 
     fprintf(stdout, "Digital TEST numbers %d %d\r\n", numbers[0], numbers[1]);
 
     tag = SCPI_CmdTag(context);   //extract tag from the command
 
-    res = digital_execute(tag, numbers[0], numbers[1], value,answer); 
+    if (numbers[0] > 1 || numbers[1] > 7) {  // if port or bit number is out of limit, return error
+        answer[0] = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE;  
+        fprintf(stdout,"Error on command: Data out of range for PORT{0-1} or BIT{0-7}  \r\n");
+        SCPI_ErrorPush(context, answer[0]);
+        return SCPI_RES_ERR;
+    }
+
+    res = digital_execute(tag, numbers[0], numbers[1], value,answer); // execute xommand
+
     if (!res) {   // if failure found during command
         fprintf(stdout,"Digital error: %d\r\n", answer);
         SCPI_ErrorPush(context, answer[0]);
-        return false;
+        return SCPI_RES_ERR;
     }
 
 
@@ -391,41 +427,48 @@ return SCPI_RES_OK;
 static scpi_result_t Callback_gpio_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_parameter_t param1;
-    uint16_t answer[80];
+    uint16_t answer[1];  // will contains the answer returned by command
+    int32_t numbers[2] = {0,0};  // initialise array to get a know value in case of only 1 number
     uint8_t tag;
     uint32_t value = 0;
 
-fprintf(stdout, "On gpio execute \r\n");
-res = SCPI_Parameter(context, &param1, FALSE);
+    fprintf(stdout, "On gpio execute \r\n");
+    res = SCPI_Parameter(context, &param1, FALSE);
 
-if (res) {
-    // Is parameter a number without suffix?
-    if (SCPI_ParamIsNumber(&param1, FALSE)) {
+    if (res) {
+        // Is parameter a number without suffix?
+        if (SCPI_ParamIsNumber(&param1, FALSE)) {
         // Convert parameter to unsigned int. Result is in value.
         SCPI_ParamToUInt32(context, &param1, &value);
+        }
     }
-}
 
-    int32_t numbers[2];
+
     SCPI_CommandNumbers(context, numbers, 2, 2); //Create array of number
 
     fprintf(stdout, "GPIO TEST numbers %d %d\r\n", numbers[0], numbers[1]);
 
     tag = SCPI_CmdTag(context);   //extract tag from the command
 
-    res = gpio_execute(tag, numbers[0], numbers[1], value,answer); // execute command
-    if (!res) {   // if failure found during command
-        fprintf(stdout,"Gpio error: %d\r\n", answer);
+
+    if (numbers[0] > 3 || numbers[1] > 28) {  // if device or gpio number is out of limit, return error
+        answer[0] = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE;  
+        fprintf(stdout,"Error on command: Data out of range for DEVice{0-3} or GPio{0-28} \r\n");
         SCPI_ErrorPush(context, answer[0]);
-        return false;
+        return SCPI_RES_ERR;
     }
 
+    res = gpio_execute(tag, numbers[0], numbers[1], value,answer); // execute command
 
-    if (tag==GPIN||  tag==GPRDIR|| tag==GPGPAD) { // if returned value is expected
-    
+    if (!res) {   // if failure found during command
+        fprintf(stdout,"Gpio execute error: %d\r\n", answer);
+        SCPI_ErrorPush(context, answer[0]);
+        return SCPI_RES_ERR;
+    }
+
+    if (tag==GPIN||  tag==GPRDIR|| tag==GPGPAD) { // if returned value is expected   
         fprintf(stdout, "GPIO Value read:  0x%x,\r\n", answer[0]); // return value on debug port
         SCPI_ResultUInt8(context,answer[0]); // return SCPI value 
-
     }
 
 return SCPI_RES_OK;
@@ -465,6 +508,9 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "ROUTe:SE:STATe?", .callback = Callback_Relay_all_scpi,SESTATE},
     {.pattern = "ROUTe:CLOSE:Se", .callback = Callback_Relay_all_scpi,SECLOSE},
     {.pattern = "ROUTe:OPEN:Se", .callback = Callback_Relay_all_scpi,SEOPEN},
+    {.pattern = "ROUTe:CLOSE:PWR", .callback = Callback_Relay_all_scpi,PWCLOSE},
+    {.pattern = "ROUTe:OPEN:PWR", .callback = Callback_Relay_all_scpi,PWOPEN},
+    {.pattern = "ROUTe:STATE:PWR?", .callback = Callback_Relay_all_scpi,PWSTATE},
 
     {.pattern = "DIGital:DIRection:PORT#", .callback = Callback_Digital_scpi,SDIR},
     {.pattern = "DIGital:DIRection:PORT#:BIT#", .callback = Callback_Digital_scpi,SBDIR},
@@ -479,8 +525,8 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "GPIO:DIRection:DEVice#:GP#?", .callback = Callback_gpio_scpi,GPRDIR},
     {.pattern = "GPIO:Out:DEVice#:GP#", .callback = Callback_gpio_scpi,GPOUT},
     {.pattern = "GPIO:In:DEVice#:GP#?", .callback = Callback_gpio_scpi,GPIN},
-    {.pattern = "GPIO:SETPads:DEVice#:GP#", .callback = Callback_gpio_scpi,GPSPAD},
-    {.pattern = "GPIO:GETPads:DEVice#:GP#?", .callback = Callback_gpio_scpi,GPGPAD},
+    {.pattern = "GPIO:SETPad:DEVice#:GP#", .callback = Callback_gpio_scpi,GPSPAD},
+    {.pattern = "GPIO:GETPad:DEVice#:GP#?", .callback = Callback_gpio_scpi,GPGPAD},
 
     {.pattern = "SYSTEM:BEEPer", .callback = Callback_Digital_scpi,SBEEP},
 

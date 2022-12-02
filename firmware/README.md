@@ -39,11 +39,15 @@ ROUTe:OPEN:Se [{BANK1-BANK4}]
 ROUTE:OPEN:ALL[{BANK1-BANK4|ALL}]
 ROUTE:CHANnel:STATe? (@<ch_list>)
 ROUTE:BANK:STATe? [{BANK1-BANK4}]
-ROUTE:SE:STATe? [{BANK1-BANK4}]  
+ROUTE:SE:STATe? [{BANK1-BANK4}]
+
+ROUTE:CLOSe:PWR [{LPR1|HPR1|HPR2|SSR1}]
+ROUTE:OPEN:PWR [{LPR1|HPR1|HPR2|SSR1}]
+ROUTE:STATe:PWR? [{LPR1|HPR1|HPR2|SSR1}]
 
 DIGital:In:PORTn? [{0-1}]
 DIGital:In:PORTn:BITn? [{0-1}]
-DIGital:Out:PORTn [Value]   0x, 0b
+DIGital:Out:PORTn [Value]   
 DIGital:Out:PORTn:BItn [Value] 
 DIGital:DIRection:PORTn [[{0-1}] 
 DIGital:DIRection:PORTn:BITn [Value] 
@@ -53,30 +57,51 @@ DIGital:DIRection:PORTn:BITn?
 GPIO:DIRection:DEVice#:GP# [VALue] 
 GPIO:Out:DEVice#:GP# [VALue] 
 GPIO:In:DEVice#:GP#? 
-GPIO:SETPads:DEVice#:GP# [VALue] 
-GPIO:GETPads:DEVice#:GP#?
+GPIO:SETPad:DEVice#:GP# [VALue] 
+GPIO:GETPad:DEVice#:GP#?
 
-SYSTem:READ:1WIRE?
+
+MEASure:ADC#?
+SYSTEM:VERsion:DEVice#? [{0-3}]
+
+COM:1WIRE:WRITE
+COM:1WIRE:READ? [{SERIAL|MEMORY|ALL}]
+COM:I2C:WRITE
+COM:SPI:WRITE
+COM:SERIAL:WRITE
 
 SYSTem:BEEPer
 
-## SCPI example:
-ROUTe:CLOSe (@101)            --> Close relay 100 and close relay Single ended (SE)
-ROUTe:CLOSe:EXC (@102)        --> open relay on bank1, including relay SE and close relay 102
-ROUTe:CLOSe (@100,108)        --> close relay 100 and 108
-ROUTe:CLOSe (@100:108)        --> close relay 100,102,104,106, and 108
-ROUTe:OPEN:ALL BANK1,BANK2    --> open relay  on bank1 and bank2
-ROUTe:OPEN:ALL ALL            --> open relay  on all banks
-ROUTe:SE:STATe? BANK1         --> read which side of diff relay we are connected (0 = H or 1 = L)
-ROUTe:CHAN:STATe? (@100)
-DIGital:DIG:DIR PORT0 0xFF    --> set the 8 bit of port0 to output  ( 0 = in, 1 = out)
 
+
+## SCPI example:
+ROUTe:CLOSe (@101)              --> Close relay 100 and close relay Single ended (SE)
+ROUTe:CLOSe:EXC (@102)          --> open relay on bank1, including relay SE and close relay 102
+ROUTe:CLOSe (@100,108)          --> close relay 100 and 108
+ROUTe:CLOSe (@100:108)          --> close relay 100,102,104,106, and 108
+ROUTe:OPEN:ALL BANK1,BANK2      --> open relay  on bank1 and bank2
+ROUTe:OPEN:ALL ALL              --> open relay  on all banks
+ROUTe:SE:STATe? BANK1           --> read which side of diff relay we are connected (0 = H or 1 = L)
+ROUTe:CHAN:STATe? (@100)        --> read relay state ( 0 = Open  or 1 = close)
+
+DIGital:DIRection:PORT0 #HFF    --> set the 8 bit of port0 to output  ( 0 = in, 1 = out)
+DIGital:DIRection:PORT0:BIT1?   --> Read direction on port 0 bit 1
+DIGital:Out:PORT1 #H55          --> Write hex value 0x55 to port 1
+DIGital:DIRection:PORT1?        --> Read direction on port 1 for the 8 bits ( 0 = in, 1 = out)
+DIGital:In:PORT0?               --> Read the 8 bits on port 0  
+
+
+GPIO:DIRection:DEVice0:GP22 1   --> Set gpio 22 on Device 0 (Master) to direction out (1 = out) 
+GPIO:Out:DEVice1:GP8 0          --> Set gpio 8 on Device 1 (Slave_1) to 0 (0 = low level) 
+GPIO:In:DEVice2:GP9?            --> Read value of gpio 9 on device 2 (Slave_2)
+GPIO:SETPad:DEVice3:GP22        --> Set PAD value (8 bits) on gpio 22 on Device 3 (Slave_3) 
+GPIO:GETPad:DEVice1:GP8?        --> Read PAD value (8 bits) on gpio 8 on Device 1 (Slave_1) 
 
 ## Relay numbering. Differential relay will be located on lower address. Single ended relay to be connected to high or low side following the address.
-    Relay bank 1   100 @ 115      
-    Relay bank 2   200 @ 215
-    Relay bank 3   300 @ 315
-    Relay bank 4   400 @ 415
+    Relay bank 1   Channel 100 @ 115      
+    Relay bank 2   Channel 200 @ 215
+    Relay bank 3   Channel 300 @ 315
+    Relay bank 4   Channel 400 @ 415
 
     Relay bank 1   Differential: 10 @ 17    Single: 100 @ 107 (High) 108 @ 115 (Low)    
     Relay bank 2   Differential: 20 @ 27    Single: 200 @ 215 (High) 208 @ 215 (Low) 

@@ -57,9 +57,11 @@ extern "C" {
 #define GPIN    21     // Read a single gpio on a particular device
 #define GPSPAD  22     // Set digital IO PAD parameter
 #define GPGPAD  23     // Read digital IO PAD parameter
-#define SBEEP   24     // Send Beep pulse
+#define PWCLOSE 24     // CLose power relay
+#define PWOPEN  25     // OPen power relay
+#define PWSTATE 26     // Read state of power relay
 
-
+#define SBEEP   50     // Send Beep pulse
 
 
 #define SCPI_BANK1 1     // Open BK1 relay tag
@@ -67,6 +69,16 @@ extern "C" {
 #define SCPI_BANK3 3     // Open BK3 relay tag
 #define SCPI_BANK4 4     // Open BK4 relay tag
 #define SCPI_BANK_ALL 5     // Open all relay tag
+#define SCPI_LPR1  6     // Power relay 
+#define SCPI_LPR2  7     // Power relay 
+#define SCPI_HPR1  8     // Power relay 
+#define SCPI_SSD1  9     // Power Solid State relay 
+
+#define GPIO_LPR1  12     // Gpio number to control Power relay 
+#define GPIO_LPR2  13     // Gpio number to control Power relay 
+#define GPIO_HPR1  14     // Gpio number to control Power relay 
+#define GPIO_SSD1  15     // Gpio number to control Power relay 
+
 
 
 extern scpi_t scpi_context;

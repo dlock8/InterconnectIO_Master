@@ -126,7 +126,7 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                     ser = SE_BK2;  // assign gpio for Single ended relay
                     sestate[1] = se; // update value of relay
                 }
-                seflg[1] = true;  // set flasg for se relay upodated
+                seflg[1] = true;  // set flasg for se relay updated
                 rfd =true;  // set flag true (relay found)
             }
             if (relay >= 300 && relay <= 315 || relay >= 30 && relay <= 37 ) {
@@ -174,8 +174,15 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                     ser = SE_BK4;  // assign gpio for Single ended relay
                     sestate[3] = se; // update value of relay
                 }
-                seflg[3] = true;  // set flasg for se relay upodated
+                seflg[3] = true;  // set flasg for se relay updated
                 rfd =true;  // set flag true (relay found)
+            }
+
+            if (relay >= 500  ) {  // Power relay
+                gpio = relay-500; // remove offset and get gpio reference
+                if (gpio== GPIO_LPR1 || gpio== GPIO_LPR2 || gpio== GPIO_HPR1 || gpio== GPIO_SSD1) {
+                  rfd =true;  // set flag true (power relay valid)
+                }
             }
            
             if (rfd == true) { // if relay is valid
@@ -252,7 +259,26 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                      answer[i] = rdata;
                      break;
 
-              }
+                
+                case PWCLOSE:
+                     gpio_put(gpio,1);  // Close Gpio on master device
+                     fprintf(stdout,"MAS: CLOSE PWR relay using gpio: %02d\n", gpio);
+                     break;   
+
+                case PWOPEN:
+                     gpio_put(gpio,0);  // Close Gpio on master device
+                     fprintf(stdout,"MAS: OPEN PWR relay using gpio: %02d\n", gpio);
+                     break; 
+
+                case PWSTATE:
+                     answer[i] = gpio_get(gpio);   // Read true Value
+                     fprintf(stdout,"MAS: STATE PWR relay using gpio: %02d, State: %01d\n", gpio, answer[i]);
+                     break;    
+
+              
+
+
+              } // end switch (action)
 
 
             } else {
@@ -369,6 +395,7 @@ bool  gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, 
     bool rval;
 
     fprintf(stdout,"On gpio execute begin\r\n");
+
 
     switch (action)
     {
