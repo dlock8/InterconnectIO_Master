@@ -7,13 +7,15 @@
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
 #include "include/master.h"
+#include "userconfig.h"
 
 
 
 
 
-static const uint MAJOR_VERSION = 1;    // Major version of Pico_Master
-static const uint MINOR_VERSION = 2;    // Minor version of Pico_Master
+// Major an Minor version are located on Cmakelist.txt with command
+//set (IO_MASTER_VERSION_MAJOR x)
+//set (IO_MASTER_VERSION_MINOR x)
 
 // set default value for each pin
 static const uint32_t GPIO_BOOT_MASK = 0b000011110010011111111111100000000;
@@ -25,10 +27,11 @@ static const uint32_t GPIO_MASTER_OUT_MASK = 0b000011110010011111111111100000000
 
 int main() {
 
+
    // MESSAGE rec;
     int result;
 
-	bi_decl(bi_program_description("This is a test binary, including the SCPI library."));
+	//bi_decl(bi_program_description("This is a test binary, including the SCPI library."));
 
   gpio_init_mask(GPIO_BOOT_MASK); // set which lines will be GPIO 
   gpio_set_dir_masked(GPIO_SET_DIR_MASK,GPIO_MASTER_OUT_MASK); // set which lines will be GPIO 
@@ -62,6 +65,15 @@ int main() {
 
     setup_master();  // I2C_communication
    
+/*  // to debug the problem of error number
+    int errnum;
+    errnum = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE;  
+    fprintf(stdout,"Error number: %02d  \r\n",errnum );
+    SCPI_ErrorPush(context, errnum);
+*/
+
+
+ fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
 
 #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
 
@@ -73,13 +85,15 @@ int main() {
 
    TEST_SCPI_INPUT("*IDN?\r\n"); 
 
-TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1,LPR2,HPR1,SSD1 \r\n");
-TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR1,LPR2,HPR1,SSD1 \r\n");
-TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSD1 \r\n");
-TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1,LPR2,HPR1,SSD1 \r\n");
-TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSD1 \r\n");
-TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR2,HPR1 \r\n");
-TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSD1 \r\n");
+//TEST_SCPI_INPUT("DIG:DIR:PORT1:BIT1 0\r\n"); 
+//TEST_SCPI_INPUT("ROUT:OPEN (@70)\r\n"); 
+TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR5 \r\n");
+//TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR1,LPR2,HPR1,SSD1 \r\n");
+//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSD1 \r\n");
+//TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1,LPR2,HPR1,SSD1 \r\n");
+//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSD1 \r\n");
+//TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR2,HPR1 \r\n");
+//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSD1 \r\n");
 
  // TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port 1
  // TEST_SCPI_INPUT("GPIO:GETP:DEV5:GP22?   \r\n");  //Set Gp22 as output

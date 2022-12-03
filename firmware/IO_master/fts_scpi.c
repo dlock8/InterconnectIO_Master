@@ -219,7 +219,7 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
     if (!fres) {
         fprintf(stdout,"Relay error: %d\r\n", answer);
         SCPI_ErrorPush(context, answer[0]);
-        return false;
+        return SCPI_RES_ERR;
     }
 
     if (tag == RSTATE) { // if returned value is expected
@@ -346,14 +346,16 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
 
     if (i > 0) {
        res =  relay_execute(array,tag,answer); // Perform action requested
-    } else {
-        if (SCPI_ParamErrorOccurred(context)) {
-            SCPI_ErrorPush(context, SCPI_ERROR_MISSING_PARAMETER);
-        } else {
-            SCPI_ErrorPush(context, SCPI_ERROR_ILLEGAL_PARAMETER_VALUE);
-        }
-        return SCPI_RES_ERR;
+       
+    } else { // in case of i = 0
+        if (!SCPI_ParamErrorOccurred(context)) { // if no error already occured
+            SCPI_ErrorPush(context, SCPI_ERROR_MISSING_PARAMETER); // raise error
+            return SCPI_RES_ERR;
+        }else {return SCPI_RES_ERR;} // reurn error flag due to error occured
+        
     }
+
+
 
 
     i=0;  // reset loop counter

@@ -180,9 +180,7 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
 
             if (relay >= 500  ) {  // Power relay
                 gpio = relay-500; // remove offset and get gpio reference
-                if (gpio== GPIO_LPR1 || gpio== GPIO_LPR2 || gpio== GPIO_HPR1 || gpio== GPIO_SSD1) {
-                  rfd =true;  // set flag true (power relay valid)
-                }
+                rfd =true;  // set flag true (power relay valid)
             }
            
             if (rfd == true) { // if relay is valid

@@ -1,0 +1,6 @@
+
+// the configured options and settings for Tutorial
+#define IO_MASTER_VERSION_MAJOR @IO_MASTER_VERSION_MAJOR@
+#define IO_MASTER_VERSION_MINOR @IO_MASTER_VERSION_MINOR@
+
+

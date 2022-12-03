@@ -31,8 +31,8 @@ message(STATUS "Binary=${PROJECT_BINARY_DIR}")
 
 
 configure_file (
-  "${PROJECT_SOURCE_DIR}/IO_master/include/UserConfig.h.in"
- "${PROJECT_BINARY_DIR}/IO_master/include/UserConfig.h"  ) 
+  "${PROJECT_SOURCE_DIR}/IO_master/include/userconfig.h.in"
+ "${PROJECT_BINARY_DIR}/IO_master/include/userconfig.h"  ) 
 include_directories("${PROJECT_BINARY_DIR}/IO_master/include") 
 
 
