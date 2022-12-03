@@ -1,11 +1,9 @@
-#cmake_minimum_required(VERSION 3.13)
 
-#include(pico_sdk_import.cmake)
+set (IO_MASTER_VERSION_MAJOR 1)
+set (IO_MASTER_VERSION_MINOR 8)
 
-#project(IO_master C CXX ASM)
-#set(CMAKE_C_STANDARD 11)
-#set(CMAKE_CXX_STANDARD 17)
-#pico_sdk_init()
+set (IO_SLAVE_VERSION_MAJOR 3)
+set (IO_SLAVE_VERSION_MINOR 5)
 
 
 
@@ -22,12 +20,20 @@ ExternalProject_Add(scpi_parser_build
 	BUILD_IN_SOURCE ON
 	CONFIGURE_COMMAND make clean
 	# Only generate the static version of the library, not the shared one (doesn't make sense here).
-	BUILD_COMMAND env "CC=${CMAKE_C_COMPILER}" "CFLAGS=${CMAKE_C_FLAGS}" "PREFIX=${scpi_parser_PREFIX}" make static
+	BUILD_COMMAND env  "CC=${CMAKE_C_COMPILER}" "CFLAGS=${CMAKE_C_FLAGS}" "PREFIX=${scpi_parser_PREFIX}" make static
 	INSTALL_DIR "${scpi_parser_PREFIX}"
 	INSTALL_COMMAND cp -r "${scpi_parser_SOURCE_DIR}/dist/libscpi.a" "${scpi_parser_SOURCE_DIR}/inc" "${scpi_parser_PREFIX}"
 )
 
+message(STATUS ">>>DIRECTORY USED")
+message(STATUS "Source= ${PROJECT_SOURCE_DIR}")
+message(STATUS "Binary=${PROJECT_BINARY_DIR}")
 
+
+configure_file (
+  "${PROJECT_SOURCE_DIR}/IO_master/include/UserConfig.h.in"
+ "${PROJECT_BINARY_DIR}/IO_master/include/UserConfig.h"  ) 
+include_directories("${PROJECT_BINARY_DIR}/IO_master/include") 
 
 
 
@@ -50,9 +56,7 @@ target_include_directories(i2c_com INTERFACE ./include)
 target_sources(i2c_com INTERFACE i2c_com.c)
 
 
-add_executable(master
-	master.c
-)
+add_executable(master master.c)
 
 pico_enable_stdio_usb(master 1)
 pico_enable_stdio_uart(master 1)
