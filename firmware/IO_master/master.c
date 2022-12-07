@@ -85,9 +85,18 @@ int main() {
 
    TEST_SCPI_INPUT("*IDN?\r\n"); 
 
+
+  TEST_SCPI_INPUT("SYST:LED:ERR ON \r\n");
+  TEST_SCPI_INPUT("SYST:LED:ERR OFF \r\n");
+//TEST_SCPI_INPUT("SYST:VERS? \r\n");
+
+//  TEST_SCPI_INPUT("SYST:DEV:VERS? \r\n");
+//   TEST_SCPI_INPUT("SYST:BEEP \r\n");
+
 //TEST_SCPI_INPUT("DIG:DIR:PORT1:BIT1 0\r\n"); 
 //TEST_SCPI_INPUT("ROUT:OPEN (@70)\r\n"); 
-TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR5 \r\n");
+//TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR5 \r\n");
+
 //TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR1,LPR2,HPR1,SSD1 \r\n");
 //TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSD1 \r\n");
 //TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1,LPR2,HPR1,SSD1 \r\n");
@@ -218,9 +227,9 @@ TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR5 \r\n");
         uart_puts(UART_ID, "Hello UART!\n");
         fprintf(stdout,"USB CONNECTED \r\n");
 
-        gpio_put(LED_PIN, 1);
+        gpio_put(PICO_DEFAULT_LED_PIN, 1);
         sleep_ms(500);
-        gpio_put(LED_PIN, 0);
+        gpio_put(PICO_DEFAULT_LED_PIN, 0);
         sleep_ms(500);
 
        

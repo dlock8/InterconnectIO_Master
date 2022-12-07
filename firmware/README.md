@@ -33,36 +33,43 @@ However, there are two caveats:
 
 ROUTe:CLOSe (@<ch_list>)  
 ROUTe:CLOSe:EXCLusive (@<ch_list>) 
-ROUTe:CLOSe:Se [{BANK1-BANK4}]
+ROUTe:CLOSe:Se {BANK1-BANK4}
 ROUTe:OPEN (@<ch_list>)
-ROUTe:OPEN:Se [{BANK1-BANK4}]
-ROUTE:OPEN:ALL[{BANK1-BANK4|ALL}]
+ROUTe:OPEN:Se  {BANK1-BANK4}
+ROUTE:OPEN:ALL {BANK1-BANK4|ALL}
 ROUTE:CHANnel:STATe? (@<ch_list>)
-ROUTE:BANK:STATe? [{BANK1-BANK4}]
-ROUTE:SE:STATe? [{BANK1-BANK4}]
+ROUTE:BANK:STATe? {BANK1-BANK4}
+ROUTE:SE:STATe? {BANK1-BANK4}
 
-ROUTE:CLOSe:PWR [{LPR1|HPR1|HPR2|SSR1}]
-ROUTE:OPEN:PWR [{LPR1|HPR1|HPR2|SSR1}]
-ROUTE:STATe:PWR? [{LPR1|HPR1|HPR2|SSR1}]
+ROUTE:CLOSe:PWR {LPR1|HPR1|HPR2|SSR1}
+ROUTE:OPEN:PWR {LPR1|HPR1|HPR2|SSR1}
+ROUTE:STATe:PWR? {LPR1|HPR1|HPR2|SSR1}
 
-DIGital:In:PORTn? [{0-1}]
-DIGital:In:PORTn:BITn? [{0-1}]
-DIGital:Out:PORTn [Value]   
-DIGital:Out:PORTn:BItn [Value] 
-DIGital:DIRection:PORTn [[{0-1}] 
-DIGital:DIRection:PORTn:BITn [Value] 
-DIGital:DIRection:PORTn? [Value] 
-DIGital:DIRection:PORTn:BITn? 
+DIGital:In:PORTn? {0-1}
+DIGital:In:PORTn:BITn? {0-1}
+DIGital:Out:PORTn {0-1} {Value}   
+DIGital:Out:PORTn:BItn {0-1} {0-7}  
+DIGital:DIRection:PORTn {0-1}{Value} 
+DIGital:DIRection:PORTn:BITn {0-1} {0-7} 
+DIGital:DIRection:PORTn? {0-1} 
+DIGital:DIRection:PORTn:BITn? {0-1} {0-7}
 
-GPIO:DIRection:DEVice#:GP# [VALue] 
-GPIO:Out:DEVice#:GP# [VALue] 
-GPIO:In:DEVice#:GP#? 
-GPIO:SETPad:DEVice#:GP# [VALue] 
-GPIO:GETPad:DEVice#:GP#?
+GPIO:DIRection:DEVice#:GP# {0-3} {0-28} {0-1}
+GPIO:Out:DEVice#:GP#  {0-3} {0-28} {0-1}
+GPIO:In:DEVice#:GP#?  {0-3} {0-28} 
+GPIO:SETPad:DEVice#:GP# {0-3} {0-28} {Value}
+GPIO:GETPad:DEVice#:GP#? {0-3} {0-28}
 
+ANAlog:MEASure:ADC#?
+ANAlog:SET_VREF [Value] 
+ANAlog:GET_VREF? 
+ANAlog:TEMPerature? 
 
-MEASure:ADC#?
-SYSTEM:VERsion:DEVice#? [{0-3}]
+SYSTEM:DEVice:VERsion?
+SYSTem:BEEPer  
+SYSTEM:LED:ERRor {0|1|ON|OFF}
+SYSTEM:RESet  SCPI_CoreRst
+SYSTEM:MODule_option?
 
 COM:1WIRE:WRITE
 COM:1WIRE:READ? [{SERIAL|MEMORY|ALL}]
@@ -70,7 +77,7 @@ COM:I2C:WRITE
 COM:SPI:WRITE
 COM:SERIAL:WRITE
 
-SYSTem:BEEPer
+
 
 
 
@@ -96,6 +103,11 @@ GPIO:Out:DEVice1:GP8 0          --> Set gpio 8 on Device 1 (Slave_1) to 0 (0 = l
 GPIO:In:DEVice2:GP9?            --> Read value of gpio 9 on device 2 (Slave_2)
 GPIO:SETPad:DEVice3:GP22        --> Set PAD value (8 bits) on gpio 22 on Device 3 (Slave_3) 
 GPIO:GETPad:DEVice1:GP8?        --> Read PAD value (8 bits) on gpio 8 on Device 1 (Slave_1) 
+
+SYSTem:BEEPer                   --> Turn ON momentary the beeper
+SYSTEM:DEVice:VERsion?          --> Read version of each Pico devices [0,1,2,3], return string
+                                    ex: 1.8, 1.3, 1.3 1.3
+
 
 ## Relay numbering. Differential relay will be located on lower address. Single ended relay to be connected to high or low side following the address.
     Relay bank 1   Channel 100 @ 115      

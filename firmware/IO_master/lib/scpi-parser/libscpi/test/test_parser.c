@@ -109,7 +109,7 @@ static const scpi_command_t scpi_commands[] = {
     {.pattern = "STATus:OPERation:CONDition?", .callback = SCPI_StatusOperationConditionQ, },
     {.pattern = "STATus:OPERation:ENABle", .callback = SCPI_StatusOperationEnable, },
     {.pattern = "STATus:OPERation:ENABle?", .callback = SCPI_StatusOperationEnableQ, },
-
+ 
     { .pattern = "STATus:PRESet", .callback = SCPI_StatusPreset,},
 
     { .pattern = "TEXTfunction?", .callback = text_function,},

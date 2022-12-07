@@ -62,6 +62,10 @@ extern "C" {
 #define PWSTATE 26     // Read state of power relay
 
 #define SBEEP   50     // Send Beep pulse
+#define SVER    51     // Read version of Pico Master and slave
+#define SLERR   52     // Control of error led
+#define SRUN    53     // Send Beep pulse
+
 
 
 #define SCPI_BANK1 1     // Open BK1 relay tag
@@ -79,7 +83,13 @@ extern "C" {
 #define GPIO_HPR1  14     // Gpio number to control Power relay 
 #define GPIO_SSD1  15     // Gpio number to control Power relay 
 
+#define GPIO_BEEP  11     // Gpio number used to drive the beeper
+#define GPIO_RUN   18     // Gpio number used to control RUN of the slave
+#define GPIO_LED   19     // Gpio number used to led monitor green
+#define GPIO_SYNC  22     // Gpio number used to sync all module
 
+
+#define BEEP_TIME   10      // Beep time in mS
 
 extern scpi_t scpi_context;
 extern char scpi_input_buffer[];

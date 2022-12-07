@@ -46,7 +46,7 @@ extern "C" {
 // I2C Command code to execute action
 
 #define MJR_VERSION         01
-#define MNR_VERSION         02
+#define MIN_VERSION         02
 #define OPEN_RELAY          10
 #define CLOSE_RELAY         11
 #define OPEN_RELAY_BANK     12
@@ -83,5 +83,6 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback);
 bool relay_execute(uint16_t *list,uint8_t action, uint16_t *answer);
 bool digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, uint16_t *answer);
 bool gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, uint16_t *answer);
+bool system_execute(uint8_t action, uint16_t *answer);
 
 #endif // 

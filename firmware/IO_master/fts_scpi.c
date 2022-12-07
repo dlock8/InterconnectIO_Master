@@ -5,6 +5,7 @@
 #include "include/i2c_com.h"
 
 
+
 //#include "scpi/scpi.h"
 //#include "scpi/expression.h"
 
@@ -46,13 +47,21 @@ static scpi_result_t SCPI_Flush(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
+// Send a beep tone to alert for error
+void SCPI_Beep() {
+    gpio_put(GPIO_BEEP, 1); // Tuen ON beeper
+    sleep_ms(BEEP_TIME);    // wait time
+    gpio_put(GPIO_BEEP, 0); // Turn OFF beeper
+}
+
 int SCPI_Error(scpi_t * context, int_fast16_t err) {
     (void) context;
-    /* BEEP */
-    fprintf(stdout, "BEEP\r\n");
+    SCPI_Beep();  // Beep for signal error
     fprintf(stdout, "**ERROR: %d, \"%s\"\r\n", (int16_t) err, SCPI_ErrorTranslate(err));
-    return 0;
+    return SCPI_RES_OK;
 }
+
+
 
 
 scpi_reg_val_t srq_val = 0;
@@ -241,7 +250,7 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
         } while (array[i] > 0);
         fprintf(stdout, "\r\n Channel List completed \r\n ");
 
-    SCPI_ResultText(context, "termine avec succes");
+    //SCPI_ResultText(context, "termine avec succes");
 
     return SCPI_RES_OK;
 
@@ -258,6 +267,8 @@ const scpi_choice_def_t scpi_special_all_numbers_def[] = {
     {/* name */ "LPR2", /* type */ SCPI_LPR2},
     {/* name */ "HPR1", /* type */ SCPI_HPR1},
     {/* name */ "SSD1", /* type */ SCPI_SSD1},
+    {/* name */ "ON", /* type */ 1},
+    {/* name */ "OFF", /* type */ 0},
 
     SCPI_CHOICE_LIST_END,
 };
@@ -477,6 +488,77 @@ return SCPI_RES_OK;
 }
 
 
+// System level command
+static scpi_result_t Callback_system_scpi(scpi_t *context) {
+    scpi_bool_t res;
+    scpi_parameter_t param1;
+    uint16_t ans[8];  // will contains the answer returned by command
+    char pv[30]; 
+   // int32_t numbers[2] = {0,0};  // initialise array to get a know value in case of only 1 number
+volatile    uint8_t tag;
+    uint32_t value = 0;
+    float fval;
+
+    fprintf(stdout, "On system execute \r\n");
+    res = SCPI_Parameter(context, &param1, FALSE);
+
+    // if ON or OFF, transform to value 0 or 1
+    if (res && param1.type == SCPI_TOKEN_PROGRAM_MNEMONIC) {
+        SCPI_ParamToChoice(context, &param1, scpi_special_all_numbers_def, &value);
+    }
+ 
+    
+
+    if (res) {
+        // Is parameter a number without suffix?
+        if (SCPI_ParamIsNumber(&param1, FALSE)) {
+        // Convert parameter to unsigned int. Result is in value.
+        SCPI_ParamToUInt32(context, &param1, &value);
+        }
+    }
+
+
+
+    tag = SCPI_CmdTag(context);   //extract tag from the command
+
+    switch (tag) {
+        case SBEEP:
+            fprintf (stdout, "Scpi command beep \r\n");
+            SCPI_Beep(); 
+            break;
+
+        case SVER:
+            fprintf (stdout, "Scpi command pico version \r\n");
+            res = system_execute(tag,ans); // get arrays of version
+            if (res) { //if no failure detected 
+                // Build string to be returned base on the array of version received
+                sprintf(pv,"%2d.%2d, %2d.%2d, %2d.%2d, %2d.%2d\n",ans[0],ans[1],ans[2],ans[3],ans[4],ans[5],ans[6],ans[7]);
+                fprintf(stdout,pv); // print string version for the 4 devices
+                SCPI_ResultText(context,pv); // sent result
+            }
+            break;
+
+        case SLERR:  // Ctrl of led error
+            fprintf (stdout, "Set Error led to: %d \r\n", value);
+            gpio_put(GPIO_LED, value);
+            break;
+
+        
+        
+        default: 
+            break;
+    }
+
+    if (!res) {   // if failure found during command
+        fprintf(stdout,"System execute error: %d\r\n", ans);
+        SCPI_ErrorPush(context, ans[0]);
+      return SCPI_RES_ERR;
+    }
+
+
+return SCPI_RES_OK;
+}
+
     // The SCPI commands we support and the callbacks they use.
 scpi_command_t scpi_commands[] = {
 	
@@ -530,7 +612,10 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "GPIO:SETPad:DEVice#:GP#", .callback = Callback_gpio_scpi,GPSPAD},
     {.pattern = "GPIO:GETPad:DEVice#:GP#?", .callback = Callback_gpio_scpi,GPGPAD},
 
-    {.pattern = "SYSTEM:BEEPer", .callback = Callback_Digital_scpi,SBEEP},
+    {.pattern = "SYSTem:BEEPer", .callback = Callback_system_scpi,SBEEP},
+    {.pattern = "SYSTem:DEVice:VERSion?", .callback = Callback_system_scpi,SVER},
+    {.pattern = "SYSTem:LED:ERRor", .callback = Callback_system_scpi,SLERR},
+    {.pattern = "SYSTem:RUN", .callback = Callback_system_scpi,SRUN},
 
 
 	SCPI_CMD_LIST_END

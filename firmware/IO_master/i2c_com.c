@@ -4,6 +4,7 @@
 #include "hardware/i2c.h"
 #include "include/i2c_com.h"
 #include "include/fts_scpi.h"
+#include "userconfig.h"
 
 
 
@@ -489,4 +490,37 @@ bool  gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, 
 
     fprintf(stdout,"On gpio execute end\r\n");
     return true;
+}
+
+bool  system_execute(uint8_t action, uint16_t *answer) {
+    bool smf;
+    uint16_t  value[1];
+    int address[4] = {PICO_MASTER_ADDRESS,PICO_PORT_ADDRESS,PICO_RELAY1_ADDRESS,PICO_RELAY2_ADDRESS};
+    uint8_t slave;
+    size_t i=0,j=0;
+
+    if (action == SVER){
+        for (i=0; i<4 ; i++) {
+            slave = address[i]; /// Set I2C address
+            if (slave == PICO_MASTER_ADDRESS) {
+                answer[j++] = IO_MASTER_VERSION_MAJOR;
+                answer[j++] = IO_MASTER_VERSION_MINOR;
+                fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
+            } else {
+                smf= send_master(slave, MJR_VERSION, 0,value); // send i2c command to slave
+                if (!smf) {return false;}  // Error return
+                answer[j++] = value[0];
+
+                smf= send_master(slave, MIN_VERSION, 0,value); // send i2c command to slave
+                if (!smf) { return false;}  // Error return
+                answer[j++] = value[0];
+
+                fprintf(stdout,"PICO Slave address 0x%x,   Version: %d.%d\n", slave,answer[j-2],answer[j-1]);
+            }
+        }
+
+   
+    }
+    return true;
+
 }

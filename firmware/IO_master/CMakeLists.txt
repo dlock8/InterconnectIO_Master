@@ -2,11 +2,6 @@
 set (IO_MASTER_VERSION_MAJOR 1)
 set (IO_MASTER_VERSION_MINOR 8)
 
-set (IO_SLAVE_VERSION_MAJOR 3)
-set (IO_SLAVE_VERSION_MINOR 5)
-
-
-
 add_definitions(-DSCPI_USER_CONFIG=1)  #DL  flag to add scpi_user_config.h
 
 # Build the SCPI parsing library (a Git submodule) as an external project.
@@ -29,7 +24,7 @@ message(STATUS ">>>DIRECTORY USED")
 message(STATUS "Source= ${PROJECT_SOURCE_DIR}")
 message(STATUS "Binary=${PROJECT_BINARY_DIR}")
 
-
+# Configure Major and minor version 
 configure_file (
   "${PROJECT_SOURCE_DIR}/IO_master/include/userconfig.h.in"
  "${PROJECT_BINARY_DIR}/IO_master/include/userconfig.h"  ) 
