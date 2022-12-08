@@ -3,6 +3,10 @@
 #include "pico/binary_info.h"
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
+#include "include/master.h"
+#include "hardware/resets.h"
+
+
 
 
 
@@ -36,8 +40,16 @@ size_t SCPI_write(scpi_t *context, const char *data, size_t len) {
 // execute reset of all Pico
 scpi_result_t SCPI_Reset(scpi_t * context) {
     (void) context;
-    // to be added
-    fprintf(stdout, "**Reset\r\n");
+    fprintf(stdout, "*Reset execute begin\r\n");
+    // Put the MASTER PWM block into reset
+    reset_block(RESETS_MASTER);
+    // wait time
+    // And bring it out
+    unreset_block_wait(RESETS_MASTER);
+    // Re-configure the hardware
+    Hardware_Factory_Setting();
+
+    fprintf(stdout, "Reset execute completed\r\n");
     return SCPI_RES_OK;
 }
 

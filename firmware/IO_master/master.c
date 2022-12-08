@@ -19,51 +19,67 @@
 
 // set default value for each pin
 static const uint32_t GPIO_BOOT_MASK = 0b000011110010011111111111100000000;
-static const uint32_t GPIO_SET_DIR_MASK = 0b000011110010011111111111100000000;
+static const uint32_t GPIO_SET_DIR_MASK = 0b000011110010010111111111100000000;
 static const uint32_t GPIO_MASTER_OUT_MASK = 0b000011110010011111111111100000000;
 
 
+// Initialisation of the hardware
+// Called by Main program and when SCPI command *RST is received
+void Hardware_Factory_Setting() {
+  
+  gpio_init_mask(GPIO_BOOT_MASK); // set which lines will be GPIO 
+  gpio_set_dir_masked(GPIO_SET_DIR_MASK,GPIO_MASTER_OUT_MASK); // set which lines will be GPIO 
 
+  // Set up our UART with the required speed.
+  uart_init(UART_ID, BAUD_RATE);
+  
+  // Set the TX and RX pins by using the function select on the GPIO
+  // Set datasheet for more information on function select
+  gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
+  gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+
+  gpio_set_dir(GPIO_RUN, GPIO_OUT);
+  gpio_put(GPIO_RUN, 0); // Reset PICO Slave
+  //fprintf(stdout, "PICO Slave in Reset\r\n");
+  sleep_ms(100);
+  gpio_put(GPIO_RUN, 1); // Start PICO Slave 
+  gpio_set_dir(GPIO_RUN, GPIO_IN); // Set GPIO in Input for security 
+
+
+  setup_master();  // I2C_communication
+
+  fprintf(stdout,"Hardware factory setting completed \r\n");
+  return;
+}
+
+// Partial of hardware verification
+// Called by Main program and when SCPI command *TST? is received
+bool Selftest() {
+  fprintf(stdout,"Selftest execute \r\n");
+
+}
 
 int main() {
 
+  int result;
 
-   // MESSAGE rec;
-    int result;
-
-	//bi_decl(bi_program_description("This is a test binary, including the SCPI library."));
-
-  gpio_init_mask(GPIO_BOOT_MASK); // set which lines will be GPIO 
-  gpio_set_dir_masked(GPIO_SET_DIR_MASK,GPIO_MASTER_OUT_MASK); // set which lines will be GPIO 
 	stdio_init_all();
   init_scpi();
+  Hardware_Factory_Setting();
+
+  // Send out a string, with CR/LF conversions
+  uart_puts(UART_ID, "UART Connected!\n");
+  fprintf(stdout,"USB CONNECTED \r\n");
+
+  gpio_put(PICO_DEFAULT_LED_PIN, 1); // Turn ON board led
+  // #define LED_PIN 16
+   // gpio_init(LED_PIN);
+   // gpio_set_dir(LED_PIN, GPIO_OUT);
+
+   // gpio_init(PICO_DEFAULT_LED_PIN);
+   // gpio_set_dir(PICO_DEFAULT_LED_PIN,GPIO_OUT);
 
 
-// Set up our UART with the required speed.
-    uart_init(UART_ID, BAUD_RATE);
-  //  stdout_uart_init();
-  //  stdio_usb_init();
-
-    // Set the TX and RX pins by using the function select on the GPIO
-    // Set datasheet for more information on function select
-    gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
-    gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
-
-
-    // Send out a string, with CR/LF conversions
-    uart_puts(UART_ID, "UART Connected!\n");
-    fprintf(stdout,"USB CONNECTED \r\n");
-
-    #define LED_PIN 16
-    gpio_init(LED_PIN);
-    gpio_set_dir(LED_PIN, GPIO_OUT);
-
-    gpio_init(PICO_DEFAULT_LED_PIN);
-    gpio_set_dir(PICO_DEFAULT_LED_PIN,GPIO_OUT);
-
-    gpio_put(PICO_DEFAULT_LED_PIN, 1); // Turn ON board led
-
-    setup_master();  // I2C_communication
    
 /*  // to debug the problem of error number
     int errnum;
@@ -73,7 +89,7 @@ int main() {
 */
 
 
- fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
+// fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
 
 #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
 
@@ -85,9 +101,15 @@ int main() {
 
    TEST_SCPI_INPUT("*IDN?\r\n"); 
 
+   TEST_SCPI_INPUT("*ESE 1\r\n"); 
+   TEST_SCPI_INPUT("*ESE?\r\n"); 
 
-  TEST_SCPI_INPUT("SYST:LED:ERR ON \r\n");
-  TEST_SCPI_INPUT("SYST:LED:ERR OFF \r\n");
+  // TEST_SCPI_INPUT("*CLS\r\n"); 
+  // TEST_SCPI_INPUT("*RST\r\n"); 
+
+
+ // TEST_SCPI_INPUT("SYST:LED:ERR ON \r\n");
+ // TEST_SCPI_INPUT("SYST:LED:ERR OFF \r\n");
 //TEST_SCPI_INPUT("SYST:VERS? \r\n");
 
 //  TEST_SCPI_INPUT("SYST:DEV:VERS? \r\n");
@@ -116,7 +138,7 @@ int main() {
   //  TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP22  0 \r\n");  //Set Gp22 as output
   //TEST_SCPI_INPUT("GPIO:IN:DEV0:GP22?   \r\n");  //Set Gp22 as output
 
-  // TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22  1 \r\n");  //Set Gp22 as output
+  // TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22  1 \r\n");    // MESSAGE rec;/Set Gp22 as output
   // TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22?  \r\n");  //Get Gp22 direction
   // TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP22  1 \r\n");  //Set Gp22 as output
   // TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP22?  \r\n");  //Get Gp22 direction
@@ -138,7 +160,7 @@ int main() {
    //TEST_SCPI_INPUT("DIG:DIR:PORT0 #Hf0 \r\n"); 
    //TEST_SCPI_INPUT("DIG:DIR:PORT0:BIT1? \r\n"); 
    //TEST_SCPI_INPUT("DIG:DIR:PORT0:BIT5? \r\n"); 
-
+  // MESSAGE rec;
    //TEST_SCPI_INPUT("DIG:DIR:PORT1 #Hff \r\n");
   // TEST_SCPI_INPUT("DIG:OUT:PORT1:BIT0 1 \r\n");
    //TEST_SCPI_INPUT("DIG:OUT:PORT1:BIT0 0 \r\n");

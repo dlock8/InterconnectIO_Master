@@ -31,6 +31,11 @@ However, there are two caveats:
 
 ## SCPI command supported
 
+*IDN?
+*RST
+*CLS
+
+
 ROUTe:CLOSe (@<ch_list>)  
 ROUTe:CLOSe:EXCLusive (@<ch_list>) 
 ROUTe:CLOSe:Se {BANK1-BANK4}
@@ -69,7 +74,7 @@ SYSTEM:DEVice:VERsion?
 SYSTem:BEEPer  
 SYSTEM:LED:ERRor {0|1|ON|OFF}
 SYSTEM:RESet  SCPI_CoreRst
-SYSTEM:MODule_option?
+SYSTEM:MODule_option?  [TBD]
 
 COM:1WIRE:WRITE
 COM:1WIRE:READ? [{SERIAL|MEMORY|ALL}]

@@ -31,4 +31,8 @@ extern "C" {
 #define DIGIO {12,13,14,15,16,17,18,19}  // Digital IO position, could be 4 dimension
 
 
+
+void Hardware_Factory_Setting();
+
+
 #endif // 

@@ -91,6 +91,39 @@ extern "C" {
 
 #define BEEP_TIME   10      // Beep time in mS
 
+/* Reset Block for master
+
+[Block to reset]	[Bit]
+    USB	            24  
+    UART 1	        23
+    UART 0	        22
+    Timer	        21
+    TB Manager	    20
+    SysInfo	        19
+    System Config	18
+    SPI 1	        17
+    SPI 0	        16
+    RTC	            15
+    PWM	            14
+    PLL USB	        13
+    PLL System	    12
+    PIO 1	        11
+    PIO 0	        10
+    Pads - QSPI	    9
+    Pads - bank 0	8
+    JTAG	        7
+    IO Bank 1	    6
+    IO Bank 0	    5
+    I2C 1	        4
+    I2C 0	        3
+    DMA	            2
+    Bus Control	    1
+    ADC 0	        0
+*/
+
+#define RESETS_MASTER 0b000000000000000111111111
+
+
 extern scpi_t scpi_context;
 extern char scpi_input_buffer[];
 extern scpi_error_t scpi_error_queue[];
