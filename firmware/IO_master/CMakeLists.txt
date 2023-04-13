@@ -31,6 +31,11 @@ configure_file (
 include_directories("${PROJECT_BINARY_DIR}/IO_master/include") 
 
 
+#set(PICO_LIB2_PATH "${PROJECT_SOURCE_DIR}/IO_master/pico_lib2" CACHE PATH "Path to the PICO LIB2" FORCE)
+
+#add_subdirectory(${PICO_LIB2_PATH} pico_lib2)
+
+
 
 # After the SCPI library has been built (using the "scpi_parser_build"
 # project), we define an "IMPORTED" library to be able to link to it and
@@ -42,6 +47,7 @@ target_link_libraries(scpi_parser INTERFACE "${scpi_parser_PREFIX}/libscpi.a")
 target_include_directories(scpi_parser INTERFACE "${scpi_parser_SOURCE_DIR}/inc")
 
 
+
 add_library(fts_scpi INTERFACE) #DL
 target_include_directories(fts_scpi INTERFACE ./include)
 target_sources(fts_scpi INTERFACE fts_scpi.c)
@@ -50,18 +56,33 @@ add_library(i2c_com INTERFACE) #DL
 target_include_directories(i2c_com INTERFACE ./include)
 target_sources(i2c_com INTERFACE i2c_com.c)
 
+add_library(functadv INTERFACE) #DL
+target_include_directories(functadv INTERFACE ./include)
+target_sources(functadv INTERFACE functadv.c)
+
+MESSAGE(STATUS "Picolib2= ${PICO_LIB2_PATH}") 
+
+add_subdirectory(pico_lib2)   # add Pico_lib2 to project
+
 
 add_executable(master master.c)
 
+
+
 pico_enable_stdio_usb(master 1)
-pico_enable_stdio_uart(master 1)
+pico_enable_stdio_uart(master 1) # temporary enable (1) to debug
 
 pico_add_extra_outputs(master)
 
 target_link_libraries(master
 	pico_stdlib
+	hardware_adc
+	hardware_i2c
 	scpi_parser
 	fts_scpi
-	hardware_i2c
 	i2c_com
+	functadv
+#	lib2_sys
+	dev_ina219
+#	dev_mcp4725
 )

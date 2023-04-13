@@ -38,7 +38,7 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback)  
     buf[1] = wdata;    // gpio
 
 
-    fprintf(stdout,"on sendmaster cmd: 0x%02d: add 0x%02x\r\n", cmd,i2c_add);
+    fprintf(stdout,"on sendmaster cmd: 0x%02x: add 0x%02x\r\n", cmd,i2c_add);
     count = i2c_write_blocking(i2c0, i2c_add, buf, buflgth, false);
     if (count < 0) {
         //puts("Couldn't write Register to slave");
@@ -47,14 +47,14 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback)  
 
         return false; // set flag to indicate error (error number on rback)
     }
-    fprintf(stdout,"MAS: Write at register 0x%02d: %02d\n", buf[0], buf[1]);
+    fprintf(stdout,"MAS: Write at register 0x%02x: %02d\n", buf[0], buf[1]);
 
    //read register value and return to caller on pointer rback    
     uint8_t ird[2];
     i2c_write_blocking(i2c0, i2c_add, buf, 1, false);
     i2c_read_blocking(i2c0, i2c_add, ird, buflgth-1, false);
     
-    fprintf(stdout,"MAS:Read Register 0x%02d = %d \r\n", cmd,ird[0]);
+    fprintf(stdout,"MAS:Read Register 0x%02x = %d \r\n", cmd,ird[0]);
     *rback = (uint8_t) ird[0];  // save readback value
     return true;     
 }
@@ -179,8 +179,15 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                 rfd =true;  // set flag true (relay found)
             }
 
-            if (relay >= 500  ) {  // Power relay
+            if (relay >= 500 && relay <= 530  ) {  // Power relay on Slave 2
+                i2c_add = PICO_RELAY1_ADDRESS;   // assign card to send command
                 gpio = relay-500; // remove offset and get gpio reference
+                rfd =true;  // set flag true (power relay valid)
+            }
+
+            if (relay >= 600 && relay <= 630  ) {  // Power relay on Slave 3
+                i2c_add = PICO_RELAY2_ADDRESS;   // assign card to send command
+                gpio = relay-600; // remove offset and get gpio reference
                 rfd =true;  // set flag true (power relay valid)
             }
            
@@ -261,16 +268,21 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                 
                 case PWCLOSE:
                      gpio_put(gpio,1);  // Close Gpio on master device
+                     smf= send_master(i2c_add, CLOSE_RELAY, gpio,&rdata); // read required relay
+                     if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      fprintf(stdout,"MAS: CLOSE PWR relay using gpio: %02d\n", gpio);
                      break;   
 
                 case PWOPEN:
-                     gpio_put(gpio,0);  // Close Gpio on master device
+                     smf = send_master(i2c_add, OPEN_RELAY, gpio,&rdata); // open relay bank
+                     if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      fprintf(stdout,"MAS: OPEN PWR relay using gpio: %02d\n", gpio);
                      break; 
 
                 case PWSTATE:
-                     answer[i] = gpio_get(gpio);   // Read true Value
+                     smf= send_master(i2c_add, STATE_RELAY, gpio,&rdata); // read required relay
+                     if (!smf) { answer[0] = rdata; return false;}  // Save error and return
+                     answer[i] = rdata;
                      fprintf(stdout,"MAS: STATE PWR relay using gpio: %02d, State: %01d\n", gpio, answer[i]);
                      break;    
 

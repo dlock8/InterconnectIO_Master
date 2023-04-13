@@ -34,7 +34,8 @@ scpi_error_t scpi_error_queue[SCPI_ERROR_QUEUE_SIZE];
 
 // The function called by the SCPI library when it wants to send data.
 size_t SCPI_write(scpi_t *context, const char *data, size_t len) {
-	return fwrite(data, 1, len, stdout);
+    uart_puts(UART_ID, data); // send answer to serial port
+	return fwrite(data, 1, len, stdout); // send answer to usb port
 }
 
 // execute reset of all Pico
@@ -47,7 +48,7 @@ scpi_result_t SCPI_Reset(scpi_t * context) {
     // And bring it out
     unreset_block_wait(RESETS_MASTER);
     // Re-configure the hardware
-    Hardware_Factory_Setting();
+    Hardware_Default_Setting();
 
     fprintf(stdout, "Reset execute completed\r\n");
     return SCPI_RES_OK;
@@ -67,7 +68,7 @@ void SCPI_Beep() {
 }
 
 int SCPI_Error(scpi_t * context, int_fast16_t err) {
-    (void) context;
+    // (void) context;
     SCPI_Beep();  // Beep for signal error
     fprintf(stdout, "**ERROR: %d, \"%s\"\r\n", (int16_t) err, SCPI_ErrorTranslate(err));
     return SCPI_RES_OK;
@@ -300,7 +301,7 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
     tag = SCPI_CmdTag(context);   //extract tag from the command
 
     while(SCPI_ParamNumber(context, scpi_special_all_numbers_def, &paramRelay, FALSE)){
-        fprintf(stdout,"on switch \r\n");
+         //fprintf(stdout,"on switch \r\n");
         if (paramRelay.special) {
             switch (paramRelay.content.tag) {
                 case SCPI_BANK1: 
@@ -332,28 +333,24 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
                     i +=4;  
                     break;
 
-                // Powe relay. offset of 500 is added to distinguishe from bank relay numbering
-                case SCPI_LPR1: 
+                // Powe relay. offset of 500 or 600 is added to distinguishe from bank relay numbering
+                case SCPI_LPR1: // Offset 500 = Pico Slave #2
                     array[i] = 500 +GPIO_LPR1;    //  Add gpio of lpr1  on array list to open/close
-                    //se[i] = 0;
                     i++;  
                     break;
 
                 case SCPI_LPR2: 
                     array[i] = 500 +GPIO_LPR2;    //  Add gpio of lpr2  on array list to open/close
-                    //se[i] = 0;
                     i++;  
                     break;
 
-                case SCPI_HPR1: 
-                    array[i] = 500 +GPIO_HPR1;    //  Add gpio of HPR1  on array list to open/close
-                    //se[i] = 0;
+                case SCPI_HPR1:   // Offset 600 = Pico Slave #3
+                    array[i] = 600 +GPIO_HPR1;    //  Add gpio of HPR1  on array list to open/close
                     i++;  
                     break;
                 
                 case SCPI_SSD1:
-                    array[i] = 500 +GPIO_SSD1;    //  Add gpio of SSD1 on array list to open/close
-                    //se[i] = 0;
+                    array[i] = 600 +GPIO_SSD1;    //  Add gpio of SSD1 on array list to open/close
                     i++;  
                     break;
                 
