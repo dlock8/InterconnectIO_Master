@@ -60,6 +60,10 @@ add_library(functadv INTERFACE) #DL
 target_include_directories(functadv INTERFACE ./include)
 target_sources(functadv INTERFACE functadv.c)
 
+add_library(test INTERFACE) #DL
+target_include_directories(test INTERFACE ./include)
+target_sources(test INTERFACE test.c)
+
 MESSAGE(STATUS "Picolib2= ${PICO_LIB2_PATH}") 
 
 add_subdirectory(pico_lib2)   # add Pico_lib2 to project
@@ -82,7 +86,7 @@ target_link_libraries(master
 	fts_scpi
 	i2c_com
 	functadv
-#	lib2_sys
-	dev_ina219
-#	dev_mcp4725
+	test
+	lib2_sys
+
 )

@@ -1,5 +1,6 @@
 // Copyright 2021 Ocean (iiot2k@gmail.com) 
 // All rights reserved.
+// eeprom support Addition by dlock8
 
 #include "pico/stdlib.h"
 #include "pico/mutex.h"
@@ -57,7 +58,7 @@ void sys_i2c_init_def(i2c_inst_t* i2c, uint32_t baudrate, bool pullup)
 
 int32_t sys_i2c_rbyte(i2c_inst_t* i2c, uint8_t addr, uint8_t* rb)
 {
-    return i2c_read_timeout_us(i2c, addr, rb, 1, false, I2C_TIMEOUT_CHAR);
+   return i2c_read_timeout_us(i2c, addr, rb, 1, false, I2C_TIMEOUT_CHAR);
 }
 
 int32_t sys_i2c_rbyte_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* rb)
@@ -150,3 +151,14 @@ int32_t sys_i2c_wbuf_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* pB
     EXIT_SECTION;
     return ret;
 }
+
+int32_t sys_i2c_rbyte_eeprom(i2c_inst_t* i2c, uint8_t addr, uint8_t* ee_address, uint8_t* pBuf, uint32_t len)
+{
+    ENTER_SECTION;
+    int32_t ret = i2c_write_timeout_us(i2c, addr, ee_address, 2, true, I2C_TIMEOUT_CHAR);
+    if (ret > 0)
+        ret = i2c_read_timeout_us(i2c, addr, pBuf, len, false, len * I2C_TIMEOUT_CHAR);
+    EXIT_SECTION;
+    return ret;
+}
+

@@ -161,3 +161,117 @@
 
    // TEST_SCPI_INPUT("TEST:CHANnellist (@100:105)\r\n");
    // TEST_SCPI_INPUT("TEST:CHANnellist:EXCL (@120:125)\r\n");
+//Register device
+
+#include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
+#include "stdio.h"
+
+bool test_eeprom() {
+
+// 24LC32 validation test code
+ #define  PAGESIZE 32
+ #define  EEMODEL  32  // 24lc32 eeprom
+ #define  RWTESTSIZE 8
+
+  at24cx_dev_t eeprom_1;
+
+  at24cx_writedata_t dt;
+  uint16_t eeadd = 0xfe0;
+  
+ volatile uint8_t  wdata[PAGESIZE];
+ volatile uint8_t  rdata[PAGESIZE];
+ bool errflag;
+
+ // register eeprom 24lc32
+  at24cx_i2c_device_register(&eeprom_1, EEMODEL, I2C_ADDRESS_AT24CX);
+  
+  //Check if eeprom_1 is active
+  fprintf(stdout,"\neeprom_1 is %s\n", eeprom_1.status ? "detected" : "not detected");
+  if (eeprom_1.status == false) return false;
+  
+
+  fprintf(stdout,"\nWrite byte test\n\n");
+  for(int i=0;i<RWTESTSIZE;i++)
+    {
+      dt.address = eeadd +i;
+      dt.data = i;
+      wdata[i] = dt.data;  // save value for compare later
+
+      if (at24cx_i2c_byte_write(eeprom_1, dt) == AT24CX_OK) {
+        fprintf(stdout,"Writing at address 0x%02X: %d\n", dt.address, dt.data);
+      }else {
+        fprintf(stdout,"Device write byte error! \n");
+        return false;
+      }
+    }
+
+    fprintf(stdout,"\nRead byte test\n\n");
+    for(int i=0;i<RWTESTSIZE;i++)
+    {
+      dt.address = eeadd +i;
+      if (at24cx_i2c_byte_read(eeprom_1, &dt) == AT24CX_OK) {
+         fprintf(stdout,"Reading at address 0x%02X: %d\n", dt.address, dt.data);
+         rdata[i] = dt.data;
+      }else {
+        fprintf(stdout,"Device byte read error!\n");
+        errflag = true;
+      }
+    }
+
+    // Compare value write to value read
+    fprintf(stdout,"\nCompare Write and Read byte test\n\n");
+    for(int i=0;i<RWTESTSIZE;i++)
+    {
+      if (wdata[i] != rdata[i]) {
+         fprintf(stdout,"Error byte Write-read at address 0x%02X: write value 0x%02X: read value: 0x%02X\n", eeadd +i, wdata[i], rdata[i]);
+         errflag = true;
+      }
+    }
+      
+
+
+
+   // current read adress return bad value.
+   // at24cx_i2c_current_address_read(eeprom_1, &dt);
+   // fprintf(stdout,"Current read address 0x%02X\n", dt.data);
+
+
+  fprintf(stdout,"\nWrite page test\n\n");
+  dt.address = eeadd;
+  for(int i=0;i<PAGESIZE;i++) 
+    {
+      dt.data_multi[i]= i;
+      wdata[i] = dt.data_multi[i];
+
+      fprintf(stdout,"Writing at page data at position 0x%02X: %d\n", dt.address + i, dt.data_multi[i]);
+    }
+
+    if (at24cx_i2c_page_write(eeprom_1, dt) == AT24CX_OK) fprintf(stdout,"Page Writing at address 0x%02X\n", dt.address);
+    else { fprintf(stdout,"Device page write error!\n"); return false; }
+
+
+    fprintf(stdout,"\nRead page test\n\n");
+    for(int i=0;i<PAGESIZE;i++)
+    {
+      dt.address = eeadd+i;
+
+       if (at24cx_i2c_byte_read(eeprom_1, &dt) == AT24CX_OK) {
+        fprintf(stdout,"Reading at address 0x%02X: %d\n", dt.address, dt.data);
+        rdata[i] = dt.data;
+        } else {fprintf(stdout,"Device page read error!\n"); errflag = true; ;}
+    }
+
+        // Compare value write to value read
+    fprintf(stdout,"\nCompare Write and Read page test\n\n");
+    for(int i=0;i<PAGESIZE;i++)
+    {
+      if (wdata[i] != rdata[i]) {
+         fprintf(stdout,"Error byte Write-read at address 0x%02X: write value 0x%02X: read value: 0x%02X\n", eeadd +i, wdata[i], rdata[i]);
+         errflag = true;
+      }
+    }
+
+  if (errflag == true) return false;
+  else return true;
+
+}

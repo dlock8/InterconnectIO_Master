@@ -5,7 +5,7 @@
     @mainpage ../README.md
     @name dev_mcp4725 - MCP4725 One Channel 12-bit ADC
     @file dev_mcp4725.h
-    @lib dev_mcp472x
+    @lib dev_mcp4725
     @n
 */
 
@@ -32,6 +32,13 @@
 #include <stdbool.h>
 
 #include "../../sys/include/sys_i2c.h"
+
+/*! MCP4725 VDD:
+    @enum VDD  Source Voltage. Could be calibrated during Selftest and saved on eeprom
+    @enum MCP4725_ADDR1 I2C address (0x61) A0 to VDD
+    @n
+ */
+#define VDD 3.3
 
 /*! MCP4725 IC2 address:
     @enum MCP4725_ADDR0 I2C address (0x60) A0 to GND or open
@@ -68,11 +75,20 @@ void dev_mcp4725_pd(uint8_t pd);
 /*! @brief - Sets adc output
     @param i2c I2C channel i2c0 or i2c1
     @param addr I2C address MCP4725_ADDRn
-    @param value Output value for for channnel (0..4095)
+    @param value Output value for channnel (0..4095)
     @return true
     @return[error] false
 */
-bool dev_mcp4725_set(i2c_inst_t* i2c, uint8_t addr, uint16_t value);
+bool dev_mcp4725_set_raw(i2c_inst_t* i2c, uint8_t addr, uint16_t value);
+
+/*! @brief - Sets adc output
+    @param i2c I2C channel i2c0 or i2c1
+    @param addr I2C address MCP4725_ADDRn
+    @param value Volt Output value for channnel (0 - VDD)
+    @return true
+    @return[error] false
+*/
+bool dev_mcp4725_set(i2c_inst_t* i2c, uint8_t addr, float volt);
 
 /*! @brief - Sets adc output and save settings to EEPROM (50ms)
     @param i2c I2C channel i2c0 or i2c1

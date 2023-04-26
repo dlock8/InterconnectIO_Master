@@ -1,5 +1,7 @@
 // Copyright 2021 Ocean (iiot2k@gmail.com) 
 // All rights reserved.
+// eeprom support Addition by dlock8
+
 
 /*!
     @mainpage ../README.md
@@ -226,6 +228,19 @@ int32_t sys_i2c_rbuf_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* pB
     @return[error] PICO_ERROR_TIMEOUT On timeout
 */
 int32_t sys_i2c_wbuf_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* pBuf, uint32_t len);
+
+/*! @brief - Read i2c byte on eeprom  at word address
+    @param i2c I2C channel i2c0 or i2c1
+    @param addr I2C address
+    @param ee_address Word address in array
+    @param pBuf Buffer to write
+    @param len Length to write
+    @return Bytes read
+    @return[error] PICO_ERROR_GENERIC On error
+    @return[error] PICO_ERROR_TIMEOUT On timeout
+*/
+int32_t sys_i2c_rbyte_eeprom(i2c_inst_t* i2c, uint8_t addr, uint8_t* ee_address, uint8_t* pBuf, uint32_t len);
+
 
 #ifdef __cplusplus
 }

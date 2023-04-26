@@ -8,9 +8,11 @@
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
 #include "include/master.h"
+#include "include/test.h"
 #include "include/functadv.h"
 #include "hardware/watchdog.h"
 #include "userconfig.h"
+
 
 
 
@@ -247,7 +249,8 @@ int main() {
 
 #include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
 
-//#include "pico_lib2/src/dev/dev_mcp472x/dev_mcp4725.h"
+#include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
+#include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
 
 #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
 
@@ -257,7 +260,9 @@ read_ADC(adcv);
 sleep_ms(10);
 scan_i2c_bus();
 
-//dev_mcp4725_pd(0);
+
+if (test_eeprom()) fprintf(stdout, "\n ---> ERROR ON EEPROM VALIDATION \n");
+
 
 uint16_t rdata;
 
@@ -274,8 +279,10 @@ ina219Init();
 //send_master(0x21,81, 0x01, &rdata);
 
 
-//if (!dev_mcp4725_set(i2c0, MCP4725_ADDR0, 2095))
+if (!dev_mcp4725_set(i2c0, MCP4725_ADDR0, 3.2))
      fprintf(stdout,"Error on set MCP4725\n");
+
+read_ADC(adcv);
 
 // fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
 

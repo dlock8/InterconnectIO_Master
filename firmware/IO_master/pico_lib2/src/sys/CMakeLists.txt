@@ -23,5 +23,9 @@ if (NOT TARGET lib2_sys)
         hardware_spi
         hardware_i2c
         hardware_gpio
+        dev_ina219
+        dev_mcp4725
+        dev_24lc32
+        
     )
 endif()
