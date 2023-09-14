@@ -67,43 +67,31 @@ uint16_t sys_adc_raw(uint8_t ch);
     @param high High value for 4095 (3.3V or VREF)
     @return Value between low and high 
 */
-static inline double sys_adc_scale(uint8_t ch, double low, double high)
-{
-    return ((double)sys_adc_raw(ch)) * ((high - low) / 4095.0) + low;
-}
+double sys_adc_scale(uint8_t ch, double low, double high);
 
 /*! @brief - Read ADC voltage value
     @param ch ADC channel
     @return ADC voltage value 0..3.3V (VREF)
 */
-static inline double sys_adc_volt(uint8_t ch)
-{
-    return ((double)sys_adc_raw(ch)) * (ADC_VREF/4095.0);
-}
+double sys_adc_volt(uint8_t ch);
+
 
 /*! @brief - Read ADC VSYS voltage
     @return VSYS voltage value ~5V
 */
-static inline double sys_adc_vsys()
-{
-    return sys_adc_volt(ADC_CH_V) * 3.0;
-}
+double sys_adc_vsys();
 
 /*! @brief - Read ADC internal temp. sensor in celsius
     @return Temp. value in celsius
 */
-static inline double sys_adc_temp_c()
-{
-    return 27.0 - ((sys_adc_volt(ADC_CH_T) - 0.706)/0.001721);
-}
+double sys_adc_temp_c();
+
 
 /*! @brief - Read ADC internal temp. sensor in fahrenheit
     @return Temp. value in fahrenheit
 */
-static inline double sys_adc_temp_f()
-{
-    return sys_adc_temp_c() * 1.8 + 32;
-}
+double sys_adc_temp_f();
+
 
 #ifdef __cplusplus
 }

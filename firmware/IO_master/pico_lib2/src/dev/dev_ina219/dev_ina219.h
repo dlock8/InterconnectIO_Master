@@ -47,7 +47,7 @@
 /*=========================================================================
     I2C ADDRESS/BITS
     -----------------------------------------------------------------------*/
-    #define INA219_ADDRESS                         (0x80)  // 1000000x (A0+A1=GND)
+    #define INA219_ADDRESS                         (0x40)  // 1000000x (A0+A1=GND)
     #define INA219_READ                            (0x01)
 /*=========================================================================*/
 
@@ -135,6 +135,7 @@ int16_t ina219GetPower(void);
 int16_t ina219GetPower_mW(void);
 int16_t ina219GetCurrent(void);
 int16_t ina219GetCurrent_mA(void);
+bool    ina219CalibrateCurrent_mA(float,float);
 
 #ifdef __cplusplus
  }

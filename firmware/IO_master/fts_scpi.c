@@ -279,7 +279,10 @@ const scpi_choice_def_t scpi_special_all_numbers_def[] = {
     {/* name */ "LPR1", /* type */ SCPI_LPR1},
     {/* name */ "LPR2", /* type */ SCPI_LPR2},
     {/* name */ "HPR1", /* type */ SCPI_HPR1},
-    {/* name */ "SSD1", /* type */ SCPI_SSD1},
+    {/* name */ "SSR1", /* type */ SCPI_SSR1},
+    {/* name */ "OC1", /* type */ SCPI_OC1},
+    {/* name */ "OC2", /* type */ SCPI_OC2},
+    {/* name */ "OC3", /* type */ SCPI_OC3},
     {/* name */ "ON", /* type */ 1},
     {/* name */ "OFF", /* type */ 0},
 
@@ -333,24 +336,42 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
                     i +=4;  
                     break;
 
-                // Powe relay. offset of 500 or 600 is added to distinguishe from bank relay numbering
-                case SCPI_LPR1: // Offset 500 = Pico Slave #2
-                    array[i] = 500 +GPIO_LPR1;    //  Add gpio of lpr1  on array list to open/close
+                // Powe relay. offset of 500,600 or 700 is added to distinguishe from bank relay numbering
+                case SCPI_LPR1: // Offset 600 = Pico Slave #2
+                    array[i] = 600 +GPIO_LPR1;    //  Add gpio of lpr1  on array list to open/close
                     i++;  
                     break;
 
                 case SCPI_LPR2: 
-                    array[i] = 500 +GPIO_LPR2;    //  Add gpio of lpr2  on array list to open/close
+                    array[i] = 600 +GPIO_LPR2;    //  Add gpio of lpr2  on array list to open/close
                     i++;  
                     break;
 
-                case SCPI_HPR1:   // Offset 600 = Pico Slave #3
-                    array[i] = 600 +GPIO_HPR1;    //  Add gpio of HPR1  on array list to open/close
+                case SCPI_HPR1:   // Offset 700 = Pico Slave #3
+                    array[i] = 700 +GPIO_HPR1;    //  Add gpio of HPR1  on array list to open/close
                     i++;  
                     break;
                 
-                case SCPI_SSD1:
-                    array[i] = 600 +GPIO_SSD1;    //  Add gpio of SSD1 on array list to open/close
+                case SCPI_SSR1:
+                    array[i] = 700 +GPIO_SSR1;    //  Add gpio of SSR1 on array list to open/close
+                    i++;  
+                    break;
+
+                // Open collector. offset of 500,600 or 700 is added to distinguishe from bank relay numbering
+                case SCPI_OC1: // Offset 500 = Pico Slave #1
+                    array[i] = 500 +GPIO_OC1;    //  Add gpio of OC1  on array list to open/close
+                    i++;  
+                    break;
+
+                // Open collector. offset of 700,500 or 600 is added to distinguishe from bank relay numbering
+                case SCPI_OC2: // Offset 600 = Pico Slave #2
+                    array[i] = 600 +GPIO_OC2;    //  Add gpio of OC2  on array list to open/close
+                    i++;  
+                    break;
+
+                // Open collector. offset of 700,500 or 600 is added to distinguishe from bank relay numbering
+                case SCPI_OC3: // Offset 700 = Pico Slave #3
+                    array[i] = 700 +GPIO_OC3;    //  Add gpio of OC3  on array list to open/close
                     i++;  
                     break;
                 
@@ -374,8 +395,6 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
         }else {return SCPI_RES_ERR;} // reurn error flag due to error occured
         
     }
-
-
 
 
     i=0;  // reset loop counter
@@ -501,6 +520,7 @@ return SCPI_RES_OK;
 static scpi_result_t Callback_system_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_parameter_t param1;
+    scpi_number_t paramRun;
     uint16_t ans[8];  // will contains the answer returned by command
     char pv[30]; 
    // int32_t numbers[2] = {0,0};  // initialise array to get a know value in case of only 1 number
@@ -509,15 +529,14 @@ volatile    uint8_t tag;
     float fval;
 
     fprintf(stdout, "On system execute \r\n");
+
     res = SCPI_Parameter(context, &param1, FALSE);
 
     // if ON or OFF, transform to value 0 or 1
     if (res && param1.type == SCPI_TOKEN_PROGRAM_MNEMONIC) {
-        SCPI_ParamToChoice(context, &param1, scpi_special_all_numbers_def, &value);
+       SCPI_ParamToChoice(context, &param1, scpi_special_all_numbers_def, &value);
     }
  
-    
-
     if (res) {
         // Is parameter a number without suffix?
         if (SCPI_ParamIsNumber(&param1, FALSE)) {
@@ -526,9 +545,8 @@ volatile    uint8_t tag;
         }
     }
 
-
-
     tag = SCPI_CmdTag(context);   //extract tag from the command
+
 
     switch (tag) {
         case SBEEP:
@@ -544,28 +562,51 @@ volatile    uint8_t tag;
                 sprintf(pv,"%2d.%2d, %2d.%2d, %2d.%2d, %2d.%2d\n",ans[0],ans[1],ans[2],ans[3],ans[4],ans[5],ans[6],ans[7]);
                 fprintf(stdout,pv); // print string version for the 4 devices
                 SCPI_ResultText(context,pv); // sent result
+            } else {
+                  // if failure found during command
+                fprintf(stdout,"System execute error: %d\r\n", ans);
+                SCPI_ErrorPush(context, ans[0]);
+                return SCPI_RES_ERR;
             }
             break;
 
         case SLERR:  // Ctrl of led error
-            fprintf (stdout, "Set Error led to: %d \r\n", value);
+            fprintf (stdout, "Set Error led on gpio %d to: %d \r\n",GPIO_LED,value);
             gpio_put(GPIO_LED, value);
             break;
 
+        case GLERR:  // Read led error
+            value = gpio_get(GPIO_LED);
+            fprintf (stdout, "Read Error led on gpio %d ,value: %d \r\n",GPIO_LED, value);
+            SCPI_ResultUInt8(context,value); // return SCPI value 
+            break;
         
+        case SRUN:  // System Pico RUN_EN,
+            fprintf (stdout, "Set Pico RUN_EN gpio %d to: %d \r\n",GPIO_RUN,value);
+            gpio_put(GPIO_RUN, value);
+            break;
+
+        case GRUN:  // Read Run enable value
+            value = gpio_get(GPIO_RUN);
+            fprintf (stdout, "Read Slave Run_EN on gpio %d ,value: %d \r\n",GPIO_RUN, value);
+            SCPI_ResultUInt8(context,value); // return SCPI value 
+            break;
+
+        case SOE:  // System Output enable
+            fprintf (stdout, "Set Output Enable gpio %d to: %d \r\n",GPIO_OE, value);
+            gpio_put(GPIO_OE, value);
+            break;
+
+        case GOE:  // Read System Ouput enable
+            value = gpio_get(GPIO_OE);
+            fprintf (stdout, "Read System Output Enable on gpio %d ,value: %d \r\n",GPIO_OE, value);
+            SCPI_ResultUInt8(context,value); // return SCPI value 
+            break;
         
         default: 
             break;
     }
-
-    if (!res) {   // if failure found during command
-        fprintf(stdout,"System execute error: %d\r\n", ans);
-        SCPI_ErrorPush(context, ans[0]);
-      return SCPI_RES_ERR;
-    }
-
-
-return SCPI_RES_OK;
+    return SCPI_RES_OK;
 }
 
     // The SCPI commands we support and the callbacks they use.
@@ -604,6 +645,9 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "ROUTe:CLOSE:PWR", .callback = Callback_Relay_all_scpi,PWCLOSE},
     {.pattern = "ROUTe:OPEN:PWR", .callback = Callback_Relay_all_scpi,PWOPEN},
     {.pattern = "ROUTe:STATE:PWR?", .callback = Callback_Relay_all_scpi,PWSTATE},
+    {.pattern = "ROUTe:CLOSE:OC", .callback = Callback_Relay_all_scpi,OCCLOSE},
+    {.pattern = "ROUTe:OPEN:OC", .callback = Callback_Relay_all_scpi,OCOPEN},
+    {.pattern = "ROUTe:STATE:OC?", .callback = Callback_Relay_all_scpi,OCSTATE},
 
     {.pattern = "DIGital:DIRection:PORT#", .callback = Callback_Digital_scpi,SDIR},
     {.pattern = "DIGital:DIRection:PORT#:BIT#", .callback = Callback_Digital_scpi,SBDIR},
@@ -624,7 +668,12 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "SYSTem:BEEPer", .callback = Callback_system_scpi,SBEEP},
     {.pattern = "SYSTem:DEVice:VERSion?", .callback = Callback_system_scpi,SVER},
     {.pattern = "SYSTem:LED:ERRor", .callback = Callback_system_scpi,SLERR},
-    {.pattern = "SYSTem:RUN", .callback = Callback_system_scpi,SRUN},
+    {.pattern = "SYSTem:OUTput", .callback = Callback_system_scpi,SOE},
+    {.pattern = "SYSTem:SLAves", .callback = Callback_system_scpi,SRUN},
+    {.pattern = "SYSTem:LED:ERRor?", .callback = Callback_system_scpi,GLERR},
+    {.pattern = "SYSTem:OUTput?", .callback = Callback_system_scpi,GOE},
+    {.pattern = "SYSTem:SLAves?", .callback = Callback_system_scpi,GRUN},
+
 
 
 	SCPI_CMD_LIST_END

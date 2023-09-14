@@ -1,3 +1,14 @@
+#include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
+#include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
+#include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
+#include "pico_lib2/src/sys/include/sys_adc.h"
+#include "include/functadv.h"
+#include "include/fts_scpi.h"
+
+#include "stdio.h"
+
+
+
 
 #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
 
@@ -37,12 +48,12 @@
 //TEST_SCPI_INPUT("ROUT:OPEN (@70)\r\n"); 
 //TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR5 \r\n");
 
-//TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR1,LPR2,HPR1,SSD1 \r\n");
-//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSD1 \r\n");
-//TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1,LPR2,HPR1,SSD1 \r\n");
-//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSD1 \r\n");
+//TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR1,LPR2,HPR1,SSR1 \r\n");
+//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSR1 \r\n");
+//TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1,LPR2,HPR1,SSR1 \r\n");
+//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSRD1 \r\n");
 //TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR2,HPR1 \r\n");
-//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSD1 \r\n");
+//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSR1 \r\n");
 
  // TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port 1
  // TEST_SCPI_INPUT("GPIO:GETP:DEV5:GP22?   \r\n");  //Set Gp22 as output
@@ -98,8 +109,22 @@
 
   //TEST_SCPI_INPUT("SYST:ERR:COUNT?\r\n");
   //TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
-  //TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
- 
+  //TEST_SCPI_INPUT("SYST:ERR?\r\n");
+
+// test activation relay 
+/*
+TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP8 1 \r\n");  //Get Gp22 direction
+TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP9 1 \r\n");  //Get Gp22 direction
+
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8  1 \r\n");  //Set Gp22 as output
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  1 \r\n");  //Set Gp22 as output
+
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8  0 \r\n");  //Set Gp22 as output
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  0 \r\n");  
+
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8  1 \r\n");  //Set Gp22 as output
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  1 \r\n");  //Set Gp22 as output
+ */
    
    
    
@@ -163,8 +188,95 @@
    // TEST_SCPI_INPUT("TEST:CHANnellist:EXCL (@120:125)\r\n");
 //Register device
 
-#include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
-#include "stdio.h"
+bool test_ioboard() {
+ int result;
+
+ fprintf(stdout,"Interconnect IO Board Hardware Test\n");  // send message to debug port
+
+
+//Developpement
+/*
+TEST_SCPI_INPUT("SYST:SLA OFF\r\n");  // Reset Slave
+TEST_SCPI_INPUT("SYST:SLA?\r\n"); 
+sleep_ms(300);
+TEST_SCPI_INPUT("SYST:SLA ON\r\n");  // Reset Slave
+TEST_SCPI_INPUT("SYST:OUT ON\r\n"); 
+*/
+
+TEST_SCPI_INPUT("ROUT:CLOSE:OC OC3\r\n");
+TEST_SCPI_INPUT("ROUT:STATE:OC? OC3 \r\n");
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \r\n");
+TEST_SCPI_INPUT("ROUT:STATE:OC? OC3 \r\n");
+
+TEST_SCPI_INPUT("SYST:BEEP\r\n");
+
+TEST_SCPI_INPUT("SYST:LED:ERR ON \r\n");
+TEST_SCPI_INPUT("SYST:LED:ERR? \r\n");
+
+TEST_SCPI_INPUT("SYST:SLA OFF\r\n"); 
+TEST_SCPI_INPUT("SYST:SLA?\r\n"); 
+TEST_SCPI_INPUT("SYST:OUT ON\r\n"); 
+TEST_SCPI_INPUT("SYST:OUT?\r\n"); 
+TEST_SCPI_INPUT("SYST:SLA ON\r\n");
+TEST_SCPI_INPUT("SYST:SLA?\r\n"); 
+TEST_SCPI_INPUT("SYST:OUT OFF\r\n"); 
+TEST_SCPI_INPUT("SYST:OUT?\r\n"); 
+
+
+ // Test for Master PICO
+ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP11  1 \r\n");  //Beeper ON
+ sleep_ms(10);
+ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP11  0 \r\n");  //Beeper OFF
+ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP19  1 \r\n");  //Red Led ON
+ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP28  1 \r\n");  //Green Led ON (OE)
+ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP19  0 \r\n");  //Red Led OFF
+ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP28  0 \r\n");  //Green Led OFF (OE)
+
+ TEST_SCPI_INPUT("SYST:LED:ERR ON \r\n");
+ TEST_SCPI_INPUT("SYST:LED:ERR OFF \r\n");
+
+ TEST_SCPI_INPUT("ROUT:CLOSE:PWR HPR1 \r\n");
+ TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR1 \r\n");
+ TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR2 \r\n");
+ TEST_SCPI_INPUT("ROUT:CLOSE:PWR SSR1 \r\n");
+ 
+ TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSR1 \r\n");
+ TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1,LPR2,HPR1,SSR1 \r\n");
+
+ scan_i2c_bus();
+
+// Test for Pico Slave 1
+ TEST_SCPI_INPUT("DIG:DIR:PORT0 #HFF \r\n"); // set direction port 0
+ TEST_SCPI_INPUT("DIG:OUT:PORT0 #HAA \r\n"); 
+ TEST_SCPI_INPUT("DIG:OUT:PORT0 #H55 \r\n");  
+ TEST_SCPI_INPUT("DIG:IN:PORT0? \r\n"); 
+
+ TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port 1
+ TEST_SCPI_INPUT("DIG:OUT:PORT1 #H55 \r\n"); 
+ TEST_SCPI_INPUT("DIG:OUT:PORT1 #HAA \r\n");  
+ TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n"); 
+
+
+// Test for Pico Slave 2
+TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK1\r\n");
+TEST_SCPI_INPUT("ROUT:CLOSE (@100)\r\n");
+TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK3\r\n");
+TEST_SCPI_INPUT("ROUT:CLOSE (@300)\r\n");
+
+// Test for Pico Slave 3
+TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK2\r\n");
+TEST_SCPI_INPUT("ROUT:CLOSE (@200)\r\n");
+TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK4\r\n");
+TEST_SCPI_INPUT("ROUT:CLOSE (@400)\r\n");
+
+sleep_ms(300);
+ }
+
+//#include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
+//#include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
+//#include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
+
+
 
 bool test_eeprom() {
 
@@ -274,4 +386,66 @@ bool test_eeprom() {
   if (errflag == true) return false;
   else return true;
 
+}
+
+
+bool test_ina219(){
+
+  volatile float busv,i,p,s;
+  ina219Init();
+
+  busv = ina219GetBusVoltage() * 0.001;
+  fprintf(stdout,"INA219 Bus voltage: %2.3f V\n", busv);
+  s = ina219GetShuntVoltage() * 10E-3;
+  fprintf(stdout,"INA219 Shunt voltage: %2.3f mV\n", s);
+  i = ina219GetCurrent_mA();
+  fprintf(stdout,"INA219 Current : %2.3f mA\n", i);
+  p = ina219GetPower_mW();
+  fprintf(stdout,"INA219 power: %2.3f mW\n", p);
+
+  //ina219CalibrateCurrent_mA(i,404.35);
+
+  // i = ina219GetCurrent_mA();
+  // fprintf(stdout,"INA219 Cal Current : %2.3f mA\n", i);
+
+}
+
+bool test_adc(){
+  float readv;
+
+  sys_adc_init(ADC_CH_0);
+  sys_adc_init(ADC_CH_1);
+//sys_adc_init(ADC_CH_2); / Connected to OE
+sys_adc_init(ADC_CH_V);
+sys_adc_init(ADC_CH_T);
+
+readv = sys_adc_volt(ADC_CH_0);
+fprintf(stdout,"ADC_CH_0: %2.3f V\n", readv);
+
+readv = sys_adc_volt(ADC_CH_1);
+fprintf(stdout,"ADC_CH_1: %2.3f V\n", readv);
+
+//readv = sys_adc_volt(ADC_CH_2);
+//fprintf(stdout,"ADC_CH_2: %2.3f V\n", readv);
+
+readv = sys_adc_vsys();
+fprintf(stdout,"VSYS: %2.3f V\n", readv);
+
+readv = sys_adc_temp_c();
+fprintf(stdout,"TEMP C: %2.3f C\n", readv);
+
+return true;
+}
+
+bool test_dac(){
+
+  float value = 2.5;
+
+ if (!dev_mcp4725_set(i2c0, MCP4725_ADDR0, value))
+  {
+     fprintf(stdout,"DAC Error on set MCP4725\n"); 
+     return false;
+  }
+  fprintf(stdout,"DAC voltage set to: %2.3f V\n", value);
+  return true; 
 }

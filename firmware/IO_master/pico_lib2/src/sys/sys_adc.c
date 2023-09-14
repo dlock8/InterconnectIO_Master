@@ -50,3 +50,28 @@ uint16_t sys_adc_raw(uint8_t ch)
     // read from adc
     return adc_read();
 }
+
+double sys_adc_scale(uint8_t ch, double low, double high)
+{
+    return ((double)sys_adc_raw(ch)) * ((high - low) / 4095.0) + low;
+}
+
+double sys_adc_volt(uint8_t ch)
+{
+    return ((double)sys_adc_raw(ch)) * (ADC_VREF/4095.0);
+}
+
+double sys_adc_vsys()
+{
+    return sys_adc_volt(ADC_CH_V) * 3.0;
+}
+
+double sys_adc_temp_c()
+{
+    return 27.0 - ((sys_adc_volt(ADC_CH_T) - 0.706)/0.001721);
+}
+
+double sys_adc_temp_f()
+{
+    return sys_adc_temp_c() * 1.8 + 32;
+}

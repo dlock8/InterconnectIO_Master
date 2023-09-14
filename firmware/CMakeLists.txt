@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.13)
 include(pico_sdk_import.cmake)
 #include(pico_lib2_import.cmake)
 
-project(INTERCONNECTIO C CXX ASM)
+project(INTERCONNECTIO_MASTER C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -13,7 +13,7 @@ endif()
 
 pico_sdk_init()
 
-project(INTERCONNECTIO C CXX ASM)
+project(INTERCONNECTIO_MASTER C CXX ASM)
 
 
 

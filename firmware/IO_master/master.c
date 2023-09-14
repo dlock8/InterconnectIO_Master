@@ -14,19 +14,14 @@
 #include "userconfig.h"
 
 
-
-
-
-
-
 // Major an Minor version are located on Cmakelist.txt with command
 //set (IO_MASTER_VERSION_MAJOR x)
 //set (IO_MASTER_VERSION_MINOR x)
 
 // set default value for each pin
-static const uint32_t GPIO_BOOT_MASK = 0b000011110010011111111111100000000;
-static const uint32_t GPIO_SET_DIR_MASK = 0b000011110010010111111111100000000;
-static const uint32_t GPIO_MASTER_OUT_MASK = 0b000011110010011111111111100000000;
+static const uint32_t GPIO_BOOT_MASK = 0b000111110010011111111111100000000;
+static const uint32_t GPIO_SET_DIR_MASK = 0b000111110010010111111111100000000;
+static const uint32_t GPIO_MASTER_OUT_MASK = 0b000111110010011111111111100000000;
 
 
 // Messsage queue is used to save the SCPI command received by the serial port.
@@ -147,14 +142,22 @@ void Hardware_Default_Setting() {
   gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
   gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 
+  // RUN_EN setup
+  // We setup the output before the direction for being sure of the RUN_EN= 1 when 
+  // we change the pin from input to output.
+  // Run_EN =0 disconnect the USB port on the slave
   
-  gpio_set_dir(GPIO_RUN, GPIO_OUT);
+  gpio_put(GPIO_RUN, 1); // Set RUN_EN =1
+  gpio_set_dir(GPIO_RUN, GPIO_OUT);   // Set pin at output
+/*
   gpio_put(GPIO_RUN, 0); // Reset PICO Slave 
-  //fprintf(stdout, "PICO Slave in Reset\r\n");
+  fprintf(stdout, "PICO Slave in Reset\r\n");
   sleep_ms(100);
   gpio_put(GPIO_RUN, 1); // Start PICO Slave 
   gpio_set_dir(GPIO_RUN, GPIO_IN); // Set GPIO in Input for security 
   sleep_ms(100);
+ */
+
 
   // Communication UART inititializayion. Thr UART is used to receive SCPI command
   // Set up our UART with a basic baud rate.
@@ -248,21 +251,38 @@ int main() {
 //#include "pico_lib2/src/sys/include/sys_i2c.h"
 
 #include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
-
 #include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
 #include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
+#include "pico_lib2/src/sys/include/sys_adc.h"
 
+
+// #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
+
+test_ioboard();  // Check io board function
+
+/*
 #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
+TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP28 1 \r\n");  //Get Gp22 direction
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP28  1 \r\n");  //Set Gp22 as output
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP28  0 \r\n");  //Set Gp22 as output
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP28  1 \r\n");  //Set Gp22 as output
+*/
 
+
+/*
 read_int_ADC(adcv);
 setup_ADC(1);
 read_ADC(adcv);
 sleep_ms(10);
 scan_i2c_bus();
+*/
 
 
-if (test_eeprom()) fprintf(stdout, "\n ---> ERROR ON EEPROM VALIDATION \n");
+//if (test_eeprom()) fprintf(stdout, "\n ---> ERROR ON EEPROM VALIDATION \n");
+//test_ina219();
 
+test_dac();
+test_adc();
 
 uint16_t rdata;
 
@@ -271,7 +291,32 @@ uint8_t buffer[2];
 	buffer[0] = 81;
 	buffer[1] = 0x55;
 
+//  GPIO:DIRection:DEVice0:GP22 1   --> Set gpio 22 on Device 0 (Master) to direction out (1 = out) 
+//  GPIO:Out:DEVice1:GP8 0  
+
+
+
+
+/*
+volatile float busv,i,p,s;
 ina219Init();
+
+busv = ina219GetBusVoltage() * 0.001;
+fprintf(stdout,"INA219 Bus voltage: %2.3f V\n", busv);
+s = ina219GetShuntVoltage() * 10E-3;
+fprintf(stdout,"INA219 Shunt voltage: %2.3f mV\n", s);
+i = ina219GetCurrent_mA();
+fprintf(stdout,"INA219 Current : %2.3f mA\n", i);
+p = ina219GetPower_mW();
+fprintf(stdout,"INA219 power: %2.3f mW\n", p);
+
+//ina219CalibrateCurrent_mA(i,404.35);
+
+// i = ina219GetCurrent_mA();
+// fprintf(stdout,"INA219 Cal Current : %2.3f mA\n", i);
+
+*/
+
 
 //sys_i2c_wbuf(i2c0, 0x21, buffer, sizeof(buffer)) == sizeof(buffer);
 //TEST_SCPI_INPUT("DIG:OUT:PORT0 #H55 \r\n"); 
@@ -279,10 +324,8 @@ ina219Init();
 //send_master(0x21,81, 0x01, &rdata);
 
 
-if (!dev_mcp4725_set(i2c0, MCP4725_ADDR0, 3.2))
-     fprintf(stdout,"Error on set MCP4725\n");
 
-read_ADC(adcv);
+//read_ADC(adcv);
 
 // fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
 

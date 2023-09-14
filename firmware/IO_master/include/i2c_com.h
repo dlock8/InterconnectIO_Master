@@ -25,9 +25,9 @@ extern "C" {
 
 
 // Array of relay index to pico gpio assigned to control the relay actuation
-#define RBK {{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7}, \
-{10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17}, \
+#define RBK {{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7},\
 {0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7}, \
+{10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17}, \
 {10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17}, }
 
 // Array of digital bit index to pico GPx. Usedby Port0 and Port1 

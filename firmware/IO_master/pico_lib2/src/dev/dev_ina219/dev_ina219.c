@@ -80,6 +80,9 @@
 uint32_t ina219_currentDivider_mA = 0;
 uint32_t ina219_powerDivider_mW   = 0;
 
+// This variable contents the default calibration factor 
+uint32_t ina219_Calfactor   = 0;
+
 /**************************************************************************/
 /*! 
     @brief  Sends a single command byte over I2C
@@ -192,8 +195,11 @@ void ina219SetCalibration_32V_2A(void)
   ina219_currentDivider_mA = 10;  // Current LSB = 100uA per bit (1000/100 = 10)
   ina219_powerDivider_mW = 2;     // Power LSB = 1mW per bit (2/1)
 
+  ina219_Calfactor = 0x1000;
+
   // Set Calibration register to 'Cal' calculated above	
-  ina219WriteRegister(INA219_REG_CALIBRATION, 0x1000);
+  ina219WriteRegister(INA219_REG_CALIBRATION, ina219_Calfactor); 
+ 
 
   // Set Config register to take into account the settings above
   uint16_t config = INA219_CONFIG_BVOLTAGERANGE_32V |
@@ -283,8 +289,9 @@ void ina219SetCalibration_32V_1A(void)
   ina219_currentDivider_mA = 25;      // Current LSB = 40uA per bit (1000/40 = 25)
   ina219_powerDivider_mW = 1;         // Power LSB = 800�W per bit
 
+  ina219_Calfactor = 0x2800;
   // Set Calibration register to 'Cal' calculated above	
-  ina219WriteRegister(INA219_REG_CALIBRATION, 0x2800);
+  ina219WriteRegister(INA219_REG_CALIBRATION, ina219_Calfactor);
 
   // Set Config register to take into account the settings above
   uint16_t config = INA219_CONFIG_BVOLTAGERANGE_32V |
@@ -368,8 +375,9 @@ void ina219SetCalibration_16V_500mA(void)
   ina219_currentDivider_mA = 40;    // Current LSB = 25uA per bit (1000/25 = 40)
   ina219_powerDivider_mW =    1;    // Power LSB = 500�W per bit
 
+  ina219_Calfactor = 0x4000;
   // Set Calibration register to 'Cal' calculated above	
-  ina219WriteRegister(INA219_REG_CALIBRATION, 0x4000);
+  ina219WriteRegister(INA219_REG_CALIBRATION, ina219_Calfactor);
 
   // Set Config register to take into account the settings above
   uint16_t config = INA219_CONFIG_BVOLTAGERANGE_16V |
@@ -449,8 +457,9 @@ void ina219SetCalibration_16V_200mA(void)
   ina219_currentDivider_mA = 100;      // Current LSB = 10uA per bit (1000/10 = 100)
   ina219_powerDivider_mW =     1;      // Power LSB = 200�W per bit
 
+  ina219_Calfactor = 0xA000;
   // Set Calibration register to 'Cal' calculated above	
-  ina219WriteRegister(INA219_REG_CALIBRATION, 0xA000);
+  ina219WriteRegister(INA219_REG_CALIBRATION, ina219_Calfactor);
 
   // Set Config register to take into account the settings above
   uint16_t config = INA219_CONFIG_BVOLTAGERANGE_16V |
@@ -473,6 +482,7 @@ void ina219Init(void)
 
   // Setup chip for 32V and 2A by default
   ina219SetCalibration_32V_2A();
+  //ina219SetCalibration_16V_500mA();
 }
 
 /**************************************************************************/
@@ -489,7 +499,7 @@ int16_t ina219GetShuntVoltage(void)
 
 /**************************************************************************/
 /*! 
-    @brief  Gets the shunt voltage (16-bit signed integer, so +-32767)
+    @brief  Gets the Bus voltage (16-bit signed integer, so +-32767)
 */
 /**************************************************************************/
 int16_t ina219GetBusVoltage(void)
@@ -547,6 +557,36 @@ int16_t ina219GetCurrent_mA(void)
 {
   uint16_t value;
   ina219Read16(INA219_REG_CURRENT, &value);
+
   return value / ina219_currentDivider_mA;
 }
 
+
+/**************************************************************************/
+/*! 
+    @brief  Compute the Corrected Full scale calibration based on measurement
+            made by external Ampmeter.  The new calibration value will be
+            written  the calibration register
+*/
+/**************************************************************************/
+bool ina219CalibrateCurrent_mA(float ina219current, float meascurrent)
+{
+  
+  uint16_t cal;
+  uint16_t actualcal;
+
+  // Compute new calibration factor 
+  cal = ((uint16_t) meascurrent * ina219_Calfactor) / (uint16_t) ina219current;
+
+  // verify if the corrected calibration factor is already written or not
+  ina219Read16(INA219_REG_CALIBRATION, &actualcal);
+
+  if (actualcal == ina219_Calfactor){ 
+      // write corrected factor
+      ina219WriteRegister(INA219_REG_CALIBRATION, cal);
+      return true;
+  }
+
+  return false;
+
+}

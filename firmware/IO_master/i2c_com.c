@@ -106,7 +106,7 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
             }
 
             if (relay >= 200 && relay <= 215 || relay >= 20 && relay <= 27 ) {
-                i2c_add = PICO_RELAY1_ADDRESS;   // assign card to send command       
+                i2c_add = PICO_RELAY2_ADDRESS;   // assign card to send command       
                 if (relay >= 200) {
                     gpio = gpior[1][relay-200]; // remove offset and get gpio reference
                     // condition to toggle SE relay only one time by call
@@ -131,7 +131,7 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                 rfd =true;  // set flag true (relay found)
             }
             if (relay >= 300 && relay <= 315 || relay >= 30 && relay <= 37 ) {
-                i2c_add = PICO_RELAY2_ADDRESS;   // assign card to send command
+                i2c_add = PICO_RELAY1_ADDRESS;   // assign card to send command
                 if (relay >= 300) {
                     gpio = gpior[2][relay-300]; // remove offset and get gpio reference
                     if (relay > 307) { // if number require Se relay to be close
@@ -179,15 +179,21 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                 rfd =true;  // set flag true (relay found)
             }
 
-            if (relay >= 500 && relay <= 530  ) {  // Power relay on Slave 2
-                i2c_add = PICO_RELAY1_ADDRESS;   // assign card to send command
+            if (relay >= 500 && relay <= 530  ) {  // Device on Pico slave 1
+                i2c_add = PICO_PORT_ADDRESS;   // assign card to send command
                 gpio = relay-500; // remove offset and get gpio reference
                 rfd =true;  // set flag true (power relay valid)
             }
 
-            if (relay >= 600 && relay <= 630  ) {  // Power relay on Slave 3
-                i2c_add = PICO_RELAY2_ADDRESS;   // assign card to send command
+            if (relay >= 600 && relay <= 630  ) {  // Device on Pico slave 2
+                i2c_add = PICO_RELAY1_ADDRESS;   // assign card to send command
                 gpio = relay-600; // remove offset and get gpio reference
+                rfd =true;  // set flag true (power relay valid)
+            }
+
+            if (relay >= 700 && relay <= 730  ) {  // Device on Pico slave 3
+                i2c_add = PICO_RELAY2_ADDRESS;   // assign card to send command
+                gpio = relay-700; // remove offset and get gpio reference
                 rfd =true;  // set flag true (power relay valid)
             }
            
@@ -267,23 +273,26 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
 
                 
                 case PWCLOSE:
-                     gpio_put(gpio,1);  // Close Gpio on master device
+                case OCCLOSE:
+                     //gpio_put(gpio,1);  // Close Gpio 
                      smf= send_master(i2c_add, CLOSE_RELAY, gpio,&rdata); // read required relay
                      if (!smf) { answer[0] = rdata; return false;}  // Save error and return
-                     fprintf(stdout,"MAS: CLOSE PWR relay using gpio: %02d\n", gpio);
+                     fprintf(stdout,"MAS: CLOSE Device on slave 0x%02x using gpio: %02d\n",i2c_add, gpio);
                      break;   
 
                 case PWOPEN:
+                case OCOPEN:
                      smf = send_master(i2c_add, OPEN_RELAY, gpio,&rdata); // open relay bank
                      if (!smf) { answer[0] = rdata; return false;}  // Save error and return
-                     fprintf(stdout,"MAS: OPEN PWR relay using gpio: %02d\n", gpio);
+                     fprintf(stdout,"MAS: OPEN Device on slave 0x%02x using gpio: %02d\n",i2c_add, gpio);
                      break; 
 
                 case PWSTATE:
+                case OCSTATE:
                      smf= send_master(i2c_add, STATE_RELAY, gpio,&rdata); // read required relay
                      if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      answer[i] = rdata;
-                     fprintf(stdout,"MAS: STATE PWR relay using gpio: %02d, State: %01d\n", gpio, answer[i]);
+                     fprintf(stdout,"MAS: STATE Device on slave 0x%02x  using gpio: %02d, State: %01d\n",i2c_add, gpio, answer[i]);
                      break;    
 
               

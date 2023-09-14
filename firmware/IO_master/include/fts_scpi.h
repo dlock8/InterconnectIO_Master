@@ -51,7 +51,7 @@ extern "C" {
 #define RBIN    15     // Read port bit  digital input
 #define RDIR    16     // Read direction of digital IO port
 #define RBDIR   17     // Read direction for a bit on a port
-#define GPSDIR  18    // Set direction for a single GPIO on a particular device
+#define GPSDIR  18     // Set direction for a single GPIO on a particular device
 #define GPRDIR  19     // Read direction for a single GPIO on a particular device
 #define GPOUT   20     // Set output for a single gpio on a particular device
 #define GPIN    21     // Read a single gpio on a particular device
@@ -60,12 +60,18 @@ extern "C" {
 #define PWCLOSE 24     // CLose power relay
 #define PWOPEN  25     // OPen power relay
 #define PWSTATE 26     // Read state of power relay
+#define OCCLOSE 27     // Active Open Collector 
+#define OCOPEN  28     // Desactive Open Collector
+#define OCSTATE 29     // Read state of Open Collector
 
 #define SBEEP   50     // Send Beep pulse
 #define SVER    51     // Read version of Pico Master and slave
 #define SLERR   52     // Control of error led
-#define SRUN    53     // Send Beep pulse
-
+#define SRUN    53     // Pico SLaves ON/OFF
+#define SOE     54     // Digital Output Enable ON/OFF
+#define GLERR   55     // Read error led
+#define GRUN    56     // Read Pico SLaves RUN status
+#define GOE     57     // Read status Output Enable ON/OFF
 
 
 #define SCPI_BANK1 1     // Open BK1 relay tag
@@ -76,17 +82,26 @@ extern "C" {
 #define SCPI_LPR1  6     // Power relay 
 #define SCPI_LPR2  7     // Power relay 
 #define SCPI_HPR1  8     // Power relay 
-#define SCPI_SSD1  9     // Power Solid State relay 
+#define SCPI_SSR1  9     // Power Solid State relay 
+#define SCPI_OC1   10     // Open collector 
+#define SCPI_OC2   11     // Open collector 
+#define SCPI_OC3   12     // Open collector 
 
-#define GPIO_LPR1  12     // Gpio number to control Power relay 
-#define GPIO_LPR2  13     // Gpio number to control Power relay 
-#define GPIO_HPR1  14     // Gpio number to control Power relay 
-#define GPIO_SSD1  15     // Gpio number to control Power relay 
+
+#define GPIO_LPR1  8     // Gpio number to control Power relay 
+#define GPIO_LPR2  9     // Gpio number to control Power relay 
+#define GPIO_HPR1  8     // Gpio number to control Power relay 
+#define GPIO_SSR1  9     // Gpio number to control Power relay 
+
+#define GPIO_OC1   28     // Gpio number to open collector 1 
+#define GPIO_OC2   28     // Gpio number to open collector 2 
+#define GPIO_OC3   28     // Gpio number to open collector 3 
 
 #define GPIO_BEEP  11     // Gpio number used to drive the beeper
 #define GPIO_RUN   18     // Gpio number used to control RUN of the slave
 #define GPIO_LED   19     // Gpio number used to led monitor green
 #define GPIO_SYNC  22     // Gpio number used to sync all module
+#define GPIO_OE    28    // Gpio number to signal Ouput enable 
 
 
 #define BEEP_TIME   10      // Beep time in mS
