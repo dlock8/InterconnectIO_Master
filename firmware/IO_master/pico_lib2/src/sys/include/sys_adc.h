@@ -44,7 +44,7 @@
     @def ADC_VREF ADC Reference Voltage (3.3V)
     @n
 */
-#define ADC_VREF 3.3
+#define ADC_VREF 3.0
 
 /*! $## **Functions:**
     @--

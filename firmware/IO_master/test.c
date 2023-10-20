@@ -6,6 +6,7 @@
 #include "include/fts_scpi.h"
 
 #include "stdio.h"
+#include "test.h"
 
 
 
@@ -188,6 +189,353 @@ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  1 \r\n");  //Set Gp22 as output
    // TEST_SCPI_INPUT("TEST:CHANnellist:EXCL (@120:125)\r\n");
 //Register device
 
+
+bool test_adc(){
+  float readv;
+
+  sys_adc_init(ADC_CH_0);
+  sys_adc_init(ADC_CH_1);
+//sys_adc_init(ADC_CH_2); / Connected to OE
+sys_adc_init(ADC_CH_V);
+sys_adc_init(ADC_CH_T);
+
+readv = sys_adc_volt(ADC_CH_0);
+fprintf(stdout,"ADC_CH_0: %2.3f V\n", readv);
+
+readv = sys_adc_volt(ADC_CH_1);
+fprintf(stdout,"ADC_CH_1: %2.3f V\n", readv);
+
+//readv = sys_adc_volt(ADC_CH_2);
+//fprintf(stdout,"ADC_CH_2: %2.3f V\n", readv);
+
+readv = sys_adc_vsys();
+fprintf(stdout,"VSYS: %2.3f V\n", readv);
+
+readv = sys_adc_temp_c();
+fprintf(stdout,"TEMP C: %2.3f C\n", readv);
+
+return true;
+}
+
+
+bool test_ina219(){
+
+  volatile float busv,i,p,s;
+  ina219Init();
+
+  busv = ina219GetBusVoltage() * 0.001;
+  fprintf(stdout,"INA219 Bus voltage: %2.3f V\n", busv);
+  s = ina219GetShuntVoltage() * 10E-3;
+  fprintf(stdout,"INA219 Shunt voltage: %2.3f mV\n", s);
+  i = ina219GetCurrent_mA();
+  fprintf(stdout,"INA219 Current : %2.3f mA\n", i);
+  p = ina219GetPower_mW();
+  fprintf(stdout,"INA219 power: %2.3f mW\n", p);
+
+  //ina219CalibrateCurrent_mA(i,404.35);
+
+  // i = ina219GetCurrent_mA();
+  // fprintf(stdout,"INA219 Cal Current : %2.3f mA\n", i);
+
+}
+
+
+
+bool power_test(uint8_t mode, float expect_value, float percentage_lo, float percentage_hi){
+  int16_t readv;
+  uint8_t flag = false;
+  float hilimit, lolimit;
+  char meas[3];
+
+   switch (mode){
+    case V :
+      readv = ina219GetBusVoltage() * 0.001;
+      strcpy(meas,"V");
+      flag =true;
+      break;
+    case I :
+      readv = ina219GetCurrent_mA();
+      strcpy(meas,"mA");
+      flag =true;
+      break;
+    case P :
+      readv = ina219GetPower_mW();
+      strcpy(meas,"mW");
+      flag =true;
+      break;
+    case S :
+      readv = ina219GetShuntVoltage() * 10E-3;
+      strcpy(meas,"mV");
+      flag =true;
+      break;
+  }
+
+
+      if (flag) {   // if a value has been read
+
+        if (expect_value > 0 ) {
+        
+          hilimit = expect_value + (expect_value * percentage_hi / 100);
+          lolimit = expect_value - (expect_value * percentage_lo / 100);
+        }else {
+          hilimit = expect_value + percentage_hi;
+          lolimit = expect_value - percentage_lo;
+        }
+
+        
+
+        if (readv > hilimit || readv < lolimit) {
+          fprintf(stdout,"---> FAIL <---VAL:%d %s, LL:%2.2f, HL:%2.2f  \n",readv,meas,lolimit,hilimit);
+          } else {
+          fprintf(stdout,"---> PASS <---VAL:%d %s LL:%2.2f, HL:%2.2f  \n",readv,meas,lolimit,hilimit);
+          
+          }
+
+
+        }
+
+  
+}
+
+bool test_dac(float value){
+
+ // float value;
+
+ if (!dev_mcp4725_set(i2c0, MCP4725_ADDR0, value))
+  {
+     fprintf(stdout,"DAC Error on set MCP4725\n"); 
+     return false;
+  }
+  fprintf(stdout,"DAC voltage set to: %2.3f V\n", value);
+  return true; 
+}
+
+bool adc_test(uint8_t channel, float expect_value, float percentage_lo, float percentage_hi){
+  float readv;
+  uint8_t flag = false;
+  float hilimit, lolimit;
+
+  switch (channel){
+    case 0 :
+      readv = sys_adc_volt(ADC_CH_0) * 2;  // multiply * 2 due to voltage divider
+      flag =true;
+      break;
+    case 1 :
+      readv = sys_adc_volt(ADC_CH_1) * 2;
+      flag =true;
+      break;
+    case 2 :
+      readv = sys_adc_vsys();
+      flag =true;
+      break;
+    case 4 :
+      readv = sys_adc_temp_c();
+      flag =true;
+      break;
+  }
+
+      if (flag) {   // if a value has been read
+        
+        hilimit = expect_value + (expect_value * percentage_hi / 100);
+        lolimit = expect_value - (expect_value * percentage_lo / 100);
+
+        if (readv > hilimit || readv < lolimit) {
+          fprintf(stdout,"---> FAIL <--- CH: %1d VAL:%2.3f V, LL:%2.3f, HL:%2.3f  \n",channel,readv,lolimit,hilimit);
+          } else {
+          fprintf(stdout,"---> PASS <--- CH: %1d VAL:%2.3f V, LL:%2.3f, HL:%2.3f  \n", channel,readv,lolimit,hilimit);
+          }
+
+
+        }
+}
+    
+
+bool test_selftest() {
+ int result;
+ bool good;
+
+ fprintf(stdout,"Selftest Hardware Test\n");  // send message to debug port
+
+
+ TEST_SCPI_INPUT("SYST:OUT ON\r\n"); 
+ TEST_SCPI_INPUT("SYST:SLA ON\r\n");
+
+ TEST_SCPI_INPUT("DIG:DIR:PORT0 #HFF \r\n"); // set direction port 0 ouput
+ TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n"); // set direction port 1 input
+ TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n");  // set port 0 to 
+ TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP8 1 \r\n");  
+ TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP9 1 \r\n"); 
+ TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP8 1 \r\n");  
+ TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP9 1 \r\n"); 
+ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 0 \r\n");  
+ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  0 \r\n"); 
+ TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  0 \r\n");  
+ TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP9  0 \r\n"); 
+ TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP18 1 \r\n"); 
+ TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP19 1 \r\n");  
+ TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \r\n");  
+ TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  0 \r\n"); 
+
+ 
+fprintf(stdout,"\n--->BASIC CHECK\n");
+
+test_adc();  // initialize ADC and make some test
+test_ina219(); // initialize ina219 and make some test
+test_dac(2.5);  // initialize and preset DAC
+
+
+fprintf(stdout,"\n--->TEST START\n");
+/*
+fprintf(stdout,"1.2 ");
+adc_test(0,5,5,5);  // Test CH0= 5V
+
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H01 \r\n");  // Close K13
+fprintf(stdout,"1.3 ");
+adc_test(1,5,5,5); // Test CH1 = 5V
+
+
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H04 \r\n");  // Close K2
+test_dac(3);  // set ouput to 3V
+fprintf(stdout,"1.4 ");
+adc_test(0,3,2,2);  // Test CH0= 3V
+
+test_dac(0.25);  // set ouput to 0.25V
+fprintf(stdout,"1.5 ");
+adc_test(0,0.25,10,25);  // Test CH0= 0.25V
+
+*/
+
+
+/*
+fprintf(stdout,"\r\n ------> 1.14 <-------\r\n");
+test_dac(0.0);  // set ouput to 0V
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H04 \r\n");  // Close K2
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  1 \r\n");  // Close K16 (VM2)
+
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC1 \r\n");  // Open OC1
+adc_test(0,5,5,5); // Test CH1 = 5V
+
+TEST_SCPI_INPUT("ROUT:CLOSE:OC OC1 \r\n");  // Close OC1
+TEST_SCPI_INPUT("ROUT:STATE:OC? OC1 \r\n");  // Close OC1
+adc_test(0,0.2,50,50); // Test CH1 = 0V
+
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC1 \r\n");  // Close OC1
+TEST_SCPI_INPUT("ROUT:STATE:OC? OC1 \r\n");  // Close OC1
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  0 \r\n");  // Open K16 (VM2)
+
+
+fprintf(stdout,"\r\n ------> 1.16 <-------\r\n");
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H04 \r\n");  // Close K2
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 1 \r\n");  // Close K15
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC2 \r\n");  // Open OC2
+adc_test(0,5,5,5); // Test CH1 = 5V
+
+TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2 \r\n");  // Close OC2
+TEST_SCPI_INPUT("ROUT:STATE:OC? OC2 \r\n");  // Close OC2
+adc_test(0,0.2,50,50); // Test CH1 = 0V
+
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC2 \r\n");  // Close OC2
+TEST_SCPI_INPUT("ROUT:STATE:OC? OC2 \r\n");  // Close OC2
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 0 \r\n");  // Open K15
+
+
+
+fprintf(stdout,"\r\n ------> 1.18 <-------\r\n");
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H06 \r\n");  // Close K2,K9
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 1 \r\n");  // Close K15
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \r\n");  // Open OC3
+adc_test(0,5,5,5); // Test CH1 = 5V
+
+TEST_SCPI_INPUT("ROUT:CLOSE:OC OC3 \r\n");  // Close OC3
+TEST_SCPI_INPUT("ROUT:STATE:OC? OC3 \r\n");  // Close OC3
+adc_test(0,0.2,50,50); // Test CH1 = 0V
+
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \r\n");  // Close OC3
+TEST_SCPI_INPUT("ROUT:STATE:OC? OC3 \r\n");  // Close OC2
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 0 \r\n");  // Open K15
+*/
+/*
+fprintf(stdout,"\r\n ------> 1.20 <-------\r\n");
+
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 1 \r\n");  // Close K15
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  1 \r\n");  // Close K16 (VM5)
+
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H50 \r\n");  // Close K4,K7
+TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2 \r\n");  // Close K11
+
+adc_test(0,2.5,5,5); // Test CH1 = 2.5V if 10 ohm resistance
+adc_test(0,2.5,5,5); // Test CH1 = 2.5V if 10 ohm resistance
+
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC2 \r\n");  // Open K11
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 0 \r\n");  // Open K15
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  0 \r\n");  // OPen K16 (VM5)
+*/
+
+/*
+fprintf(stdout,"\r\n ------> 1.27 <-------\r\n");
+
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H30 \r\n");  // Close K4,K8
+TEST_SCPI_INPUT("ROUT:CLOSE:OC OC1 \r\n");  // Close K10
+
+
+TEST_SCPI_INPUT("ROUT:OPEN:PWR SSR1 \r\n");
+TEST_SCPI_INPUT("ROUT:STATE:PWR? SSR1 \r\n");
+power_test(V,5,15,15);
+
+
+TEST_SCPI_INPUT("ROUT:CLOSE:PWR SSR1 \r\n");
+TEST_SCPI_INPUT("ROUT:STATE:PWR? SSR1 \r\n");
+power_test(I,250,15,15);
+
+TEST_SCPI_INPUT("ROUT:OPEN:PWR SSR1 \r\n");
+TEST_SCPI_INPUT("ROUT:STATE:PWR? SSR1 \r\n");
+power_test(I,0,0,1);
+
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC1 \r\n");  // Open K10
+*/
+
+fprintf(stdout,"\r\n ------> 1.29 <-------\r\n");
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H60 \r\n");  // Close K7,K8 (PS7)
+TEST_SCPI_INPUT("ROUT:CLOSE (@100)\r\n");
+TEST_SCPI_INPUT("ROUT:CLOSE (@200)\r\n");
+power_test(I,50,15,15);
+TEST_SCPI_INPUT("ROUT:OPEN (@100,200)\r\n");
+power_test(I,0,0,1);
+
+
+
+
+
+
+
+
+
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  0 \r\n");  
+
+
+
+
+// Port 0 validation
+
+ TEST_SCPI_INPUT("DIG:OUT:PORT0 #H55 \r\n"); 
+ TEST_SCPI_INPUT("DIG:OUT:PORT0 #HAA \r\n");  
+ TEST_SCPI_INPUT("DIG:IN:PORT0? \r\n"); 
+ TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n"); 
+ TEST_SCPI_INPUT("DIG:OUT:PORT0 #H55 \r\n"); 
+ TEST_SCPI_INPUT("DIGT:IN:PORT0? \r\n"); 
+ TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n"); 
+
+ //TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port 1
+ //TEST_SCPI_INPUT("DIG:OUT:PORT1 #H55 \r\n"); 
+ //TEST_SCPI_INPUT("DIG:OUT:PORT1 #HAA \r\n");  
+ 
+
+
+
+}
+
+
+
 bool test_ioboard() {
  int result;
 
@@ -203,6 +551,26 @@ TEST_SCPI_INPUT("SYST:SLA ON\r\n");  // Reset Slave
 TEST_SCPI_INPUT("SYST:OUT ON\r\n"); 
 */
 
+
+volatile float busv,i,p,s;
+ina219Init();
+
+busv = ina219GetBusVoltage() * 0.001;
+fprintf(stdout,"INA219 Bus voltage: %2.3f V\n", busv);
+s = ina219GetShuntVoltage() * 10E-3;
+fprintf(stdout,"INA219 Shunt voltage: %2.3f mV\n", s);
+i = ina219GetCurrent_mA();
+fprintf(stdout,"INA219 Current : %2.3f mA\n", i);
+p = ina219GetPower_mW();
+fprintf(stdout,"INA219 power: %2.3f mW\n", p);
+
+//ina219CalibrateCurrent_mA(i,404.35);
+
+// i = ina219GetCurrent_mA();
+// fprintf(stdout,"INA219 Cal Current : %2.3f mA\n", i);
+
+
+
 TEST_SCPI_INPUT("ROUT:CLOSE:OC OC3\r\n");
 TEST_SCPI_INPUT("ROUT:STATE:OC? OC3 \r\n");
 TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \r\n");
@@ -212,6 +580,7 @@ TEST_SCPI_INPUT("SYST:BEEP\r\n");
 
 TEST_SCPI_INPUT("SYST:LED:ERR ON \r\n");
 TEST_SCPI_INPUT("SYST:LED:ERR? \r\n");
+TEST_SCPI_INPUT("SYST:LED:ERR OFF \r\n");
 
 TEST_SCPI_INPUT("SYST:SLA OFF\r\n"); 
 TEST_SCPI_INPUT("SYST:SLA?\r\n"); 
@@ -389,63 +758,4 @@ bool test_eeprom() {
 }
 
 
-bool test_ina219(){
 
-  volatile float busv,i,p,s;
-  ina219Init();
-
-  busv = ina219GetBusVoltage() * 0.001;
-  fprintf(stdout,"INA219 Bus voltage: %2.3f V\n", busv);
-  s = ina219GetShuntVoltage() * 10E-3;
-  fprintf(stdout,"INA219 Shunt voltage: %2.3f mV\n", s);
-  i = ina219GetCurrent_mA();
-  fprintf(stdout,"INA219 Current : %2.3f mA\n", i);
-  p = ina219GetPower_mW();
-  fprintf(stdout,"INA219 power: %2.3f mW\n", p);
-
-  //ina219CalibrateCurrent_mA(i,404.35);
-
-  // i = ina219GetCurrent_mA();
-  // fprintf(stdout,"INA219 Cal Current : %2.3f mA\n", i);
-
-}
-
-bool test_adc(){
-  float readv;
-
-  sys_adc_init(ADC_CH_0);
-  sys_adc_init(ADC_CH_1);
-//sys_adc_init(ADC_CH_2); / Connected to OE
-sys_adc_init(ADC_CH_V);
-sys_adc_init(ADC_CH_T);
-
-readv = sys_adc_volt(ADC_CH_0);
-fprintf(stdout,"ADC_CH_0: %2.3f V\n", readv);
-
-readv = sys_adc_volt(ADC_CH_1);
-fprintf(stdout,"ADC_CH_1: %2.3f V\n", readv);
-
-//readv = sys_adc_volt(ADC_CH_2);
-//fprintf(stdout,"ADC_CH_2: %2.3f V\n", readv);
-
-readv = sys_adc_vsys();
-fprintf(stdout,"VSYS: %2.3f V\n", readv);
-
-readv = sys_adc_temp_c();
-fprintf(stdout,"TEMP C: %2.3f C\n", readv);
-
-return true;
-}
-
-bool test_dac(){
-
-  float value = 2.5;
-
- if (!dev_mcp4725_set(i2c0, MCP4725_ADDR0, value))
-  {
-     fprintf(stdout,"DAC Error on set MCP4725\n"); 
-     return false;
-  }
-  fprintf(stdout,"DAC voltage set to: %2.3f V\n", value);
-  return true; 
-}

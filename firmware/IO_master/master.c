@@ -258,7 +258,10 @@ int main() {
 
 // #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
 
-test_ioboard();  // Check io board function
+//test_eeprom();
+//test_ioboard();  // Check io board function
+
+test_selftest(); 
 
 /*
 #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
@@ -281,7 +284,7 @@ scan_i2c_bus();
 //if (test_eeprom()) fprintf(stdout, "\n ---> ERROR ON EEPROM VALIDATION \n");
 //test_ina219();
 
-test_dac();
+test_dac(2.5);
 test_adc();
 
 uint16_t rdata;
