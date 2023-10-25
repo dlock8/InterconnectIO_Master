@@ -481,8 +481,8 @@ void ina219Init(void)
   ina219WriteRegister(INA219_REG_CONFIG, INA219_CONFIG_RESET);
 
   // Setup chip for 32V and 2A by default
-  ina219SetCalibration_32V_2A();
-  //ina219SetCalibration_16V_500mA();
+   // ina219SetCalibration_32V_2A();
+   ina219SetCalibration_16V_500mA();
 }
 
 /**************************************************************************/

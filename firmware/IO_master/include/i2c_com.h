@@ -13,7 +13,7 @@ extern "C" {
 #endif
 
 #define PICO_MASTER_ADDRESS 0       // Pico Master
-#define PICO_PORT_ADDRESS 0x21      // Pico Slave #1
+#define PICO_PORT_ADDRESS   0x21    // Pico Slave #1
 #define PICO_RELAY1_ADDRESS 0x22    // Pico Slave #2
 #define PICO_RELAY2_ADDRESS 0x23    // Pico Slave #3
 

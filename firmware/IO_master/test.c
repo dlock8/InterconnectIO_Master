@@ -375,7 +375,9 @@ bool test_selftest() {
  TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP19 1 \r\n");  
  TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \r\n");  
  TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  0 \r\n"); 
-
+ TEST_SCPI_INPUT("ROUT:OPEN:OC OC1 \r\n");
+ TEST_SCPI_INPUT("ROUT:OPEN:OC OC2 \r\n");
+ TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \r\n");
  
 fprintf(stdout,"\n--->BASIC CHECK\n");
 
@@ -471,6 +473,53 @@ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 0 \r\n");  // Open K15
 TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  0 \r\n");  // OPen K16 (VM5)
 */
 
+
+
+ina219CalibrateCurrent_mA(65,50);
+
+/*
+fprintf(stdout,"\r\n ------> 1.22 <-------\r\n");
+
+TEST_SCPI_INPUT("ROUT:CLOSE:OC OC1 \r\n");  // Close K10
+
+TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1 \r\n");
+TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR2 \r\n");
+TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2 \r\n");
+power_test(I,50,15,35); //1.22
+TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR2 \r\n");
+TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR1 \r\n");
+TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2 \r\n");
+power_test(I,50,15,35); //1.23
+TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1 \r\n");
+TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2 \r\n");
+power_test(I,0,0,1);  // 1.24
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC1 \r\n");  // Open K10
+
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H20 \r\n");  // Close K8
+TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR2 \r\n");
+TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2 \r\n");
+power_test(I,50,15,35); //1.25
+TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR2 \r\n");
+TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR1 \r\n");
+TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2 \r\n");
+power_test(I,50,15,35); //1.26
+TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1 \r\n");
+TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2 \r\n");
+power_test(I,0,0,1);  // 1.27
+*/
+
+
+// INA219 calibration check
+fprintf(stdout,"\r\n ------> 1.XX <-------\r\n");
+ina219CalibrateCurrent_mA(572,500);
+
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H10 \r\n");  // Close K4 PS1,VM1
+power_test(I,500,15,15);
+
+
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n");  // Open relay
+test_ina219();
+
 /*
 fprintf(stdout,"\r\n ------> 1.27 <-------\r\n");
 
@@ -494,23 +543,74 @@ power_test(I,0,0,1);
 TEST_SCPI_INPUT("ROUT:OPEN:OC OC1 \r\n");  // Open K10
 */
 
-fprintf(stdout,"\r\n ------> 1.29 <-------\r\n");
+/*
+fprintf(stdout,"\r\n ------> 1.32 <-------\r\n");
+
 TEST_SCPI_INPUT("DIG:OUT:PORT0 #H60 \r\n");  // Close K7,K8 (PS7)
-TEST_SCPI_INPUT("ROUT:CLOSE (@100)\r\n");
-TEST_SCPI_INPUT("ROUT:CLOSE (@200)\r\n");
-power_test(I,50,15,15);
-TEST_SCPI_INPUT("ROUT:OPEN (@100,200)\r\n");
-power_test(I,0,0,1);
+TEST_SCPI_INPUT("ROUT:CLOSE (@100,200)\r\n");  //1.30
+power_test(I,50,15,35); //1.32
+
+TEST_SCPI_INPUT("ROUT:OPEN (@200)\r\n"); 
+power_test(I,0,0,1);  // 1.33
+TEST_SCPI_INPUT("ROUT:CLOSE (@100,200)\r\n");
+power_test(I,50,15,35); //1.34
+TEST_SCPI_INPUT("ROUT:OPEN (@100)\r\n"); 
+power_test(I,0,0,1);  // 1.35
 
 
+TEST_SCPI_INPUT("ROUT:CLOSE:OC OC3 \r\n");  // Close K12
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  1 \r\n"); // Close K14
+TEST_SCPI_INPUT("ROUT:CLOSE (@100,200)\r\n");
+power_test(I,50,15,35); //1.36
+TEST_SCPI_INPUT("ROUT:OPEN (@200)\r\n"); 
+power_test(I,0,0,1);  // 1.37
+TEST_SCPI_INPUT("ROUT:CLOSE (@100,200)\r\n");
+power_test(I,50,15,35); //1.38
+TEST_SCPI_INPUT("ROUT:OPEN (@100)\r\n"); 
+power_test(I,0,0,1);  // 1.39
+*/
+
+/*
+fprintf(stdout,"\r\n ------> 1.42 <-------\r\n");
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  1 \r\n");  // Close K6
+power_test(I,0,0,1);  // 1.42 measure with ohmeter: 20 ohm
+*/
+
+/*
+fprintf(stdout,"\r\n ------> 1.44 <-------\r\n");
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  1 \r\n");  // Close K14
+power_test(I,0,0,1);  // 1.44 measure with voltmeter: 5 Volt
+*/
+/*
+fprintf(stdout,"\r\n ------> 1.45 <-------\r\n");
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H10 \r\n");  // Close K4 PS1,VM1
+power_test(I,500,15,15);
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H19 \r\n");  // Close K4,K5,K13 PS1,VM1
+power_test(I,0,0,1); // measure with Ampermeter 500 mA
+*/
+
+/*
+fprintf(stdout,"\r\n ------> 1.47 <-------\r\n");
+adc_test(0,5,5,5);  // Test CH0= 5V from 5V_PWR source
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #HD0 \r\n");  // Close K4,K3,K7
+//TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  1 \r\n");  // Close K14
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8  1 \r\n");  // Close K15
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  1 \r\n");  // Close K16
+TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2 \r\n");  // Close K11
+adc_test(0,2.5,5,5);  // Test CH0= 5V from PS1 OUT source
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP9  1 \r\n");  // Close K1
+adc_test(0,2.5,5,5);  // Test CH0= 5V from PS2_OUT source
+*/
 
 
-
-
-
-
-
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  0 \r\n");  
+fprintf(stdout,"\r\n ------> PS6 to VM6 <-------\r\n");
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H52 \r\n");  // Close K11,K7,K4,K9,K16,K15
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8  1 \r\n");  // Close K15
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  1 \r\n");  // Close K16
+TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2 \r\n");  // Close K11
+adc_test(0,2.5,5,5);  // Test CH0= 5V from PWR_5V source
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H12 \r\n");  // Open K7
+adc_test(0,0.1,25,25);  // Test CH0= 5V from 5V_PWR source
 
 
 
