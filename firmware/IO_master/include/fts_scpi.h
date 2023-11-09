@@ -73,6 +73,9 @@ extern "C" {
 #define GRUN    56     // Read Pico SLaves RUN status
 #define GOE     57     // Read status Output Enable ON/OFF
 
+#define SDAC    58     // Set DAC Voltage
+#define WDAC    59     // Set DAC Voltage and save as default value
+
 
 #define SCPI_BANK1 1     // Open BK1 relay tag
 #define SCPI_BANK2 2     // Open BK2 relay tag
@@ -105,6 +108,10 @@ extern "C" {
 
 
 #define BEEP_TIME   10      // Beep time in mS
+
+
+
+
 
 /* Reset Block for master
 

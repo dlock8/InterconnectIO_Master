@@ -69,10 +69,20 @@ GPIO:In:DEVice#:GP#?  {0-3} {0-28}
 GPIO:SETPad:DEVice#:GP# {0-3} {0-28} {Value}
 GPIO:GETPad:DEVice#:GP#? {0-3} {0-28}
 
-ANAlog:MEASure:ADC#?
-ANAlog:SET_VREF [Value] 
-ANAlog:GET_VREF? 
-ANAlog:TEMPerature? 
+ANAlog:DAC:Volt [Value] 
+ANAlog:DAC:Save [Value] 
+
+ANAlog:ADC0:Volt?
+ANAlog:ADC1:Volt?
+
+ANAlog:PWRmodule:Volt?
+ANAlog:PWRmodule:Shunt?
+ANAlog:PWRmodule:Ima?
+ANAlog:PWRmodule:Pmw?
+ANAlog:PWRmodule:Calibratecurrentma [readValue,actualValue]]
+
+ANAlog:MEASure:PWR?  {V|S|I|P}
+ANALOG:CALibrate:PWR [Value]
 
 SYSTEM:DEVice:VERsion?
 SYSTem:BEEPer  

@@ -5,6 +5,7 @@
 #include "include/i2c_com.h"
 #include "include/master.h"
 #include "hardware/resets.h"
+#include "include/functadv.h"
 
 
 
@@ -609,6 +610,66 @@ volatile    uint8_t tag;
     return SCPI_RES_OK;
 }
 
+// Low level command
+static scpi_result_t Callback_analog_scpi(scpi_t *context) {
+    scpi_bool_t res;
+    scpi_parameter_t param1;
+    uint16_t answer[1];  // will contains the answer returned by command
+    uint8_t tag,ecode;
+    float value = 0;
+    
+
+    fprintf(stdout, "On analog execute \r\n");
+
+    res = SCPI_Parameter(context, &param1, FALSE);
+    if (res) {
+        // Is parameter a number without suffix?
+        if (SCPI_ParamIsNumber(&param1, TRUE)) {
+        // Convert parameter to unsigned int. Result is in value.
+        SCPI_ParamToFloat(context, &param1, &value);
+        }
+    }
+
+    tag = SCPI_CmdTag(context);   //extract tag from the command
+
+
+    switch (tag) {
+        case SDAC:
+            ecode=dac_set(value,false); //set value
+            break;
+    
+        case WDAC:
+            ecode=dac_set(value,true); //set value and save as default
+            break;
+    }
+    switch (ecode) {
+        case NOERR:
+            break;
+
+        case EOOR:
+            answer[0] = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE;  
+            SCPI_ErrorPush(context, answer[0]); 
+            break;
+
+        case EDE:
+             answer[0] = SCPI_ERROR_EXECUTION_ERROR;
+             SCPI_ErrorPush(context, answer[0]);
+             break; 
+    }
+
+
+
+    if (tag==GPIN||  tag==GPRDIR|| tag==GPGPAD) { // if returned value is expected   
+        fprintf(stdout, "GPIO Value read:  0x%x,\r\n", answer[0]); // return value on debug port
+        SCPI_ResultUInt8(context,answer[0]); // return SCPI value 
+    }
+
+return SCPI_RES_OK;
+}
+
+
+
+
     // The SCPI commands we support and the callbacks they use.
 scpi_command_t scpi_commands[] = {
 	
@@ -673,6 +734,9 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "SYSTem:LED:ERRor?", .callback = Callback_system_scpi,GLERR},
     {.pattern = "SYSTem:OUTput?", .callback = Callback_system_scpi,GOE},
     {.pattern = "SYSTem:SLAves?", .callback = Callback_system_scpi,GRUN},
+
+    {.pattern = "ANAlog:DAC:Volt", .callback = Callback_analog_scpi,SDAC},
+    {.pattern = "ANAlog:DAC:Save", .callback = Callback_analog_scpi,WDAC},
 
 
 

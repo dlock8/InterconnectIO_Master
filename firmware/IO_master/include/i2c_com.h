@@ -85,4 +85,5 @@ bool digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, u
 bool gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, uint16_t *answer);
 bool system_execute(uint8_t action, uint16_t *answer);
 
+
 #endif // 

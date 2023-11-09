@@ -45,7 +45,12 @@ bool dev_mcp4725_set(i2c_inst_t* i2c, uint8_t addr, float volt)
 	return mcp4725_write(i2c, WRITEDAC, addr, value);
 }
 
-bool dev_mcp4725_save(i2c_inst_t* i2c, uint8_t addr, uint16_t value)
+bool dev_mcp4725_save(i2c_inst_t* i2c, uint8_t addr, float volt)
 {
+	uint16_t value = 0;
+
+	value = volt / (vref/4096);  // 12 bits DAC
+	if (value > 4095) { value = 4095;}  //if value outside limit, cap the limit
+
 	return mcp4725_write(i2c, WRITEDACEEPROM, addr, value);
 }

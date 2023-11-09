@@ -21,10 +21,21 @@
 #define ADC3    29
 #define ADC_REF 3.3f
 
+//define limit for DAC
+#define MINDACVOLT  0     // minimum voltage for the MCP4725 DAC
+#define MAXDACVOLT  3.3   // maximum voltage for the MCP4725 DAC
 
-void  read_int_ADC(float *adc_val);
-void  setup_ADC(bool enable);
-void  read_ADC(float *adc_val);
+
+#define NOERR    0      // No error
+#define EOOR     1      // Flag for Error for data out of range
+#define EDE      2     // SCPI_ERROR_DEVICE_ERROR
+
+
+void    read_int_ADC(float *adc_val);
+void    setup_ADC(bool enable);
+void    read_ADC(float *adc_val);
+uint8_t dac_set(float value,bool save);
+
 
 
 #endif //

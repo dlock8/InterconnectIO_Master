@@ -42,6 +42,12 @@
 
 #include "hardware/adc.h"
 #include "include/i2c_com.h"
+#include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
+#include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
+#include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
+//#include "pico_lib2/src/sys/include/sys_adc.h"
+
+
 //#include "include/fts_scpi.h"
 //#include "userconfig.h"
 
@@ -99,6 +105,45 @@ void  read_int_ADC(float *adc_val) {
     conval = value * cfactor;
     adc_val[1] = 27 - (conval - 0.706)/0.001721; // from RP2040 Datasheet
     fprintf(stdout,"Raw value 0: 0x%03x, Temperature: %f C\n", value, adc_val[1]);
+
+}
+
+
+uint8_t dac_set(float value, bool save){
+    uint16_t error;
+    float ovalue;
+    bool flag;
+
+    ovalue = value;
+    error = NOERR;
+   
+
+    // float value;
+
+    if (value > MAXDACVOLT) { 
+        value = MAXDACVOLT;
+        error = EOOR;   // raise error due to value outside maximum limit
+    }
+
+    if (value < MINDACVOLT) { 
+        value = MINDACVOLT;
+        error = EOOR;
+     }
+
+    if (save) {  
+        flag = dev_mcp4725_save(i2c0, MCP4725_ADDR0, value);
+    } else {  
+        flag = dev_mcp4725_set(i2c0, MCP4725_ADDR0, value);
+    }
+
+    if (!flag) {
+        fprintf(stdout,"DAC Error on set MCP4725\n"); 
+        error = EDE;
+    } else {
+        fprintf(stdout,"DAC voltage set to: %2.3f V\n", value);
+       
+    }
+  return error; 
 
 }
 

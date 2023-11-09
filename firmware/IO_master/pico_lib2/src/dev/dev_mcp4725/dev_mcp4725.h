@@ -97,7 +97,7 @@ bool dev_mcp4725_set(i2c_inst_t* i2c, uint8_t addr, float volt);
     @return true
     @return[error] false
 */
-bool dev_mcp4725_save(i2c_inst_t* i2c, uint8_t addr, uint16_t value);
+bool dev_mcp4725_save(i2c_inst_t* i2c, uint8_t addr, float volt);
 
 #ifdef __cplusplus
  }

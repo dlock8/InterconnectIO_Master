@@ -317,11 +317,11 @@ bool adc_test(uint8_t channel, float expect_value, float percentage_lo, float pe
 
   switch (channel){
     case 0 :
-      readv = sys_adc_volt(ADC_CH_0) * 2;  // multiply * 2 due to voltage divider
+      readv = sys_adc_volt(ADC_CH_0);  // multiply * 2 due to voltage divider
       flag =true;
       break;
     case 1 :
-      readv = sys_adc_volt(ADC_CH_1) * 2;
+      readv = sys_adc_volt(ADC_CH_1);
       flag =true;
       break;
     case 2 :
@@ -360,6 +360,10 @@ bool test_selftest() {
  TEST_SCPI_INPUT("SYST:OUT ON\r\n"); 
  TEST_SCPI_INPUT("SYST:SLA ON\r\n");
 
+
+
+
+
  TEST_SCPI_INPUT("DIG:DIR:PORT0 #HFF \r\n"); // set direction port 0 ouput
  TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n"); // set direction port 1 input
  TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n");  // set port 0 to 
@@ -381,31 +385,61 @@ bool test_selftest() {
  
 fprintf(stdout,"\n--->BASIC CHECK\n");
 
+//TEST_SCPI_INPUT("ANA:DAC:V 1 \r\n");
+
 test_adc();  // initialize ADC and make some test
 test_ina219(); // initialize ina219 and make some test
 test_dac(2.5);  // initialize and preset DAC
 
 
 fprintf(stdout,"\n--->TEST START\n");
-/*
-fprintf(stdout,"1.2 ");
+
+
+fprintf(stdout,"\r\n ------> 1.2 <-------\r\n");
 adc_test(0,5,5,5);  // Test CH0= 5V
 
-TEST_SCPI_INPUT("DIG:OUT:PORT0 #H01 \r\n");  // Close K13
-fprintf(stdout,"1.3 ");
+fprintf(stdout,"\r\n ------> 1.3 <-------\r\n");
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  1 \r\n"); // Close K13  
 adc_test(1,5,5,5); // Test CH1 = 5V
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  0 \r\n"); // Open K13  
+
+fprintf(stdout,"\r\n ------> 1.4 <-------\r\n");
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H40 \r\n");  // Close K2
+TEST_SCPI_INPUT("ANA:DAC:VOLT 3 \r\n");  //
+//test_dac(3);  // set ouput to 3V
+adc_test(0,1.5,2,2);  // Test CH0= 3V
+
+fprintf(stdout,"\r\n ------> 1.5 <-------\r\n");
+TEST_SCPI_INPUT("ANA:DAC:VOLT 0.25 \r\n");  //
+//test_dac(0.25);  // set ouput to 0.25V
+adc_test(0,0.175,10,25);  // Test CH0= 0.25V
+
+TEST_SCPI_INPUT("ANA:DAC:SAVE 2.81 \r\n");  //
 
 
-TEST_SCPI_INPUT("DIG:OUT:PORT0 #H04 \r\n");  // Close K2
-test_dac(3);  // set ouput to 3V
-fprintf(stdout,"1.4 ");
-adc_test(0,3,2,2);  // Test CH0= 3V
+fprintf(stdout,"\r\n ------> 1.6 <-------\r\n");
+// Port 0 validation
 
-test_dac(0.25);  // set ouput to 0.25V
-fprintf(stdout,"1.5 ");
-adc_test(0,0.25,10,25);  // Test CH0= 0.25V
 
-*/
+ TEST_SCPI_INPUT("DIG:DIR:PORT0 #HFF \r\n"); // set direction port 0 ouput
+ TEST_SCPI_INPUT("DIG:DIR:PORT0? \r\n"); // set direction port 0 ouput
+ TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n"); // set direction port 1 input
+ TEST_SCPI_INPUT("DIG:DIR:PORT1? \r\n"); // set direction port 0 ouput
+ TEST_SCPI_INPUT("DIG:OUT:PORT0 #H55 \r\n"); 
+ TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n");
+ TEST_SCPI_INPUT("DIG:OUT:PORT0 #HAA \r\n"); 
+ TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n");
+
+
+ TEST_SCPI_INPUT("DIG:IN:PORT0? \r\n"); 
+ TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n"); 
+ TEST_SCPI_INPUT("DIG:OUT:PORT0 #H55 \r\n"); 
+ TEST_SCPI_INPUT("DIG:IN:PORT0? \r\n"); 
+ TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n"); 
+
+ //TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port 1
+ //TEST_SCPI_INPUT("DIG:OUT:PORT1 #H55 \r\n"); 
+ //TEST_SCPI_INPUT("DIG:OUT:PORT1 #HAA \r\n");  
 
 
 /*
@@ -614,20 +648,6 @@ adc_test(0,0.1,25,25);  // Test CH0= 5V from 5V_PWR source
 
 
 
-
-// Port 0 validation
-
- TEST_SCPI_INPUT("DIG:OUT:PORT0 #H55 \r\n"); 
- TEST_SCPI_INPUT("DIG:OUT:PORT0 #HAA \r\n");  
- TEST_SCPI_INPUT("DIG:IN:PORT0? \r\n"); 
- TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n"); 
- TEST_SCPI_INPUT("DIG:OUT:PORT0 #H55 \r\n"); 
- TEST_SCPI_INPUT("DIGT:IN:PORT0? \r\n"); 
- TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n"); 
-
- //TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port 1
- //TEST_SCPI_INPUT("DIG:OUT:PORT1 #H55 \r\n"); 
- //TEST_SCPI_INPUT("DIG:OUT:PORT1 #HAA \r\n");  
  
 
 
