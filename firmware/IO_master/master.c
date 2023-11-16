@@ -217,7 +217,7 @@ bool Selftest() {
 }
 
 
-int main() {
+ int main() {
 
   MESSAGE rec;
   char nbchar;

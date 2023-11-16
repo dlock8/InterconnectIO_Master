@@ -74,12 +74,14 @@ ANAlog:DAC:Save [Value]
 
 ANAlog:ADC0:Volt?
 ANAlog:ADC1:Volt?
+ANAlog:ADC:Vsys?
+ANAlog:ADC:Temp?
 
-ANAlog:PWRmodule:Volt?
-ANAlog:PWRmodule:Shunt?
-ANAlog:PWRmodule:Ima?
-ANAlog:PWRmodule:Pmw?
-ANAlog:PWRmodule:Calibratecurrentma [readValue,actualValue]]
+ANAlog:PWR:Volt?
+ANAlog:PWR:Shunt?
+ANAlog:PWR:Ima?
+ANAlog:PWR:Pmw?
+ANAlog:PWR:Cal [actualValue,expectedValue]  // calibrate full range
 
 ANAlog:MEASure:PWR?  {V|S|I|P}
 ANALOG:CALibrate:PWR [Value]

@@ -617,31 +617,104 @@ static scpi_result_t Callback_analog_scpi(scpi_t *context) {
     uint16_t answer[1];  // will contains the answer returned by command
     uint8_t tag,ecode;
     float value = 0;
+    float value2 = 0;
+    bool retv; 
     
 
     fprintf(stdout, "On analog execute \r\n");
 
-    res = SCPI_Parameter(context, &param1, FALSE);
-    if (res) {
-        // Is parameter a number without suffix?
-        if (SCPI_ParamIsNumber(&param1, TRUE)) {
-        // Convert parameter to unsigned int. Result is in value.
-        SCPI_ParamToFloat(context, &param1, &value);
+    tag = SCPI_CmdTag(context);   //extract tag from the command
+
+    if ( tag == SDAC || tag == WDAC || tag == CPI ) {
+   
+        res = SCPI_Parameter(context, &param1, TRUE);  // Read first parameter
+        if (res) {
+            // Is parameter a number without suffix?
+            if (SCPI_ParamIsNumber(&param1, TRUE)) {
+                // Convert parameter to float. Result is in value.
+                SCPI_ParamToFloat(context, &param1, &value);
+            }
+        }
+
+        if ( tag == CPI) {  // if second parameter expected
+            res = SCPI_Parameter(context, &param1, TRUE);  // read parameter #2 
+            if (res) {
+                // Is parameter a number without suffix?
+                if (SCPI_ParamIsNumber(&param1, TRUE)) {
+                // Convert parameter to float. Result is in value.
+                SCPI_ParamToFloat(context, &param1, &value2);
+                }
+            }
         }
     }
-
-    tag = SCPI_CmdTag(context);   //extract tag from the command
 
 
     switch (tag) {
         case SDAC:
             ecode=dac_set(value,false); //set value
+            retv = false;   // no value returned
             break;
     
         case WDAC:
             ecode=dac_set(value,true); //set value and save as default
+            retv = false;   // no value returned
+            break;
+
+        case RADC0:
+            value = read_master_adc(0);
+            ecode = NOERR;
+            retv = true;   //  value returned
+            break;
+
+        case RADC1:
+            value = read_master_adc(1);
+            ecode = NOERR;
+            retv = true;   //  value returned
+            break;
+
+        case RADC3:
+            value = read_master_adc(3);
+            ecode = NOERR;
+            retv = true;   //  value returned
+            break;
+
+        case RADC4:
+            value = read_master_adc(4);
+            ecode = NOERR;
+            retv = true;   //  value returned
+            break;
+
+        case RPV:
+            value = read_power(0);
+            ecode = NOERR;
+            retv = true;   //  value returned
+            break;
+
+        case RPI:
+            value = read_power(1);
+            ecode = NOERR;
+            retv = true;   //  value returned
+            break;
+
+        case RPP:
+            value = read_power(2);
+            ecode = NOERR;
+            retv = true;   //  value returned
+            break;
+
+        case RPS:
+            value = read_power(3);
+            ecode = NOERR;
+            retv = true;   //  value returned
+            break;
+
+        case CPI:
+            calibrate_power(value, value2);
+            retv = false;   //  no value to return
             break;
     }
+
+    // raise error if is the case
     switch (ecode) {
         case NOERR:
             break;
@@ -657,11 +730,8 @@ static scpi_result_t Callback_analog_scpi(scpi_t *context) {
              break; 
     }
 
-
-
-    if (tag==GPIN||  tag==GPRDIR|| tag==GPGPAD) { // if returned value is expected   
-        fprintf(stdout, "GPIO Value read:  0x%x,\r\n", answer[0]); // return value on debug port
-        SCPI_ResultUInt8(context,answer[0]); // return SCPI value 
+    if (retv) { // if returned value is expected   
+        SCPI_ResultFloat(context,value); // return SCPI value 
     }
 
 return SCPI_RES_OK;
@@ -737,7 +807,15 @@ scpi_command_t scpi_commands[] = {
 
     {.pattern = "ANAlog:DAC:Volt", .callback = Callback_analog_scpi,SDAC},
     {.pattern = "ANAlog:DAC:Save", .callback = Callback_analog_scpi,WDAC},
-
+    {.pattern = "ANAlog:ADC0:Volt?", .callback = Callback_analog_scpi,RADC0},
+    {.pattern = "ANAlog:ADC1:Volt?", .callback = Callback_analog_scpi,RADC1},
+    {.pattern = "ANAlog:ADC:Vsys?", .callback = Callback_analog_scpi,RADC3},
+    {.pattern = "ANAlog:ADC:Temp?", .callback = Callback_analog_scpi,RADC4},
+    {.pattern = "ANAlog:PWR:Volt?", .callback = Callback_analog_scpi,RPV},
+    {.pattern = "ANAlog:PWR:Shunt?", .callback = Callback_analog_scpi,RPS},
+    {.pattern = "ANAlog:PWR:Ima?", .callback = Callback_analog_scpi,RPI},
+    {.pattern = "ANAlog:PWR:Pwm?", .callback = Callback_analog_scpi,RPP},
+    {.pattern = "ANAlog:PWR:Cal", .callback = Callback_analog_scpi,CPI},
 
 
 	SCPI_CMD_LIST_END

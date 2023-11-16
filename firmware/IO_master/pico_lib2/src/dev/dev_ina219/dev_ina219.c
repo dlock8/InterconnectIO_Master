@@ -556,9 +556,12 @@ int16_t ina219GetCurrent(void)
 int16_t ina219GetCurrent_mA(void)
 {
   uint16_t value;
+  int16_t tval;
   ina219Read16(INA219_REG_CURRENT, &value);
-
+ 
   return value / ina219_currentDivider_mA;
+
+
 }
 
 

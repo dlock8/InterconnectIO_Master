@@ -360,10 +360,6 @@ bool test_selftest() {
  TEST_SCPI_INPUT("SYST:OUT ON\r\n"); 
  TEST_SCPI_INPUT("SYST:SLA ON\r\n");
 
-
-
-
-
  TEST_SCPI_INPUT("DIG:DIR:PORT0 #HFF \r\n"); // set direction port 0 ouput
  TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n"); // set direction port 1 input
  TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n");  // set port 0 to 
@@ -377,8 +373,8 @@ bool test_selftest() {
  TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP9  0 \r\n"); 
  TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP18 1 \r\n"); 
  TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP19 1 \r\n");  
- TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \r\n");  
- TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  0 \r\n"); 
+ TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \r\n");  // FLAG
+ TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  0 \r\n");  // CTRL 
  TEST_SCPI_INPUT("ROUT:OPEN:OC OC1 \r\n");
  TEST_SCPI_INPUT("ROUT:OPEN:OC OC2 \r\n");
  TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \r\n");
@@ -392,16 +388,38 @@ test_ina219(); // initialize ina219 and make some test
 test_dac(2.5);  // initialize and preset DAC
 
 
+
+
 fprintf(stdout,"\n--->TEST START\n");
+
+
+// INA219 calibration check
+fprintf(stdout,"\r\n ------> 1.XX <-------\r\n");
+//ina219CalibrateCurrent_mA(572,500);
+
+
+
+
+TEST_SCPI_INPUT("ANA:ADC:Vsys? \r\n");  //
+TEST_SCPI_INPUT("ANA:ADC:Temp? \r\n");  //
+TEST_SCPI_INPUT("SYST:LED:ERR ON \r\n");
 
 
 fprintf(stdout,"\r\n ------> 1.2 <-------\r\n");
 adc_test(0,5,5,5);  // Test CH0= 5V
+TEST_SCPI_INPUT("ANA:ADC0:VOLT? \r\n");  //
+
+
+
+
 
 fprintf(stdout,"\r\n ------> 1.3 <-------\r\n");
 TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  1 \r\n"); // Close K13  
 adc_test(1,5,5,5); // Test CH1 = 5V
-TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  0 \r\n"); // Open K13  
+TEST_SCPI_INPUT("ANA:ADC1:VOLT? \r\n");  //
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  0 \r\n"); // Open K13 
+
+
 
 fprintf(stdout,"\r\n ------> 1.4 <-------\r\n");
 TEST_SCPI_INPUT("DIG:OUT:PORT0 #H40 \r\n");  // Close K2
@@ -436,6 +454,9 @@ fprintf(stdout,"\r\n ------> 1.6 <-------\r\n");
  TEST_SCPI_INPUT("DIG:OUT:PORT0 #H55 \r\n"); 
  TEST_SCPI_INPUT("DIG:IN:PORT0? \r\n"); 
  TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n"); 
+
+  TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n"); 
+  TEST_SCPI_INPUT("DIG:OUT:PORT1 #H00 \r\n"); 
 
  //TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port 1
  //TEST_SCPI_INPUT("DIG:OUT:PORT1 #H55 \r\n"); 
@@ -509,7 +530,7 @@ TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  0 \r\n");  // OPen K16 (VM5)
 
 
 
-ina219CalibrateCurrent_mA(65,50);
+//ina219CalibrateCurrent_mA(65,50);
 
 /*
 fprintf(stdout,"\r\n ------> 1.22 <-------\r\n");
@@ -543,16 +564,43 @@ power_test(I,0,0,1);  // 1.27
 */
 
 
-// INA219 calibration check
-fprintf(stdout,"\r\n ------> 1.XX <-------\r\n");
-ina219CalibrateCurrent_mA(572,500);
 
-TEST_SCPI_INPUT("DIG:OUT:PORT0 #H10 \r\n");  // Close K4 PS1,VM1
+//TEST_SCPI_INPUT("DIG:OUT:PORT0 #H10 \r\n");  // Close K4 PS1,VM1
+
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  1 \r\n"); // Close K4 PS1,VM1
 power_test(I,500,15,15);
 
+ina219SetCalibration_16V_500mA();
+TEST_SCPI_INPUT("ANA:PWR:Cal 547,500\r\n");
 
-TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n");  // Open relay
-test_ina219();
+
+TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
+ina219SetCalibration_16V_200mA();
+TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
+
+ina219SetCalibration_32V_1A();
+TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
+ina219SetCalibration_32V_2A();
+TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
+
+//test_ina219();
+TEST_SCPI_INPUT("ANA:PWR:VOLT? \r\n");
+TEST_SCPI_INPUT("ANA:PWR:S? \r\n");
+TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
+TEST_SCPI_INPUT("ANA:PWR:P? \r\n");
+
+
+
+
+
+
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  0 \r\n"); // Open K4 PS1,VM1
+
+TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
+TEST_SCPI_INPUT("ANA:PWR:S? \r\n");
+
+//TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n");  // Open relay
+
 
 /*
 fprintf(stdout,"\r\n ------> 1.27 <-------\r\n");

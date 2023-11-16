@@ -73,8 +73,18 @@ extern "C" {
 #define GRUN    56     // Read Pico SLaves RUN status
 #define GOE     57     // Read status Output Enable ON/OFF
 
-#define SDAC    58     // Set DAC Voltage
-#define WDAC    59     // Set DAC Voltage and save as default value
+#define SDAC    60     // Set DAC Voltage
+#define WDAC    61     // Set DAC Voltage and save as default value
+#define RADC0   62     // Read ADC0 Voltage
+#define RADC1   63     // Read ADC1 Voltage
+#define RADC3   64     // Read Vsys Voltage
+#define RADC4   65     // Read Master Temperature
+
+#define RPV     70     // Read Power monitor Voltage
+#define RPS     71     // Read Power Shunt Voltage
+#define RPI     72     // Read Power current in milliAmpere
+#define RPP     73     // Read Power in milliwatt
+#define CPI     74     // Calibrate current on power device
 
 
 #define SCPI_BANK1 1     // Open BK1 relay tag

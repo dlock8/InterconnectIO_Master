@@ -35,10 +35,13 @@
  *
  */
 
-#include <stdio.h>
+
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
 #include "include/functadv.h"
+#include "stdio.h"
+#include "string.h"
+
 
 #include "hardware/adc.h"
 #include "include/i2c_com.h"
@@ -70,6 +73,94 @@ void setup_ADC(bool enable) {
     }
 }
 
+
+// function read ADC. Float value is returned
+// Command used by SCPI 
+float  read_master_adc(uint8_t channel) {
+    const float cfactor = ADC_REF / (1 << 12);  // 12 Bits conversion
+    uint16_t value;
+    float adc_val;
+
+    adc_select_input(channel);
+    value = adc_read();  // read ADC
+    adc_val = value * cfactor;
+
+    switch (channel) {
+        case 0: // ADC channel 0
+            fprintf(stdout,"ADC0: Raw value: 0x%03x, voltage: %f V\n", value, adc_val);
+            break;
+        case 1: // ADC channel 1
+            fprintf(stdout,"ADC1: Raw value: 0x%03x, voltage: %f V\n", value, adc_val);
+            break;
+        case 2:  // Not used as analog channel (only ADC0 and 1)
+            adc_val = 0;   
+            fprintf(stdout,"ADC2: is not allowed \n");
+            break;
+        case 3:    // Vsys value
+            adc_val = adc_val*3;  // Pico has voltage divider as input
+            fprintf(stdout,"Raw value 3: 0x%03x, Vsys  voltage: %f V\n", value, adc_val);
+            break;
+        case 4:    // Master internal temperature
+            adc_val = 27 - (adc_val - 0.706)/0.001721; // from RP2040 Datasheet
+            fprintf(stdout,"Raw value 0: 0x%03x, Temperature: %f C\n", value, adc_val);
+            break;
+    }
+    return adc_val;
+
+}
+
+
+
+// SCPI function to control the power device IN219
+float read_power(uint8_t mode){
+  int16_t readv;
+  char meas[3] = {0,0,0};
+  char rmd[8] = {0,0,0,0,0,0,0,0};
+
+   switch (mode){
+    case 0 :
+      readv = ina219GetBusVoltage() * 0.001;
+      strcpy(meas,"V");
+      strcpy(rmd,"BUS V");
+      break;
+
+    case 1 :
+      readv = ina219GetCurrent_mA();  // read current.
+      strcpy(meas,"mA");
+      strcpy(rmd,"CURRENT");
+      break;
+
+    case 2 :
+      readv = ina219GetPower_mW();
+      strcpy(meas,"mW");
+      strcpy(rmd,"POWER");
+      break;
+    case 3 :
+
+      readv = ina219GetShuntVoltage() * 10E-3;
+      strcpy(meas,"mV");
+      strcpy(rmd,"SHUNT");
+      break;
+  }   
+
+    fprintf(stdout,"IN219,read: %s ,  value: %d %s \n",rmd, readv,meas);
+    return readv;
+}
+
+
+// SCPI function to calibrate the current on the power device IN219
+void calibrate_power(float actual, float expected){
+     bool flg;
+
+        flg = ina219CalibrateCurrent_mA(actual,expected);
+        if (flg) {
+             fprintf(stdout,"IN219,calibration current, actual value: %.2f, expected value: %.2f \n",actual, expected);
+        } else {
+             fprintf(stdout,"IN219,calibration not performed, cal factor identical, actual value: %.2f, expected value: %.2f \n",actual, expected);
+        }
+}
+
+// temporary function
 // function read ADC. Reading are placed in array
 void  read_ADC(float *adc_val) {
     const float cfactor = ADC_REF / (1 << 12);  // 12 Bits conversion
@@ -85,7 +176,8 @@ void  read_ADC(float *adc_val) {
     fprintf(stdout,"Raw value 0: 0x%03x, ADC1  voltage: %f V\n", value, adc_val[1]);
 }
 
-// function read ADC. Reading are placed in array
+// temporary function
+// function read ADC internal value . Reading are placed in array
 void  read_int_ADC(float *adc_val) {
     const float cfactor = ADC_REF / (1 << 12);  // 12 Bits conversion
     uint16_t value;
@@ -108,7 +200,8 @@ void  read_int_ADC(float *adc_val) {
 
 }
 
-
+// function set DAC.
+// Command used by SCPI 
 uint8_t dac_set(float value, bool save){
     uint16_t error;
     float ovalue;
@@ -117,14 +210,12 @@ uint8_t dac_set(float value, bool save){
     ovalue = value;
     error = NOERR;
    
-
     // float value;
 
     if (value > MAXDACVOLT) { 
         value = MAXDACVOLT;
         error = EOOR;   // raise error due to value outside maximum limit
     }
-
     if (value < MINDACVOLT) { 
         value = MINDACVOLT;
         error = EOOR;
@@ -144,7 +235,6 @@ uint8_t dac_set(float value, bool save){
        
     }
   return error; 
-
 }
 
 /**
