@@ -92,11 +92,21 @@ SYSTEM:LED:ERRor {0|1|OFF|ON}
 SYSTEM:LED:ERRor? 
 SYSTEM:RESet  (*RST)
 SYSTEM:MODule_option?  [TBD]
-SYSTEM:INITialize {SPI|UART2|UART4|I2C|ADC}
+SYSTEM:INITialize {SPI|UART2|UART4|I2C|ADC} [TBD]   
 SYSTEM:OUTput    {0|1|OFF|ON}
 SYSTEM:SLAves    {0|1|OFF|ON}  
 SYSTEM:OUTput?
 SYSTEM:SLAves?
+
+
+CFG:Write:Eeprom:STR      <varname><svalues> 
+CFG:Read:Eeprom:STR?      <varname><svalues>
+
+<varname> = {partnumber,serialnumber,mod_option,def_cser}
+
+CFG:Write:Eeprom:Default     // Special command to write default value to eeprom
+CFG:Read:Eeprom:Full?        // Special command to read all data on eeprom
+
 
 COM:1WIRE:WRITE
 COM:1WIRE:READ? [{SERIAL|MEMORY|ALL}]

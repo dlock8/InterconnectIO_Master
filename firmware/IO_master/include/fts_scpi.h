@@ -87,6 +87,12 @@ extern "C" {
 #define CPI     74     // Calibrate current on power device
 
 
+#define WEEP   78     // Write to eeprom 
+#define REEP   79     // Read from eeprom
+#define WDEF   80     // Write default value to EEprom
+#define RFUL   81     // Read complete data on Eeprom
+
+
 #define SCPI_BANK1 1     // Open BK1 relay tag
 #define SCPI_BANK2 2     // Open BK2 relay tag
 #define SCPI_BANK3 3     // Open BK3 relay tag
@@ -160,6 +166,7 @@ extern scpi_t scpi_context;
 extern char scpi_input_buffer[];
 extern scpi_error_t scpi_error_queue[];
 extern scpi_command_t scpi_commands[];
+
 
 
 size_t write_scpi(scpi_t *context, const char *data, size_t len);

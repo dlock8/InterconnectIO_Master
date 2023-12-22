@@ -25,11 +25,25 @@
 #define MINDACVOLT  0     // minimum voltage for the MCP4725 DAC
 #define MAXDACVOLT  3.3   // maximum voltage for the MCP4725 DAC
 
-
+// Error Flag used on EEprom 
 #define NOERR    0      // No error
 #define EOOR     1      // Flag for Error for data out of range
-#define EDE      2     // SCPI_ERROR_DEVICE_ERROR
+#define EDE      2      // SCPI_ERROR_DEVICE_ERROR
+#define ERE      3      // SCPI_ERROR_MASS_STORAGE_ERROR,
+#define ECE      4      //SCPI_ERROR_CHARACTER_DATA_ERROR
+#define EMP      5      //SCPI_ERROR_MISSING_PARAMETER;
+#define EIVN     6      //SCPI_ERROR_ILLEGAL_VARIABLE_NAME;
 
+
+
+// define address location on eeprom
+
+#define ADD_EEPROM_BASE    0x40      // Eprom base adress to start
+#define EE_PAGESIZE        32        // Pagesize 
+#define EEMODEL            32        // 24lc32 eeprom
+#define EESIZE             4096        // 24lc32 eeprom
+
+#define min(a, b) ((a) < (b) ? (a) : (b))
 
 void    read_int_ADC(float *adc_val);
 void    setup_ADC(bool enable);
@@ -38,10 +52,14 @@ uint8_t dac_set(float value,bool save);
 float   read_master_adc(uint8_t channel);
 float   read_power(uint8_t mode);
 void    calibrate_power(float actual, float expected);
+uint8_t cfg_eeprom_rw(char mode, uint32_t eeaddr,uint8_t eedatalen, char* data, uint8_t datalen);
+void    scan_i2c_bus();
+uint8_t cfg_eeprom_read_full();
+uint8_t cfg_eeprom_write_default();
 
 
 
 #endif //
 
-void scan_i2c_bus();
+
 

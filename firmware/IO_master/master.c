@@ -24,6 +24,8 @@ static const uint32_t GPIO_SET_DIR_MASK = 0b000111110010010111111111100000000;
 static const uint32_t GPIO_MASTER_OUT_MASK = 0b000111110010011111111111100000000;
 
 
+
+
 // Messsage queue is used to save the SCPI command received by the serial port.
 
 #define MESSAGE_SIZE 64
@@ -82,11 +84,12 @@ bool deque(MESSAGE *message, char *size) {
 
 
 
+eep ee;  // Declaration of global EEprom structure
 
 static struct 
 {
   MESSAGE rx;    //char data[MESSAGE_SIZE];  // contains character received
-  uint8_t ch;              //  character counter
+  uint8_t ch;    //  character counter
 } rxser;
 
 // RX interrupt handler
@@ -157,8 +160,7 @@ void Hardware_Default_Setting() {
   gpio_set_dir(GPIO_RUN, GPIO_IN); // Set GPIO in Input for security 
   sleep_ms(100);
  */
-
-
+ 
   // Communication UART inititializayion. Thr UART is used to receive SCPI command
   // Set up our UART with a basic baud rate.
   uart_init(UART_ID, 115200);
@@ -225,6 +227,7 @@ bool Selftest() {
   float adcv[4];
   uint16_t ctr;  // counter used for flashing pico led
   uint16_t pulse;  // limit for flashing led frequency
+  bool valid;
   
  
   pulse = 200;    // slow led flashing frequency
@@ -232,6 +235,11 @@ bool Selftest() {
 	stdio_init_all();
   init_scpi();
   Hardware_Default_Setting();
+
+  // need to be placed;
+  valid =  cfg_eeprom_read_full();
+
+
   init_queue(); // initialise queue for message received
 
   if (watchdog_caused_reboot()) { 

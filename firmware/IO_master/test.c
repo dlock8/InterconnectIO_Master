@@ -392,13 +392,35 @@ test_dac(2.5);  // initialize and preset DAC
 
 fprintf(stdout,"\n--->TEST START\n");
 
+//cfg_eeprom_write_default();
+//cfg_eeprom_read_full();
+//TEST_SCPI_INPUT("CFG:Write:E:STR 'partNUMBER, 500-1112-060'\r\n");
+//TEST_SCPI_INPUT("CFG:Write:EEPROM:STR  'partnumber'\r\n");
+//TEST_SCPI_INPUT("CFG:Write:EEPROM:STR  \r\n");
+
+//TEST_SCPI_INPUT("CFG:Write:EEPROM:DEFAULT\r\n");
+TEST_SCPI_INPUT("CFG:Read:EEPROM:Full?\r\n");
+
+TEST_SCPI_INPUT("CFG:Read:E:STR? 'partnumber'\r\n");
+TEST_SCPI_INPUT("CFG:Read:E:STR? 'serialNUMBER'\r\n");
+TEST_SCPI_INPUT("CFG:Read:E:STR? 'MOD_OPTION'\r\n");
+TEST_SCPI_INPUT("CFG:Read:E:STR? 'com_ser_speed'\r\n");
+
+
+//TEST_SCPI_INPUT("CFG:Write:PARTNUMBER  \r\n");  //
+//TEST_SCPI_INPUT("CFG:Write:PARTNUMBER '500-1000-060' \r\n");  //
+//TEST_SCPI_INPUT("CFG:Write:SERIALNUMBER '12345' \r\n");  //
+//TEST_SCPI_INPUT("CFG:Write:MOD_OPTION 'DAC,PWR' \r\n");  //
+//TEST_SCPI_INPUT("CFG:Write:DEF_CSER '19200' \r\n");
+
+TEST_SCPI_INPUT("CFG:Read:PARTNUMBER? \r\n");
+//TEST_SCPI_INPUT("CFG:Read:SERIALNUMBER? \r\n"); 
+TEST_SCPI_INPUT("CFG:Read:MOD_OPTION? \r\n");  //
+TEST_SCPI_INPUT("CFG:Read:DEF_CSER? \r\n");
 
 // INA219 calibration check
 fprintf(stdout,"\r\n ------> 1.XX <-------\r\n");
 //ina219CalibrateCurrent_mA(572,500);
-
-
-
 
 TEST_SCPI_INPUT("ANA:ADC:Vsys? \r\n");  //
 TEST_SCPI_INPUT("ANA:ADC:Temp? \r\n");  //

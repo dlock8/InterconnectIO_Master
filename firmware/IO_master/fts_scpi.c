@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
 #include "include/fts_scpi.h"
@@ -35,8 +36,14 @@ scpi_error_t scpi_error_queue[SCPI_ERROR_QUEUE_SIZE];
 
 // The function called by the SCPI library when it wants to send data.
 size_t SCPI_write(scpi_t *context, const char *data, size_t len) {
-    uart_puts(UART_ID, data); // send answer to serial port
-	return fwrite(data, 1, len, stdout); // send answer to usb port
+ 
+    // added code to add null termination to the string data. uart_puts do not support parameter lenght.
+    char t[128];          // temporay buffer 
+    strncpy(t,data,128); // save data string to temporay buffer
+    t[len] = '\0';      // add string termination
+    uart_puts(UART_ID, t); // send answer to serial port
+
+	return fwrite(data, 1, len, stdout); // send answer to usb port for help debug
 }
 
 // execute reset of all Pico
@@ -738,6 +745,160 @@ return SCPI_RES_OK;
 }
 
 
+// callback for read or write eeprom single parameter
+static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
+    scpi_bool_t res;
+    scpi_parameter_t param1;
+    uint16_t answer[1];  // will contains the answer returned by command
+    uint8_t tag;
+    char* split;
+    uint8_t status = NOERR;
+    char mode;
+    char sfull[64], pstr[96];
+    uint32_t  value;    // value of parameter
+    char varname[32], svalue[32];
+    size_t i;
+
+
+        // Helper structure to store member information
+    struct ParamInfo {
+        const char* name;
+        size_t offset;
+        size_t size;
+    };
+
+
+    // Define an array of MemberInfo structs with member names, offsets, and sizes
+    // Each parameter to Read/Write on EEPROM need to be added on this array (except Check parameter)
+    struct ParamInfo members[] = {
+        {CHECK, offsetof(cfg,check), sizeof(((cfg *)0)->check)},
+        {PARTNUMBER, offsetof(cfg,partnumber), sizeof(((cfg *)0)->partnumber)},
+        {SERIALNUMBER, offsetof(cfg,serialnumber),sizeof(((cfg *)0)->serialnumber)},
+        {MOD_OPTION, offsetof(cfg,mod_option),sizeof(((cfg *)0)->mod_option)},
+        {COM_SER_SPEED, offsetof(cfg,com_ser_speed),sizeof(((cfg *)0)->com_ser_speed)},
+    };
+
+    fprintf(stdout, "\n\nOn eeprom execute \r\n");
+    tag = SCPI_CmdTag(context);   //extract tag from the command
+
+     //calculate the number of members
+    size_t numMembers = sizeof(members) / sizeof(members[0]);
+
+    switch (tag) {
+        case WDEF:
+            status = cfg_eeprom_write_default();
+            break;
+        case RFUL:
+            status = cfg_eeprom_read_full();
+            if (status != NOERR) {break;}   // if error do not execute the eeprom reading
+            fprintf(stdout, "\n\nEEprom full content: \r\n");
+            for ( i = 0; i < numMembers; ++i) {
+                // copy parameter to string
+                strncpy(sfull,&ee.data[members[i].offset],members[i].size);
+                sfull[members[i].size] = '\0';  // add end of string to temporary buffer
+                sprintf(pstr,"%s = %s\n",members[i].name,sfull);  // build string to return
+                // fprintf(stdout,"Parameter %s\n",pstr);
+                SCPI_ResultCharacters(context,pstr,strlen(pstr)); // return value
+            }
+            break;
+        case WEEP:
+            mode = 'w';   // write mode
+            break;
+        case REEP:
+            mode = 'r';   // write mode
+            break;
+    }
+
+    // Run only for read wwite parameter on eeprom
+    if (tag == WEEP || tag == REEP) {
+        res = SCPI_Parameter(context, &param1, true);  // Read first parameter
+        if (res == false) { return SCPI_RES_ERR;}  // if no parameter read, raise error and exit
+
+        // Split the string to distinguishes between varnames and the svalue
+        split = strtok (param1.ptr," ',");
+        strcpy(varname,split);
+        strupr(varname);
+        fprintf(stdout,"EEprom varname = %s\n",varname);
+
+        if (tag  == REEP){  // if tag  = Read command
+            mode = 'r';
+        }
+    
+        if (tag  == WEEP){ // if tag  = Write command
+            mode = 'w';
+            split = strtok (NULL," ',\r\n");  // Extract second parameter from the command
+            strcpy(svalue,split);   // copy second paramter to svalue
+            strupr(svalue);         // change lowercase to upper case
+            if (svalue[0] == '\0') {   // if svalue not present, raise error
+                fprintf(stdout,"Error, no svalue to write on eeprom \n");
+                status = EMP;  // Set error flag
+            } else { fprintf(stdout,"EEprom svalue = %s\n",svalue); }
+        }
+
+   
+        bool found = false;
+
+        if (status == NOERR) {  // if no error found.
+            // Loop through the member info array to find matching member name
+            for ( i = 0; i < numMembers; ++i) {
+                if (strcmp(varname, members[i].name) == 0) {
+                    fprintf(stdout,"Cfg struct parameter: %s , offset: %u, size: %u\n",varname, members[i].offset,members[i].size );
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                    status = EIVN;
+            }
+
+            if (found) { // if varname found
+                status = cfg_eeprom_rw(mode,members[i].offset,members[i].size,svalue,strlen(svalue));    // write or read data on eeprom
+                 if (status == NOERR) {
+                    strncpy(&ee.data[members[i].offset], svalue, strlen(svalue));  // save parameter on eeprom structure
+                    if (mode == 'r') {
+                        SCPI_ResultCharacters(context,&ee.data[members[i].offset],members[i].size); // return value
+                    }
+                }
+            }
+        }
+    }
+      // raise error if is the case
+    switch (status) {
+        case NOERR:
+            break;
+
+        case EOOR:
+            answer[0] = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE;  
+            break;
+        case EIVN:
+            answer[0] = SCPI_ERROR_ILLEGAL_VARIABLE_NAME; 
+            break;
+        case ECE:
+             answer[0] = SCPI_ERROR_CHARACTER_DATA_ERROR;
+             break;
+        
+        case EDE:
+             answer[0] = SCPI_ERROR_EXECUTION_ERROR;
+             break;
+
+        case ERE:
+             answer[0] = SCPI_ERROR_MASS_STORAGE_ERROR;
+             break; 
+
+        case EMP:
+            answer[0] = SCPI_ERROR_MISSING_PARAMETER;  
+            break;
+    }    
+
+    if (status != NOERR) {
+        SCPI_ErrorPush(context, answer[0]);  // push errors 
+        return SCPI_RES_ERR;
+    } else {
+
+        return SCPI_RES_OK;
+    }
+
+}
 
 
     // The SCPI commands we support and the callbacks they use.
@@ -816,6 +977,19 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "ANAlog:PWR:Ima?", .callback = Callback_analog_scpi,RPI},
     {.pattern = "ANAlog:PWR:Pwm?", .callback = Callback_analog_scpi,RPP},
     {.pattern = "ANAlog:PWR:Cal", .callback = Callback_analog_scpi,CPI},
+
+    {.pattern = "CFG:Write:Eeprom:STRing", .callback = Callback_eeprom_scpi,WEEP},
+    {.pattern = "CFG:Read:Eeprom:STRing?", .callback = Callback_eeprom_scpi,REEP},
+    {.pattern = "CFG:Write:Eeprom:Default", .callback = Callback_eeprom_scpi,WDEF},
+    {.pattern = "CFG:Read:Eeprom:Full?", .callback = Callback_eeprom_scpi,RFUL},
+    /*
+    {.pattern = "CFG:Write:SERIALNUMBER", .callback = Callback_eeprom_scpi,WEESN},
+    {.pattern = "CFG:Read:SERIALNUMBER?", .callback = Callback_eeprom_scpi,REESN},
+    {.pattern = "CFG:Write:MOD_OPTION", .callback = Callback_eeprom_scpi,WEEMO},
+    {.pattern = "CFG:Read:MOD_OPTION?", .callback = Callback_eeprom_scpi,REEMO},
+    {.pattern = "CFG:Write:DEF_CSER", .callback = Callback_eeprom_scpi,WEEDS},
+    {.pattern = "CFG:Read:DEF_CSER?", .callback = Callback_eeprom_scpi,REEDS},
+    */
 
 
 	SCPI_CMD_LIST_END

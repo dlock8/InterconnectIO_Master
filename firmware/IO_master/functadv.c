@@ -37,10 +37,12 @@
 
 
 #include "pico/stdlib.h"
+#include <ctype.h>
 #include "pico/binary_info.h"
 #include "include/functadv.h"
 #include "stdio.h"
 #include "string.h"
+#include "include/master.h"
 
 
 #include "hardware/adc.h"
@@ -236,6 +238,180 @@ uint8_t dac_set(float value, bool save){
     }
   return error; 
 }
+
+
+// This function check if the eeprom is detected and if the data is valid
+// The byte check could be validated to detects if eeprom is empty or not
+
+uint8_t eeprom_data_valid(bool check_data,at24cx_dev_t* eeprom)
+{
+  at24cx_writedata_t dt;
+ 
+
+ // register eeprom 24lc32
+ at24cx_i2c_device_register(eeprom, EEMODEL, I2C_ADDRESS_AT24CX);
+  
+  //Check if eeprom is active
+ fprintf(stdout,"eeprom is %s\n", (*eeprom).status ? "detected" : "not detected");
+ if ((*eeprom).status == false) return EDE;
+
+ if (check_data) {  // if required to check data 
+    dt.address = ADD_EEPROM_BASE;
+    if (at24cx_i2c_byte_read(*eeprom, &dt) == AT24CX_OK) {
+         if (dt.data != EE_CHECK_CHAR) {  // Error Check byte not written
+            fprintf(stdout,"Error Check Character do not match, expect: 0x%02X read: 0x%02X \n",EE_CHECK_CHAR,dt.data);
+            return ECE;
+         } else {
+            fprintf(stdout,"EEprom check byte valid: 0x%02X \n",dt.data);
+         }
+    }else {
+        fprintf(stdout,"Device byte read error!\n");
+        return EDE;
+    }
+ }
+ return NOERR;
+}
+
+// Write parameter to eeprom
+
+uint8_t cfg_eeprom_rw(char mode, uint32_t eeaddr,uint8_t eedatalen, char *data, uint8_t datalen)
+{
+  at24cx_dev_t eeprom_1;
+  at24cx_writedata_t dt;
+  uint8_t status;
+
+  // EEprom check access and validity
+  status = eeprom_data_valid(true, &eeprom_1);
+  if (status != NOERR) { return status;}  // if error do not execue read or write on eeprom
+ 
+
+  if (mode == 'w') {
+    fprintf(stdout,"\nWrite Eeprom parameter\n");
+    if (datalen > eedatalen) {   // if data is longer than reserved field
+        fprintf(stdout,"Error, data to write is too long, field length 0x%02X : Data length 0x%02X \n", eedatalen, datalen);
+        return EOOR;   // raise error due to value outside maximum limit
+    }  
+    for(int i=0;i<eedatalen;i++)
+    {
+        dt.address = ADD_EEPROM_BASE + eeaddr +i; // physical address on eeprom
+        dt.data = data[i];
+        dt.data_multi[i] = data[i];  // save value on array to be compare after eeprom 
+
+        if (at24cx_i2c_byte_write(eeprom_1, dt) == AT24CX_OK) {
+            fprintf(stdout,"Writing at address 0x%02X: 0x%02X , %c \n", dt.address, dt.data,dt.data);
+        }else {
+            fprintf(stdout,"EEprom device write byte error! \n");
+            return EDE;
+        }
+    }
+  }
+    fprintf(stdout,"\nRead eeprom byte test\n");
+    for(int i=0;i<eedatalen;i++)
+    {
+      dt.address = ADD_EEPROM_BASE + eeaddr +i;
+      if (at24cx_i2c_byte_read(eeprom_1, &dt) == AT24CX_OK) {
+
+         fprintf(stdout,"Reading at address 0x%02X: 0x%02X , %c \n", dt.address, dt.data,dt.data);
+         data[i] = dt.data;   // save value on array
+      }else {
+        fprintf(stdout,"EEprom device byte read error!\n");
+        return EDE;
+      }
+    }
+
+    if (mode == 'w') {  // if data written on eeprom, compare value.
+        fprintf(stdout,"\nCompare EEprom Write and read\n");
+        for(int i=0;i<eedatalen;i++)
+        {
+            dt.address = ADD_EEPROM_BASE + eeaddr +i;
+            if (data[i] != dt.data_multi[i]) {
+            fprintf(stdout,"Error byte Write-read at address 0x%02X: write value 0x%02X: read value: 0x%02X\n", dt.address, dt.data_multi[i], data[i]);
+            return ECE;
+            }
+        }
+        fprintf(stdout,"Eeprom data match\n");
+    }
+
+    return NOERR;
+}
+
+
+// Read the entire contents of the configuration eeprom and store data on eeprom config structure
+// EEprom structure is global (defined on master.h)
+
+uint8_t cfg_eeprom_read_full()
+{
+  at24cx_dev_t eeprom_1;
+  at24cx_writedata_t dt;
+  uint32_t datalen;
+  uint8_t status;
+
+  // EEprom check access and validity of the check byte
+  status = eeprom_data_valid(true, &eeprom_1);
+  if (status != NOERR) { return status;}  // if error do not execue read or write on eeprom
+
+  datalen = sizeof(ee.cfg);  // read size of eeprom global structure 
+  
+  fprintf(stdout,"\n--> Read full eeprom\n");
+  for(int i=0;i<datalen;i++)
+    {
+      dt.address = ADD_EEPROM_BASE +i;  // calculate physical address
+      if (at24cx_i2c_byte_read(eeprom_1, &dt) == AT24CX_OK) {
+         fprintf(stdout,"Full Eeprom reading at address 0x%02X: 0x%02X \n", dt.address, dt.data);
+         ee.data[i] = dt.data;   // save value on eeprom structure
+      }else {
+        fprintf(stdout,"EEprom read full device byte read error!\n");
+        return EDE;
+      }
+    }
+    fprintf(stdout,"\n--> Completed read of full eeprom\n");
+    return NOERR;
+}
+
+
+
+// Write the default values on EEprom. EEprom is written by page
+// EEprom structure is global (defined on master.h)
+
+uint8_t cfg_eeprom_write_default()
+{
+  at24cx_dev_t eeprom_1;
+  at24cx_writedata_t dt;
+  uint32_t datalen;
+  uint32_t addr;
+  int i;
+  uint8_t status;
+
+  eep eed = DEF_EEPROM; // Assign default value to structure eeprom
+
+  // EEprom check access
+  status = eeprom_data_valid(false, &eeprom_1);
+  if (status != NOERR) { return status;}  // if error do not execue read or write on eeprom
+
+  datalen = sizeof(ee.cfg);  // read size of eeprom global structure 
+
+  fprintf(stdout,"\n--> Write full eeprom\n");
+  dt.address = ADD_EEPROM_BASE;  // Set base adress
+  i = 0; // index for the location of data
+
+  while (0 < datalen)
+  {
+    uint32_t pagelen = (dt.address|(EE_PAGESIZE-1)) - dt.address + 1;
+    uint32_t writelen = min(datalen, pagelen);
+
+    strncpy(&dt.data_multi[0],&eed.data[i],writelen); // copy data in array
+
+    if (at24cx_i2c_page_write(eeprom_1, dt) == AT24CX_OK) fprintf(stdout,"Page Writing at address 0x%02X\n", dt.address);
+    else { fprintf(stdout,"Device page write error!\n"); return EDE; }
+ 
+    dt.address += writelen;
+    i  += writelen;
+    datalen -= writelen;
+  }
+
+}
+
+
 
 /**
  * Copyright (c) 2020 Raspberry Pi (Trading) Ltd.

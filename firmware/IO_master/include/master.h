@@ -26,13 +26,44 @@ extern "C" {
 #define UART_RX_PIN 1
 
 
+// EEprom parameter supported by SCPI command
+
+#define CHECK         "CHECK"
+#define PARTNUMBER    "PARTNUMBER"
+#define SERIALNUMBER  "SERIALNUMBER"
+#define MOD_OPTION    "MOD_OPTION"
+#define COM_SER_SPEED "COM_SER_SPEED"
 
 
-//PICO Definition
-//#define BANK {2,3,4,5,6,7,8,9,0}  // GPIO Relay position, could be 4 dimension
-//#define SE {4}   // could be for dimension
-//#define DIGIO {12,13,14,15,16,17,18,19}  // Digital IO position, could be 4 dimension
 
+// EEprom configuration structure
+
+typedef struct eecfg_t {
+  char check[1];          // To check if eeprom read correctly the proof character
+  char partnumber[12];
+  char serialnumber[5];
+  char mod_option[14];
+  char com_ser_speed[6];
+}cfg;
+
+
+typedef union eef {
+    struct eecfg_t cfg;
+    char data[sizeof(cfg)];
+}eep;
+
+
+extern eep ee;
+
+// Default value for EEprom structure
+#define EE_CHECK_CHAR   '#'
+#define EE_PARTNUMBER   "500-1000-010"
+#define EE_SERIALNUMBER "00001"
+#define EE_MOD_OPTION   "DAC,PWR"
+#define EE_CSER_SPEED   "115200"
+
+// Assign default value to default eeprom structure
+#define DEF_EEPROM {EE_CHECK_CHAR,EE_PARTNUMBER,EE_SERIALNUMBER,EE_MOD_OPTION,EE_CSER_SPEED}
 
 
 void Hardware_Default_Setting();

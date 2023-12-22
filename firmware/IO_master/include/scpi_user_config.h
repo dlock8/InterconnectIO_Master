@@ -44,9 +44,9 @@ extern "C" {
 // #define SCPI_LINE_ENDING    "\r\n"    /*   use <CR><LF> carriage return + line feed as termination charcters */
 
 
-//#ifndef  USE_FULL_ERROR_LIST 
-//#define USE_FULL_ERROR_LIST  1
-//#endif
+#ifndef  USE_FULL_ERROR_LIST 
+#define USE_FULL_ERROR_LIST  1
+#endif
 
 //#ifdef  SCPI_USER_CONFIG 
 //#define SCPI_USER_CONFIG   1
