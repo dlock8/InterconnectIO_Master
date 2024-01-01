@@ -30,11 +30,35 @@ However, there are two caveats:
 
 
 ## SCPI command supported
+## Required SCPI commands
 
 *IDN?
-*RST
-*CLS
+*RST    // Reset Command
+*CLS    // Clear Status
+*ESE    // Standard Event Status Enable Register
+*ESR    // Standard Event Status Register
+*OPC    // Operation Complete
+*SRE    // Service Request Enable
+*STB    // Read Status Byte
+*TST    // Self Test
+*WAI    // Wait-to-Continue
 
+
+SYSTem:ERRor[:NEXT]?
+SYSTem:ERRor:COUNt?
+SYSTem:VERSion?
+
+STATus:QUEStionable[:EVENt]?
+STATus:QUEStionable:CONDition?
+STATus:QUEStionable:ENABle"
+STATus:QUEStionable:ENABle?"
+
+STATus:OPERation[:EVENt]?
+STATus:OPERation:CONDition?
+STATus:OPERation:ENABle
+STATus:OPERation:ENABle?
+
+## SCPI command associated to the Interconnect IO Board
 
 ROUTe:CLOSe (@<ch_list>)  
 ROUTe:CLOSe:EXCLusive (@<ch_list>) 
@@ -90,7 +114,7 @@ SYSTEM:DEVice:VERsion?
 SYSTem:BEEPer  
 SYSTEM:LED:ERRor {0|1|OFF|ON}
 SYSTEM:LED:ERRor? 
-SYSTEM:RESet  (*RST)
+??SYSTEM:RESet  (*RST)
 SYSTEM:MODule_option?  [TBD]
 SYSTEM:INITialize {SPI|UART2|UART4|I2C|ADC} [TBD]   
 SYSTEM:OUTput    {0|1|OFF|ON}

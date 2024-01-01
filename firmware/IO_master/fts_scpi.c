@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
 #include "include/fts_scpi.h"
@@ -75,6 +76,20 @@ void SCPI_Beep() {
     gpio_put(GPIO_BEEP, 0); // Turn OFF beeper
 }
 
+// Send a burst of beep code to alert for boot error
+void ErrorBeep(uint8_t nbeep){
+    for (uint8_t j = 0; j < 3 ; j++) {
+        for( uint8_t i=0; i <nbeep; i++){
+            SCPI_Beep();
+            sleep_ms(250);    // wait time between beep
+        }
+    sleep_ms(500);    // wait time between burst of beep
+    }
+}
+
+
+
+
 int SCPI_Error(scpi_t * context, int_fast16_t err) {
     // (void) context;
     SCPI_Beep();  // Beep for signal error
@@ -108,6 +123,27 @@ scpi_interface_t scpi_interface = {
 	.reset = SCPI_Reset,
 };
 
+/**
+ * Reimplement IEEE488.2 *TST?
+ *
+ * Result should be 0 if everything is ok
+ * Result should be 1 if something goes wrong
+ *
+ * Return SCPI_RES_OK
+ */
+ // Hardware selftest
+static scpi_result_t SCPI_CallbackTstQ(scpi_t * context) {
+    fprintf(stdout,"Selftest execute \r\n");
+
+    SCPI_ResultInt32(context, 0);
+
+    return SCPI_RES_OK;
+}
+
+// Set Register error
+bool SetError(){
+
+}
 
 
 
@@ -232,8 +268,6 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
     char str[80];
 
 
-    fprintf(stdout,"tag test\r\n");
-  
     tag = SCPI_CmdTag(context);   //extract tag from the command
 
     fprintf(stdout,"tagvalue: %d\r\n", tag);
@@ -749,7 +783,7 @@ return SCPI_RES_OK;
 static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_parameter_t param1;
-    uint16_t answer[1];  // will contains the answer returned by command
+    uint16_t answer;  // will contains the answer returned by command
     uint8_t tag;
     char* split;
     uint8_t status = NOERR;
@@ -758,24 +792,27 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
     uint32_t  value;    // value of parameter
     char varname[32], svalue[32];
     size_t i;
+    char *tnptr;
+    long cnum;
 
 
         // Helper structure to store member information
     struct ParamInfo {
-        const char* name;
-        size_t offset;
-        size_t size;
+        const char* name;   // name of parameter
+        size_t offset;      // offset on the structure for the parameter
+        size_t size;        // size of the parameter
+        bool isnum;         // set to TRUE if number is mandatory
     };
 
 
     // Define an array of MemberInfo structs with member names, offsets, and sizes
     // Each parameter to Read/Write on EEPROM need to be added on this array (except Check parameter)
     struct ParamInfo members[] = {
-        {CHECK, offsetof(cfg,check), sizeof(((cfg *)0)->check)},
-        {PARTNUMBER, offsetof(cfg,partnumber), sizeof(((cfg *)0)->partnumber)},
-        {SERIALNUMBER, offsetof(cfg,serialnumber),sizeof(((cfg *)0)->serialnumber)},
-        {MOD_OPTION, offsetof(cfg,mod_option),sizeof(((cfg *)0)->mod_option)},
-        {COM_SER_SPEED, offsetof(cfg,com_ser_speed),sizeof(((cfg *)0)->com_ser_speed)},
+        {CHECK, offsetof(cfg,check), sizeof(((cfg *)0)->check),FALSE},
+        {PARTNUMBER, offsetof(cfg,partnumber), sizeof(((cfg *)0)->partnumber),FALSE},
+        {SERIALNUMBER, offsetof(cfg,serialnumber),sizeof(((cfg *)0)->serialnumber),FALSE},
+        {MOD_OPTION, offsetof(cfg,mod_option),sizeof(((cfg *)0)->mod_option),FALSE},
+        {COM_SER_SPEED, offsetof(cfg,com_ser_speed),sizeof(((cfg *)0)->com_ser_speed),TRUE},
     };
 
     fprintf(stdout, "\n\nOn eeprom execute \r\n");
@@ -835,7 +872,6 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
             } else { fprintf(stdout,"EEprom svalue = %s\n",svalue); }
         }
 
-   
         bool found = false;
 
         if (status == NOERR) {  // if no error found.
@@ -851,7 +887,16 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
                     status = EIVN;
             }
 
-            if (found) { // if varname found
+            // check if svalue is a number in case we expect number
+            if (found == true && mode == 'w' && members[i].isnum == 1) {
+                long number;
+                int check =stringtonumber( svalue, &number);
+                if (check != 0) {   
+                    status = ENDE;      // raise error if not a number
+                }
+            }
+
+            if (found && status == NOERR) { // if varname found
                 status = cfg_eeprom_rw(mode,members[i].offset,members[i].size,svalue,strlen(svalue));    // write or read data on eeprom
                  if (status == NOERR) {
                     strncpy(&ee.data[members[i].offset], svalue, strlen(svalue));  // save parameter on eeprom structure
@@ -866,32 +911,34 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
     switch (status) {
         case NOERR:
             break;
-
+        case ENDE:
+            answer = SCPI_ERROR_NUMERIC_DATA_ERROR;  
+            break;
         case EOOR:
-            answer[0] = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE;  
+            answer = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE;  
             break;
         case EIVN:
-            answer[0] = SCPI_ERROR_ILLEGAL_VARIABLE_NAME; 
+            answer = SCPI_ERROR_ILLEGAL_VARIABLE_NAME; 
             break;
         case ECE:
-             answer[0] = SCPI_ERROR_CHARACTER_DATA_ERROR;
+             answer = SCPI_ERROR_CHARACTER_DATA_ERROR;
              break;
         
         case EDE:
-             answer[0] = SCPI_ERROR_EXECUTION_ERROR;
+             answer= SCPI_ERROR_EXECUTION_ERROR;
              break;
 
         case ERE:
-             answer[0] = SCPI_ERROR_MASS_STORAGE_ERROR;
+             answer= SCPI_ERROR_MASS_STORAGE_ERROR;
              break; 
 
         case EMP:
-            answer[0] = SCPI_ERROR_MISSING_PARAMETER;  
+            answer = SCPI_ERROR_MISSING_PARAMETER;  
             break;
     }    
 
     if (status != NOERR) {
-        SCPI_ErrorPush(context, answer[0]);  // push errors 
+        SCPI_ErrorPush(context, answer);  // push errors 
         return SCPI_RES_ERR;
     } else {
 
@@ -916,13 +963,23 @@ scpi_command_t scpi_commands[] = {
     { .pattern = "*SRE", .callback = SCPI_CoreSre,}, // Service request enable
     { .pattern = "*SRE?", .callback = SCPI_CoreSreQ,}, // Service request query
     { .pattern = "*STB?", .callback = SCPI_CoreStbQ,}, // read status byte
-    { .pattern = "*TST?", .callback = SCPI_CoreTstQ,}, // self-test
+    { .pattern = "*TST?", .callback = SCPI_CallbackTstQ,}, // self-test
     { .pattern = "*WAI", .callback = SCPI_CoreWai,}, // wait for all pending operation to complete
 
      /* Required SCPI commands (SCPI std V1999.0 4.2.1) */
     { .pattern = "SYSTem:ERRor[:NEXT]?", .callback = SCPI_SystemErrorNextQ,},
     { .pattern = "SYSTem:ERRor:COUNt?", .callback = SCPI_SystemErrorCountQ,},
     { .pattern = "SYSTem:VERSion?", .callback = SCPI_SystemVersionQ,},
+
+    { .pattern = "STATus:QUEStionable[:EVENt]?", .callback = SCPI_StatusQuestionableEventQ,},
+    { .pattern = "STATus:QUEStionable:CONDition?", .callback = SCPI_StatusQuestionableConditionQ,},
+    { .pattern = "STATus:QUEStionable:ENABle", .callback = SCPI_StatusQuestionableEnable,},
+    { .pattern = "STATus:QUEStionable:ENABle?", .callback = SCPI_StatusQuestionableEnableQ,},
+
+    {.pattern = "STATus:OPERation[:EVENt]?", .callback = SCPI_StatusOperationEventQ, },
+    {.pattern = "STATus:OPERation:CONDition?", .callback = SCPI_StatusOperationConditionQ, },
+    {.pattern = "STATus:OPERation:ENABle", .callback = SCPI_StatusOperationEnable, },
+    {.pattern = "STATus:OPERation:ENABle?", .callback = SCPI_StatusOperationEnableQ, },
 
     /* Added to communicate with Interconnect IO board */
     {.pattern = "ROUTe:CLOSE", .callback = Callback_Relay_scpi,RCLOSE},

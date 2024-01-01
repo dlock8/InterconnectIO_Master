@@ -156,3 +156,5 @@ at24cx_err_t at24cx_i2c_current_address_read(at24cx_dev_t dev, at24cx_writedata_
 
     return err;
 }
+
+

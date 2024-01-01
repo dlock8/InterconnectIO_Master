@@ -13,6 +13,11 @@
 #include "hardware/watchdog.h"
 #include "userconfig.h"
 
+#include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
+#include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
+#include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
+#include "pico_lib2/src/sys/include/sys_adc.h"
+
 
 // Major an Minor version are located on Cmakelist.txt with command
 //set (IO_MASTER_VERSION_MAJOR x)
@@ -92,15 +97,11 @@ static struct
   uint8_t ch;    //  character counter
 } rxser;
 
-// RX interrupt handler
+// RX Main communication interrupt handler
 void on_uart_rx() {
     MESSAGE rxrec;
     char eol;
     while (uart_is_readable(UART_ID)) {
-        
-        //ch = uart_getc(UART_ID);
-        
-        //uart_read_blocking(UART_ID,&rxser.rxed[rxser.ch],1); // read one character and save on array
         uart_read_blocking(UART_ID,&rxser.rx.data[rxser.ch],1); // read one character and save on array
         // Can we send it back?
         if (uart_is_writable(UART_ID)) {
@@ -124,44 +125,10 @@ void on_uart_rx() {
 }
 
 
-// Initialisation of the hardware
-// Called by Main program and when SCPI command *RST is received
-void Hardware_Default_Setting() {
-  
-  gpio_init_mask(GPIO_BOOT_MASK); // set which lines will be GPIO 
-  gpio_set_dir_masked(GPIO_SET_DIR_MASK,GPIO_MASTER_OUT_MASK); // set which lines will be GPIO 
+// Initialisation of the main communication uart
 
-  // Set up our UART with the required speed.
-  uart_init(UART_ID, BAUD_RATE);
-
-  adc_init();  // initialize ADC function
-  adc_set_temp_sensor_enabled(1); //Enable read of internal temperature sensor
-  gpio_init(29);  // VSYS gpio
-  gpio_set_dir(29,GPIO_IN); // set has input
-  gpio_disable_pulls(29); // remove pullup and down for accurate reading of VSYS
-  
-  // Set the TX and RX pins by using the function select on the GPIO
-  // Set datasheet for more information on function select
-  gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
-  gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
-
-  // RUN_EN setup
-  // We setup the output before the direction for being sure of the RUN_EN= 1 when 
-  // we change the pin from input to output.
-  // Run_EN =0 disconnect the USB port on the slave
-  
-  gpio_put(GPIO_RUN, 1); // Set RUN_EN =1
-  gpio_set_dir(GPIO_RUN, GPIO_OUT);   // Set pin at output
-/*
-  gpio_put(GPIO_RUN, 0); // Reset PICO Slave 
-  fprintf(stdout, "PICO Slave in Reset\r\n");
-  sleep_ms(100);
-  gpio_put(GPIO_RUN, 1); // Start PICO Slave 
-  gpio_set_dir(GPIO_RUN, GPIO_IN); // Set GPIO in Input for security 
-  sleep_ms(100);
- */
- 
-  // Communication UART inititializayion. Thr UART is used to receive SCPI command
+void init_main_com() {
+  // Communication UART inititialization. Thr UART is used to receive SCPI command
   // Set up our UART with a basic baud rate.
   uart_init(UART_ID, 115200);
 
@@ -175,8 +142,6 @@ void Hardware_Default_Setting() {
   // possible to that requested
   int __unused actual = uart_set_baudrate(UART_ID, BAUD_RATE);
   
-
-
   // Set UART flow control CTS/RTS, we don't want these, so turn them off
   uart_set_hw_flow(UART_ID, false, false);
 
@@ -201,25 +166,46 @@ void Hardware_Default_Setting() {
     // Now enable the UART to send interrupts - RX only
     uart_set_irq_enables(UART_ID, true, false);
 
-  // Setup I2C used by the internal bus to commincate with the slave devices
-  setup_master();  // I2C_communication
-
   // Send information on the USB debug port
   fprintf(stdout,"Serial Baud rate %d \r\n", actual);
+}
+
+// Initialisation of the hardware
+// Called by Main program and when SCPI command *RST is received
+void Hardware_Default_Setting() {
+  uint8_t valid;
+  
+  gpio_init_mask(GPIO_BOOT_MASK); // set which lines will be GPIO 
+  gpio_set_dir_masked(GPIO_SET_DIR_MASK,GPIO_MASTER_OUT_MASK); // set which lines will be GPIO 
+
+  adc_init();  // initialize ADC function
+  adc_set_temp_sensor_enabled(1); //Enable read of internal temperature sensor
+  gpio_init(29);  // VSYS gpio
+  gpio_set_dir(29,GPIO_IN); // set has input
+  gpio_disable_pulls(29); // remove pullup and down for accurate reading of VSYS
+  
+  // RUN_EN setup
+  // We setup the output before the direction for being sure of the RUN_EN= 1 when 
+  // we change the pin from input to output.
+  // Run_EN =0 disconnect the USB port on the slave
+  
+  gpio_put(GPIO_RUN, 1); // Set RUN_EN =1
+  gpio_set_dir(GPIO_RUN, GPIO_OUT);   // Set pin at output
+/*
+  gpio_put(GPIO_RUN, 0); // Reset PICO Slave 
+  fprintf(stdout, "PICO Slave in Reset\r\n");
+  sleep_ms(100);
+  gpio_put(GPIO_RUN, 1); // Start PICO Slave 
+  gpio_set_dir(GPIO_RUN, GPIO_IN); // Set GPIO in Input for security 
+  sleep_ms(100);
+ */
 
   fprintf(stdout,"Hardware Default setting completed \r\n");
   return;
 }
 
-// Partial of hardware verification
-// Called by Main program and when SCPI command *TST? is received
-bool Selftest() {
-  fprintf(stdout,"Selftest execute \r\n");
 
-}
-
-
- int main() {
+int main() {
 
   MESSAGE rec;
   char nbchar;
@@ -228,17 +214,32 @@ bool Selftest() {
   uint16_t ctr;  // counter used for flashing pico led
   uint16_t pulse;  // limit for flashing led frequency
   bool valid;
+
   
- 
+  eep eed = DEF_EEPROM; // Assign default value to structure eeprom
   pulse = 200;    // slow led flashing frequency
 
 	stdio_init_all();
   init_scpi();
+  setup_master();  // Initialize of I2C_communication
   Hardware_Default_Setting();
+      
+ 
+  valid = Boot_check();   // basic check of internal I2C  and power
+  if (valid == false) { 
+     ErrorBeep(2);  // raise error and send beep code
+  }
 
-  // need to be placed;
-  valid =  cfg_eeprom_read_full();
+  if (valid == true) { 
+    // Read EEprom  configuration
+    result = cfg_eeprom_read_full(); // read configuration eeprom
+    if (result!= 0) { // if error found when read EEprom
+          ErrorBeep(3);  // raise error and send beep code
+          //SCPI_RegSet(&scpi_context, reg, val);
+    }
+  }
 
+  init_main_com();  // Setup serial communication parameter
 
   init_queue(); // initialise queue for message received
 
@@ -258,10 +259,7 @@ bool Selftest() {
 
 //#include "pico_lib2/src/sys/include/sys_i2c.h"
 
-#include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
-#include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
-#include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
-#include "pico_lib2/src/sys/include/sys_adc.h"
+
 
 
 // #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))

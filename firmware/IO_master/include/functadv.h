@@ -33,6 +33,7 @@
 #define ECE      4      //SCPI_ERROR_CHARACTER_DATA_ERROR
 #define EMP      5      //SCPI_ERROR_MISSING_PARAMETER;
 #define EIVN     6      //SCPI_ERROR_ILLEGAL_VARIABLE_NAME;
+#define ENDE     7      //SCPI_ERROR_NUMERIC_DATA_ERROR
 
 
 
@@ -56,6 +57,8 @@ uint8_t cfg_eeprom_rw(char mode, uint32_t eeaddr,uint8_t eedatalen, char* data, 
 void    scan_i2c_bus();
 uint8_t cfg_eeprom_read_full();
 uint8_t cfg_eeprom_write_default();
+uint8_t stringtonumber(const char *str, long *result);
+bool Boot_check(void);
 
 
 

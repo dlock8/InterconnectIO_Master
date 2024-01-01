@@ -174,5 +174,6 @@ size_t write_scpi(scpi_t *context, const char *data, size_t len);
 scpi_result_t Relay_Chanlst(scpi_t *context, uint16_t *array);
 
 void init_scpi();
+void ErrorBeep(uint8_t nbeep);
 
 #endif // 

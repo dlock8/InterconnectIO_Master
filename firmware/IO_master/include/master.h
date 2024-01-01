@@ -27,6 +27,7 @@ extern "C" {
 
 
 // EEprom parameter supported by SCPI command
+// Add new parameter below using #define
 
 #define CHECK         "CHECK"
 #define PARTNUMBER    "PARTNUMBER"
@@ -37,6 +38,7 @@ extern "C" {
 
 
 // EEprom configuration structure
+// Add new parameter on the structure below
 
 typedef struct eecfg_t {
   char check[1];          // To check if eeprom read correctly the proof character
@@ -56,6 +58,7 @@ typedef union eef {
 extern eep ee;
 
 // Default value for EEprom structure
+// Add default value for the new parameter below using #define
 #define EE_CHECK_CHAR   '#'
 #define EE_PARTNUMBER   "500-1000-010"
 #define EE_SERIALNUMBER "00001"
@@ -63,7 +66,10 @@ extern eep ee;
 #define EE_CSER_SPEED   "115200"
 
 // Assign default value to default eeprom structure
+// Add new parameter at the end of the string below 
 #define DEF_EEPROM {EE_CHECK_CHAR,EE_PARTNUMBER,EE_SERIALNUMBER,EE_MOD_OPTION,EE_CSER_SPEED}
+
+// Add parameter on struct ParamInfo  file fts_scpi.c  around line 800
 
 
 void Hardware_Default_Setting();

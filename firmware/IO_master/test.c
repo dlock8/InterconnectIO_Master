@@ -392,31 +392,74 @@ test_dac(2.5);  // initialize and preset DAC
 
 fprintf(stdout,"\n--->TEST START\n");
 
+TEST_SCPI_INPUT("*TST?\r\n");
+
+TEST_SCPI_INPUT("SYSTem:VERS?\r\n");
+
 //cfg_eeprom_write_default();
 //cfg_eeprom_read_full();
 //TEST_SCPI_INPUT("CFG:Write:E:STR 'partNUMBER, 500-1112-060'\r\n");
 //TEST_SCPI_INPUT("CFG:Write:EEPROM:STR  'partnumber'\r\n");
 //TEST_SCPI_INPUT("CFG:Write:EEPROM:STR  \r\n");
 
-//TEST_SCPI_INPUT("CFG:Write:EEPROM:DEFAULT\r\n");
+TEST_SCPI_INPUT("CFG:Write:EEPROM:DEFAULT\r\n");
 TEST_SCPI_INPUT("CFG:Read:EEPROM:Full?\r\n");
 
-TEST_SCPI_INPUT("CFG:Read:E:STR? 'partnumber'\r\n");
-TEST_SCPI_INPUT("CFG:Read:E:STR? 'serialNUMBER'\r\n");
-TEST_SCPI_INPUT("CFG:Read:E:STR? 'MOD_OPTION'\r\n");
-TEST_SCPI_INPUT("CFG:Read:E:STR? 'com_ser_speed'\r\n");
+//TEST_SCPI_INPUT("CFG:Read:E:STR? 'partnumber'\r\n");
+//TEST_SCPI_INPUT("CFG:Read:E:STR? 'serialNUMBER'\r\n");
+//TEST_SCPI_INPUT("CFG:Read:E:STR? 'MOD_OPTION'\r\n");
+
+//TEST_SCPI_INPUT("CFG:Write:Eeprom:STR 'com_ser_speed,115200'\r\n");
+TEST_SCPI_INPUT("SYSTem:ERRor:COUNt?\r\n");
+TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
 
 
-//TEST_SCPI_INPUT("CFG:Write:PARTNUMBER  \r\n");  //
-//TEST_SCPI_INPUT("CFG:Write:PARTNUMBER '500-1000-060' \r\n");  //
-//TEST_SCPI_INPUT("CFG:Write:SERIALNUMBER '12345' \r\n");  //
-//TEST_SCPI_INPUT("CFG:Write:MOD_OPTION 'DAC,PWR' \r\n");  //
-//TEST_SCPI_INPUT("CFG:Write:DEF_CSER '19200' \r\n");
+fprintf(stdout,"STB: ");
+TEST_SCPI_INPUT("*STB? \r\n");
+fprintf(stdout,"\n ESE: ");
+TEST_SCPI_INPUT("*ESE? \r\n");
+fprintf(stdout,"\n ESR: ");
+TEST_SCPI_INPUT("*ESR? \r\n");
+fprintf(stdout,"\n OPC: ");
+TEST_SCPI_INPUT("*OPC? \r\n");
+fprintf(stdout,"\n SRE: ");
+TEST_SCPI_INPUT("*SRE? \r\n");
 
-TEST_SCPI_INPUT("CFG:Read:PARTNUMBER? \r\n");
-//TEST_SCPI_INPUT("CFG:Read:SERIALNUMBER? \r\n"); 
-TEST_SCPI_INPUT("CFG:Read:MOD_OPTION? \r\n");  //
-TEST_SCPI_INPUT("CFG:Read:DEF_CSER? \r\n");
+
+TEST_SCPI_INPUT("CFG:Write:Eeprom:STR 'com_ser_speed,1a5200'\r\n");  // check error
+
+
+
+
+//TEST_SCPI_INPUT("CFG:Read:E:STR? 'com_ser_speed'\r\n"); // check error
+
+fprintf(stdout,"STB: ");
+TEST_SCPI_INPUT("*STB? \r\n");
+fprintf(stdout,"\n ESE: ");
+TEST_SCPI_INPUT("*ESE? \r\n");
+fprintf(stdout,"\n ESR: ");
+TEST_SCPI_INPUT("*ESR? \r\n");
+fprintf(stdout,"\n OPC: ");
+TEST_SCPI_INPUT("*OPC? \r\n");
+fprintf(stdout,"\n SRE: ");
+TEST_SCPI_INPUT("*SRE? \r\n");
+
+TEST_SCPI_INPUT("SYSTem:ERRor:COUNt?\r\n");
+TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
+
+
+fprintf(stdout,"STB: ");
+TEST_SCPI_INPUT("*STB? \r\n");
+fprintf(stdout,"\n ESE: ");
+TEST_SCPI_INPUT("*ESE? \r\n");
+fprintf(stdout,"\n ESR: ");
+TEST_SCPI_INPUT("*ESR? \r\n");
+fprintf(stdout,"\n OPC: ");
+TEST_SCPI_INPUT("*OPC? \r\n");
+fprintf(stdout,"\n SRE: ");
+TEST_SCPI_INPUT("*SRE? \r\n");
+
+
 
 // INA219 calibration check
 fprintf(stdout,"\r\n ------> 1.XX <-------\r\n");

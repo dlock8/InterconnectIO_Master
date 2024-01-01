@@ -38,11 +38,16 @@
 
 #include "pico/stdlib.h"
 #include <ctype.h>
+#include <errno.h>
+#include <limits.h>
+#include <stdlib.h>
 #include "pico/binary_info.h"
 #include "include/functadv.h"
 #include "stdio.h"
 #include "string.h"
+
 #include "include/master.h"
+#include "include/fts_scpi.h"
 
 
 #include "hardware/adc.h"
@@ -50,6 +55,7 @@
 #include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
 #include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
 #include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
+#include "hardware/i2c.h"
 //#include "pico_lib2/src/sys/include/sys_adc.h"
 
 
@@ -390,11 +396,11 @@ uint8_t cfg_eeprom_write_default()
 
   datalen = sizeof(ee.cfg);  // read size of eeprom global structure 
 
-  fprintf(stdout,"\n--> Write full eeprom\n");
+  fprintf(stdout,"\n--> Write Default value on eeprom\n");
   dt.address = ADD_EEPROM_BASE;  // Set base adress
   i = 0; // index for the location of data
 
-  while (0 < datalen)
+  while (0 < datalen)  // loop to write eeprom data by page
   {
     uint32_t pagelen = (dt.address|(EE_PAGESIZE-1)) - dt.address + 1;
     uint32_t writelen = min(datalen, pagelen);
@@ -408,9 +414,61 @@ uint8_t cfg_eeprom_write_default()
     i  += writelen;
     datalen -= writelen;
   }
-
+  fprintf(stdout,"EEprom Writing Completed\n");
+  return NOERR;
 }
 
+// function to extract number from string. Mainly used to convert EEprom Cfg string to number
+uint8_t stringtonumber(const char *str, long *result) {
+
+    char *endPtr;
+
+    errno = 0; // Reset errno before calling strtol
+
+    *result = strtol(str, &endPtr, 10);
+
+    // Check for errors during conversion
+    if ((errno == ERANGE && (*result == LONG_MAX || *result == LONG_MIN)) ||
+        (errno != 0 && *result == 0)) {
+        return -1; // Error occurred during conversion
+    }
+
+
+    // Check if the entire string was converted
+    if (strlen(endPtr) > 0) {
+        fprintf(stdout,"Error in string to number conversion, could not convert: %s\n",endPtr);
+        return -1; // one of the characters is not a number
+    }
+
+    return 0; // Successful conversion
+}
+
+// function who perform basic selftest during boot 
+bool Boot_check(){
+    volatile int ret;
+    uint8_t rxdata;
+
+    gpio_put(GPIO_RUN, 1); // Start PICO Slave (if required)
+
+    scan_i2c_bus();
+    ret = 0;
+    ret += i2c_read_blocking(i2c0,I2C_ADDRESS_AT24CX, &rxdata, 1, false); //check I2C com with eeprom
+    ret += i2c_read_blocking(i2c0,PICO_PORT_ADDRESS, &rxdata, 1, false); // check I2C com with Pico  Slave_1
+    ret += i2c_read_blocking(i2c0,PICO_RELAY1_ADDRESS, &rxdata, 1, false); // check I2C com with Pico  Slave_2
+    ret += i2c_read_blocking(i2c0,PICO_RELAY2_ADDRESS, &rxdata, 1, false); // check I2C com with Pico  Slave_3
+    ret += i2c_read_blocking(i2c0,INA219_ADDRESS, &rxdata, 1, false); // check I2C com with PWR device
+    ret += i2c_read_blocking(i2c0,MCP4725_ADDR0, &rxdata, 1, false); // check I2C com with DAC device
+
+    if (ret == 6) {   // if all I2C device detected, return true, else return false
+        return true;
+    } else{
+        return false;
+    }
+  
+
+
+
+}
 
 
 /**
@@ -438,7 +496,7 @@ uint8_t cfg_eeprom_write_default()
 //#include <stdio.h>
 //#include "pico/stdlib.h"
 //#include "pico/binary_info.h"
-#include "hardware/i2c.h"
+
 
 // I2C reserves some addresses for special purposes. We exclude these from the scan.
 // These are any addresses of the form 000 0xxx or 111 1xxx
