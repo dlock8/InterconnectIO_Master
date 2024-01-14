@@ -54,3 +54,17 @@ bool dev_mcp4725_save(i2c_inst_t* i2c, uint8_t addr, float volt)
 
 	return mcp4725_write(i2c, WRITEDACEEPROM, addr, value);
 }
+
+float dev_mcp4725_get(i2c_inst_t* i2c, uint8_t addr)
+{
+	uint8_t value[5];
+	uint16_t tval;
+	float volt;
+	
+	sys_i2c_rbuf(i2c, addr, value, sizeof(value)); // Read 5 bytes
+	tval = (value[1] << 4) + (value[2] >> 4);  // transform 8 bits value in 12 bits result
+
+	volt = tval * (vref/4096);  // trasnform to voltage value
+
+    return volt;
+}

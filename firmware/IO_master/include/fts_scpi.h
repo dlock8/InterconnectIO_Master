@@ -20,7 +20,7 @@ extern "C" {
 
 // define
 #define SCPI_INPUT_BUFFER_SIZE 256
-#define SCPI_ERROR_QUEUE_SIZE 17
+#define SCPI_ERROR_QUEUE_SIZE 20
 
 
 // "IDN?" fields. Their meanings are "suggestions" in the standard.
@@ -29,7 +29,7 @@ extern "C" {
 #define SCPI_IDN3 "2022A"               /* no suggestion */
 #define SCPI_IDN4 "0.1"                /* Firmware level */
 
-#define MAXROW 36   /* maximum number of rows */
+#define MAXROW 36   /* maximum number of rows for relay matrix */
 #define MAXCOL 1    /* maximum number of columns */
 #define MAXDIM 1    /* maximum number of dimensions */
 
@@ -72,6 +72,7 @@ extern "C" {
 #define GLERR   55     // Read error led
 #define GRUN    56     // Read Pico SLaves RUN status
 #define GOE     57     // Read status Output Enable ON/OFF
+#define GSTA    58     // Read Slave Device status byte
 
 #define SDAC    60     // Set DAC Voltage
 #define WDAC    61     // Set DAC Voltage and save as default value
@@ -125,8 +126,8 @@ extern "C" {
 
 #define BEEP_TIME   10      // Beep time in mS
 
-
-
+#define ESR_USER_BIT 6       // User Request Bit position on ESR
+#define ESR_PON_BIT 7       // Power ON Bit position on ESR
 
 
 /* Reset Block for master
@@ -161,6 +162,16 @@ extern "C" {
 
 #define RESETS_MASTER 0b000000000000000111111111
 
+/* Index for error to set or clear in register */
+enum _reg_info_index_t {
+        BOOT_I2C = 0,   /* Boot I2C Error */ 
+        VSYS_OUT,       /* Vsys out of limits */
+        MTEMP_HIGH,     /* Master Temp too High */
+        WATCH_TRIG,     /* Watchdog trig */
+        EEPROM_ERROR   /* EEprom access error or corrupt */
+};
+typedef enum _reg_info_index_t reg_info_index_t;
+
 
 extern scpi_t scpi_context;
 extern char scpi_input_buffer[];
@@ -170,10 +181,11 @@ extern scpi_command_t scpi_commands[];
 
 
 size_t write_scpi(scpi_t *context, const char *data, size_t len);
-
 scpi_result_t Relay_Chanlst(scpi_t *context, uint16_t *array);
-
 void init_scpi();
 void ErrorBeep(uint8_t nbeep);
+void RegBitHdwrErr(reg_info_index_t index, bool scbit);
+
+
 
 #endif // 

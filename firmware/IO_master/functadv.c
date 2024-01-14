@@ -272,7 +272,7 @@ uint8_t eeprom_data_valid(bool check_data,at24cx_dev_t* eeprom)
          }
     }else {
         fprintf(stdout,"Device byte read error!\n");
-        return EDE;
+        return EBE;
     }
  }
  return NOERR;
@@ -443,14 +443,17 @@ uint8_t stringtonumber(const char *str, long *result) {
     return 0; // Successful conversion
 }
 
-// function who perform basic selftest during boot 
+/**
+ * @brief
+ * Perform Boot check by validating i2C device in the chain
+ **/
 bool Boot_check(){
-    volatile int ret;
+    uint8_t ret;
     uint8_t rxdata;
 
     gpio_put(GPIO_RUN, 1); // Start PICO Slave (if required)
 
-    scan_i2c_bus();
+    scan_i2c_bus(); // send devices detected on the debug port (USB)
     ret = 0;
     ret += i2c_read_blocking(i2c0,I2C_ADDRESS_AT24CX, &rxdata, 1, false); //check I2C com with eeprom
     ret += i2c_read_blocking(i2c0,PICO_PORT_ADDRESS, &rxdata, 1, false); // check I2C com with Pico  Slave_1
@@ -464,11 +467,187 @@ bool Boot_check(){
     } else{
         return false;
     }
-  
-
-
-
 }
+
+/**
+ * @brief
+ * Run internal board Selftest to verify hardware 
+*/
+bool Board_Selftest(){
+    at24cx_dev_t eeprom_1;
+    at24cx_writedata_t dt;
+    volatile uint8_t ret;
+    char *err[12];   // contains error found during selftest
+    uint16_t answer[3];  // contaimer for slave device status test
+    char pv[80];         // temporary container for error string 
+    bool result;
+    uint8_t dataw;
+    int datar;  // used on eeprom test
+    double value,l,h;
+
+    size_t i = 0;         // index for arrays of err
+
+
+    //eep eed = DEF_EEPROM; // Assign default value to structure eeprom
+
+
+    /*******************************************************************************/
+    // Selftest Mastrer Pico intenal parameters
+    /*******************************************************************************/
+
+   
+    // Check master VSYS voltage. Raise error if value is too high or too low
+    value = read_master_adc(3);   // Read VSYS,  Expect 5V
+    result = (value > MAX_VSYS_VOLT || value < MIN_VSYS_VOLT)? FALSE:TRUE;
+    RegBitHdwrErr(VSYS_OUT,result);  // Set or clear Questionable register based on results
+    if (!result) {
+        l=MIN_VSYS_VOLT; h=MAX_VSYS_VOLT; // get constant value
+        sprintf(pv,"Pico Master VSYS out of limits, read: %2.2fV, Low: %2.2fV, High %2.2fV",value,l,h);
+        err[i++] = strdup(pv); 
+    } 
+    
+
+    // Check master temperature. Raise error if value is too high
+    value = read_master_adc(4);   // Read TEMP,  Expect 25
+    result = (value > MAX_PICO_TEMP)? FALSE:TRUE;
+    RegBitHdwrErr(MTEMP_HIGH,result);  // Set or clear Questionable register based on results
+    if (!result) {
+        h=MAX_PICO_TEMP;
+        sprintf(pv,"Pico Master Temperature exceed the limits, read: %2.2f C, Max High %2.2f C",value,h);
+        err[i++] = strdup(pv); 
+    } 
+    
+    
+
+    /*******************************************************************************/
+    // Selftest Pico Slaves
+    /*******************************************************************************/
+
+    gpio_put(GPIO_RUN, 1); // Start PICO Slave (if required)
+    result = system_execute(GSTA,answer);  // send selftest command to pico slaves
+    if (result == TRUE) {
+        if (answer[0] > 0) { 
+             sprintf(pv,"Pico Slave1 Selftest error, expect 0x0 read:  0x%x",answer[0]);
+             err[i++] = strdup(pv); }
+        if (answer[1] > 0) { 
+            sprintf(pv,"Pico Slave2 Selftest error, expect 0x0 read:  0x%x",answer[1]);
+            err[i++] = strdup(pv);}
+        if (answer[2] > 0) {
+              sprintf(pv,"Pico Slave3 Selftest error, expect 0x0 read:  0x%x",answer[2]);
+              err[i++] = strdup(pv);}
+
+
+    } else { // if fail to communicate, check i2c comm
+
+        datar = i2c_read_blocking(i2c0,PICO_PORT_ADDRESS, &dataw, 1, false); // check I2C com with Pico  Slave_1
+        if (datar < 0) {sprintf(pv,"Pico Slave1 communication I2C error"); err[i++] = strdup(pv);}
+
+        datar = i2c_read_blocking(i2c0,PICO_RELAY1_ADDRESS, &dataw, 1, false); // check I2C com with Pico  Slave_1
+        if (datar < 0) {sprintf(pv,"Pico Slave2 communication I2C error"); err[i++] = strdup(pv);}
+
+        datar = i2c_read_blocking(i2c0,PICO_RELAY2_ADDRESS, &dataw, 1, false); // check I2C com with Pico  Slave_1
+        if (datar < 0) {sprintf(pv,"Pico Slave3 communication I2C error"); err[i++] = strdup(pv);}
+
+        if (i == 0) {sprintf(pv,"Pico Slave unknow error with com"); err[i++] = strdup(pv);}
+    }
+
+
+
+    /*******************************************************************************/
+    // Selftest EEprom
+    /*******************************************************************************/
+
+    ret = eeprom_data_valid(TRUE,&eeprom_1);
+    switch(ret){
+        case EDE:  // EEprom not detected
+            sprintf(pv,"Cfg EEprom not detected"); err[i++] = strdup(pv);
+            break;
+
+        case ECE:  // EEprom Check character do not match
+            sprintf(pv,"Cfg EEprom data corrupt"); err[i++] = strdup(pv);
+            break;
+
+        case EBE:  // EEprom read byte error
+            sprintf(pv,"Cfg EEprom byte error"); err[i++] = strdup(pv);
+            break;
+
+        case NOERR:
+            // Verify if possible to write and read data without error
+            dataw = 0x5A;  // Byte to write to test R/W
+            dt.data = dataw;
+            dt.address = TEST_EEPROM_ADD; // adress 0 reserved for test data
+
+            if (at24cx_i2c_byte_write(eeprom_1, dt) != AT24CX_OK) {
+                sprintf(pv,"Cfg EEprom byte write error at test address 0x0000"); err[i++] = strdup(pv);
+            }
+            if (at24cx_i2c_byte_read(eeprom_1, &dt) != AT24CX_OK) {
+                sprintf(pv,"Cfg EEprom byte read error at test address 0x0000"); err[i++] = strdup(pv);
+            }
+
+            if (dataw != dt.data ){  // verify if data written == data read
+                sprintf(pv,"EEprom byte error. Byte Write 0x%x, Byte read 0x%x", dataw, dt.data); 
+                err[i++] = strdup(pv);
+            }
+    }
+
+   /*******************************************************************************/
+    // Selftest PWR (INA219)
+    /*******************************************************************************/
+        datar = i2c_read_blocking(i2c0,INA219_ADDRESS, &dataw, 1, false); // check I2C com with Pico  Slave_1
+        if (datar < 0) {sprintf(pv,"I2C com error with CURRENT MONITOR module (INA219)"); err[i++] = strdup(pv);}
+
+        answer[0] = ina219Init();
+        int defina = DEFAULT_PWR_VAL;
+        if (answer[0] != defina) { 
+            sprintf(pv,"CURRENT MONITOR module (INA219) Default value error, expect: 0x%x, read: 0x%x", defina, answer[0]);
+            err[i++] = strdup(pv);
+        }
+
+
+    /*******************************************************************************/
+    // Selftest DAC (MCP4725)
+    /*******************************************************************************/
+        float valuei;
+        float valuew = 3.25; // Dac value to use to program DAC for selftest
+        float valuer;  // value readback
+        
+        datar = i2c_read_blocking(i2c0,MCP4725_ADDR0, &dataw, 1, false); // check I2C com with Pico  Slave_1
+        if (datar < 0) {sprintf(pv,"I2C com error with DAC module (MCP4725)"); err[i++] = strdup(pv);}
+        else {
+            valuei  = dev_mcp4725_get(i2c0, MCP4725_ADDR0); // read actual value of DAC
+            ret = dev_mcp4725_set(i2c0, MCP4725_ADDR0, valuew);
+            if (ret !=1 ){ // if error found
+                sprintf(pv,"Error on set voltage using DAC module (MCP4725).  Error# %d", ret); 
+                err[i++] = strdup(pv);
+            } else {
+                valuer = dev_mcp4725_get(i2c0, MCP4725_ADDR0); // read value programmed
+                if (valuer < valuew - 0.05 || valuer > valuew + 0.05) { // validate readback
+                    sprintf(pv,"DAC Error on set voltage, Set Volt: %2.3fV, readback: %2.3fV",valuew,valuer); 
+                    err[i++] = strdup(pv);
+                } else { dev_mcp4725_set(i2c0, MCP4725_ADDR0, valuei);} // reprogrammed original value
+            }
+        }
+
+    /*******************************************************************************/
+    // Return Selftest results
+    /*******************************************************************************/
+    // in case of error, send message and raise register bits    
+    if (i > 0) {  // if error found
+        SCPI_ErrorPush(&scpi_context, SELFTEST_FAIL);  // push error
+        SCPI_RegSetBits(&scpi_context,SCPI_REG_OPERC,1 << OPER_SELFTEST_FAIL);  // ser register bits
+        for (size_t j = 0; j< i; j++ ) {
+            SCPI_ResultText(&scpi_context, err[j]);  // send error to operator
+            free(err[j]);  // free memory after error send to operator
+        }
+    } else {
+            SCPI_ResultText(&scpi_context, "OK");
+            SCPI_RegClearBits(&scpi_context,SCPI_REG_OPERC,0 << OPER_SELFTEST_FAIL);
+    }
+
+    return TRUE;
+   
+}
+
 
 
 /**

@@ -207,6 +207,7 @@ void SCPI_ErrorPush(scpi_t * context, int16_t err) {
     return;
 }
 
+
 /**
  * Translate error number to string
  * @param err - error number

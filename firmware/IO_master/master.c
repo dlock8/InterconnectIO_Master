@@ -11,7 +11,9 @@
 #include "include/test.h"
 #include "include/functadv.h"
 #include "hardware/watchdog.h"
-#include "userconfig.h"
+#include "userconfig.h"         // contains Major and Minor version
+
+#include "lib/scpi-parser/libscpi/src/error.c" // added to force X-macro to add on list the case (scpi_user.config.h)
 
 #include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
 #include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
@@ -29,12 +31,10 @@ static const uint32_t GPIO_SET_DIR_MASK = 0b000111110010010111111111100000000;
 static const uint32_t GPIO_MASTER_OUT_MASK = 0b000111110010011111111111100000000;
 
 
-
-
 // Messsage queue is used to save the SCPI command received by the serial port.
 
 #define MESSAGE_SIZE 64
-#define QUEUE_SIZE 8    // maximum message received and not exectuted
+#define QUEUE_SIZE 12    // maximum message received and not exectuted
 
 
 typedef struct {
@@ -128,9 +128,17 @@ void on_uart_rx() {
 // Initialisation of the main communication uart
 
 void init_main_com() {
-  // Communication UART inititialization. Thr UART is used to receive SCPI command
+  // Communication UART inititialization. The UART is used to receive SCPI command
   // Set up our UART with a basic baud rate.
-  uart_init(UART_ID, 115200);
+ long numval;
+ uint8_t valid;
+
+  valid =stringtonumber(ee.cfg.com_ser_speed,&numval);   // read communication speed on EEprom
+  if (valid == 0) {    //if value is valid
+      uart_init(UART_ID,numval );   // set speed
+  } else {
+      uart_init(UART_ID,19200);       // if error, set default speed
+  }
 
   // Set the TX and RX pins by using the function select on the GPIO
   // Set datasheet for more information on function select
@@ -161,50 +169,84 @@ void init_main_com() {
     irq_set_exclusive_handler(UART_IRQ, on_uart_rx);
     irq_set_enabled(UART_IRQ, true);
 
-    rxser.ch = 0; // reset character counter
+    rxser.ch = 0; // reset global character counter
     //rxser.data[rxser.ch] = 0;
     // Now enable the UART to send interrupts - RX only
     uart_set_irq_enables(UART_ID, true, false);
 
   // Send information on the USB debug port
-  fprintf(stdout,"Serial Baud rate %d \r\n", actual);
+  fprintf(stdout,"\r\n Serial Baud rate %d \r\n", actual);
 }
 
 // Initialisation of the hardware
 // Called by Main program and when SCPI command *RST is received
 void Hardware_Default_Setting() {
   uint8_t valid;
+  double value;
+  bool status;
+
+  reg_info_index_t  reg;
   
   gpio_init_mask(GPIO_BOOT_MASK); // set which lines will be GPIO 
   gpio_set_dir_masked(GPIO_SET_DIR_MASK,GPIO_MASTER_OUT_MASK); // set which lines will be GPIO 
 
   adc_init();  // initialize ADC function
   adc_set_temp_sensor_enabled(1); //Enable read of internal temperature sensor
-  gpio_init(29);  // VSYS gpio
-  gpio_set_dir(29,GPIO_IN); // set has input
-  gpio_disable_pulls(29); // remove pullup and down for accurate reading of VSYS
+  gpio_init(ADC3);  // VSYS gpio
+  gpio_set_dir(ADC3,GPIO_IN); // set has input
+  gpio_disable_pulls(ADC3); // remove pullup and down for accurate reading of VSYS
+
+  gpio_put(GPIO_LED, 0); // Turn OFF led Error
+
+  valid = Boot_check();   // basic check of internal I2C  and power
+  RegBitHdwrErr(BOOT_I2C, valid);  // Set or clear Questionable register based on results
+
+  if (valid == true) {  // if no error on boot Check, validate eeprom
+    // Read EEprom  configuration
+    int result = cfg_eeprom_read_full(); // read configuration eeprom
+    status = (result == 0)? TRUE: FALSE;
+    RegBitHdwrErr(EEPROM_ERROR,status);  // Set or clear Questionable register based on results
+  }
   
+   
+  // Check master VSYS voltage. Raise error if value is too high or too low
+  value = read_master_adc(3);   // Read VSYS,  Expect 5V
+  status = (value > MAX_VSYS_VOLT || value < MIN_VSYS_VOLT)? FALSE:TRUE;
+  RegBitHdwrErr(VSYS_OUT,status);  // Set or clear Questionable register based on results
+    
+
+  // Check master temperature. Raise error if value is too high
+  value = read_master_adc(4);   // Read VSYS,  Expect 5V
+  status = (value > MAX_PICO_TEMP)? FALSE:TRUE;
+  RegBitHdwrErr(MTEMP_HIGH,status);  // Set or clear Questionable register based on results
+ 
   // RUN_EN setup
   // We setup the output before the direction for being sure of the RUN_EN= 1 when 
   // we change the pin from input to output.
-  // Run_EN =0 disconnect the USB port on the slave
-  
-  gpio_put(GPIO_RUN, 1); // Set RUN_EN =1
+  // Run_EN =0 disconnect the USB port on the slave, not pratical for debug Pico slaves firmware
+
+  gpio_put(GPIO_RUN, 1); // Set RUN_EN =1, pico slaves are actives
   gpio_set_dir(GPIO_RUN, GPIO_OUT);   // Set pin at output
-/*
-  gpio_put(GPIO_RUN, 0); // Reset PICO Slave 
-  fprintf(stdout, "PICO Slave in Reset\r\n");
-  sleep_ms(100);
-  gpio_put(GPIO_RUN, 1); // Start PICO Slave 
-  gpio_set_dir(GPIO_RUN, GPIO_IN); // Set GPIO in Input for security 
-  sleep_ms(100);
- */
+
+  long  vnum;
+
+  valid =stringtonumber(ee.cfg.slave_force_run,&vnum);   // read if toogle RUN_EN is enabled
+  if (valid == 0) {    //if value is valid
+    if (vnum == 0) {  // if permit, toogle RUN_EN to Reset the PIco Slaves
+        gpio_put(GPIO_RUN, 0); // Reset PICO Slave 
+        fprintf(stdout, "PICO Slave in Reset\r\n");
+        sleep_ms(100);
+        gpio_put(GPIO_RUN, 1); // Start PICO Slave 
+        //gpio_set_dir(GPIO_RUN, GPIO_IN); // Set GPIO in Input for security 
+        sleep_ms(100);
+    }
+  }
 
   fprintf(stdout,"Hardware Default setting completed \r\n");
-  return;
-}
+  return;}
 
 
+// Master Pico Main  program
 int main() {
 
   MESSAGE rec;
@@ -215,185 +257,68 @@ int main() {
   uint16_t pulse;  // limit for flashing led frequency
   bool valid;
 
-  
   eep eed = DEF_EEPROM; // Assign default value to structure eeprom
   pulse = 200;    // slow led flashing frequency
 
 	stdio_init_all();
   init_scpi();
-  setup_master();  // Initialize of I2C_communication
+  setup_master();  // Initialize of internal I2C_communication
   Hardware_Default_Setting();
-      
- 
-  valid = Boot_check();   // basic check of internal I2C  and power
-  if (valid == false) { 
-     ErrorBeep(2);  // raise error and send beep code
-  }
-
-  if (valid == true) { 
-    // Read EEprom  configuration
-    result = cfg_eeprom_read_full(); // read configuration eeprom
-    if (result!= 0) { // if error found when read EEprom
-          ErrorBeep(3);  // raise error and send beep code
-          //SCPI_RegSet(&scpi_context, reg, val);
-    }
-  }
-
+  
   init_main_com();  // Setup serial communication parameter
 
   init_queue(); // initialise queue for message received
 
   if (watchdog_caused_reboot()) { 
-      //status.watch = 1;
       pulse = 50;  // fast flashing led to indicate watchdog trig
-
+      RegBitHdwrErr(WATCH_TRIG,FALSE);  // Set Questionable event register based on results
   }
 
   
-/*  // to debug the problem of error number
-    int errnum;
-    errnum = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE;  
-    fprintf(stdout,"Error number: %02d  \r\n",errnum );
-    SCPI_ErrorPush(context, errnum);
-*/
-
-//#include "pico_lib2/src/sys/include/sys_i2c.h"
+//test_selftest(); 
 
 
+//test_dac(2.5);
+//test_adc();
 
+fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
 
-// #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
-
-//test_eeprom();
-//test_ioboard();  // Check io board function
-
-test_selftest(); 
-
-/*
-#define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
-TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP28 1 \r\n");  //Get Gp22 direction
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP28  1 \r\n");  //Set Gp22 as output
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP28  0 \r\n");  //Set Gp22 as output
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP28  1 \r\n");  //Set Gp22 as output
-*/
-
-
-/*
-read_int_ADC(adcv);
-setup_ADC(1);
-read_ADC(adcv);
-sleep_ms(10);
-scan_i2c_bus();
-*/
-
-
-//if (test_eeprom()) fprintf(stdout, "\n ---> ERROR ON EEPROM VALIDATION \n");
-//test_ina219();
-
-test_dac(2.5);
-test_adc();
-
-uint16_t rdata;
-
-uint8_t buffer[2];
-
-	buffer[0] = 81;
-	buffer[1] = 0x55;
-
-//  GPIO:DIRection:DEVice0:GP22 1   --> Set gpio 22 on Device 0 (Master) to direction out (1 = out) 
-//  GPIO:Out:DEVice1:GP8 0  
-
-
-
-
-/*
-volatile float busv,i,p,s;
-ina219Init();
-
-busv = ina219GetBusVoltage() * 0.001;
-fprintf(stdout,"INA219 Bus voltage: %2.3f V\n", busv);
-s = ina219GetShuntVoltage() * 10E-3;
-fprintf(stdout,"INA219 Shunt voltage: %2.3f mV\n", s);
-i = ina219GetCurrent_mA();
-fprintf(stdout,"INA219 Current : %2.3f mA\n", i);
-p = ina219GetPower_mW();
-fprintf(stdout,"INA219 power: %2.3f mW\n", p);
-
-//ina219CalibrateCurrent_mA(i,404.35);
-
-// i = ina219GetCurrent_mA();
-// fprintf(stdout,"INA219 Cal Current : %2.3f mA\n", i);
-
-*/
-
-
-//sys_i2c_wbuf(i2c0, 0x21, buffer, sizeof(buffer)) == sizeof(buffer);
-//TEST_SCPI_INPUT("DIG:OUT:PORT0 #H55 \r\n"); 
-
-//send_master(0x21,81, 0x01, &rdata);
-
-
-
-//read_ADC(adcv);
-
-// fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
-
-  fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
-
-  ctr = 0;
-  int mess=0;
-
-  //uart_puts(UART_ID, "*IDN?\n");
-  //uart_puts(UART_ID, "*IDN?\n");
- // uart_puts(UART_ID, "UART message 2\n");
-  //uart_puts(UART_ID, "UART message 3\n");
-  //uart_puts(UART_ID, "SYST:VERS?\n");
-
+ctr = 0;
+int mess=0;
 
  
-  while (1) {  // infinite loop, waiting for SCPI command from serial port
+ while (1) {  // infinite loop, waiting for SCPI command from serial port
 
-    watchdog_update();
+    watchdog_update(); /** refresh watchdog */
     sleep_ms(10);
     ctr++;
     mess++;
    
-
+    /** Flashing led */
     if (ctr > pulse) {
-      gpio_put(PICO_DEFAULT_LED_PIN, 0); // Turn OFF board led
+      gpio_put(PICO_DEFAULT_LED_PIN, 0); // Turn OFF Pico board led
       sleep_ms(200);
-      gpio_put(PICO_DEFAULT_LED_PIN, 1); // Turn ON board led
+      gpio_put(PICO_DEFAULT_LED_PIN, 1); // Turn ON Pico board led
       ctr = 0;
     }
+    /** Heartbeat message on debug port*/
    if (mess > 1500) {
-      //printf("i2c add: 0x%02x\n", context.i2c_add); // for debug only
       fprintf(stdout,"Heartbeat Master, version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
       mess = 0;
    }
 
   
-  // loop to execute  SCPI command.
+  // loop to execute  SCPI command when char received by interrupt
     while (deque(&rec, &nbchar)) {
-      gpio_put(PICO_DEFAULT_LED_PIN, 0); // Turn OFF board led
+      gpio_put(PICO_DEFAULT_LED_PIN, 0); // Turn OFF board led to show message reading
 
     //result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
-    result = SCPI_Input(&scpi_context, &rec.data[0], nbchar);
-   // result = SCPI_Input(&scpi_context, "*IDNA?\n", 7);
-
+      result = SCPI_Input(&scpi_context, &rec.data[0], nbchar); // send command to SCPI parser
       printf("SCPI Command: %s\n",&rec.data[0]);  // send message to debug port
       sleep_ms(50);
       gpio_put(PICO_DEFAULT_LED_PIN, 1); // Turn ON board led
     }
   }
 
-       
-
-		// Feed single characters into the SCPI library.
-		// This is somewhat discouraged, since (according to the docs) it will
-		// apparently cause the whole buffer to be re-parsed after each character.
-		//* char c = fgetc(stdin);  // TODO: Error handling.
-		//*SCPI_Input(&scpi_context, &c, 1);
-
-	
-    fprintf(stdout,"program terminated\r");
+  fprintf(stdout,"program terminated\r"); /**Never pass by here*/
 }

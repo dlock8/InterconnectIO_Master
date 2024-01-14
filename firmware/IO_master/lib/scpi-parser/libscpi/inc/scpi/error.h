@@ -189,7 +189,7 @@ extern "C" {
 #if USE_FULL_ERROR_LIST
 #define XE X
 #else
-#define XE(def, val, str)
+#define XE(def, val, str) 
 #endif
         LIST_OF_ERRORS
 

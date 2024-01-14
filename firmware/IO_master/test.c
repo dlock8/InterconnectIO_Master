@@ -35,9 +35,6 @@
  // TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n"); 
  // TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n");
  
-
-
-
  // TEST_SCPI_INPUT("SYST:LED:ERR ON \r\n");
  // TEST_SCPI_INPUT("SYST:LED:ERR OFF \r\n");
  // TEST_SCPI_INPUT("SYST:VERS? \r\n");
@@ -127,8 +124,6 @@ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8  1 \r\n");  //Set Gp22 as output
 TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  1 \r\n");  //Set Gp22 as output
  */
    
-   
-   
   // TEST_SCPI_INPUT("*IDN?\r\n"); 
    //TEST_SCPI_INPUT("*OPC?\r\n"); 
    //TEST_SCPI_INPUT("*WAI\r\n");      // do nothing
@@ -195,7 +190,7 @@ bool test_adc(){
 
   sys_adc_init(ADC_CH_0);
   sys_adc_init(ADC_CH_1);
-//sys_adc_init(ADC_CH_2); / Connected to OE
+//sys_adc_init(ADC_CH_2); /** Connected to OE */
 sys_adc_init(ADC_CH_V);
 sys_adc_init(ADC_CH_T);
 
@@ -341,12 +336,13 @@ bool adc_test(uint8_t channel, float expect_value, float percentage_lo, float pe
 
         if (readv > hilimit || readv < lolimit) {
           fprintf(stdout,"---> FAIL <--- CH: %1d VAL:%2.3f V, LL:%2.3f, HL:%2.3f  \n",channel,readv,lolimit,hilimit);
-          } else {
+          return false;
+        } else {
           fprintf(stdout,"---> PASS <--- CH: %1d VAL:%2.3f V, LL:%2.3f, HL:%2.3f  \n", channel,readv,lolimit,hilimit);
-          }
-
-
+          return true;
         }
+      }
+  return false;
 }
     
 
@@ -392,9 +388,70 @@ test_dac(2.5);  // initialize and preset DAC
 
 fprintf(stdout,"\n--->TEST START\n");
 
-TEST_SCPI_INPUT("*TST?\r\n");
+//TEST_SCPI_INPUT("SYSTEM:SLAves:STAtus?\r\n");
+
+
+TEST_SCPI_INPUT("*TST?\n");
+TEST_SCPI_INPUT("STATus:OPER:CONDition?\n");
+
+
+TEST_SCPI_INPUT("STATus:QUEStionable:CONDition?\n");
+
+
+TEST_SCPI_INPUT("SYSTEM:OUTput ON \n");
+TEST_SCPI_INPUT("*ESR? \r\n");
+TEST_SCPI_INPUT("SYSTEM:OUTput OFF\n");
+TEST_SCPI_INPUT("*ESR? \r\n");
+
+TEST_SCPI_INPUT("SYSTEM:SLA OFF \n");
+TEST_SCPI_INPUT("*ESR? \r\n");
+TEST_SCPI_INPUT("SYSTEM:SLA ON\n");
+TEST_SCPI_INPUT("*ESR? \r\n");
 
 TEST_SCPI_INPUT("SYSTem:VERS?\r\n");
+TEST_SCPI_INPUT("STATus:QUEStionable:ENABle?\n"); 
+TEST_SCPI_INPUT("*STB? \r\n"); 
+
+TEST_SCPI_INPUT("STATus:QUEStionable:CONDition?\n");
+TEST_SCPI_INPUT("STATus:QUEStionable:ENABle 14 \n"); 
+TEST_SCPI_INPUT("STATus:OPER:ENABle 3 \n");  
+TEST_SCPI_INPUT("STATus:OPER:CONDition?\n");
+
+TEST_SCPI_INPUT("*STB? \r\n");
+TEST_SCPI_INPUT("STATus:QUEStionable:ENABle?\n");   
+TEST_SCPI_INPUT("STATus:QUEStionable:CONDition?\n");
+TEST_SCPI_INPUT("*STB? \r\n");
+TEST_SCPI_INPUT("STATus:QUEStionable:ENABle?\n"); 
+TEST_SCPI_INPUT("STATus:QUEStionable:Event?\n"); // Read the registerand clear register
+TEST_SCPI_INPUT("STATus:QUEStionable:CONDition?\n");
+TEST_SCPI_INPUT("STATus:QUEStionable:Event?\n"); 
+TEST_SCPI_INPUT("STATus:OPER:Event?\n"); 
+TEST_SCPI_INPUT("*STB? \r\n");
+TEST_SCPI_INPUT("*OPC? \r\n");
+TEST_SCPI_INPUT("*ESE? \r\n");
+TEST_SCPI_INPUT("*ESE 1 \r\n");
+
+TEST_SCPI_INPUT("*ESE? \r\n");
+TEST_SCPI_INPUT("*OPC \r\n");
+TEST_SCPI_INPUT("*STB? \r\n");
+TEST_SCPI_INPUT("*SRE? \r\n");
+TEST_SCPI_INPUT("*SRE 32 \r\n");
+TEST_SCPI_INPUT("*SRE? \r\n");
+TEST_SCPI_INPUT("*STB? \r\n");
+TEST_SCPI_INPUT("*OPC? \r\n");
+
+
+
+TEST_SCPI_INPUT("STATus:QUEStionable:ENABle?\n");
+TEST_SCPI_INPUT("*STB? \r\n");
+TEST_SCPI_INPUT("STATus:QUEStionable:Event?\n");
+TEST_SCPI_INPUT("STATus:QUEStionable:CONDition?\n");
+TEST_SCPI_INPUT("STATus:QUEStionable:ENABle?\n");
+TEST_SCPI_INPUT("*STB? \r\n");
+//SCPI_RegSet(&scpi_context, SCPI_REG_QUES, 1);
+//TEST_SCPI_INPUT("*STB? \r\n");
+
+
 
 //cfg_eeprom_write_default();
 //cfg_eeprom_read_full();
@@ -402,15 +459,22 @@ TEST_SCPI_INPUT("SYSTem:VERS?\r\n");
 //TEST_SCPI_INPUT("CFG:Write:EEPROM:STR  'partnumber'\r\n");
 //TEST_SCPI_INPUT("CFG:Write:EEPROM:STR  \r\n");
 
-TEST_SCPI_INPUT("CFG:Write:EEPROM:DEFAULT\r\n");
-TEST_SCPI_INPUT("CFG:Read:EEPROM:Full?\r\n");
+//TEST_SCPI_INPUT("CFG:Write:EEPROM:DEFAULT\r\n");
+//TEST_SCPI_INPUT("CFG:Read:EEPROM:Full?\r\n");
 
 //TEST_SCPI_INPUT("CFG:Read:E:STR? 'partnumber'\r\n");
 //TEST_SCPI_INPUT("CFG:Read:E:STR? 'serialNUMBER'\r\n");
 //TEST_SCPI_INPUT("CFG:Read:E:STR? 'MOD_OPTION'\r\n");
 
 //TEST_SCPI_INPUT("CFG:Write:Eeprom:STR 'com_ser_speed,115200'\r\n");
+TEST_SCPI_INPUT("ANA:ADC:Vsys? \r\n");  //
+TEST_SCPI_INPUT("ANA:ADC:Temp? \r\n");  //
 TEST_SCPI_INPUT("SYSTem:ERRor:COUNt?\r\n");
+TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
+TEST_SCPI_INPUT("CFG:Write:Eeprom:STR 'com_ser_speed,1a5200'\r\n");  // check error
+
+TEST_SCPI_INPUT("SYSTem:ERRor:COUNt?\r\n");
+TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
 TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
 
 
@@ -446,6 +510,9 @@ TEST_SCPI_INPUT("*SRE? \r\n");
 
 TEST_SCPI_INPUT("SYSTem:ERRor:COUNt?\r\n");
 TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
+TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
+TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
+
 
 
 fprintf(stdout,"STB: ");

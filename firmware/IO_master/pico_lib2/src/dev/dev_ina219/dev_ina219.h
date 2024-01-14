@@ -128,7 +128,7 @@
     #define INA219_REG_CALIBRATION                 (0x05)
 /*=========================================================================*/
 
-void    ina219Init(void);
+int16_t ina219Init(void);
 int16_t ina219GetShuntVoltage(void);
 int16_t ina219GetBusVoltage(void);
 int16_t ina219GetPower(void);

@@ -42,8 +42,8 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback)  
     count = i2c_write_blocking(i2c0, i2c_add, buf, buflgth, false);
     if (count < 0) {
         //puts("Couldn't write Register to slave");
-        fprintf(stdout,"MAS: ERROR Write at register 0x%02d: %02d\n", buf[0], buf[1]);
-        *rback = SCPI_I2C_COMMUNICATION_SLAVE;  // return error number to caller
+        fprintf(stdout,"MAS: ERROR Write at register %02d: %02d\n", buf[0], buf[1]);
+        *rback = I2C_COMMUNICATION_ERROR;  // return error number to caller
 
         return false; // set flag to indicate error (error number on rback)
     }
@@ -539,8 +539,17 @@ bool  system_execute(uint8_t action, uint16_t *answer) {
                 fprintf(stdout,"PICO Slave address 0x%x,   Version: %d.%d\n", slave,answer[j-2],answer[j-1]);
             }
         }
+    }
 
-   
+    if (action == GSTA) { // Run device status for each slave
+        for (i=1; i<4 ; i++) {
+            slave = address[i]; /// Set I2C address
+            smf= send_master(slave, SL_DEV_STATUS, 0,value); // send i2c command to slave
+            if (!smf) {return false;}  // Error return
+            answer[j++] = value[0];
+            fprintf(stdout,"PICO Slave address 0x%x,   Device Status byte: %x\n", slave,answer[j-1]);
+        }
+
     }
     return true;
 

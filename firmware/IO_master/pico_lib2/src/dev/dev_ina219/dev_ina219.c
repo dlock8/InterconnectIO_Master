@@ -475,14 +475,20 @@ void ina219SetCalibration_16V_200mA(void)
     @brief  Initialises the I2C block
 */
 /**************************************************************************/
-void ina219Init(void)
+int16_t ina219Init(void)
 {
   // Reset INA219 (set to default values)
   ina219WriteRegister(INA219_REG_CONFIG, INA219_CONFIG_RESET);
 
+
   // Setup chip for 32V and 2A by default
    // ina219SetCalibration_32V_2A();
-   ina219SetCalibration_16V_500mA();
+  ina219SetCalibration_16V_500mA();
+
+  uint16_t value;
+  ina219Read16(INA219_REG_CONFIG, &value);  // read default value
+
+   return value; // return default value
 }
 
 /**************************************************************************/
@@ -556,12 +562,11 @@ int16_t ina219GetCurrent(void)
 int16_t ina219GetCurrent_mA(void)
 {
   uint16_t value;
-  int16_t tval;
+  //volatile int16_t tval;
   ina219Read16(INA219_REG_CURRENT, &value);
+  //tval = value / ina219_currentDivider_mA;
  
   return value / ina219_currentDivider_mA;
-
-
 }
 
 

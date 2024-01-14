@@ -90,6 +90,13 @@ bool dev_mcp4725_set_raw(i2c_inst_t* i2c, uint8_t addr, uint16_t value);
 */
 bool dev_mcp4725_set(i2c_inst_t* i2c, uint8_t addr, float volt);
 
+/*! @brief - Sets adc output
+    @param i2c I2C channel i2c0 or i2c1
+    @param addr I2C address MCP4725_ADDRn
+    @return voltage value read
+*/
+float dev_mcp4725_get(i2c_inst_t* i2c, uint8_t addr);
+
 /*! @brief - Sets adc output and save settings to EEPROM (50ms)
     @param i2c I2C channel i2c0 or i2c1
     @param addr I2C address MCP4725_ADDRn

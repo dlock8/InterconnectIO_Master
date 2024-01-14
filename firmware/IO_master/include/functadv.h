@@ -34,12 +34,14 @@
 #define EMP      5      //SCPI_ERROR_MISSING_PARAMETER;
 #define EIVN     6      //SCPI_ERROR_ILLEGAL_VARIABLE_NAME;
 #define ENDE     7      //SCPI_ERROR_NUMERIC_DATA_ERROR
+#define EBE      8      // Read Byte Error
 
 
 
 // define address location on eeprom
 
-#define ADD_EEPROM_BASE    0x40      // Eprom base adress to start
+#define ADD_EEPROM_BASE    0x40      // EEprom base adress to start
+#define TEST_EEPROM_ADD    0x0       // EEprom address used during selftest
 #define EE_PAGESIZE        32        // Pagesize 
 #define EEMODEL            32        // 24lc32 eeprom
 #define EESIZE             4096        // 24lc32 eeprom
@@ -59,6 +61,7 @@ uint8_t cfg_eeprom_read_full();
 uint8_t cfg_eeprom_write_default();
 uint8_t stringtonumber(const char *str, long *result);
 bool Boot_check(void);
+bool Board_Selftest();
 
 
 

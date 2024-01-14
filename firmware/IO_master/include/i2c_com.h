@@ -64,6 +64,8 @@ extern "C" {
 #define GP_PAD_VALUE        60
 #define GP_PAD_SET          61
 #define GP_PAD_READ         65
+#define SL_DEV_STATUS       100
+
 
 
 

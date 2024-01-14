@@ -41,7 +41,7 @@ However, there are two caveats:
 *SRE    // Service Request Enable
 *STB    // Read Status Byte
 *TST    // Self Test
-*WAI    // Wait-to-Continue
+*WAI    // Wait-to-Continue (Do nothing on this parser)
 
 
 SYSTem:ERRor[:NEXT]?
@@ -117,10 +117,11 @@ SYSTEM:LED:ERRor?
 ??SYSTEM:RESet  (*RST)
 SYSTEM:MODule_option?  [TBD]
 SYSTEM:INITialize {SPI|UART2|UART4|I2C|ADC} [TBD]   
-SYSTEM:OUTput    {0|1|OFF|ON}
-SYSTEM:SLAves    {0|1|OFF|ON}  
+SYSTEM:OUTput    {0|1|OFF|ON}      // Turn ON/OFF internal 5V available to UUT.
+SYSTEM:SLAves    {0|1|OFF|ON}      // Turn ON/OFF Pico slaves
 SYSTEM:OUTput?
 SYSTEM:SLAves?
+SYSTEM:SLAves:STAtus?   // read device status byte for slaves 1 to 3
 
 
 CFG:Write:Eeprom:STR      <varname><svalues> 

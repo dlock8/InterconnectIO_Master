@@ -63,6 +63,7 @@ scpi_result_t SCPI_Reset(scpi_t * context) {
     return SCPI_RES_OK;
 }
 
+// SCPI Flush is for clear the input buffer
 static scpi_result_t SCPI_Flush(scpi_t * context) {
     (void) context;
     //fprintf(stdout, "SCPI Flush\r\n");
@@ -88,22 +89,26 @@ void ErrorBeep(uint8_t nbeep){
 }
 
 
-
-
 int SCPI_Error(scpi_t * context, int_fast16_t err) {
-    // (void) context;
-    SCPI_Beep();  // Beep for signal error
-    fprintf(stdout, "**ERROR: %d, \"%s\"\r\n", (int16_t) err, SCPI_ErrorTranslate(err));
+    (void) context;
+
+    if (err == 0 ) {  // if no error, do nothing
+        gpio_put(GPIO_LED, 0); // Turn OFF led Error
+    } else {
+        SCPI_Beep();  // Beep for signal error
+        gpio_put(GPIO_LED, 1); // Turn ON led Error 
+        fprintf(stdout, "**ERROR: %d, \"%s\"\r\n", (int16_t) err, SCPI_ErrorTranslate(err));
+    }
+    
     return SCPI_RES_OK;
 }
-
-
-
 
 scpi_reg_val_t srq_val = 0;
 
 static scpi_result_t SCPI_Control(scpi_t * context, scpi_ctrl_name_t ctrl, scpi_reg_val_t val) {
     (void) context;
+
+    fprintf(stdout, "SCPI Control\r\n");
 
     if (SCPI_CTRL_SRQ == ctrl) {
         srq_val = val;
@@ -134,16 +139,62 @@ scpi_interface_t scpi_interface = {
  // Hardware selftest
 static scpi_result_t SCPI_CallbackTstQ(scpi_t * context) {
     fprintf(stdout,"Selftest execute \r\n");
-
-    SCPI_ResultInt32(context, 0);
-
+    Board_Selftest();
     return SCPI_RES_OK;
 }
 
-// Set Register error
-bool SetError(){
+/**
+ * @brief
+ * Set Bit on SCPI register Questionnable ann Operation
+ * Send Bust of Beep to signal to operator the problem
+ * Send Error to Erro Queue
+ *
+ * @param index Index to use on the Reginfo
+ * @param scbit Set or Clear particular bit on register
+  */
+void RegBitHdwrErr(reg_info_index_t index, bool scbit){
+    volatile uint16_t regp,regs;
+    bool tbit;
 
+    // Helper structure to store register information
+    struct RegInfo {
+        scpi_reg_name_t preg;    // name of primary error register (Error set or clear, mandatory)
+        scpi_reg_name_t sreg;   // name of secondary register (Error set only,if required)
+        scpi_reg_val_t pbit;    // Bit to set or clear in primary register
+        scpi_reg_val_t sbit;    // Bit to set on secondary register (normally event register)
+        uint8_t nbBeep;         // Number of Beep burst for Set error
+        int16_t scpierror;      // SCPI error to push in case of Set Error
+    };
+
+    // Define an array of ErrorInfo structs for set value in primary register,
+    // set value in secondary register (event register), send beep code burst to operator
+    // and raise SCPI error message
+
+    struct RegInfo mreg[] = {
+        {SCPI_REG_QUESC,SCPI_REG_OPERC,QCR_I2C_COM,OPER_BOOT_FAIL,BEEP_I2C_FAIL,I2C_COMMUNICATION_ERROR},
+        {SCPI_REG_QUESC,SCPI_REG_OPERC,QCR_VSYS_OUTLIMIT,OPER_BOOT_FAIL,BEEP_VSYS_OUT,VSYS_OUT_LIMITS},
+        {SCPI_REG_QUESC,SCPI_REG_OPERC,QCR_MTEMP_HIGH,OPER_BOOT_FAIL,BEEP_TEMP_HIGH,TEMP_MASTER_HIGH},
+        {SCPI_REG_QUESC,SCPI_REG_OPERC,QCR_WATCHDOG,OPER_BOOT_FAIL,BEEP_WATCHDOG,WATCHDOG_TRIG},
+        {SCPI_REG_QUESC,0,QCR_EEP_READ_ERROR,0,BEEP_EEP_FAIL,SCPI_ERROR_MEMORY_USE_ERROR},
+    };
+
+
+    if (!scbit) {  // if bits need to be set or clear
+        SCPI_RegSetBits(&scpi_context,mreg[index].preg,1 << mreg[index].pbit);  
+    } else {
+        SCPI_RegClearBits(&scpi_context,mreg[index].preg,0 << mreg[index].pbit);
+    }
+
+    if (!scbit && mreg[index].sreg > 0 ) {         // if required to update the secondary register
+       SCPI_RegSetBits(&scpi_context,mreg[index].sreg,1 << mreg[index].sbit);
+    }
+
+    if (!scbit){   // if error bit has been set, send error message
+        ErrorBeep(mreg[index].nbBeep);                                  // Send Beep Error code
+        SCPI_ErrorPush(&scpi_context, mreg[index].scpierror);           // push error on  SCPI     
+    }
 }
+
 
 
 
@@ -601,8 +652,9 @@ volatile    uint8_t tag;
             res = system_execute(tag,ans); // get arrays of version
             if (res) { //if no failure detected 
                 // Build string to be returned base on the array of version received
-                sprintf(pv,"%2d.%2d, %2d.%2d, %2d.%2d, %2d.%2d\n",ans[0],ans[1],ans[2],ans[3],ans[4],ans[5],ans[6],ans[7]);
+                sprintf(pv,"%2d.%2d, %2d.%2d, %2d.%2d, %2d.%2d",ans[0],ans[1],ans[2],ans[3],ans[4],ans[5],ans[6],ans[7]);
                 fprintf(stdout,pv); // print string version for the 4 devices
+                fprintf(stdout,"\n"); // print newline
                 SCPI_ResultText(context,pv); // sent result
             } else {
                   // if failure found during command
@@ -611,6 +663,25 @@ volatile    uint8_t tag;
                 return SCPI_RES_ERR;
             }
             break;
+
+        case GSTA:
+            fprintf (stdout, "Scpi command to get pico device status \r\n");
+            res = system_execute(tag,ans); // get arrays of version
+            if (res) { //if no failure detected 
+                // Build string to be returned base on the array of byte received
+                sprintf(pv,"Slave1: 0x%x, Slave2: 0x%x, Slave3: 0x%x",ans[0],ans[1],ans[2]);
+                fprintf(stdout,pv); // print string version for the 3 slaves
+                fprintf(stdout,"\n"); // print newline
+                SCPI_ResultText(context,pv); // sent result
+            } else {
+                  // if failure found during command
+                fprintf(stdout,"System execute error: %d\r\n", ans);
+                SCPI_ErrorPush(context, ans[0]);
+                return SCPI_RES_ERR;
+            }
+            break;
+
+        
 
         case SLERR:  // Ctrl of led error
             fprintf (stdout, "Set Error led on gpio %d to: %d \r\n",GPIO_LED,value);
@@ -626,6 +697,11 @@ volatile    uint8_t tag;
         case SRUN:  // System Pico RUN_EN,
             fprintf (stdout, "Set Pico RUN_EN gpio %d to: %d \r\n",GPIO_RUN,value);
             gpio_put(GPIO_RUN, value);
+            if (!value) {  // Set or Clear User Request bit on ESR (set when slaves are disabled)   
+                SCPI_RegSetBits(context,SCPI_REG_ESR,1 << ESR_USER_BIT );  
+            } else {
+                SCPI_RegClearBits(context,SCPI_REG_ESR,0 << ESR_USER_BIT );
+            }
             break;
 
         case GRUN:  // Read Run enable value
@@ -637,6 +713,11 @@ volatile    uint8_t tag;
         case SOE:  // System Output enable
             fprintf (stdout, "Set Output Enable gpio %d to: %d \r\n",GPIO_OE, value);
             gpio_put(GPIO_OE, value);
+            if (value) {  // Set or Clear Power ON bit on ESR
+                SCPI_RegSetBits(context,SCPI_REG_ESR,1 << ESR_PON_BIT );  
+            } else {
+                SCPI_RegClearBits(context,SCPI_REG_ESR,0 << ESR_PON_BIT );
+            }
             break;
 
         case GOE:  // Read System Ouput enable
@@ -806,13 +887,16 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
 
 
     // Define an array of MemberInfo structs with member names, offsets, and sizes
-    // Each parameter to Read/Write on EEPROM need to be added on this array (except Check parameter)
+    // Each parameter to Read/Write on EEPROM need to be added on this array
+    // The las field (true or false is to validate if the parameter is a number or not 
+
     struct ParamInfo members[] = {
         {CHECK, offsetof(cfg,check), sizeof(((cfg *)0)->check),FALSE},
         {PARTNUMBER, offsetof(cfg,partnumber), sizeof(((cfg *)0)->partnumber),FALSE},
         {SERIALNUMBER, offsetof(cfg,serialnumber),sizeof(((cfg *)0)->serialnumber),FALSE},
         {MOD_OPTION, offsetof(cfg,mod_option),sizeof(((cfg *)0)->mod_option),FALSE},
         {COM_SER_SPEED, offsetof(cfg,com_ser_speed),sizeof(((cfg *)0)->com_ser_speed),TRUE},
+        {EE_SLAVE_RUN, offsetof(cfg,slave_force_run),sizeof(((cfg *)0)->slave_force_run),TRUE},
     };
 
     fprintf(stdout, "\n\nOn eeprom execute \r\n");
@@ -928,7 +1012,7 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
              answer= SCPI_ERROR_EXECUTION_ERROR;
              break;
 
-        case ERE:
+        case ERE: case EBE:
              answer= SCPI_ERROR_MASS_STORAGE_ERROR;
              break; 
 
@@ -1022,6 +1106,7 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "SYSTem:LED:ERRor?", .callback = Callback_system_scpi,GLERR},
     {.pattern = "SYSTem:OUTput?", .callback = Callback_system_scpi,GOE},
     {.pattern = "SYSTem:SLAves?", .callback = Callback_system_scpi,GRUN},
+    {.pattern = "SYSTEM:SLAves:STAtus?",.callback = Callback_system_scpi,GSTA},
 
     {.pattern = "ANAlog:DAC:Volt", .callback = Callback_analog_scpi,SDAC},
     {.pattern = "ANAlog:DAC:Save", .callback = Callback_analog_scpi,WDAC},
@@ -1039,14 +1124,8 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "CFG:Read:Eeprom:STRing?", .callback = Callback_eeprom_scpi,REEP},
     {.pattern = "CFG:Write:Eeprom:Default", .callback = Callback_eeprom_scpi,WDEF},
     {.pattern = "CFG:Read:Eeprom:Full?", .callback = Callback_eeprom_scpi,RFUL},
-    /*
-    {.pattern = "CFG:Write:SERIALNUMBER", .callback = Callback_eeprom_scpi,WEESN},
-    {.pattern = "CFG:Read:SERIALNUMBER?", .callback = Callback_eeprom_scpi,REESN},
-    {.pattern = "CFG:Write:MOD_OPTION", .callback = Callback_eeprom_scpi,WEEMO},
-    {.pattern = "CFG:Read:MOD_OPTION?", .callback = Callback_eeprom_scpi,REEMO},
-    {.pattern = "CFG:Write:DEF_CSER", .callback = Callback_eeprom_scpi,WEEDS},
-    {.pattern = "CFG:Read:DEF_CSER?", .callback = Callback_eeprom_scpi,REEDS},
-    */
+    
+
 
 
 	SCPI_CMD_LIST_END

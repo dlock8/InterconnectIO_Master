@@ -28,7 +28,6 @@ extern "C" {
 
 // EEprom parameter supported by SCPI command
 // Add new parameter below using #define
-
 #define CHECK         "CHECK"
 #define PARTNUMBER    "PARTNUMBER"
 #define SERIALNUMBER  "SERIALNUMBER"
@@ -46,6 +45,7 @@ typedef struct eecfg_t {
   char serialnumber[5];
   char mod_option[14];
   char com_ser_speed[6];
+  char slave_force_run[1];    // force master RUN_EN = 1, useful for debug slaves pico
 }cfg;
 
 
@@ -64,12 +64,29 @@ extern eep ee;
 #define EE_SERIALNUMBER "00001"
 #define EE_MOD_OPTION   "DAC,PWR"
 #define EE_CSER_SPEED   "115200"
+#define EE_SLAVE_RUN    "0"   // 0 = Disable (will toggle),  1 = Enable (Always 1)
 
 // Assign default value to default eeprom structure
 // Add new parameter at the end of the string below 
-#define DEF_EEPROM {EE_CHECK_CHAR,EE_PARTNUMBER,EE_SERIALNUMBER,EE_MOD_OPTION,EE_CSER_SPEED}
+#define DEF_EEPROM {EE_CHECK_CHAR,EE_PARTNUMBER,EE_SERIALNUMBER,EE_MOD_OPTION,EE_CSER_SPEED, EE_SLAVE_RUN}
 
-// Add parameter on struct ParamInfo  file fts_scpi.c  around line 800
+// Add parameter on struct ParamInfo  file fts_scpi.c  around line 850
+
+
+
+#define  BEEP_I2C_FAIL  2  // Define burst of Beep
+#define  BEEP_EEP_FAIL   3  // Define burst of Beep
+#define  BEEP_VSYS_OUT   4  // Define burst of Beep
+#define  BEEP_TEMP_HIGH  5  // Define burst of Beep
+#define  BEEP_WATCHDOG   6  // Define burst of Beep
+
+#define MAX_PICO_TEMP   50  // Maximum temperature acceptable for pico
+#define MAX_VSYS_VOLT   6   // Maximum voltage to Pico Master Vsys
+#define MIN_VSYS_VOLT   4   // Minimum voltage to Pico Master Vsys
+
+#define DEFAULT_PWR_VAL 0xc1f  // Value of configuration register after ina219_init
+
+
 
 
 void Hardware_Default_Setting();
