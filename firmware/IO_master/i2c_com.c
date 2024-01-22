@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
+#include "include/scpi_user_config.h"
 #include "hardware/i2c.h"
 #include "include/i2c_com.h"
 #include "include/fts_scpi.h"
 #include "userconfig.h"
-
 
 
 

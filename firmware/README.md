@@ -183,9 +183,9 @@ SYSTEM:DEVice:VERsion?          --> Read version of each Pico devices [0,1,2,3],
     Relay bank 4   Differential: 40 @ 47    Single: 400 @ 415 (High) 108 @ 415 (Low) 
 
 ## SE relay numbering for actuation without other relay
-    Relay SE bank 1  116    
-    Relay SE bank 2  216
-    Relay SE bank 3  216
-    Relay SE bank 4  216
+    Relay SE bank 1  116    ?? Not implented
+    Relay SE bank 2  216    ??
+    Relay SE bank 3  216    ??
+    Relay SE bank 4  216    ??
 
 

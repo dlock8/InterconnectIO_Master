@@ -80,7 +80,7 @@ extern eep ee;
 #define  BEEP_TEMP_HIGH  5  // Define burst of Beep
 #define  BEEP_WATCHDOG   6  // Define burst of Beep
 
-#define MAX_PICO_TEMP   50  // Maximum temperature acceptable for pico
+#define MAX_PICO_TEMP   60  // Maximum temperature acceptable for pico
 #define MAX_VSYS_VOLT   6   // Maximum voltage to Pico Master Vsys
 #define MIN_VSYS_VOLT   4   // Minimum voltage to Pico Master Vsys
 

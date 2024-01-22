@@ -36,7 +36,6 @@ include_directories("${PROJECT_BINARY_DIR}/IO_master/include")
 #add_subdirectory(${PICO_LIB2_PATH} pico_lib2)
 
 
-
 # After the SCPI library has been built (using the "scpi_parser_build"
 # project), we define an "IMPORTED" library to be able to link to it and
 # include it.
@@ -45,6 +44,8 @@ set_property(TARGET scpi_parser PROPERTY IMPORTED_LOCATION "${scpi_parser_PREFIX
 add_dependencies(scpi_parser scpi_parser_build)
 target_link_libraries(scpi_parser INTERFACE "${scpi_parser_PREFIX}/libscpi.a")
 target_include_directories(scpi_parser INTERFACE "${scpi_parser_SOURCE_DIR}/inc")
+
+
 
 
 
@@ -68,10 +69,8 @@ MESSAGE(STATUS "Picolib2= ${PICO_LIB2_PATH}")
 
 add_subdirectory(pico_lib2)   # add Pico_lib2 to project
 
-
-add_executable(master master.c)
-
-
+set(SOURCES_FILES master.c test.c i2c_com.c functadv.c fts_scpi.c)
+add_executable(master ${SOURCES_FILES})
 
 pico_enable_stdio_usb(master 1)
 pico_enable_stdio_uart(master 1) # temporary enable (1) to debug
@@ -88,5 +87,4 @@ target_link_libraries(master
 	functadv
 	test
 	lib2_sys
-
 )

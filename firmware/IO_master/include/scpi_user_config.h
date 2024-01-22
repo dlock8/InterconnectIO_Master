@@ -59,26 +59,12 @@ extern "C" {
 #define LIST_OF_USER_ERRORS \
     X(SCPI_RELAYS_LIST_ERROR,           -185,  "Relays channel list error. single dimension only")   \
     X(RELAY_NUMBERING_ERROR,           -186,  "A Relay channel is invalid and raise an error")   \
-    X(I2C_COMMUNICATION_ERROR,      -301,  "I2C internal communication error, run selftest")            \
+    X(I2C_COMMUNICATION_ERROR,      -106,  "I2C internal communication error, run selftest")            \
     X(VSYS_OUT_LIMITS,              -302,  "Voltage VSYS of Master Pico is out limit, run selftest")   \
     X(TEMP_MASTER_HIGH,             -303,  "Internal Temperature of Master Pico is too High, run selftest")   \
     X(WATCHDOG_TRIG,                -304,  "Master Pico Watchdog Trig")   \
     X(SELFTEST_FAIL,                -305,  "Self-test failed")   \
-    X(EEPROM_NOT_DETECTED,          -601,  "Cfg EEprom not detected")   \
-    X(EEPROM_NUMBER_CHECK,          -602,  "Cfg EEprom data corrupt")   \
-    X(EEPROM_BYTE_ERROR,            -603,  "Cfg EEprom byte error")   \
-    X(EEPROM_BYTE_WRITE_ERROR,      -604,  "Cfg EEprom byte write error at address 0")   \
-    X(EEPROM_BYTE_READ_ERROR,       -605,  "Cfg EEprom byte read error at address 0")   \
-    X(EEPROM_BYTE_WR_ERROR,         -606,  "Cfg EEprom error, byte write is not equal to byte read at address 0")   \
-    X(PICO_STATUS_SLAVE1,           -607,  "Pico Slave1 device status returned an error")   \
-    X(PICO_I2C_SLAVE1,              -608,  "Pico Slave1 communication I2C error")   \
-    X(PICO_STATUS_SLAVE2,           -609,  "Pico Slave2 device status returned an error")   \
-    X(PICO_I2C_SLAVE2,              -610,  "Pico Slave2 communication I2C error")   \
-    X(PICO_STATUS_SLAVE3,           -611,  "Pico Slave3 device status returned an error")   \
-    X(PICO_I2C_SLAVE3,              -612,  "Pico Slave3 communication I2C error")   \
-    X(PICO_UNKNOW_ERROR,            -613,  "Pico Slave unknow error with com")   \
-    X(PWR_I2C_ERROR,                -614,  "I2C com error with CURRENT MONITOR module (INA219)")   \
-    X(PWR_DEFAULT_ERROR,            -615,  "CURRENT MONITOR module (INA219) default value error")   \
+  
 
 // Definition of each bit of the Operation Condition Event Register (QER) 
 #define OPER_BOOT_FAIL           0   // <1>

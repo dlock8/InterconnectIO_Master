@@ -190,8 +190,17 @@ void Hardware_Default_Setting() {
   gpio_init_mask(GPIO_BOOT_MASK); // set which lines will be GPIO 
   gpio_set_dir_masked(GPIO_SET_DIR_MASK,GPIO_MASTER_OUT_MASK); // set which lines will be GPIO 
 
+  ina219Init(); // Initialize power function
   adc_init();  // initialize ADC function
   adc_set_temp_sensor_enabled(1); //Enable read of internal temperature sensor
+  gpio_init(ADC0);  // ADC0 gpio
+  gpio_set_dir(ADC0,GPIO_IN); // set has input
+  gpio_disable_pulls(ADC0); // remove pullup and down for accurate reading of ADC0
+
+  gpio_init(ADC1);  // ADC1 gpio
+  gpio_set_dir(ADC1,GPIO_IN); // set has input
+  gpio_disable_pulls(ADC1); // remove pullup and down for accurate reading of ADC1
+
   gpio_init(ADC3);  // VSYS gpio
   gpio_set_dir(ADC3,GPIO_IN); // set has input
   gpio_disable_pulls(ADC3); // remove pullup and down for accurate reading of VSYS
@@ -243,11 +252,12 @@ void Hardware_Default_Setting() {
   }
 
   fprintf(stdout,"Hardware Default setting completed \r\n");
-  return;}
+  return;
+}
 
 
 // Master Pico Main  program
-int main() {
+int main(void) {
 
   MESSAGE rec;
   char nbchar;
@@ -275,7 +285,7 @@ int main() {
   }
 
   
-//test_selftest(); 
+
 
 
 //test_dac(2.5);
@@ -286,6 +296,9 @@ fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VER
 ctr = 0;
 int mess=0;
 
+//test_selftest(); 
+
+test_command(); 
  
  while (1) {  // infinite loop, waiting for SCPI command from serial port
 

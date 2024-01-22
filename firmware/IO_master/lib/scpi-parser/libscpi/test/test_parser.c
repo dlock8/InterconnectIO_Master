@@ -28,7 +28,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "CUnit/Basic.h"
+#include <CUnit/Basic.h>
 
 #include "scpi/scpi.h"
 #include "../src/fifo_private.h"

@@ -45,6 +45,7 @@
 #include "include/functadv.h"
 #include "stdio.h"
 #include "string.h"
+#include "include/scpi_user_config.h"
 
 #include "include/master.h"
 #include "include/fts_scpi.h"

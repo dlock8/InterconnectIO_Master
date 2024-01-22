@@ -185,6 +185,7 @@ scpi_result_t Relay_Chanlst(scpi_t *context, uint16_t *array);
 void init_scpi();
 void ErrorBeep(uint8_t nbeep);
 void RegBitHdwrErr(reg_info_index_t index, bool scbit);
+static size_t output_buffer_write(const char * data, size_t len);
 
 
 

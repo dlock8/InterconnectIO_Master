@@ -10,14 +10,18 @@
 #define P 3     // mW
 #define S 4     // mV
 
-
+char output_buffer[1024];
+size_t output_buffer_pos;
 
 
 bool test_ioboard(); 
 bool test_selftest(); 
 bool test_eeprom();
-bool test_ina219();
+void test_ina219(void);
 bool test_adc();
 bool test_dac(float);
+void test_command(void);
+static void output_buffer_clear(void);
+
  
  

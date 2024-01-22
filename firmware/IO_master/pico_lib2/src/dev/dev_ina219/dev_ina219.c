@@ -548,10 +548,16 @@ int16_t ina219GetPower_mW(void)
 /**************************************************************************/
 int16_t ina219GetCurrent(void)
 {
-  uint16_t value;
+  int16_t value;
   ina219Read16(INA219_REG_CURRENT, &value);
+  if (value <0) { value = 0;}   // if negative value, round to 0
+
   return value;
 }
+
+
+  #include <stdio.h>  // temporary
+
 
 /**************************************************************************/
 /*! 
@@ -561,12 +567,13 @@ int16_t ina219GetCurrent(void)
 /**************************************************************************/
 int16_t ina219GetCurrent_mA(void)
 {
-  uint16_t value;
-  //volatile int16_t tval;
+  int16_t value;
   ina219Read16(INA219_REG_CURRENT, &value);
-  //tval = value / ina219_currentDivider_mA;
- 
+
+  if (value <0) { value = 0;}   // if negative value, round to 0
+
   return value / ina219_currentDivider_mA;
+  
 }
 
 

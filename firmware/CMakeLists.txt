@@ -15,6 +15,10 @@ pico_sdk_init()
 
 project(INTERCONNECTIO_MASTER C CXX ASM)
 
+message(STATUS "Cmake module directory: ${CMAKE_MODULE_PATH}")
+message(STATUS "Cmake source directory: ${CMAKE_SOURCE_DIR}")
+
+
 
 
 add_subdirectory(IO_master)

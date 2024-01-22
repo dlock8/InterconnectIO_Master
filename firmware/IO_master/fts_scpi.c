@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
+#include "include/scpi_user_config.h"
+#include "include/test.h"
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
 #include "include/master.h"
@@ -13,12 +15,13 @@
 
 
 
+
 //#include "scpi/scpi.h"
 //#include "scpi/expression.h"
 
 //#include "scpi/error.h"
 //#include "scpi/parser.h"
-//#include "include/scpi_user_config.h"
+
 
 // This will hold the SCPI "instance".
 scpi_t scpi_context;
@@ -33,16 +36,27 @@ char scpi_input_buffer[SCPI_INPUT_BUFFER_SIZE];
 scpi_error_t scpi_error_queue[SCPI_ERROR_QUEUE_SIZE];
 
 
+// Function used by module test.c to validate the selftest
 
+static size_t output_buffer_write(const char * data, size_t len) {
+    memcpy(output_buffer + output_buffer_pos, data, len);
+    output_buffer_pos += len;
+    output_buffer[output_buffer_pos] = '\0';
+    return len;
+}
 
 // The function called by the SCPI library when it wants to send data.
 size_t SCPI_write(scpi_t *context, const char *data, size_t len) {
  
     // added code to add null termination to the string data. uart_puts do not support parameter lenght.
-    char t[128];          // temporay buffer 
-    strncpy(t,data,128); // save data string to temporay buffer
-    t[len] = '\0';      // add string termination
-    uart_puts(UART_ID, t); // send answer to serial port
+    //char t[128];          // temporay buffer 
+
+    char outbuf[128];  // Global variable output buffer used to test code
+
+    strncpy(outbuf,data,128); // save data string to temporay buffer
+    outbuf[len] = '\0';      // add string termination
+    uart_puts(UART_ID, outbuf); // send answer to serial port
+    output_buffer_write(data, len);  // USED BY TEST to capture output of the command
 
 	return fwrite(data, 1, len, stdout); // send answer to usb port for help debug
 }
@@ -138,7 +152,7 @@ scpi_interface_t scpi_interface = {
  */
  // Hardware selftest
 static scpi_result_t SCPI_CallbackTstQ(scpi_t * context) {
-    fprintf(stdout,"Selftest execute \r\n");
+    fprintf(stdout,"Board Selftest execute \r\n");
     Board_Selftest();
     return SCPI_RES_OK;
 }
