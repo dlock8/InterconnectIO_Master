@@ -10,9 +10,7 @@
 #include "include/master.h"
 #include "hardware/resets.h"
 #include "include/functadv.h"
-
-
-
+#include "userconfig.h"         // contains Major and Minor version
 
 
 
@@ -505,7 +503,7 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t *context) {
 
 
     i=0;  // reset loop counter
-    if (tag == BSTATE || tag == SESTATE || tag == PWSTATE) { // if returned value is expected
+    if (tag == BSTATE || tag == SESTATE || tag == PWSTATE || tag == OCSTATE ) { // if returned value is expected
         do {  // loop on array until list of value is completed
            fprintf(stdout, " 0x%x,", answer[i]); // print value on debug port
            SCPI_ResultUInt8(context,answer[i]); // return SCPI value 
@@ -666,7 +664,7 @@ volatile    uint8_t tag;
             res = system_execute(tag,ans); // get arrays of version
             if (res) { //if no failure detected 
                 // Build string to be returned base on the array of version received
-                sprintf(pv,"%2d.%2d, %2d.%2d, %2d.%2d, %2d.%2d",ans[0],ans[1],ans[2],ans[3],ans[4],ans[5],ans[6],ans[7]);
+                sprintf(pv,"%d.%d, %d.%d, %d.%d, %d.%d",ans[0],ans[1],ans[2],ans[3],ans[4],ans[5],ans[6],ans[7]);
                 fprintf(stdout,pv); // print string version for the 4 devices
                 fprintf(stdout,"\n"); // print newline
                 SCPI_ResultText(context,pv); // sent result
@@ -899,6 +897,8 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
         bool isnum;         // set to TRUE if number is mandatory
     };
 
+    for(i=0;i<32;i++) { svalue[i] = '\0';} // initialize array
+
 
     // Define an array of MemberInfo structs with member names, offsets, and sizes
     // Each parameter to Read/Write on EEPROM need to be added on this array
@@ -910,7 +910,7 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
         {SERIALNUMBER, offsetof(cfg,serialnumber),sizeof(((cfg *)0)->serialnumber),FALSE},
         {MOD_OPTION, offsetof(cfg,mod_option),sizeof(((cfg *)0)->mod_option),FALSE},
         {COM_SER_SPEED, offsetof(cfg,com_ser_speed),sizeof(((cfg *)0)->com_ser_speed),TRUE},
-        {EE_SLAVE_RUN, offsetof(cfg,slave_force_run),sizeof(((cfg *)0)->slave_force_run),TRUE},
+        {PSLAVE_RUN, offsetof(cfg,slave_force_run),sizeof(((cfg *)0)->slave_force_run),TRUE},
     };
 
     fprintf(stdout, "\n\nOn eeprom execute \r\n");
@@ -944,7 +944,7 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
             break;
     }
 
-    // Run only for read wwite parameter on eeprom
+    // Run only for read write parameter on eeprom
     if (tag == WEEP || tag == REEP) {
         res = SCPI_Parameter(context, &param1, true);  // Read first parameter
         if (res == false) { return SCPI_RES_ERR;}  // if no parameter read, raise error and exit
@@ -994,10 +994,12 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
                 }
             }
 
+
+            volatile int tval = strlen(svalue);
             if (found && status == NOERR) { // if varname found
                 status = cfg_eeprom_rw(mode,members[i].offset,members[i].size,svalue,strlen(svalue));    // write or read data on eeprom
                  if (status == NOERR) {
-                    strncpy(&ee.data[members[i].offset], svalue, strlen(svalue));  // save parameter on eeprom structure
+                    strncpy(&ee.data[members[i].offset], svalue, members[i].size);  // save parameter on eeprom structure
                     if (mode == 'r') {
                         SCPI_ResultCharacters(context,&ee.data[members[i].offset],members[i].size); // return value
                     }
@@ -1078,6 +1080,7 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "STATus:OPERation:CONDition?", .callback = SCPI_StatusOperationConditionQ, },
     {.pattern = "STATus:OPERation:ENABle", .callback = SCPI_StatusOperationEnable, },
     {.pattern = "STATus:OPERation:ENABle?", .callback = SCPI_StatusOperationEnableQ, },
+    { .pattern = "STATus:PRESet", .callback = SCPI_StatusPreset,},
 
     /* Added to communicate with Interconnect IO board */
     {.pattern = "ROUTe:CLOSE", .callback = Callback_Relay_scpi,RCLOSE},
@@ -1086,9 +1089,9 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "ROUTe:OPEN:ALL", .callback = Callback_Relay_all_scpi,ROPALL},
     {.pattern = "ROUTe:CHANnel:STATe?", .callback = Callback_Relay_scpi,RSTATE},
     {.pattern = "ROUTe:BANK:STATe?", .callback = Callback_Relay_all_scpi,BSTATE},
-    {.pattern = "ROUTe:SE:STATe?", .callback = Callback_Relay_all_scpi,SESTATE},
-    {.pattern = "ROUTe:CLOSE:Se", .callback = Callback_Relay_all_scpi,SECLOSE},
-    {.pattern = "ROUTe:OPEN:Se", .callback = Callback_Relay_all_scpi,SEOPEN},
+    {.pattern = "ROUTe:REV:STATe?", .callback = Callback_Relay_all_scpi,SESTATE},
+    {.pattern = "ROUTe:CLOSE:Rev", .callback = Callback_Relay_all_scpi,SECLOSE},
+    {.pattern = "ROUTe:OPEN:Rev", .callback = Callback_Relay_all_scpi,SEOPEN},
     {.pattern = "ROUTe:CLOSE:PWR", .callback = Callback_Relay_all_scpi,PWCLOSE},
     {.pattern = "ROUTe:OPEN:PWR", .callback = Callback_Relay_all_scpi,PWOPEN},
     {.pattern = "ROUTe:STATE:PWR?", .callback = Callback_Relay_all_scpi,PWSTATE},
@@ -1131,7 +1134,7 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "ANAlog:PWR:Volt?", .callback = Callback_analog_scpi,RPV},
     {.pattern = "ANAlog:PWR:Shunt?", .callback = Callback_analog_scpi,RPS},
     {.pattern = "ANAlog:PWR:Ima?", .callback = Callback_analog_scpi,RPI},
-    {.pattern = "ANAlog:PWR:Pwm?", .callback = Callback_analog_scpi,RPP},
+    {.pattern = "ANAlog:PWR:Pmw?", .callback = Callback_analog_scpi,RPP},
     {.pattern = "ANAlog:PWR:Cal", .callback = Callback_analog_scpi,CPI},
 
     {.pattern = "CFG:Write:Eeprom:STRing", .callback = Callback_eeprom_scpi,WEEP},
@@ -1146,8 +1149,8 @@ scpi_command_t scpi_commands[] = {
 };
 
 void init_scpi(){
-
-	// Initialize the SCPI library.
+   
+    // Initialize the SCPI library.
 	SCPI_Init(
 		&scpi_context, scpi_commands, &scpi_interface, scpi_units_def,
 		SCPI_IDN1, SCPI_IDN2, SCPI_IDN3, SCPI_IDN4,

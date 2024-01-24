@@ -33,7 +33,7 @@ extern "C" {
 #define SERIALNUMBER  "SERIALNUMBER"
 #define MOD_OPTION    "MOD_OPTION"
 #define COM_SER_SPEED "COM_SER_SPEED"
-
+#define PSLAVE_RUN    "PICO_SLAVES_RUN"
 
 
 // EEprom configuration structure

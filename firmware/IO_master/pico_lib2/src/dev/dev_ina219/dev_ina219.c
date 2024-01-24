@@ -341,7 +341,7 @@ void ina219SetCalibration_16V_500mA(void)
 
   // 6. Calculate the power LSB
   // PowerLSB = 20 * CurrentLSB
-  // PowerLSB = 0.0005 (500�W per bit)
+  // PowerLSB = 0.0005 (500 uW per bit)
 
   // 7. Compute the maximum current and shunt voltage values before overflow
   //
@@ -373,7 +373,7 @@ void ina219SetCalibration_16V_500mA(void)
 
   // Set multipliers to convert raw current/power values
   ina219_currentDivider_mA = 40;    // Current LSB = 25uA per bit (1000/25 = 40)
-  ina219_powerDivider_mW =    1;    // Power LSB = 500�W per bit
+  ina219_powerDivider_mW =    1;    // Power LSB = 500uW per bit
 
   ina219_Calfactor = 0x4000;
   // Set Calibration register to 'Cal' calculated above	
@@ -539,6 +539,7 @@ int16_t ina219GetPower_mW(void)
   uint16_t value;
   ina219Read16(INA219_REG_POWER, &value);
   return value / ina219_powerDivider_mW;
+
 }
 
 /**************************************************************************/

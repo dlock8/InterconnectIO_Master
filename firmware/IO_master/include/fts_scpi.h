@@ -26,8 +26,8 @@ extern "C" {
 // "IDN?" fields. Their meanings are "suggestions" in the standard.
 #define SCPI_IDN1 "FirstTestStation"      /* Manufacturer */
 #define SCPI_IDN2 "InterconnectIO"       /* Model */
-#define SCPI_IDN3 "2022A"               /* no suggestion */
-#define SCPI_IDN4 "0.1"                /* Firmware level */
+#define SCPI_IDN3 "2022A"                /* Design Date */
+#define SCPI_IDN4 "1.0"                  /* Design Version */
 
 #define MAXROW 36   /* maximum number of rows for relay matrix */
 #define MAXCOL 1    /* maximum number of columns */
@@ -39,9 +39,9 @@ extern "C" {
 #define ROPALL  4     // Open all relay tag
 #define RSTATE  5     // Read relay state tag
 #define BSTATE  6     // Read relay bank state tag
-#define SESTATE 7     // Read relay single ended state tag
-#define SECLOSE 8     // Close SE relay tag
-#define SEOPEN  9     // Open SE relay tag
+#define SESTATE 7     // Read relay single ended or reverse relay state tag
+#define SECLOSE 8     // Close REVerse relay tag
+#define SEOPEN  9     // Open REVerse relay tag
 
 #define SDIR    10     // Set direction of digital IO
 #define SBDIR   11    // Set direction of digital IO Bit

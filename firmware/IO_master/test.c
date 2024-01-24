@@ -289,7 +289,7 @@ void test_cmd_result(const char *title, const char *cmd, float expect_value, con
     } while (0);
 
     // on ADC measure,multiplication of value by 2 is required due to voltage divider on selftest board 
-    if (strstr(cmd, "ADC") != NULL) { readv = readv *2; }
+    if (strstr(cmd, "ADC0") != NULL || strstr(cmd, "ADC1") != NULL ) { readv = readv *2; }
     hl = expect_value + hilimit;
     ll = expect_value - lolimit;
 
@@ -359,11 +359,6 @@ bool test_selftest() {
 #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
 
  fprintf(stdout,"\tSelftest Hardware Test\n");  // send message to debug port
-
-//TEST_SCPI_INPUT("SYSTem:ERRor:COUNt?\r\n");
-//TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
-//TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
-
 
 
  TEST_SCPI_INPUT("SYST:SLA OFF\r\n");       /** Disable slaves Pico to reset configuration*/
@@ -754,347 +749,321 @@ fprintf(stdout, "\t Number of Tests ERROR:\t%d\r\n", ctest.error);
 */
 void test_command(void){
 int result;
+int i = 0;
+
+struct TestResult ctest = {0,0,0,0}; // reset counter structure
+output_buffer_pos =0;
+
+TEST_SCPI_INPUT("SYST:OUT ON\r\n");        // Power selftest board
+
+test_cmd_out("Test 1.0 SCPI Base command", "*IDN?\r\n","FirstTestStation,InterconnectIO,2022A,1.0",&ctest);
+test_cmd_out("Test 1.1 SCPI Base command", "*OPC?\r\n","1",&ctest);
+test_cmd_out("Test 1.2 SCPI Base command", "SYST:VERS?\r\n","1999.0",&ctest);
+
+test_cmd_out("Test 2.0 SCPI Register command", "*STB?\r\n","0",&ctest);
+test_cmd_out("Test 2.1 SCPI Register command", "*ESE?\r\n","0",&ctest);
+
+test_cmd_out("Test 2.2 SCPI Register command", "STATus:QUEStionable:CONDition?\r\n","0",&ctest);
+test_cmd_out("Test 2.3 SCPI Register command", "STATus:OPER:CONDition?\r\n","0",&ctest);
+SCPI_RegSetBits(&scpi_context,SCPI_REG_QUESC,1); //Set bit on Questionable Data Register
+test_cmd_out("Test 2.4 SCPI Register command", "STATus:QUEStionable:CONDition?\r\n","1",&ctest);
+TEST_SCPI_INPUT("STATus:QUEStionable:ENABle 255 \n");
+test_cmd_out("Test 2.5 SCPI Register command", "STATus:QUEStionable:ENABle?\r\n","255",&ctest); 
+test_cmd_out("Test 2.6 SCPI Register command", "*STB?\r\n","8",&ctest);
+test_cmd_out("Test 2.7 SCPI Register command", "STATus:QUEStionable:Event?\r\n","1",&ctest); 
+test_cmd_out("Test 2.8 SCPI Register command", "*STB?\r\n","0",&ctest);
+SCPI_RegClearBits(&scpi_context,SCPI_REG_QUESC,1); //Clear bit on Questionable Data Register
+
+SCPI_RegSetBits(&scpi_context,SCPI_REG_OPERC,2); //Set bit on Operation Data Register
+test_cmd_out("Test 2.9 SCPI Register command", "STAT:OPER:COND?\r\n","2",&ctest);
+TEST_SCPI_INPUT("STATus:OPER:ENABle 2 \n"); 
+test_cmd_out("Test 2.10 SCPI Register command", "STAT:OPER:ENAB?\r\n","2",&ctest);
+test_cmd_out("Test 2.11 SCPI Register command", "*STB?\r\n","128",&ctest);
+test_cmd_out("Test 2.12 SCPI Register command", "STATus:OPER:Event?\r\n","2",&ctest);
+test_cmd_out("Test 2.13 SCPI Register command", "*STB?\r\n","0",&ctest); 
+SCPI_RegClearBits(&scpi_context,SCPI_REG_OPERC,2); //Clear bit on Operation Data Register
+
+TEST_SCPI_INPUT("SYST:SLA OFF\r\n");       // Set bit 6 of ESR register
+TEST_SCPI_INPUT("SYST:OUT ON\r\n");        // Set bit 7 of ESR register
+TEST_SCPI_INPUT("*ESE 255 \r\n");
+test_cmd_out("Test 2.14 SCPI Register command", "*ESE?\r\n","255",&ctest); 
+test_cmd_out("Test 2.15 SCPI Register command", "*STB?\r\n","32",&ctest);
+test_cmd_out("Test 2.16 SCPI Register command", "*ESR?\r\n","192",&ctest); // Clear register after read
+test_cmd_out("Test 2.17 SCPI Register command","*ESR?\r\n" ,"0",&ctest);   // Check register clear
+TEST_SCPI_INPUT("SYST:SLA ON\r\n");       // Clear bit 6 of ESR register
+TEST_SCPI_INPUT("SYST:OUT OFF\r\n");      // Clear bit 7 of ESR register
+
+TEST_SCPI_INPUT("STATus:QUES:ENABle 7 \n"); 
+SCPI_RegSetBits(&scpi_context,SCPI_REG_QUESC,1); //Set bit on Questionable Data Register
+TEST_SCPI_INPUT("STATus:OPER:ENABle 7 \n"); 
+SCPI_RegSetBits(&scpi_context,SCPI_REG_OPERC,2); //Set bit on Operation Data Register
+test_cmd_out("Test 2.18 SCPI Register command", "*STB?\r\n","136",&ctest);
+TEST_SCPI_INPUT("*CLS\r\n"); // Clear event register of Questionnable and Operation 
+test_cmd_out("Test 2.19 SCPI Register command", "*STB?\r\n","0",&ctest);
+SCPI_RegClearBits(&scpi_context,SCPI_REG_QUESC,1); //Clear bit on Questionable Data Register
+SCPI_RegClearBits(&scpi_context,SCPI_REG_OPERC,2); //Clear bit on Operation Data Register
+
+SCPI_RegSetBits(&scpi_context,SCPI_REG_QUESC,1); //Set bit on Questionable Data Register
+test_cmd_out("Test 2.20 SCPI Register command", "*STB?\r\n","8",&ctest);
+TEST_SCPI_INPUT("STAT:PRES\r\n"); // Clear event register of Questionnable
+test_cmd_out("Test 2.21 SCPI Register command", "*STB?\r\n","0",&ctest);
+SCPI_RegClearBits(&scpi_context,SCPI_REG_QUESC,1); //Clear bit on Questionable Data Register
+
+test_cmd_out("Test 3.0 SCPI Error command", "SYSTEM:LED:ERR?\r\n","0",&ctest);
+test_cmd_out("Test 3.1 SCPI Error command", "SYST:ERR:COUN?\r\n","0",&ctest);
+SCPI_ErrorPush(&scpi_context, SCPI_ERROR_TIME_OUT); // raise error to verify error command and led
+test_cmd_out("Test 3.2 SCPI Error command", "SYSTEM:LED:ERR?\r\n","1",&ctest);
+test_cmd_out("Test 3.3 SCPI Error command", "SYST:ERR:COUN?\r\n","1",&ctest);
+SCPI_ErrorPush(&scpi_context, SCPI_ERROR_QUERY_ERROR); // raise error to verify error command and led
+test_cmd_out("Test 3.4 SCPI Error command", "SYST:ERR:COUN?\r\n","2",&ctest);
+test_cmd_out("Test 3.5 SCPI Error command", "SYST:ERR?\r\n","-365,\"Time out error\"",&ctest);
+test_cmd_out("Test 3.6 SCPI Error command", "SYST:ERR:NEXT?\r\n","-400,\"Query error\"",&ctest);
+test_cmd_out("Test 3.7 SCPI Error command", "SYSTEM:LED:ERR?\r\n","0",&ctest);
+TEST_SCPI_INPUT("SYSTEM:LED:ERR ON\r\n"); /** Turn ON red led */
+test_cmd_out("Test 3.8 SCPI Error command", "SYSTEM:LED:ERR?\r\n","1",&ctest);
+TEST_SCPI_INPUT("SYSTEM:LED:ERR OFF\r\n"); /** Turn OFF red led */
+test_cmd_out("Test 3.9 SCPI Error command", "SYSTEM:LED:ERR?\r\n","0",&ctest);
+
+// RElay command Check
+
+TEST_SCPI_INPUT("ROUT:CLOSE (@100:102,201:204,303:306,404:407)\r\n");
+test_cmd_out("Test 4.0 SCPI Relay command", "ROUT:BANK:STAT? BANK1,BANK2,BANK3,BANK4\r\n","7,30,120,240",&ctest);
+TEST_SCPI_INPUT("ROUT:OPEN (@100,201,303,404)\r\n");
+test_cmd_out("Test 4.1 SCPI Relay command", "ROUT:BANK:STAT? BANK1,BANK2,BANK3,BANK4\r\n","6,28,112,224",&ctest);
+TEST_SCPI_INPUT("ROUT:CLOSE:EXCL (@100,201,303,404)\r\n");
+test_cmd_out("Test 4.2 SCPI Relay command", "ROUT:BANK:STAT? BANK1,BANK2,BANK3,BANK4\r\n","1,2,8,16",&ctest);
+TEST_SCPI_INPUT("ROUT:CLOSE (@115,215,315,415)\r\n");
+test_cmd_out("Test 4.3 SCPI Relay command", "ROUT:BANK:STAT? BANK1,BANK2,BANK3,BANK4\r\n","129,130,136,144",&ctest);
+test_cmd_out("Test 4.4 SCPI Relay command", "ROUT:CHAN:STAT? (@115,215,315,415)\r\n","1,1,1,1",&ctest);
+
+TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK1,BANK2,BANK3,BANK4\r\n");
+test_cmd_out("Test 4.5 SCPI Relay command", "ROUT:BANK:STAT? BANK1,BANK2,BANK3,BANK4\r\n","0,0,0,0",&ctest);
+TEST_SCPI_INPUT("ROUT:OPEN (@115,215,315,415)\r\n");
+test_cmd_out("Test 4.6 SCPI Relay command", "ROUT:CHAN:STAT? (@115,215,315,415)\r\n","0,0,0,0",&ctest);
+test_cmd_out("Test 4.7 SCPI Relay command", "ROUT:BANK:STAT? BANK1,BANK2,BANK3,BANK4\r\n","0,0,0,0",&ctest);
+TEST_SCPI_INPUT("ROUT:CLOSE (@108:115,208:215,308:315,408:415)\r\n");
+test_cmd_out("Test 4.8 SCPI Relay command", "ROUT:BANK:STAT? BANK1,BANK2,BANK3,BANK4\r\n","255,255,255,255",&ctest);
+TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK1,BANK2,BANK3,BANK4\r\n");
+TEST_SCPI_INPUT("ROUT:OPEN (@115,215,315,415)\r\n"); // temporary to fix bug
+test_cmd_out("Test 4.9 SCPI Relay command", "ROUT:BANK:STAT? BANK1,BANK2,BANK3,BANK4\r\n","0,0,0,0",&ctest);
+TEST_SCPI_INPUT("ROUT:CLOSE:Rev BANK1,BANK2,BANK3,BANK4\r\n");
+test_cmd_out("Test 4.10 SCPI Relay command", "ROUT:REV:STAT? BANK1,BANK2,BANK3,BANK4\r\n","1,1,1,1",&ctest);
+TEST_SCPI_INPUT("ROUT:OPEN:Rev BANK2,BANK4\r\n"); 
+test_cmd_out("Test 4.11 SCPI Relay command", "ROUT:REV:STAT? BANK1,BANK2,BANK3,BANK4\r\n","1,0,1,0",&ctest);
+TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK1,BANK2,BANK3,BANK4\r\n");
+test_cmd_out("Test 4.12 SCPI Relay command", "ROUT:REV:STAT? BANK1,BANK2,BANK3,BANK4\r\n","0,0,0,0",&ctest);
+
+TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR1,LPR2,HPR1,SSR1 \r\n");
+test_cmd_out("Test 4.13 SCPI PWR Relay command", "ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSR1\r\n","1,1,1,1",&ctest);
+TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR2,SSR1 \r\n");
+test_cmd_out("Test 4.14 SCPI PWR Relay command", "ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSR1\r\n","1,0,1,0",&ctest);
+TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1,HPR1 \r\n");
+test_cmd_out("Test 4.15 SCPI PWR Relay command", "ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSR1\r\n","0,0,0,0",&ctest);
+
+
+TEST_SCPI_INPUT("ROUT:CLOSE:OC OC1,OC2,OC3 \r\n");
+test_cmd_out("Test 5.0 SCPI Open Collector command", "ROUT:STATE:OC? OC1,OC2,OC3\r\n","1,1,1",&ctest);
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC1 \r\n");
+test_cmd_out("Test 5.1 SCPI Open Collector command", "ROUT:STATE:OC? OC1,OC2,OC3\r\n","0,1,1",&ctest);
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC2,OC3 \r\n");
+test_cmd_out("Test 5.2 SCPI Open Collector command", "ROUT:STATE:OC? OC1,OC2,OC3\r\n","0,0,0",&ctest);
+
+
+// Digital command Check
+// Require presence of the selftest board ( need to be powered)
+
+TEST_SCPI_INPUT("SYST:OUT ON\r\n");        // Power selftest board
+
+TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port0 output(1)
+TEST_SCPI_INPUT("DIG:DIR:PORT0 #H00 \r\n"); // set direction port1 input(0)
+TEST_SCPI_INPUT("DIG:OUT:PORT1 #H55 \r\n");
+test_cmd_out("Test 6.1 SCPI Digital command", "DIG:IN:PORT0?\r\n","85",&ctest);
+TEST_SCPI_INPUT("DIG:OUT:PORT1 #HAA \r\n");
+test_cmd_out("Test 6.2 SCPI Digital command", "DIG:IN:PORT0?\r\n","170",&ctest);
+
+TEST_SCPI_INPUT("DIG:DIR:PORT0 #HF0 \r\n"); // set direction port0 
+test_cmd_out("Test 6.3 SCPI Digital command", "DIG:DIR:PORT0?\r\n","240",&ctest);
+TEST_SCPI_INPUT("DIG:DIR:PORT1 #H0F \r\n"); // set direction port1
+test_cmd_out("Test 6.4 SCPI Digital command", "DIG:DIR:PORT1?\r\n","15",&ctest);
+TEST_SCPI_INPUT("DIG:OUT:PORT0 240 \r\n");
+TEST_SCPI_INPUT("DIG:OUT:PORT1 0 \r\n");
+test_cmd_out("Test 6.5 SCPI Digital command", "DIG:IN:PORT1?\r\n","240",&ctest); // same number due to loopback
+test_cmd_out("Test 6.6 SCPI Digital command", "DIG:IN:PORT0?\r\n","240",&ctest);
+TEST_SCPI_INPUT("DIG:OUT:PORT0 0 \r\n");
+TEST_SCPI_INPUT("DIG:OUT:PORT1 15 \r\n");
+test_cmd_out("Test 6.7 SCPI Digital command", "DIG:IN:PORT0?\r\n","15",&ctest);
+test_cmd_out("Test 6.8 SCPI Digital command", "DIG:IN:PORT1?\r\n","15",&ctest);
+
+TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n"); // set direction port input(0)
+TEST_SCPI_INPUT("DIG:DIR:PORT0 #HFF \r\n"); // set direction port output(1)
+TEST_SCPI_INPUT("DIG:DIR:PORT1:BIT0  1\r\n"); // set direction port output(1)
+TEST_SCPI_INPUT("DIG:DIR:PORT0:BIT0  0\r\n"); // set direction port input(0)
+test_cmd_out("Test 6.9 SCPI Digital command", "DIG:DIR:PORT1:BIT0?\r\n","1",&ctest);
+test_cmd_out("Test 6.10 SCPI Digital command", "DIG:DIR:PORT0:BIT0?\r\n","0",&ctest);
+TEST_SCPI_INPUT("DIG:OUT:PORT1:BIT0 1 \r\n");
+test_cmd_out("Test 6.11 SCPI Digital command", "DIG:IN:PORT0:BIT0?\r\n","1",&ctest);
+TEST_SCPI_INPUT("DIG:OUT:PORT1:BIT0 0 \r\n");
+test_cmd_out("Test 6.12 SCPI Digital command", "DIG:IN:PORT0:BIT0?\r\n","0",&ctest);
+
+
+
+// Test of GPIO Command
+// SYNC IO (GP22) will be used to validate most of the command.
+// Note: SYNC is for future use and no supported on this version
+
+TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP22  1 \r\n");  //Set direction Gp22 as output DEV0 = Master Pico
+TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22  0 \r\n");  //Set direction Gp22 as input DEV1 = Slave1 Pico
+TEST_SCPI_INPUT("GPIO:DIR:DEV2:GP22  0 \r\n");  //Set direction Gp22 as input DEV2 = Slave2 Pico
+TEST_SCPI_INPUT("GPIO:DIR:DEV3:GP22  0 \r\n");  //Set direction Gp22 as input DEV3 = Slave3 Pico
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP22  1 \r\n");  //Set Gp22 = 1
+test_cmd_out("Test 7.0 SCPI GPIO command", "GPIO:IN:DEV1:GP22?\r\n","1",&ctest);
+test_cmd_out("Test 7.1 SCPI GPIO command", "GPIO:IN:DEV2:GP22?\r\n","1",&ctest);
+test_cmd_out("Test 7.2 SCPI GPIO command", "GPIO:IN:DEV3:GP22?\r\n","1",&ctest);
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP22  0 \r\n");  //Set Gp22 = 0
+test_cmd_out("Test 7.3 SCPI GPIO command", "GPIO:IN:DEV1:GP22?\r\n","0",&ctest);
+test_cmd_out("Test 7.4 SCPI GPIO command", "GPIO:IN:DEV2:GP22?\r\n","0",&ctest);
+test_cmd_out("Test 7.5 SCPI GPIO command", "GPIO:IN:DEV3:GP22?\r\n","0",&ctest);
+
+
+TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP22  0 \r\n");  //Set direction Gp22 as input DEV0 = Master Pico
+TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22  0 \r\n");  //Set direction Gp22 as input DEV1 = Slave1 Pico
+TEST_SCPI_INPUT("GPIO:DIR:DEV2:GP22  0 \r\n");  //Set direction Gp22 as input DEV2 = Slave2 Pico
+TEST_SCPI_INPUT("GPIO:DIR:DEV3:GP22  1 \r\n");  //Set direction Gp22 as output DEV3 = Slave3 Pico
+TEST_SCPI_INPUT("GPIO:OUT:DEV3:GP22  1 \r\n");  //Set Gp22 = 1
+test_cmd_out("Test 7.6 SCPI GPIO command", "GPIO:IN:DEV0:GP22?\r\n","1",&ctest); 
+test_cmd_out("Test 7.7 SCPI GPIO command", "GPIO:IN:DEV1:GP22?\r\n","1",&ctest);
+test_cmd_out("Test 7.8 SCPI GPIO command", "GPIO:IN:DEV2:GP22?\r\n","1",&ctest);
+TEST_SCPI_INPUT("GPIO:OUT:DEV3:GP22  0 \r\n");  //Set Gp22 = 0
+test_cmd_out("Test 7.9 SCPI GPIO command", "GPIO:IN:DEV0:GP22?\r\n","0",&ctest);
+test_cmd_out("Test 7.10 SCPI GPIO command", "GPIO:IN:DEV1:GP22?\r\n","0",&ctest);
+test_cmd_out("Test 7.11 SCPI GPIO command", "GPIO:IN:DEV2:GP22?\r\n","0",&ctest);
+TEST_SCPI_INPUT("GPIO:DIR:DEV3:GP22  0 \r\n");  //Set direction Gp22 as input DEV3 = Slave3 Pico
+
+/** PAD REGISTER */
+/*  Bit 7   OD    Output disable   */
+/*  Bit 6   IE    Input  enable   */
+/*  Bit 5:4 DRIVE Strength   */
+/*          0x0   2 mA   */
+/*          0x1   4 mA   */
+/*          0x2   8 mA   */
+/*          0x3   12 mA   */
+/*  Bit 3   PUE   Pull up enable   */
+/*  Bit 2   PDE   Pull down enable   */
+/*  Bit 1   SCHT  Enable schnitt trigger   */
+/*  Bit 0   SLF   Slew rate control 1=fast 0 = slow */
+
+TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP22  1 \r\n");  //Set direction Gp22 as Output DEV0 = Master Pico
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP22  1 \r\n");  //Set Gp22 = 1
+test_cmd_out("Test 7.12 SCPI GPIO command", "GPIO:GETP:DEV0:GP22?\r\n","86",&ctest);
+test_cmd_out("Test 7.13 SCPI GPIO command", "GPIO:IN:DEV0:GP22?\r\n","1",&ctest); 
+TEST_SCPI_INPUT("GPIO:SETP:DEV0:GP22 #H84 \r\n");  //Disable output and set pull down
+test_cmd_out("Test 7.14 SCPI GPIO command", "GPIO:GETP:DEV0:GP22?\r\n","132",&ctest);
+test_cmd_out("Test 7.15 SCPI GPIO command", "GPIO:IN:DEV0:GP22?\r\n","0",&ctest); // read 0 due to output disable
+
+// Test with DEV1 to validate the I2C command
+TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22  1 \r\n");  //Set direction Gp22 as Output DEV1 = Slave1 Pico
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP22  1 \r\n");  //Set Gp22 = 1
+test_cmd_out("Test 7.16 SCPI GPIO command", "GPIO:GETP:DEV1:GP22?\r\n","86",&ctest);
+test_cmd_out("Test 7.17 SCPI GPIO command", "GPIO:IN:DEV1:GP22?\r\n","1",&ctest); 
+TEST_SCPI_INPUT("GPIO:SETP:DEV1:GP22 #H84 \r\n");  //Disable output and set pull down
+test_cmd_out("Test 7.18 SCPI GPIO command", "GPIO:GETP:DEV1:GP22?\r\n","132",&ctest);
+test_cmd_out("Test 7.19 SCPI GPIO command", "GPIO:IN:DEV1:GP22?\r\n","0",&ctest); // read 0 due to output disable
+
+
+// System command test
+
+TEST_SCPI_INPUT("SYST:BEEP\r\n");  // Generate beep and check if error is raised
+test_cmd_out("Test 8.0 SCPI System command", "SYSTEM:LED:ERR?\r\n","0",&ctest); // no error after beep
+TEST_SCPI_INPUT("SYST:LED:ERR 1\r\n"); 
+test_cmd_out("Test 8.1 SCPI System command", "SYSTEM:LED:ERR?\r\n","1",&ctest); 
+TEST_SCPI_INPUT("SYST:LED:ERR 0\r\n"); 
+test_cmd_out("Test 8.2 SCPI System command", "SYSTEM:LED:ERR?\r\n","0",&ctest); 
+
+// command to read firmware version of all Pico (Master, Slave1,Slave2,Slave3)
+test_cmd_out("Test 8.3 SCPI System command", "SYSTEM:DEV:VERS?\r\n","\"1.8, 1.5, 1.5, 1.5\"",&ctest);
+
+TEST_SCPI_INPUT("SYST:SLA OFF \r\n"); 
+test_cmd_out("Test 8.4 SCPI System command", "SYSTEM:SLA?\r\n","0",&ctest);
+TEST_SCPI_INPUT("SYST:SLA ON \r\n"); 
+test_cmd_out("Test 8.5 SCPI System command", "SYSTEM:SLA?\r\n","1",&ctest);
+
+TEST_SCPI_INPUT("SYST:OUT OFF \r\n"); 
+test_cmd_out("Test 8.6 SCPI System command", "SYSTEM:OUT?\r\n","0",&ctest);
+TEST_SCPI_INPUT("SYST:OUT ON \r\n"); 
+test_cmd_out("Test 8.7 SCPI System command", "SYSTEM:OUT?\r\n","1",&ctest);
+
+// Command to read status byte of each salves (1,2,3)
+test_cmd_out("Test 8.8 SCPI System command", "SYSTEM:SLA:STA?\r\n","\"Slave1: 0x0, Slave2: 0x0, Slave3: 0x0\"",&ctest);
+
+// ANALOG Command Validation
+TEST_SCPI_INPUT("DIG:DIR:PORT0 #HFF \r\n"); // set direction port 0 ouput
+TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n"); // set direction port 1 input
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n");  // set port 0 to 00
+TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP8 1 \r\n");  // set io to output
+TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP9 1 \r\n"); // set io to output
+TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP8 1 \r\n");  // set io to output
+TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP9 1 \r\n"); // set io to output
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 0 \r\n"); 
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  0 \r\n"); 
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  0 \r\n");  
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP9  0 \r\n"); 
+TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP18 1 \r\n");  // set to output
+TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP19 0 \r\n");  // set to input
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \r\n");  // FLAG output
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC1 \r\n");
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC2 \r\n");
+TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \r\n");
+
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H40 \r\n");  // Close K2
+TEST_SCPI_INPUT("ANA:DAC:VOLT 3 \r\n");  // Set ouput to 3v
+sleep_ms(250);
+test_cmd_result("Test 9.0: Dac output @ 3Vdc, read ADC0","ANA:ADC0:VOLT? \r\n",3.0,"V", 0.4, 0.2, &ctest);
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  1\r\n"); // Close K13
+test_cmd_result("Test 9.1: Dac output @ 3Vdc, read ADC1","ANA:ADC1:VOLT? \r\n",3.0,"V", 0.4, 0.2, &ctest);
+TEST_SCPI_INPUT("ANA:DAC:SAVE  2.5 \r\n");  // Validated with Multimeter after power OFF-ON
+
+test_cmd_result("Test 9.2: ADC, read VSYS","ANA:ADC:Vsys? \r\n",5.0,"V", 0.3, 0.4, &ctest);
+test_cmd_result("Test 9.3: ADC, read TEMP","ANA:ADC:Temp? \r\n",50,"V", 30, 20, &ctest);
+
+TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n");  // Open K2
+test_cmd_result("Test 9.4: PWR, read Bus Volt ","ANA:PWR:Volt? \r\n",5,"V", 0.3, 0.2, &ctest);
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  1 \r\n");  // Close K4
+test_cmd_result("Test 9.5: PWR, read Bus Volt ","ANA:PWR:Volt? \r\n",0.1,"V", 0.1, 0.2, &ctest);
+test_cmd_result("Test 9.6: PWR, read Shunt mV ","ANA:PWR:Shunt? \r\n",50,"V", 10, 10, &ctest);
+test_cmd_result("Test 9.7: PWR, read Pmw","ANA:PWR:Pmw? \r\n",500,"V",200, 200, &ctest);
+test_cmd_result("Test 9.8: PWR, read ImA ","ANA:PWR:Ima? \r\n",500,"V", 100, 100, &ctest);
+TEST_SCPI_INPUT("ANA:PWR:CAL 500,1000\r\n"); // False Calibration to have big difference
+test_cmd_result("Test 9.9: PWR, read ImA ","ANA:PWR:Ima? \r\n",1000,"V", 200, 200, &ctest);
+TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \r\n");  // Open K4
+
+
+
+// EEprom  Command Check
+
+test_cmd_out("Test 10.0 SCPI EEprom command", "CFG:Read:EEPROM:STR?  'mod_option'\r\n","DAC,PWR",&ctest);
+TEST_SCPI_INPUT("CFG:Write:Eeprom:STR 'mod_option,testmo'\r\n");
+test_cmd_out("Test 10.1 SCPI EEprom command", "CFG:Read:EEPROM:STR? 'mod_option'\r\n","TESTMO",&ctest);
+TEST_SCPI_INPUT("CFG:Write:Eeprom:Default \r\n");
+test_cmd_out("Test 10.2 SCPI EEprom command", "CFG:Read:EEPROM:STR?  'mod_option'\r\n","DAC,PWR",&ctest);
+TEST_SCPI_INPUT("CFG:Read:EEPROM:Full?\r\n");  // No test, just check result returned
+
+test_cmd_out("Test 11.0 SCPI Error command", "SYSTem:ERRor?\r\n","0,\"No error\"",&ctest);
+
+
+/** PRINT FINAL REPORT AFTER TEST COMPLETION*/
+fprintf(stdout, "\n\n\t SCPI COMMAND CHECK COMPLETED REPORT \n\n");
+fprintf(stdout, "\t Number of Tests performed:\t%d\r\n", ctest.total);
+fprintf(stdout, "\t Number of Tests PASS:\t\t%d\r\n", ctest.good);
+fprintf(stdout, "\t Number of Tests FAIL:\t\t%d\r\n", ctest.bad);
+fprintf(stdout, "\t Number of Tests ERROR:\t%d\r\n", ctest.error);
 
 
-TEST_SCPI_INPUT("*IDN?\r\n"); 
-TEST_SCPI_INPUT("*OPC?\r\n"); 
-TEST_SCPI_INPUT("*WAI\r\n");      // do nothing
-//TEST_SCPI_INPUT("*RST\r\n");   // reset cause chrash on debug mode
-TEST_SCPI_INPUT("SYST:VERS?\r\n");
-
-TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  1 \r\n"); // Close K4 PS1,VM1
-power_test(I,500,15,15);
-
-ina219SetCalibration_16V_500mA();
-TEST_SCPI_INPUT("ANA:PWR:Cal 547,500\r\n");
-
-
-TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
-ina219SetCalibration_16V_200mA();
-TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
-
-ina219SetCalibration_32V_1A();
-TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
-ina219SetCalibration_32V_2A();
-TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
-
-//test_ina219();
-TEST_SCPI_INPUT("ANA:PWR:VOLT? \r\n");
-TEST_SCPI_INPUT("ANA:PWR:S? \r\n");
-TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
-TEST_SCPI_INPUT("ANA:PWR:P? \r\n");
-
-TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  0 \r\n"); // Open K4 PS1,VM1
-
-TEST_SCPI_INPUT("ANA:PWR:I? \r\n");
-TEST_SCPI_INPUT("ANA:PWR:S? \r\n");
-
-//TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n");  // Open relay
-
-TEST_SCPI_INPUT("SYSTEM:OUTput ON \n");
-TEST_SCPI_INPUT("*ESR? \r\n");
-TEST_SCPI_INPUT("SYSTEM:OUTput OFF\n");
-TEST_SCPI_INPUT("*ESR? \r\n");
-
-TEST_SCPI_INPUT("SYSTEM:SLA OFF \n");
-TEST_SCPI_INPUT("*ESR? \r\n");
-TEST_SCPI_INPUT("SYSTEM:SLA ON\n");
-TEST_SCPI_INPUT("*ESR? \r\n");
-
-TEST_SCPI_INPUT("SYSTem:VERS?\r\n");
-TEST_SCPI_INPUT("STATus:QUEStionable:ENABle?\n"); 
-TEST_SCPI_INPUT("*STB? \r\n"); 
-
-TEST_SCPI_INPUT("STATus:QUEStionable:CONDition?\n");
-TEST_SCPI_INPUT("STATus:QUEStionable:ENABle 14 \n"); 
-TEST_SCPI_INPUT("STATus:OPER:ENABle 3 \n");  
-TEST_SCPI_INPUT("STATus:OPER:CONDition?\n");
-
-TEST_SCPI_INPUT("*STB? \r\n");
-TEST_SCPI_INPUT("STATus:QUEStionable:ENABle?\n");   
-TEST_SCPI_INPUT("STATus:QUEStionable:CONDition?\n");
-TEST_SCPI_INPUT("*STB? \r\n");
-TEST_SCPI_INPUT("STATus:QUEStionable:ENABle?\n"); 
-TEST_SCPI_INPUT("STATus:QUEStionable:Event?\n"); // Read the registerand clear register
-TEST_SCPI_INPUT("STATus:QUEStionable:CONDition?\n");
-TEST_SCPI_INPUT("STATus:QUEStionable:Event?\n"); 
-TEST_SCPI_INPUT("STATus:OPER:Event?\n"); 
-TEST_SCPI_INPUT("*STB? \r\n");
-TEST_SCPI_INPUT("*OPC? \r\n");
-TEST_SCPI_INPUT("*ESE? \r\n");
-TEST_SCPI_INPUT("*ESE 1 \r\n");
-
-TEST_SCPI_INPUT("*ESE? \r\n");
-TEST_SCPI_INPUT("*OPC \r\n");
-TEST_SCPI_INPUT("*STB? \r\n");
-TEST_SCPI_INPUT("*SRE? \r\n");
-TEST_SCPI_INPUT("*SRE 32 \r\n");
-TEST_SCPI_INPUT("*SRE? \r\n");
-TEST_SCPI_INPUT("*STB? \r\n");
-TEST_SCPI_INPUT("*OPC? \r\n");
-
-
-
-TEST_SCPI_INPUT("STATus:QUEStionable:ENABle?\n");
-TEST_SCPI_INPUT("*STB? \r\n");
-TEST_SCPI_INPUT("STATus:QUEStionable:Event?\n");
-TEST_SCPI_INPUT("STATus:QUEStionable:CONDition?\n");
-TEST_SCPI_INPUT("STATus:QUEStionable:ENABle?\n");
-TEST_SCPI_INPUT("*STB? \r\n");
-//SCPI_RegSet(&scpi_context, SCPI_REG_QUES, 1);
-//TEST_SCPI_INPUT("*STB? \r\n");
-   // TEST_SCPI_INPUT("TEST:CHANnellist (@1!2:3!4,5!6)\r\n");
-   
- //   send_master (PICO_PORT_ADDRESS,01,0x00); // test command 
-    //send_master (PICO_PORT_ADDRESS,02,0x00); // test command 
-
-
-   //TEST_SCPI_INPUT("*IDN?\r\n"); 
-
-   //TEST_SCPI_INPUT("*ESE 1\r\n"); 
-   //TEST_SCPI_INPUT("*ESE?\r\n"); 
-
-  // TEST_SCPI_INPUT("*CLS\r\n"); 
-  // TEST_SCPI_INPUT("*RST\r\n"); 
-
- // TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n"); // set direction port 1 = input
- // TEST_SCPI_INPUT("DIG:DIR:PORT0 #HFF \r\n"); // set direction port 0 = output
- // TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n");
- // TEST_SCPI_INPUT("DIG:OUT:PORT0 #H55 \r\n"); 
-  //TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n");
- // TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n"); 
- // TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n");
- 
- // TEST_SCPI_INPUT("SYST:LED:ERR ON \r\n");
- // TEST_SCPI_INPUT("SYST:LED:ERR OFF \r\n");
- // TEST_SCPI_INPUT("SYST:VERS? \r\n");
-
-// TEST_SCPI_INPUT("SYST:DEV:VERS? \r\n");
-//   TEST_SCPI_INPUT("SYST:BEEP \r\n");
-
-//TEST_SCPI_INPUT("DIG:DIR:PORT1:BIT1 0\r\n"); 
-//TEST_SCPI_INPUT("ROUT:OPEN (@70)\r\n"); 
-//TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR5 \r\n");
-
-//TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR1,LPR2,HPR1,SSR1 \r\n");
-//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSR1 \r\n");
-//TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1,LPR2,HPR1,SSR1 \r\n");
-//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSRD1 \r\n");
-//TEST_SCPI_INPUT("ROUT:CLOSE:PWR LPR2,HPR1 \r\n");
-//TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSR1 \r\n");
-
- // TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port 1
- // TEST_SCPI_INPUT("GPIO:GETP:DEV5:GP22?   \r\n");  //Set Gp22 as output
-  //TEST_SCPI_INPUT("GPIO:SETP:DEV0:GP22  #H06 \r\n");  //Set Gp22 as output
- // TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22  0 \r\n");  //Set Gp22 as output
- // TEST_SCPI_INPUT("GPIO:GETP:DEV1:GP22?   \r\n");  //Set Gp22 as output
- // TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP22  0 \r\n");  //Set Gp22 as output
- // TEST_SCPI_INPUT("GPIO:GETP:DEV0:GP22?   \r\n");  //Set Gp22 as output
-  //TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP22  1 \r\n");  //Set Gp22 as output
-  //TEST_SCPI_INPUT("GPIO:IN:DEV0:GP22?   \r\n");  //Set Gp22 as output
-  //  TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP22  0 \r\n");  //Set Gp22 as output
-  //TEST_SCPI_INPUT("GPIO:IN:DEV0:GP22?   \r\n");  //Set Gp22 as output
-
-  // TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22  1 \r\n");    // MESSAGE rec;/Set Gp22 as output
-  // TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP22?  \r\n");  //Get Gp22 direction
-  // TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP22  1 \r\n");  //Set Gp22 as output
-  // TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP22?  \r\n");  //Get Gp22 direction
-
-  // TEST_SCPI_INPUT("GPIO:DIR:DEV2:GP22  1 \r\n");  //Set Gp22 as output
-  // TEST_SCPI_INPUT("GPIO:DIR:DEV3:GP22  1 \r\n");  //Set Gp22 as output
-
-   //TEST_SCPI_INPUT("DIG:DIR:PORT1 #HFF \r\n"); // set direction port 1
-   //TEST_SCPI_INPUT("DIG:OUT:PORT1 #H55 \r\n");  
-   //TEST_SCPI_INPUT("DIG:OUT:PORT1 #HAA \r\n"); 
-
-   //TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n"); 
-   //TEST_SCPI_INPUT("DIG:IN:PORT1? \r\n"); 
-
-  // TEST_SCPI_INPUT("DIG:DIR:PORT0 #HAA \r\n"); 
-  // TEST_SCPI_INPUT("DIG:DIR:PORT0? \r\n"); 
-  // TEST_SCPI_INPUT("DIG:DIR:PORT1? \r\n"); 
-
-   //TEST_SCPI_INPUT("DIG:DIR:PORT0 #Hf0 \r\n"); 
-   //TEST_SCPI_INPUT("DIG:DIR:PORT0:BIT1? \r\n"); 
-   //TEST_SCPI_INPUT("DIG:DIR:PORT0:BIT5? \r\n"); 
-  // MESSAGE rec;
-   //TEST_SCPI_INPUT("DIG:DIR:PORT1 #Hff \r\n");
-  // TEST_SCPI_INPUT("DIG:OUT:PORT1:BIT0 1 \r\n");
-   //TEST_SCPI_INPUT("DIG:OUT:PORT1:BIT0 0 \r\n");
-
-  // TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n");
-  // TEST_SCPI_INPUT("DIG:IN:PORT1:BIT0? \r\n");
-  // TEST_SCPI_INPUT("DIG:IN:PORT1:BIT4? \r\n");
-
-
-  // TEST_SCPI_INPUT("DIG:OUT:PORT1 #HAA \r\n"); 
-
-   //TEST_SCPI_INPUT("DIG:DIR:PORT1:BIT1 0\r\n"); 
-
-  //TEST_SCPI_INPUT("ROUT:CLOSE (@10)\r\n");  // test com i2c #22
-  //TEST_SCPI_INPUT("ROUT:CLOSE (@30)\r\n");  // test com i2c #23
-
-
-  //TEST_SCPI_INPUT("SYST:ERR:COUNT?\r\n");
-  //TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
-  //TEST_SCPI_INPUT("SYST:ERR?\r\n");
-
-// test activation relay 
-/*
-TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP8 1 \r\n");  //Get Gp22 direction
-TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP9 1 \r\n");  //Get Gp22 direction
-
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8  1 \r\n");  //Set Gp22 as output
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  1 \r\n");  //Set Gp22 as output
-
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8  0 \r\n");  //Set Gp22 as output
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  0 \r\n");  
-
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8  1 \r\n");  //Set Gp22 as output
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  1 \r\n");  //Set Gp22 as output
- */
-   
-
-
-   //TEST_SCPI_INPUT("ROUT:OPEN (@30)\r\n"); // error -11 if Pico #23 not present
-   //TEST_SCPI_INPUT("ROUT:OPEN (@10!30)\r\n"); // error -12  2-dimension list
-  // TEST_SCPI_INPUT("ROUT:OPEN (@10:18)\r\n"); // error -13
-  //TEST_SCPI_INPUT("ROUT:CLOSE (@100:102)\r\n");
-
-
-  // TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK3\r\n"); 
-
-   //TEST_SCPI_INPUT("SYST:ERR:COUNT?\r\n");
-   //TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
-   //TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
-
-   //TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK1,BANK2\r\n"); 
- //  TEST_SCPI_INPUT("ROUT:SE:STAT? BANK1,BANK2 \r\n");
- //  TEST_SCPI_INPUT("ROUT:CLOSE (@100,208)\r\n");
-  // TEST_SCPI_INPUT("ROUT:SE:STAT? BANK1,BANK2 \r\n");
-
-  //TEST_SCPI_INPUT("ROUT:CLOSE (@100:105)\r\n");
-  //TEST_SCPI_INPUT("ROUT:BANK:STAT? BANK1,BANK2 \r\n");
-  //TEST_SCPI_INPUT("ROUT:SE:STAT? BANK1,BANK2 \r\n");
-  //TEST_SCPI_INPUT("ROUT:OPEN (@10,17)\r\n"); 
-
-  //TEST_SCPI_INPUT("ROUT:BANK:STAT? BANK1 \r\n");
-  
-
-  // TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK2\r\n");
-//   TEST_SCPI_INPUT("ROUT:CHAN:STAT? (@20:27)\r\n");
-//   TEST_SCPI_INPUT("ROUT:CLOSE (@20:27)\r\n");
-   //TEST_SCPI_INPUT("ROUT:CLOSE (@100,102)\r\n");
-   //TEST_SCPI_INPUT("ROUT:CLOSE (@100,102,115,202,215)\r\n");
-   //TEST_SCPI_INPUT("ROUT:CHAN:STAT? (@10:17)\r\n");
-   //TEST_SCPI_INPUT("ROUT:CHAN:STAT? (@20:27)\r\n"); 
-   //TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK1,BANK2\r\n"); 
-   //TEST_SCPI_INPUT("ROUT:CHAN:STAT? (@10:17)\r\n");
-   //TEST_SCPI_INPUT("ROUT:CHAN:STAT? (@20:27)\r\n"); 
-
-   //TEST_SCPI_INPUT("ROUT:OPEN (@200:207)\r\n"); 
-   //TEST_SCPI_INPUT("ROUT:CHAN:STAT? (@200:207)\r\n"); 
-   //TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
-   //TEST_SCPI_INPUT("SYST:ERR:COUNT?\r\n");
-   //TEST_SCPI_INPUT("ROUT:OPEN:ALL BANK2\r\n"); 
-   //TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
-   //TEST_SCPI_INPUT("ROUT:OPEN:ALL \r\n");
-   //TEST_SCPI_INPUT("SYST:ERR?\r\n"); 
-   //TEST_SCPI_INPUT("ROUT:CLOSE (@104,106)\r\n"); 
-   
-   //TEST_SCPI_INPUT("ROUT:CLOSE:EXCL (@208)\r\n"); 
-   //TEST_SCPI_INPUT("ROUT:OPEN (@104)\r\n"); 
-
-
-   // TEST_SCPI_INPUT("TEST:CHANnellist (@100:105)\r\n");
-   // TEST_SCPI_INPUT("TEST:CHANnellist:EXCL (@120:125)\r\n");
-//Register device
-
-
-//cfg_eeprom_write_default();
-//cfg_eeprom_read_full();
-//TEST_SCPI_INPUT("CFG:Write:E:STR 'partNUMBER, 500-1112-060'\r\n");
-//TEST_SCPI_INPUT("CFG:Write:EEPROM:STR  'partnumber'\r\n");
-//TEST_SCPI_INPUT("CFG:Write:EEPROM:STR  \r\n");
-
-//TEST_SCPI_INPUT("CFG:Write:EEPROM:DEFAULT\r\n");
-//TEST_SCPI_INPUT("CFG:Read:EEPROM:Full?\r\n");
-
-//TEST_SCPI_INPUT("CFG:Read:E:STR? 'partnumber'\r\n");
-//TEST_SCPI_INPUT("CFG:Read:E:STR? 'serialNUMBER'\r\n");
-//TEST_SCPI_INPUT("CFG:Read:E:STR? 'MOD_OPTION'\r\n");
-
-//TEST_SCPI_INPUT("CFG:Write:Eeprom:STR 'com_ser_speed,115200'\r\n");
-TEST_SCPI_INPUT("ANA:ADC:Vsys? \r\n");  //
-TEST_SCPI_INPUT("ANA:ADC:Temp? \r\n");  //
-TEST_SCPI_INPUT("SYSTem:ERRor:COUNt?\r\n");
-TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
-TEST_SCPI_INPUT("CFG:Write:Eeprom:STR 'com_ser_speed,1a5200'\r\n");  // check error
-
-TEST_SCPI_INPUT("SYSTem:ERRor:COUNt?\r\n");
-TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
-TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
-
-
-fprintf(stdout,"STB: ");
-TEST_SCPI_INPUT("*STB? \r\n");
-fprintf(stdout,"\n ESE: ");
-TEST_SCPI_INPUT("*ESE? \r\n");
-fprintf(stdout,"\n ESR: ");
-TEST_SCPI_INPUT("*ESR? \r\n");
-fprintf(stdout,"\n OPC: ");
-TEST_SCPI_INPUT("*OPC? \r\n");
-fprintf(stdout,"\n SRE: ");
-TEST_SCPI_INPUT("*SRE? \r\n");
-
-
-TEST_SCPI_INPUT("CFG:Write:Eeprom:STR 'com_ser_speed,1a5200'\r\n");  // check error
-
-//TEST_SCPI_INPUT("CFG:Read:E:STR? 'com_ser_speed'\r\n"); // check error
-
-fprintf(stdout,"STB: ");
-TEST_SCPI_INPUT("*STB? \r\n");
-fprintf(stdout,"\n ESE: ");
-TEST_SCPI_INPUT("*ESE? \r\n");
-fprintf(stdout,"\n ESR: ");
-TEST_SCPI_INPUT("*ESR? \r\n");
-fprintf(stdout,"\n OPC: ");
-TEST_SCPI_INPUT("*OPC? \r\n");
-fprintf(stdout,"\n SRE: ");
-TEST_SCPI_INPUT("*SRE? \r\n");
-
-TEST_SCPI_INPUT("SYSTem:ERRor:COUNt?\r\n");
-TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
-TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
-TEST_SCPI_INPUT("SYSTem:ERRor?\r\n");
-
-
-
-fprintf(stdout,"STB: ");
-TEST_SCPI_INPUT("*STB? \r\n");
-fprintf(stdout,"\n ESE: ");
-TEST_SCPI_INPUT("*ESE? \r\n");
-fprintf(stdout,"\n ESR: ");
-TEST_SCPI_INPUT("*ESR? \r\n");
-fprintf(stdout,"\n OPC: ");
-TEST_SCPI_INPUT("*OPC? \r\n");
-fprintf(stdout,"\n SRE: ");
-TEST_SCPI_INPUT("*SRE? \r\n");
-
-fprintf(stdout,"\r\n ------> PS6 to VM6 <-------\r\n");
-TEST_SCPI_INPUT("DIG:OUT:PORT0 #H52 \r\n");  // Close K11,K7,K4,K9,K16,K15
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8  1 \r\n");  // Close K15
-TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  1 \r\n");  // Close K16
-TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2 \r\n");  // Close K11
-adc_test(0,2.5,5,5);  // Test CH0= 5V from PWR_5V source
-TEST_SCPI_INPUT("DIG:OUT:PORT0 #H12 \r\n");  // Open K7
-adc_test(0,0.1,25,25);  // Test CH0= 5V from 5V_PWR source
 
 }
 
 /*! @brief - Function not used during normal execution
 *    The function is used to validate the hardware after parts has been soldered
-*    and pico has firware programmed      
+*    and pico has firmware programmed      
 *
 *   Normally run step by step with debugger
 *   and hardware verified by visual check or by measuring voltage

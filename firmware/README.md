@@ -24,7 +24,7 @@ However, there are two caveats:
 
 ## Development
 
-* [`fts_scpi.c`](fts_scpi.c) is the main source file for the firmware.
+* [`master.c`](master.c) is the main source file for the firmware.
 * [`CMakeLists.txt`](CMakeLists.txt) contains build instructions for CMake, including how to build the SCPI library.
 * [`pico_sdk_import.cmake`](pico_sdk_import.cmake) was (as usual) copied verbatim from the Pico SDK and allows CMake to interact with the SDK’s functionality.
 
@@ -62,13 +62,13 @@ STATus:OPERation:ENABle?
 
 ROUTe:CLOSe (@<ch_list>)  
 ROUTe:CLOSe:EXCLusive (@<ch_list>) 
-ROUTe:CLOSe:Se {BANK1-BANK4}
+ROUTe:CLOSe:Rev {BANK1-BANK4}
 ROUTe:OPEN (@<ch_list>)
 ROUTe:OPEN:Se  {BANK1-BANK4}
 ROUTE:OPEN:ALL {BANK1-BANK4|ALL}
 ROUTE:CHANnel:STATe? (@<ch_list>)
 ROUTE:BANK:STATe? {BANK1-BANK4}
-ROUTE:SE:STATe? {BANK1-BANK4}
+ROUTE:REV:STATe? {BANK1-BANK4}
 
 ROUTE:CLOSe:PWR {LPR1|HPR1|HPR2|SSR1}
 ROUTE:OPEN:PWR {LPR1|HPR1|HPR2|SSR1}
@@ -150,7 +150,7 @@ ROUTe:CLOSe (@100,108)          --> close relay 100 and 108
 ROUTe:CLOSe (@100:108)          --> close relay 100,102,104,106, and 108
 ROUTe:OPEN:ALL BANK1,BANK2      --> open relay  on bank1 and bank2
 ROUTe:OPEN:ALL ALL              --> open relay  on all banks
-ROUTe:SE:STATe? BANK1           --> read which side of diff relay we are connected (0 = H or 1 = L)
+ROUTe:REV:STATe? BANK1          --> read which side of diff relay we are connected (0 = H or 1 = L)
 ROUTe:CHAN:STATe? (@100)        --> read relay state ( 0 = Open  or 1 = close)
 
 DIGital:DIRection:PORT0 #HFF    --> set the 8 bit of port0 to output  ( 0 = in, 1 = out)

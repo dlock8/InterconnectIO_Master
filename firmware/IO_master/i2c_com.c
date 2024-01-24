@@ -47,14 +47,14 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback)  
 
         return false; // set flag to indicate error (error number on rback)
     }
-    fprintf(stdout,"MAS: Write at register 0x%02x: %02d\n", buf[0], buf[1]);
+    fprintf(stdout,"MAS: Write at register %d: %02d\n", buf[0], buf[1]);
 
    //read register value and return to caller on pointer rback    
     uint8_t ird[2];
     i2c_write_blocking(i2c0, i2c_add, buf, 1, false);
     i2c_read_blocking(i2c0, i2c_add, ird, buflgth-1, false);
     
-    fprintf(stdout,"MAS:Read Register 0x%02x = %d \r\n", cmd,ird[0]);
+    fprintf(stdout,"MAS:Read Register %d = %d \r\n", cmd,ird[0]);
     *rback = (uint8_t) ird[0];  // save readback value
     return true;     
 }
@@ -271,14 +271,24 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                      answer[i] = rdata;
                      break;
 
+                case SECLOSE:
+                     smf= send_master(i2c_add, CLOSE_RELAY, ser,&rdata);
+                     if (!smf) { answer[0] = rdata; return false;}
+                     fprintf(stdout,"MAS: CLOSE Relay SE on  slave 0x%02x using gpio: %02d\n",i2c_add, ser);
+                     break;
                 
                 case PWCLOSE:
                 case OCCLOSE:
-                     //gpio_put(gpio,1);  // Close Gpio 
                      smf= send_master(i2c_add, CLOSE_RELAY, gpio,&rdata); // read required relay
                      if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      fprintf(stdout,"MAS: CLOSE Device on slave 0x%02x using gpio: %02d\n",i2c_add, gpio);
                      break;   
+
+                case SEOPEN:
+                     smf= send_master(i2c_add, OPEN_RELAY, ser,&rdata);
+                     if (!smf) { answer[0] = rdata; return false;}
+                     fprintf(stdout,"MAS: OPEN Relay SE on  slave 0x%02x using gpio: %02d\n",i2c_add, ser);
+                     break;
 
                 case PWOPEN:
                 case OCOPEN:
@@ -428,8 +438,8 @@ bool  gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, 
             }
           
             if (slave == PICO_MASTER_ADDRESS) {
-                gpio_set_dir(gpio,1);  // send direct command to set direction = output
-                fprintf(stdout,"Cmd %02d, Set Dir Out Gpio: %02d \r\n ", command, gpio);
+                gpio_set_dir(gpio,value);  // send direct command to set direction
+                fprintf(stdout,"Cmd %02d, Set Dir IN(0) OUT(1): %d  Gpio: %02d \r\n ",command, value,gpio);
             } else {
                 smf= send_master(slave, command, gpio,answer); // send i2c command to slave
                 if (!smf) { return false;}  // Error return
@@ -487,7 +497,7 @@ bool  gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, 
                 hw_write_masked(&padsbank0_hw ->io[gpio],value,maskvalue); // Set Pad state
                 fprintf(stdout,"Cmd %02d, Set Pad State to Gpio: %02d ,State: 0x%01x \r\n",command,  gpio, value);
             } else { // 2 commands required to set PAD value
-                smf= send_master(slave, GP_PAD_VALUE, gpio,answer); // send i2c command to slave
+                smf= send_master(slave, GP_PAD_VALUE, value,answer); // send i2c command to slave
                 if (!smf) { return false;}  // Error return
                 smf= send_master(slave, command, gpio,answer); // send i2c command to slave
                 if (!smf) { return false;}  // Error return
