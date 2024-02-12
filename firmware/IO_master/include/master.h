@@ -14,7 +14,7 @@
 extern "C" {
 #endif
 
-#define UART_ID uart0
+#define UART_ID   uart1
 #define BAUD_RATE 115200
 #define DATA_BITS 8
 #define STOP_BITS 1
@@ -22,9 +22,20 @@ extern "C" {
 
 // We are using pins 0 and 1, but see the GPIO function select table in the
 // datasheet for information on which other pins can be used.
-#define UART_TX_PIN 0
-#define UART_RX_PIN 1
+#define UART_TX_PIN 8
+#define UART_RX_PIN 9
 
+// Define default value for stdio. 
+// on development the result of printf is send to USB and serial port in same time
+// On normal operation, the serial port is used for SCPI com only 
+#undef PICO_DEFAULT_UART_RX_PIN
+#define PICO_DEFAULT_UART_RX_PIN 9
+
+#undef PICO_DEFAULT_UART_TX_PIN
+#define PICO_DEFAULT_UART_TX_PIN 8
+
+#undef PICO_DEFAULT_UART_BAUD_RATE
+#define PICO_DEFAULT_UART_BAUD_RATE  115200
 
 // EEprom parameter supported by SCPI command
 // Add new parameter below using #define

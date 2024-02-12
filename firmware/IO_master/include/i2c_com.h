@@ -12,16 +12,24 @@
 extern "C" {
 #endif
 
+#include "hardware/i2c.h"
+
 #define PICO_MASTER_ADDRESS 0       // Pico Master
 #define PICO_PORT_ADDRESS   0x21    // Pico Slave #1
 #define PICO_RELAY1_ADDRESS 0x22    // Pico Slave #2
 #define PICO_RELAY2_ADDRESS 0x23    // Pico Slave #3
+#define PICO_SELFTEST_ADDRESS 0x20  // Pico Selftest
+
 
 #define REG_STATUS 100  // Register used to report Status
 
 #define I2C_BAUDRATE 100000   // 100k
 #define I2C_MASTER_SDA_PIN  20 // GPIO used to I2C SDA
 #define I2C_MASTER_SCL_PIN  21 // GPIO used to I2C SCL
+
+#define I2C_EXTERN_SDA_PIN  6 // GPIO used to I2C SDA
+#define I2C_EXTERN_SCL_PIN  7 // GPIO used to I2C SCL
+
 
 
 // Array of relay index to pico gpio assigned to control the relay actuation
@@ -81,11 +89,12 @@ extern "C" {
 
 void setup_master();
 
-bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback);
+bool send_master(i2c_inst_t* i2c,uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback);
 bool relay_execute(uint16_t *list,uint8_t action, uint16_t *answer);
 bool digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, uint16_t *answer);
 bool gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, uint16_t *answer);
 bool system_execute(uint8_t action, uint16_t *answer);
+void setup_i2c_extern(void);
 
 
 #endif // 

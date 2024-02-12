@@ -1,13 +1,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "pico/stdlib.h"
+#include "pico/binary_info.h"
 #include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
 #include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
 #include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
+#include "pico_lib2/src/dev/dev_ds2431/dev_ds2431.h"
 #include "pico_lib2/src/sys/include/sys_adc.h"
+#include "hardware/i2c.h"
 #include "include/functadv.h"
 #include "include/fts_scpi.h"
+#include "include/i2c_com.h"
 #include "include/test.h"
+#include "hardware/uart.h"
+#include "hardware/spi.h"
+
+
 
 
 
@@ -207,8 +216,8 @@ bool adc_test(uint8_t channel, float expect_value, float percentage_lo, float pe
 *   @return 
 */
 static void output_buffer_clear(void) {
-    output_buffer[0] = '\0';
-    output_buffer_pos = 0;
+    out_buffer[0] = '\0';
+    out_buffer_pos = 0;
 }
 
 /*! @brief - ChatGPt function to remove CR and LF from a strng
@@ -281,8 +290,8 @@ void test_cmd_result(const char *title, const char *cmd, float expect_value, con
    SCPI_Input(&scpi_context, cmd, strlen(cmd));  /** Send command to SCPI engine*/
    // transform string received from command to number
    do { \
-        if (sscanf((output_buffer), "%f", &(readv)) != 1) { 
-            fprintf(stderr, "\t ERROR converting buffer to float, rvalue: %s\n", output_buffer);
+        if (sscanf((out_buffer), "%f", &(readv)) != 1) { 
+            fprintf(stderr, "\t ERROR converting buffer to float, rvalue: %s\n", out_buffer);
             (readv) = -99.99; 
             counter->error++;
         } 
@@ -320,19 +329,19 @@ void test_cmd_out(const char *title, const char *cmd,char *expected_result, stru
    counter->total++; // increment counter
    output_buffer_clear(); // clear result before capture output
    SCPI_Input(&scpi_context, cmd, strlen(cmd));  /** Send command to SCPI engine*/
-   removeCRLF(output_buffer); // remove \r\n from string before comparaison
+   removeCRLF(out_buffer); // remove \r\n from string before comparaison
 
   // validate if string are identical, raise flag if not identical
    do {
-        if (strcmp((expected_result), (output_buffer)) != 0) { valid = false; } 
+        if (strcmp((expected_result), (out_buffer)) != 0) { valid = false; } 
     } while (0);
 
   // report result of the comparaison
    if (!valid) {   
-          fprintf(stdout,"%s  ---> FAIL  Expected: %s, Read: %s\n",title,expected_result,output_buffer);
+          fprintf(stdout,"%s  ---> FAIL  Expected: %s, Read: %s\n",title,expected_result,out_buffer);
           counter->bad++;
     } else {
-          fprintf(stdout,"%s  ---> PASS  Read: %s\n",title,output_buffer);
+          fprintf(stdout,"%s  ---> PASS  Read: %s\n",title,out_buffer);
           counter->good++;
     }
 }
@@ -354,7 +363,7 @@ bool test_selftest() {
  char sval[40];  
 
  struct TestResult ctest = {0,0,0,0}; // reset counter structure
- output_buffer_pos =0;
+ out_buffer_pos =0;
 
 #define TEST_SCPI_INPUT(cmd)  result = SCPI_Input(&scpi_context, cmd, strlen(cmd))
 
@@ -375,12 +384,12 @@ bool test_selftest() {
  TEST_SCPI_INPUT("DIG:DIR:PORT0 #HFF \r\n"); // set direction port 0 ouput
  TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n"); // set direction port 1 input
  TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n");  // set port 0 to 00
- TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP8 1 \r\n");  // set io to output
- TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP9 1 \r\n"); // set io to output
+ TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP0 1 \r\n");  // set io to output
+ TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP1 1 \r\n"); // set io to output
  TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP8 1 \r\n");  // set io to output
  TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP9 1 \r\n"); // set io to output
- TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 0 \r\n"); 
- TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  0 \r\n"); 
+ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP0 0 \r\n"); 
+ TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP1  0 \r\n"); 
  TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  0 \r\n");  
  TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP9  0 \r\n"); 
  TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP18 1 \r\n");  // set to output
@@ -468,7 +477,7 @@ test_cmd_result("Test 5.2: PWR Module check current on 10 ohm(R2), read I(mA):",
 
 // Perform Calibration of the PWR module INA219
 float readv;  // contains the current value read from last command 
-sscanf((output_buffer), "%f", &(readv));  // transform string in output_buffer to float number
+sscanf((out_buffer), "%f", &(readv));  // transform string in output_buffer to float number
 sprintf(sval,"ANAlog:PWR:Cal %.2f, 500\r\n",readv);  // build calibration string to be used as command
 TEST_SCPI_INPUT(sval);  // send command
 test_cmd_result("Test 5.3: PWR Module check current on 10 ohm(R2), read I(mA):","ANA:PWR:I? \r\n",500,"mA", 5, 5, &ctest);
@@ -477,7 +486,7 @@ TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \r\n");  // Open K4
 
 
 TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  1 \r\n");  // Close K4
-//TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 1 \r\n");  // Close K15
+//TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP0 1 \r\n");  // Close K15
 //TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP19  1 \r\n");  // Close K16 (VM5)
 TEST_SCPI_INPUT("DIG:OUT:PORT0 #H32 \r\n");  // Close K7,K15,K16 (VM5)
 TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2 \r\n");  // Close K11
@@ -752,7 +761,7 @@ int result;
 int i = 0;
 
 struct TestResult ctest = {0,0,0,0}; // reset counter structure
-output_buffer_pos =0;
+out_buffer_pos =0;
 
 TEST_SCPI_INPUT("SYST:OUT ON\r\n");        // Power selftest board
 
@@ -999,12 +1008,12 @@ test_cmd_out("Test 8.8 SCPI System command", "SYSTEM:SLA:STA?\r\n","\"Slave1: 0x
 TEST_SCPI_INPUT("DIG:DIR:PORT0 #HFF \r\n"); // set direction port 0 ouput
 TEST_SCPI_INPUT("DIG:DIR:PORT1 #H00 \r\n"); // set direction port 1 input
 TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \r\n");  // set port 0 to 00
-TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP8 1 \r\n");  // set io to output
-TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP9 1 \r\n"); // set io to output
+TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP0 1 \r\n");  // set io to output
+TEST_SCPI_INPUT("GPIO:DIR:DEV0:GP1 1 \r\n"); // set io to output
 TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP8 1 \r\n");  // set io to output
 TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP9 1 \r\n"); // set io to output
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP8 0 \r\n"); 
-TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP9  0 \r\n"); 
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP0 0 \r\n"); 
+TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP1  0 \r\n"); 
 TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  0 \r\n");  
 TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP9  0 \r\n"); 
 TEST_SCPI_INPUT("GPIO:DIR:DEV1:GP18 1 \r\n");  // set to output
@@ -1036,7 +1045,7 @@ TEST_SCPI_INPUT("ANA:PWR:CAL 500,1000\r\n"); // False Calibration to have big di
 test_cmd_result("Test 9.9: PWR, read ImA ","ANA:PWR:Ima? \r\n",1000,"V", 200, 200, &ctest);
 TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \r\n");  // Open K4
 
-
+ina219Init(); // reset PWR device and replace good calibration data
 
 // EEprom  Command Check
 
@@ -1049,6 +1058,7 @@ TEST_SCPI_INPUT("CFG:Read:EEPROM:Full?\r\n");  // No test, just check result ret
 
 test_cmd_out("Test 11.0 SCPI Error command", "SYSTem:ERRor?\r\n","0,\"No error\"",&ctest);
 
+TEST_SCPI_INPUT("SYST:OUT OFF \r\n"); // turn OFF selftest power
 
 /** PRINT FINAL REPORT AFTER TEST COMPLETION*/
 fprintf(stdout, "\n\n\t SCPI COMMAND CHECK COMPLETED REPORT \n\n");
@@ -1116,7 +1126,7 @@ TEST_SCPI_INPUT("SYST:OUT?\r\n");
  TEST_SCPI_INPUT("ROUT:STATE:PWR? LPR1,LPR2,HPR1,SSR1 \r\n");
  TEST_SCPI_INPUT("ROUT:OPEN:PWR LPR1,LPR2,HPR1,SSR1 \r\n");
 
- scan_i2c_bus();
+ scan_i2c_bus(i2c0);
 
 // Test for Pico Slave 1
  TEST_SCPI_INPUT("DIG:DIR:PORT0 #HFF \r\n"); // set direction port 0
@@ -1251,5 +1261,226 @@ bool test_eeprom() {
   else return true;
 }
 
+ void printbuf(uint8_t buf[], size_t len) {
+  int i;
+  for (i = 0; i < len; ++i) {
+  if (i % 16 == 15)
+      printf("%02x\n", buf[i]);
+  else
+      printf("%02x ", buf[i]);
+  }
+
+  // append trailing newline if there isn't one
+  if (i % 16) {
+  putchar('\n');
+  }
+ }
 
 
+
+
+void test_design(void){
+  int result;
+  uint16_t answer[1];  // will contains the answer returned by command
+  uint16_t rdata;
+  uint8_t gpio = 22;
+  uint8_t value = 1;
+
+
+  onewiretest();
+
+    at24cx_dev_t eeprom;
+
+  TEST_SCPI_INPUT("SYST:OUT ON\r\n"); 
+  sleep_ms(300);
+
+  // test de SPI
+
+  printf("SPI master example\n");
+
+
+#define PICO_MASTER_SPI_SCK_PIN   2
+#define PICO_MASTER_SPI_TX_PIN    3
+#define PICO_MASTER_SPI_RX_PIN    4
+#define PICO_MASTER_SPI_CSN_PIN   5
+
+#define BUF_LEN 8
+
+ // Enable SPI 0 at 1 MHz and connect to GPIOs
+ spi_init(spi0, 1000 * 1000);
+ gpio_set_function(PICO_MASTER_SPI_RX_PIN, GPIO_FUNC_SPI);
+ gpio_set_function(PICO_MASTER_SPI_SCK_PIN, GPIO_FUNC_SPI);
+ gpio_set_function(PICO_MASTER_SPI_TX_PIN, GPIO_FUNC_SPI);
+ gpio_set_function(PICO_MASTER_SPI_CSN_PIN, GPIO_FUNC_SPI);
+
+ 
+ //uint8_t outb[BUF_LEN] = {0x1,0x2,0x4,0x8,0x10,0x20,0x40,0x80,0x55,0xf0,0xaa,0x0f,0x5a,0x00,0xff,0x33};
+ uint8_t outb[BUF_LEN] = {0x55,0xf0,0xaa,0x0f,0x5a,0x00,0xff,0x33};
+ 
+ uint8_t inb[BUF_LEN*2]; // size is double to get the data out of FIFO
+
+
+  
+ //send and read data
+ spi_write_read_blocking(spi_default, outb, inb, BUF_LEN);
+ sleep_ms(100); // wait to be sure of slave RX interrupt is complete
+ spi_write_read_blocking(spi_default, 0, inb, BUF_LEN*2);
+
+
+bool id = true;
+
+volatile uint8_t rev;
+// search in the receive array for the first value different than 0
+// not always at the same position depending of the sequence used
+uint8_t pos;
+
+  for (pos = 0; pos < BUF_LEN; pos++) {
+          if (inb[pos] > 0) { break;} // first character found
+  }
+
+ // Iterate through each element of the arrays, starting at first value found on the last loop
+  for (int i = 0; i < BUF_LEN; i++) {
+        // If any corresponding elements are not equal, arrays are not identical
+        rev = ~inb[i+pos];  // reverse data rceived from SPI slave
+        if (outb[i] != rev) {  // chack validity
+            fprintf(stdout,"SPI test send X to rec ~Y FAIL:  X:0x%02x, Y:0x%02x\n",outb[i],inb[i+pos]);
+            id =false;
+        } else {
+          fprintf(stdout,"SPI test send X to rec ~Y PASS:  X:0x%02x, Y:0x%02x\n",outb[i],inb[i+pos]);
+        }
+  }
+
+if (id) {
+        fprintf(stdout,"SPI The data send and received are identical.\n");
+} else {
+        fprintf(stdout,"SPI The data send and received are different.\n");
+}
+
+
+
+ printf("UART communication example\n");
+  // uart test
+  // mieux de verifier pin a pin en mode GPIO avant de faire le test de communication 
+
+  uart_init(uart0, 115200);
+  gpio_set_function(12, GPIO_FUNC_UART);
+  gpio_set_function(13, GPIO_FUNC_UART);
+  gpio_set_function(14, GPIO_FUNC_UART); // better to test as GPIO
+  gpio_set_function(15, GPIO_FUNC_UART); // better to test as GPIO
+  uart_set_format(uart0, 8, 1, UART_PARITY_NONE);
+  
+  uart_set_hw_flow(uart0,true,true);
+  uart_set_fifo_enabled(uart0,true);
+
+  uint8_t SendData[37] = "abcdefghijklmnopqrstuvwxyz0123456789\0";
+  //uint8_t SendData[] = "abcdefghijk";
+  uint8_t RecData[37];
+  static int crx = 0;
+  static int ctx = 0;
+  uint8_t ch,cb;
+  uint8_t SD[] = "Test uart1\r\n";
+
+ uart_puts(uart1,SD); // send answer to serial port
+  uart_set_fifo_enabled(uart0,false); // flush fifo
+  uart_set_fifo_enabled(uart0,true);
+
+
+ uart_write_blocking(uart0, SendData, 37);
+ uart_default_tx_wait_blocking(); // wait to complete TX
+
+ while (uart_is_readable(uart0)) {
+    RecData[ctx++] = uart_getc(uart0);
+    sleep_us(50); // let time to retrieve character;
+ } 
+
+//printf("Nbrec: %d, %s\n",ctx, RecData);
+
+// Compare the two strings (tramsmit and receive)
+if (strcmp(SendData, RecData) == 0) {
+        printf("The strings are identical.\n");
+} else {
+        printf("The strings are different.\n");
+}
+
+// end of the uart test
+
+
+// i2c is the communication channel to talk to the Pico on selftest board. if communication fail,
+//everything will fail.
+ printf("I2C communication example\n");
+
+
+  setup_i2c_extern();
+  //scan_i2c_bus(i2c0);
+  scan_i2c_bus(i2c1);
+
+  send_master(i2c1,PICO_SELFTEST_ADDRESS, DIR_GP_OUT, gpio,answer);
+  send_master(i2c1,PICO_SELFTEST_ADDRESS, DIG_GP_OUT_SET, gpio,&rdata); // send command to close K17
+  answer[0] = rdata;  // return read value
+  send_master(i2c1,PICO_SELFTEST_ADDRESS, DIG_GP_OUT_CLEAR, gpio,&rdata); // send command to open K17
+   // register eeprom 24lc32
+ //at24cx_i2c_device_register(&eeprom, EEMODEL, I2C_ADDRESS_AT24CX);
+}
+
+
+
+
+
+
+int onewiretest() {
+  uint8_t valid;
+    //stdio_init_all();
+   // sleep_ms(1000); // Delay to allow serial console to initialize
+
+    fprintf(stdout,"Initializing One-Wire bus\n");
+   
+    sleep_ms(10);
+
+
+
+    const char* bdinfo = "2D4CE282200000CC, 500-1010-020, 000001, J1";
+    const char* bdinfo2 = "2DC1C38220000059, 500-1010-020, 000001, J2";
+
+    const char* bdtest = "2D4CE282200000CC, 12345678,J1";
+    const char* bdtest2 = "2DC1C38220000059, ABCDEFGH, J2";
+  
+   char* owid = NULL;
+  valid = onewire_read_info(&owid,ADDR_TEST,NB_TEST,1); 
+  if (valid != 0) {
+     fprintf(stdout,"\nERROR READ 1-WIRE, error # %d:\n", valid);
+     return valid;
+  } 
+ fprintf(stdout,"\nREAD TEST BEFORE: %s\n",owid);
+
+  onewire_write_info(bdtest,ADDR_TEST);
+  onewire_write_info(bdtest2,ADDR_TEST);
+  fprintf(stdout,"\nREAD TEST AFTER:\n");
+  onewire_read_info(&owid,ADDR_TEST,NB_TEST,1); 
+  
+  fprintf(stdout,"\nRESULT TEST:\n");
+  SCPI_ResultText(&scpi_context,owid);
+    
+  onewire_write_info(bdinfo2,ADDR_INFO);
+  fprintf(stdout,"\nREAD INFO:\n");
+  onewire_read_info(&owid,ADDR_INFO,NB_INFO,1);
+  fprintf(stdout,"\nRESULT INFO:\n");
+  SCPI_ResultText(&scpi_context,owid);
+
+
+  free(owid);
+  
+
+    return 0;
+}
+
+void test_com_command(void){
+   int result;
+
+  TEST_SCPI_INPUT("COM:OW:CHECK? 2\r\n");
+
+  TEST_SCPI_INPUT("COM:OWIRE:WRITE '2D4CE282200000CC, 500-1010-020, 000001, J1' \r\n");
+  TEST_SCPI_INPUT("COM:OWIRE:READ? 2 \r\n");
+  TEST_SCPI_INPUT("COM:OWIRE:WRITE '2DC1C38220000059, 500-1010-020, 000001, J2' \r\n");
+  TEST_SCPI_INPUT("COM:OWIRE:READ? 2 \r\n");
+  
+}

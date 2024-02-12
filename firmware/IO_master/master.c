@@ -1,5 +1,49 @@
-#include <stdio.h>
+/**************************************************************************/
+/*! 
+    @file     master.c
+    @author   D. Lockhead
+	
+    @brief    Firmware to be loaded rasberry Pico Master Device
 
+    @section DESCRIPTION
+
+    The Master Pico is the main controller for the Interconnec IO Box. The master accpet SCPI command
+    the serial port and execute the command.
+
+    @section LICENSE
+
+    Copyright (c) 2024  D.Lockhead
+    All rights reserved.
+  
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
+    
+    Redistributions of source code must retain the above copyright notice, this
+    list of conditions and the following disclaimer.
+    
+    * Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
+      and/or other materials provided with the distribution.
+    
+    * Neither the name of the copyright holder nor the names of its
+      contributors may be used to endorse or promote products derived from
+      this software without specific prior written permission.
+  
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+    AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+    ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+    LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+    CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+    POSSIBILITY OF SUCH DAMAGE.
+*/
+/**************************************************************************/
+
+#include <stdio.h>
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
 #include "hardware/uart.h"
@@ -18,6 +62,7 @@
 #include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
 #include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
 #include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
+#include "pico_lib2/src/dev/dev_ds2431/dev_ds2431.h"
 #include "pico_lib2/src/sys/include/sys_adc.h"
 
 
@@ -26,27 +71,36 @@
 //set (IO_MASTER_VERSION_MINOR x)
 
 // set default value for each pin
-static const uint32_t GPIO_BOOT_MASK = 0b000111110010011111111111100000000;
-static const uint32_t GPIO_SET_DIR_MASK = 0b000111110010010111111111100000000;
-static const uint32_t GPIO_MASTER_OUT_MASK = 0b000111110010011111111111100000000;
+static const uint32_t GPIO_BOOT_MASK = 0b000111110010011111111110000000011;
+static const uint32_t GPIO_SET_DIR_MASK = 0b000111110010010111111110000000011;
+static const uint32_t GPIO_MASTER_OUT_MASK = 0b000111110010011111111110000000011;
 
 
 // Messsage queue is used to save the SCPI command received by the serial port.
 
-#define MESSAGE_SIZE 64
-#define QUEUE_SIZE 12    // maximum message received and not exectuted
+#define MESSAGE_SIZE 92   //!<  Maximum size of message to be send on the USB port for debug
+#define QUEUE_SIZE 12    //!<  Maximum message received and not processed
 
-
+/**
+ * @struct  Message
+ * @brief Structure who contains the message to be sent on debug port 
+ * 
+ */
 typedef struct {
-char data[MESSAGE_SIZE];
+char data[MESSAGE_SIZE];  //!< Array of messages
 } MESSAGE;
 
+/** @struct queue
+ * @brief This structure contains details to control the circular queue 
+ * 
+ */
+
 struct {   // global structure
-    MESSAGE messages[QUEUE_SIZE];
-    char size[QUEUE_SIZE];
-    int begin;
-    int end;
-    int current_load;
+    MESSAGE messages[QUEUE_SIZE]; //!< Array of messages
+    char size[QUEUE_SIZE];        //!< Array for size
+    int begin;                    //!< pointer to begin number
+    int end;                      //!< pointer to end number
+    int current_load;             //!< pointer to actual load
 } queue;
 
 bool enque(MESSAGE *message, char mess_size) {
@@ -125,8 +179,13 @@ void on_uart_rx() {
 }
 
 
-// Initialisation of the main communication uart
 
+/**
+ * @brief Initialisation of the main communication uart (serial port)
+ *        the SCPI command are received by the serial port.
+ *        Baud rate is read from the Configuration EEPROM
+ *        In case of error, default baud rate will be use
+ */
 void init_main_com() {
   // Communication UART inititialization. The UART is used to receive SCPI command
   // Set up our UART with a basic baud rate.
@@ -134,21 +193,24 @@ void init_main_com() {
  uint8_t valid;
 
   valid =stringtonumber(ee.cfg.com_ser_speed,&numval);   // read communication speed on EEprom
-  if (valid == 0) {    //if value is valid
-      uart_init(UART_ID,numval );   // set speed
-  } else {
-      uart_init(UART_ID,19200);       // if error, set default speed
-  }
+  if (valid != 0) {  numval = 19200;}  //if value is not valid use default speed
+
+  uart_init(UART_ID,numval);
 
   // Set the TX and RX pins by using the function select on the GPIO
   // Set datasheet for more information on function select
   gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
   gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
 
+ 
+
   // Actually, we want a different speed
   // The call will return the actual baud rate selected, which will be as close as
   // possible to that requested
-  int __unused actual = uart_set_baudrate(UART_ID, BAUD_RATE);
+  int __unused actual = uart_set_baudrate(UART_ID, numval);
+
+  // Enable stdio (printf) over selected uart, good for debug
+  //stdio_uart_init_full(UART_ID,numval,UART_TX_PIN,UART_RX_PIN);
   
   // Set UART flow control CTS/RTS, we don't want these, so turn them off
   uart_set_hw_flow(UART_ID, false, false);
@@ -170,9 +232,10 @@ void init_main_com() {
     irq_set_enabled(UART_IRQ, true);
 
     rxser.ch = 0; // reset global character counter
-    //rxser.data[rxser.ch] = 0;
+  
     // Now enable the UART to send interrupts - RX only
     uart_set_irq_enables(UART_ID, true, false);
+
 
   // Send information on the USB debug port
   fprintf(stdout,"\r\n Serial Baud rate %d \r\n", actual);
@@ -251,12 +314,16 @@ void Hardware_Default_Setting() {
     }
   }
 
-  fprintf(stdout,"Hardware Default setting completed \r\n");
+  //fprintf(stdout,"Hardware Default setting completed \r\n");
   return;
 }
 
 
-// Master Pico Main  program
+/**
+ * @brief Firmware for the Master Pico device running on interconnectIO board
+ * 
+ * @return int 
+ */
 int main(void) {
 
   MESSAGE rec;
@@ -276,6 +343,8 @@ int main(void) {
   Hardware_Default_Setting();
   
   init_main_com();  // Setup serial communication parameter
+ 
+  stdio_uart_init_full(UART_ID,PICO_DEFAULT_UART_BAUD_RATE,PICO_DEFAULT_UART_TX_PIN,PICO_DEFAULT_UART_RX_PIN);
 
   init_queue(); // initialise queue for message received
 
@@ -284,29 +353,29 @@ int main(void) {
       RegBitHdwrErr(WATCH_TRIG,FALSE);  // Set Questionable event register based on results
   }
 
-  
-
-
-
-//test_dac(2.5);
-//test_adc();
 
 fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
 
+// test_command();     /** Used to validate the SCPI command */
+// test_selftest();   /** Used to validate the hardware */
+
+
+//test_design();
+test_com_command();
+
+
+
+
 ctr = 0;
 int mess=0;
-
-//test_selftest(); 
-
-test_command(); 
- 
  while (1) {  // infinite loop, waiting for SCPI command from serial port
 
     watchdog_update(); /** refresh watchdog */
     sleep_ms(10);
-    ctr++;
+    ctr++;  /** counter for the heartbeat led */
     mess++;
-   
+
+ 
     /** Flashing led */
     if (ctr > pulse) {
       gpio_put(PICO_DEFAULT_LED_PIN, 0); // Turn OFF Pico board led
@@ -335,3 +404,5 @@ test_command();
 
   fprintf(stdout,"program terminated\r"); /**Never pass by here*/
 }
+
+

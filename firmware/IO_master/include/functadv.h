@@ -9,7 +9,7 @@
 #ifndef _FUNCTADV_H_
 #define _FUNCTADV_H_
 
-
+#include "hardware/i2c.h"
 
 //#include "scpi/scpi.h"
 
@@ -56,7 +56,7 @@ float   read_master_adc(uint8_t channel);
 float   read_power(uint8_t mode);
 void    calibrate_power(float actual, float expected);
 uint8_t cfg_eeprom_rw(char mode, uint32_t eeaddr,uint8_t eedatalen, char* data, uint8_t datalen);
-void    scan_i2c_bus();
+void    scan_i2c_bus(i2c_inst_t* i2c);
 uint8_t cfg_eeprom_read_full();
 uint8_t cfg_eeprom_write_default();
 uint8_t stringtonumber(const char *str, long *result);

@@ -132,9 +132,11 @@ CFG:Read:Eeprom:STR?      <varname><svalues>
 CFG:Write:Eeprom:Default     // Special command to write default value to eeprom
 CFG:Read:Eeprom:Full?        // Special command to read all data on eeprom
 
+COM:1WIRE:CHECK? [Nb of Onewire devices]
+COM:1WIRE:WRITE {String 64 chars maximum starting with 64bits lasered ROM}
+COM:1WIRE:READ?  [Nb of Onewire devices]  // read string of all the 1-Wire devices on the link
 
-COM:1WIRE:WRITE
-COM:1WIRE:READ? [{SERIAL|MEMORY|ALL}]
+
 COM:I2C:WRITE
 COM:SPI:WRITE
 COM:SERIAL:WRITE
@@ -169,6 +171,9 @@ GPIO:GETPad:DEVice1:GP8?        --> Read PAD value (8 bits) on gpio 8 on Device 
 SYSTem:BEEPer                   --> Turn ON momentary the beeper
 SYSTEM:DEVice:VERsion?          --> Read version of each Pico devices [0,1,2,3], return string
                                     ex: 1.8, 1.3, 1.3 1.3
+
+COM:1WIRE:WRITE "2D4CE282200000CC, 500-1010-020, 000001, J1"
+                    Lasered ROM     Board #      Serial  Location
 
 
 ## Relay numbering. Differential relay will be located on lower address. Single ended relay to be connected to high or low side following the address.

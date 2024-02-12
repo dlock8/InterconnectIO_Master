@@ -1,4 +1,8 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.5)
+
+# Set CMP0076 policy
+cmake_policy(SET CMP0076 NEW)
+
 
 include(pico_sdk_import.cmake)
 #include(pico_lib2_import.cmake)

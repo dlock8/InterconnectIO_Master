@@ -93,6 +93,10 @@ extern "C" {
 #define WDEF   80     // Write default value to EEprom
 #define RFUL   81     // Read complete data on Eeprom
 
+#define W1W    84     // Write on 1-Wire devices
+#define R1W    85     // Read on 1-Wire devices
+#define C1W    86     // Check on 1-Wire devices
+
 
 #define SCPI_BANK1 1     // Open BK1 relay tag
 #define SCPI_BANK2 2     // Open BK2 relay tag

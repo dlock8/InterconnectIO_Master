@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
+#include "pico_lib2/src/dev/dev_ds2431/dev_ds2431.h"
 #include "include/scpi_user_config.h"
 #include "include/test.h"
 #include "include/fts_scpi.h"
@@ -10,6 +11,7 @@
 #include "include/master.h"
 #include "hardware/resets.h"
 #include "include/functadv.h"
+
 #include "userconfig.h"         // contains Major and Minor version
 
 
@@ -37,9 +39,9 @@ scpi_error_t scpi_error_queue[SCPI_ERROR_QUEUE_SIZE];
 // Function used by module test.c to validate the selftest
 
 static size_t output_buffer_write(const char * data, size_t len) {
-    memcpy(output_buffer + output_buffer_pos, data, len);
-    output_buffer_pos += len;
-    output_buffer[output_buffer_pos] = '\0';
+    memcpy(out_buffer + out_buffer_pos, data, len);
+    out_buffer_pos += len;
+    out_buffer[out_buffer_pos] = '\0';
     return len;
 }
 
@@ -994,7 +996,6 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
                 }
             }
 
-
             volatile int tval = strlen(svalue);
             if (found && status == NOERR) { // if varname found
                 status = cfg_eeprom_rw(mode,members[i].offset,members[i].size,svalue,strlen(svalue));    // write or read data on eeprom
@@ -1009,34 +1010,15 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
     }
       // raise error if is the case
     switch (status) {
-        case NOERR:
-            break;
-        case ENDE:
-            answer = SCPI_ERROR_NUMERIC_DATA_ERROR;  
-            break;
-        case EOOR:
-            answer = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE;  
-            break;
-        case EIVN:
-            answer = SCPI_ERROR_ILLEGAL_VARIABLE_NAME; 
-            break;
-        case ECE:
-             answer = SCPI_ERROR_CHARACTER_DATA_ERROR;
-             break;
-        
-        case EDE:
-             answer= SCPI_ERROR_EXECUTION_ERROR;
-             break;
-
-        case ERE: case EBE:
-             answer= SCPI_ERROR_MASS_STORAGE_ERROR;
-             break; 
-
-        case EMP:
-            answer = SCPI_ERROR_MISSING_PARAMETER;  
-            break;
+        case NOERR: { break;}
+        case ENDE:  { answer = SCPI_ERROR_NUMERIC_DATA_ERROR; break;}
+        case EOOR:  { answer = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE; break;}
+        case EIVN:  { answer = SCPI_ERROR_ILLEGAL_VARIABLE_NAME; break;}
+        case ECE:   { answer = SCPI_ERROR_CHARACTER_DATA_ERROR; break;}
+        case EDE:   { answer= SCPI_ERROR_EXECUTION_ERROR; break;}
+        case ERE: case EBE:{ answer= SCPI_ERROR_MASS_STORAGE_ERROR; break; } 
+        case EMP:   { answer = SCPI_ERROR_MISSING_PARAMETER; break;}
     }    
-
     if (status != NOERR) {
         SCPI_ErrorPush(context, answer);  // push errors 
         return SCPI_RES_ERR;
@@ -1047,6 +1029,105 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
 
 }
 
+
+// Low level command
+static scpi_result_t Callback_com_scpi(scpi_t *context) {
+    scpi_bool_t res;
+    scpi_parameter_t param1;
+    uint16_t answer;  // will contains the answer returned by command
+    uint8_t tag,ecode;
+    uint32_t val=0;
+    size_t lgt,eid;
+    bool retv = false;
+
+    char* sdata = NULL;
+    char winfo[NB_INFO];   
+                                                                  \
+
+
+
+    fprintf(stdout, "\nOn communication execute \r\n");
+
+    tag = SCPI_CmdTag(context);   //extract tag from the command
+
+
+    if ( tag == C1W || tag == R1W ) {
+
+        res = SCPI_Parameter(context, &param1, true);  // Read first parameter
+        if (res) {
+            // Is parameter a number without suffix?
+            if (SCPI_ParamIsNumber(&param1, TRUE)) {
+                // Convert parameter to unsigned int. Result is in value.
+                 SCPI_ParamToUInt32(context, &param1, &val);
+                 eid = val; // change number to size_t
+            }
+        }
+    }
+
+    if ( tag == W1W ) {
+
+        res = SCPI_Parameter(context, &param1, true);  // Read first parameter
+        if (res) {
+            char str[NB_INFO];
+            size_t i,j;
+            j = 0;
+            strcpy(str,param1.ptr);
+            for (i = 0; i < strlen(str); i++) {
+                //remove not informative character from string
+                if (str[i] != '\'' && str[i] != '"' && str[i] != '\n' && str[i] != '\r') {
+                    winfo[j++] = str[i];
+                }
+            }
+        }
+    }
+
+
+
+    switch (tag) {
+        case C1W: 
+            ecode = onewire_check_devices(&sdata, eid );     //check presence of one wire 
+            SCPI_ResultText(context,sdata);
+            retv = true;   // no value returned
+            break;
+
+        case R1W: 
+            ecode = onewire_read_info(&sdata,ADDR_INFO,NB_INFO,eid );  
+            SCPI_ResultText(context,sdata);
+            retv = true;   // no value returned
+            break;
+
+        case W1W: 
+            ecode = onewire_write_info(winfo,ADDR_INFO);  
+            SCPI_ResultText(context,sdata);
+            retv = true;   // no value returned
+            break;
+
+    }
+
+
+
+       // raise error if is the case
+    switch (ecode) {
+        case NOERR: { break;}
+        case OW_NB_ONEWIRE:  { answer = NB_ONEWIRE; break;}
+        case OW_NO_ONEWIRE:  { answer = NO_ONEWIRES; break;}
+        case OW_STR_NOT_IDENTICAL:  { answer = STR_ONEWIRE; break;}
+        case OW_READ_WRITE_FAIL:   { answer = WR_ONEWIRE; break;}
+        case OW_WRITE_FAIL:   { answer= WRITE_ONEWIRE; break;}
+        case OW_READ_FAIL:   { answer= READ_ONEWIRES; break;}
+        case OW_NO_VALIDID:   { answer= HEX_VALIDID; break;}
+    }    
+
+
+    if (ecode != NOERR) {
+        SCPI_ErrorPush(context, answer);  // push errors 
+        return SCPI_RES_ERR;
+    } else {
+
+        return SCPI_RES_OK;
+    }
+    free(sdata);
+}
 
     // The SCPI commands we support and the callbacks they use.
 scpi_command_t scpi_commands[] = {
@@ -1142,7 +1223,9 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "CFG:Write:Eeprom:Default", .callback = Callback_eeprom_scpi,WDEF},
     {.pattern = "CFG:Read:Eeprom:Full?", .callback = Callback_eeprom_scpi,RFUL},
     
-
+    {.pattern = "COM:OWire:Write", .callback = Callback_com_scpi,W1W},
+    {.pattern = "COM:OWire:Read?", .callback = Callback_com_scpi,R1W},
+    {.pattern = "COM:OWire:Check?", .callback = Callback_com_scpi,C1W},
 
 
 	SCPI_CMD_LIST_END

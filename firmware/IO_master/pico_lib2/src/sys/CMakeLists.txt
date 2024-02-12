@@ -26,6 +26,7 @@ if (NOT TARGET lib2_sys)
         dev_ina219
         dev_mcp4725
         dev_24lc32
+        dev_ds2431
         
     )
 endif()

@@ -57,14 +57,22 @@ extern "C" {
 
 
 #define LIST_OF_USER_ERRORS \
-    X(SCPI_RELAYS_LIST_ERROR,           -185,  "Relays channel list error. single dimension only")   \
-    X(RELAY_NUMBERING_ERROR,           -186,  "A Relay channel is invalid and raise an error")   \
-    X(I2C_COMMUNICATION_ERROR,      -106,  "I2C internal communication error, run selftest")            \
-    X(VSYS_OUT_LIMITS,              -302,  "Voltage VSYS of Master Pico is out limit, run selftest")   \
-    X(TEMP_MASTER_HIGH,             -303,  "Internal Temperature of Master Pico is too High, run selftest")   \
-    X(WATCHDOG_TRIG,                -304,  "Master Pico Watchdog Trig")   \
-    X(SELFTEST_FAIL,                -305,  "Self-test failed")   \
-  
+    X(SCPI_RELAYS_LIST_ERROR,   -185,  "Relays channel list error. single dimension only")   \
+    X(RELAY_NUMBERING_ERROR,    -186,  "A Relay channel is invalid and raise an error")   \
+    X(I2C_COMMUNICATION_ERROR,  -106,  "I2C internal communication error, run selftest")            \
+    X(VSYS_OUT_LIMITS,          -302,  "Voltage VSYS of Master Pico is out limit, run selftest")   \
+    X(TEMP_MASTER_HIGH,         -303,  "Internal Temperature of Master Pico is too High, run selftest")   \
+    X(WATCHDOG_TRIG,            -304,  "Master Pico Watchdog Trig")   \
+    X(SELFTEST_FAIL,            -305,  "Self-test failed")   \
+    X(NB_ONEWIRE,               -371,  "Number of Onewire devices is different of expected number")  \
+    X(STR_ONEWIRE,              -372,  "The Write data is different of the Read data on Onewire devices")  \
+    X(WR_ONEWIRE,               -373,  "Error raise during Write - Read on Onewire devices")  \
+    X(WRITE_ONEWIRE,            -374,  "Error raise during Write action on Onewire devices")  \
+    X(NO_ONEWIRES,              -375,  "Presence of Onewire devices has not been detected") \
+    X(READ_ONEWIRES,            -376,  "Error raise during read of Onewire devices") \
+    X(HEX_VALIDID,              -377,  "Onewire device ID contains illegal character (hexadecimal only)") \
+
+
 
 // Definition of each bit of the Operation Condition Event Register (QER) 
 #define OPER_BOOT_FAIL           0   // <1>

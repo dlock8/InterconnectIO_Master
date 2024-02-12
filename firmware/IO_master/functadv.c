@@ -52,6 +52,7 @@
 
 
 #include "hardware/adc.h"
+#include "hardware/i2c.h"
 #include "include/i2c_com.h"
 #include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
 #include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
@@ -157,9 +158,14 @@ float read_power(uint8_t mode){
 }
 
 
-// SCPI function to calibrate the current on the power device IN219
+/**
+ * @brief SCPI function to calibrate the current on the power device IN219
+ * 
+ * @param actual    Current value read with the hardware 
+ * @param expected  Expected value according to calculation
+ */
 void calibrate_power(float actual, float expected){
-     bool flg;
+     bool flg; 
 
         flg = ina219CalibrateCurrent_mA(actual,expected);
         if (flg) {
@@ -171,6 +177,7 @@ void calibrate_power(float actual, float expected){
 
 // temporary function
 // function read ADC. Reading are placed in array
+/*
 void  read_ADC(float *adc_val) {
     const float cfactor = ADC_REF / (1 << 12);  // 12 Bits conversion
     uint16_t value;
@@ -184,9 +191,11 @@ void  read_ADC(float *adc_val) {
     adc_val[1] = value * cfactor;
     fprintf(stdout,"Raw value 0: 0x%03x, ADC1  voltage: %f V\n", value, adc_val[1]);
 }
+*/
 
 // temporary function
 // function read ADC internal value . Reading are placed in array
+/*
 void  read_int_ADC(float *adc_val) {
     const float cfactor = ADC_REF / (1 << 12);  // 12 Bits conversion
     uint16_t value;
@@ -208,9 +217,17 @@ void  read_int_ADC(float *adc_val) {
     fprintf(stdout,"Raw value 0: 0x%03x, Temperature: %f C\n", value, adc_val[1]);
 
 }
+*/
 
-// function set DAC.
-// Command used by SCPI 
+
+/**
+ * @brief Function used by SCPI command to set DAC voltage
+ *        The voltage value is validated to be in the range of DAC before set the DAC
+ * 
+ * @param value Value in volt to set the DAC
+ * @param save  Flag to save voltage value as default at power ON
+ * @return      Number to indicate success or error in the execution
+ */
 uint8_t dac_set(float value, bool save){
     uint16_t error;
     float ovalue;
@@ -247,14 +264,18 @@ uint8_t dac_set(float value, bool save){
 }
 
 
-// This function check if the eeprom is detected and if the data is valid
-// The byte check could be validated to detects if eeprom is empty or not
+/**
+ * @brief This function check if the eeprom is detected and if the data is valid
+ * 
+ * @param check_data Flag to indicate if the check number need to be validated
+ * @param eeprom     Pointer to eeprom structure
+ * @return uint8_t  Number to indicate success or error in the execution
+ */
 
 uint8_t eeprom_data_valid(bool check_data,at24cx_dev_t* eeprom)
 {
   at24cx_writedata_t dt;
  
-
  // register eeprom 24lc32
  at24cx_i2c_device_register(eeprom, EEMODEL, I2C_ADDRESS_AT24CX);
   
@@ -444,17 +465,20 @@ uint8_t stringtonumber(const char *str, long *result) {
     return 0; // Successful conversion
 }
 
-/**
- * @brief
- * Perform Boot check by validating i2C device in the chain
- **/
+
+ /**
+  * @brief Perform Boot check by validating i2C device in the chain
+  * 
+  * @return true  if success with the boot validation
+  * @return false if fail the boot validation
+  */
 bool Boot_check(){
     uint8_t ret;
     uint8_t rxdata;
 
     gpio_put(GPIO_RUN, 1); // Start PICO Slave (if required)
 
-    scan_i2c_bus(); // send devices detected on the debug port (USB)
+    scan_i2c_bus(i2c0); // send devices detected on the debug port (USB)
     ret = 0;
     ret += i2c_read_blocking(i2c0,I2C_ADDRESS_AT24CX, &rxdata, 1, false); //check I2C com with eeprom
     ret += i2c_read_blocking(i2c0,PICO_PORT_ADDRESS, &rxdata, 1, false); // check I2C com with Pico  Slave_1
@@ -684,7 +708,7 @@ bool reserved_addr(uint8_t addr) {
     return (addr & 0x78) == 0 || (addr & 0x78) == 0x78;
 }
 
-void scan_i2c_bus() {
+void scan_i2c_bus(i2c_inst_t* i2c) {
 
     printf("\nI2C Bus Scan\n");
     printf("   0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F\n");
@@ -705,7 +729,7 @@ void scan_i2c_bus() {
         if (reserved_addr(addr))
             ret = PICO_ERROR_GENERIC;
         else
-            ret = i2c_read_blocking(i2c0, addr, &rxdata, 1, false);
+            ret = i2c_read_blocking(i2c, addr, &rxdata, 1, false);
 
         printf(ret < 0 ? "." : "*");
         printf(addr % 16 == 15 ? "\n" : "  ");

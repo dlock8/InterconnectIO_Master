@@ -23,10 +23,25 @@ void setup_master() {
     i2c_init(i2c0, I2C_BAUDRATE);
 }
 
+/**
+ * @brief Configuration of I2C used to external communication 
+ * 
+ */
+void setup_i2c_extern(void) {
+    gpio_init(I2C_EXTERN_SDA_PIN);
+    gpio_set_function(I2C_EXTERN_SDA_PIN, GPIO_FUNC_I2C);
+    // pull-ups are already active on slave side, this is just a fail-safe in case the wiring is faulty
+    gpio_pull_up(I2C_EXTERN_SDA_PIN);
+
+    gpio_init(I2C_EXTERN_SCL_PIN);
+    gpio_set_function(I2C_EXTERN_SCL_PIN, GPIO_FUNC_I2C);
+    gpio_pull_up(I2C_EXTERN_SCL_PIN);
+
+    i2c_init(i2c1, I2C_BAUDRATE);
+}
 
 
-
-bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback)  {
+bool send_master(i2c_inst_t* i2c,uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback)  {
 
     // Writing to A register
     int count;
@@ -39,7 +54,7 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback)  
 
 
     fprintf(stdout,"on sendmaster cmd: 0x%02x: add 0x%02x\r\n", cmd,i2c_add);
-    count = i2c_write_blocking(i2c0, i2c_add, buf, buflgth, false);
+    count = i2c_write_blocking(i2c, i2c_add, buf, buflgth, false);
     if (count < 0) {
         //puts("Couldn't write Register to slave");
         fprintf(stdout,"MAS: ERROR Write at register %02d: %02d\n", buf[0], buf[1]);
@@ -51,8 +66,8 @@ bool send_master(uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback)  
 
    //read register value and return to caller on pointer rback    
     uint8_t ird[2];
-    i2c_write_blocking(i2c0, i2c_add, buf, 1, false);
-    i2c_read_blocking(i2c0, i2c_add, ird, buflgth-1, false);
+    i2c_write_blocking(i2c, i2c_add, buf, 1, false);
+    i2c_read_blocking(i2c, i2c_add, ird, buflgth-1, false);
     
     fprintf(stdout,"MAS:Read Register %d = %d \r\n", cmd,ird[0]);
     *rback = (uint8_t) ird[0];  // save readback value
@@ -204,20 +219,20 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                 case RCLEX:
                 case RCLOSE:
                    if (action == RCLEX) { // Open relay bank on exclusive command
-                      smf = send_master(i2c_add, OPEN_RELAY_BANK,gpio,&rdata);
+                      smf = send_master(i2c0,i2c_add, OPEN_RELAY_BANK,gpio,&rdata);
                       if (!smf) { 
                         answer[0] = rdata;  // save error on answer
                         return false;       // return
                       }   
                    }
-                   smf = send_master(i2c_add, CLOSE_RELAY, gpio,&rdata); // close required relay
+                   smf = send_master(i2c0,i2c_add, CLOSE_RELAY, gpio,&rdata); // close required relay
                    if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                    if (ser > 0) { //if valid SE number
                         if (se) { // close or open the SE relay
-                            smf = send_master(i2c_add, CLOSE_RELAY, ser,&rdata);
+                            smf = send_master(i2c0,i2c_add, CLOSE_RELAY, ser,&rdata);
                             if (!smf) { answer[0] = rdata; return false;}
                         } else {
-                            smf = send_master(i2c_add, OPEN_RELAY, ser,&rdata);
+                            smf = send_master(i2c0,i2c_add, OPEN_RELAY, ser,&rdata);
                             if (!smf) { answer[0] = rdata; return false;}
                         }
                     }
@@ -225,14 +240,14 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                 break;
 
                 case ROPEN:
-                    smf = send_master(i2c_add, OPEN_RELAY, gpio,&rdata); // open relay bank
+                    smf = send_master(i2c0,i2c_add, OPEN_RELAY, gpio,&rdata); // open relay bank
                     if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                     if (ser > 0) { //if valid SE number
                         if (se) { // close or open the SE relay
-                            smf =send_master(i2c_add, CLOSE_RELAY, ser,&rdata);
+                            smf =send_master(i2c0,i2c_add, CLOSE_RELAY, ser,&rdata);
                             if (!smf) { answer[0] = rdata; return false;}
                         } else {
-                            smf= send_master(i2c_add, OPEN_RELAY, ser,&rdata);
+                            smf= send_master(i2c0,i2c_add, OPEN_RELAY, ser,&rdata);
                             if (!smf) { answer[0] = rdata; return false;}
                         }
                     }
@@ -240,66 +255,66 @@ bool  relay_execute(uint16_t *list,uint8_t action, uint16_t *answer) {
                 break;
 
                 case ROPALL:
-                    smf = send_master(i2c_add, OPEN_RELAY_BANK, gpio,&rdata); // open relay bank
+                    smf = send_master(i2c0,i2c_add, OPEN_RELAY_BANK, gpio,&rdata); // open relay bank
                     if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                     if (ser > 0) { //if valid SE number
                         if (se) { // close or open the SE relay
-                            smf= send_master(i2c_add, CLOSE_RELAY, ser,&rdata);
+                            smf= send_master(i2c0,i2c_add, CLOSE_RELAY, ser,&rdata);
                             if (!smf) { answer[0] = rdata; return false;}
                         } else {
-                            smf= send_master(i2c_add, OPEN_RELAY, ser,&rdata);
+                            smf= send_master(i2c0,i2c_add, OPEN_RELAY, ser,&rdata);
                             if (!smf) { answer[0] = rdata; return false;}
                         }
                     }
                 break;
 
                 case RSTATE:
-                     smf= send_master(i2c_add, STATE_RELAY, gpio,&rdata); // read required relay
+                     smf= send_master(i2c0,i2c_add, STATE_RELAY, gpio,&rdata); // read required relay
                      if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      answer[i] = rdata;
                      break;
 
                 case BSTATE:
-                     smf= send_master(i2c_add, STATE_BANK, gpio,&rdata); // read required bank
+                     smf= send_master(i2c0,i2c_add, STATE_BANK, gpio,&rdata); // read required bank
                      if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      answer[i] = rdata;
                      break;
                 
                 case SESTATE:
-                     smf= send_master(i2c_add, STATE_RELAY, ser,&rdata); // read required SE relay
+                     smf= send_master(i2c0,i2c_add, STATE_RELAY, ser,&rdata); // read required SE relay
                      if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      answer[i] = rdata;
                      break;
 
                 case SECLOSE:
-                     smf= send_master(i2c_add, CLOSE_RELAY, ser,&rdata);
+                     smf= send_master(i2c0,i2c_add, CLOSE_RELAY, ser,&rdata);
                      if (!smf) { answer[0] = rdata; return false;}
                      fprintf(stdout,"MAS: CLOSE Relay SE on  slave 0x%02x using gpio: %02d\n",i2c_add, ser);
                      break;
                 
                 case PWCLOSE:
                 case OCCLOSE:
-                     smf= send_master(i2c_add, CLOSE_RELAY, gpio,&rdata); // read required relay
+                     smf= send_master(i2c0,i2c_add, CLOSE_RELAY, gpio,&rdata); // read required relay
                      if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      fprintf(stdout,"MAS: CLOSE Device on slave 0x%02x using gpio: %02d\n",i2c_add, gpio);
                      break;   
 
                 case SEOPEN:
-                     smf= send_master(i2c_add, OPEN_RELAY, ser,&rdata);
+                     smf= send_master(i2c0,i2c_add, OPEN_RELAY, ser,&rdata);
                      if (!smf) { answer[0] = rdata; return false;}
                      fprintf(stdout,"MAS: OPEN Relay SE on  slave 0x%02x using gpio: %02d\n",i2c_add, ser);
                      break;
 
                 case PWOPEN:
                 case OCOPEN:
-                     smf = send_master(i2c_add, OPEN_RELAY, gpio,&rdata); // open relay bank
+                     smf = send_master(i2c0,i2c_add, OPEN_RELAY, gpio,&rdata); // open relay bank
                      if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      fprintf(stdout,"MAS: OPEN Device on slave 0x%02x using gpio: %02d\n",i2c_add, gpio);
                      break; 
 
                 case PWSTATE:
                 case OCSTATE:
-                     smf= send_master(i2c_add, STATE_RELAY, gpio,&rdata); // read required relay
+                     smf= send_master(i2c0,i2c_add, STATE_RELAY, gpio,&rdata); // read required relay
                      if (!smf) { answer[0] = rdata; return false;}  // Save error and return
                      answer[i] = rdata;
                      fprintf(stdout,"MAS: STATE Device on slave 0x%02x  using gpio: %02d, State: %01d\n",i2c_add, gpio, answer[i]);
@@ -343,7 +358,7 @@ bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, 
     {
         case SDIR:
           command = DIG_DIR_MASK + (port * 10); // change command number following port selected
-          smf= send_master(PICO_PORT_ADDRESS, command, value,&rdata); // send command
+          smf= send_master(i2c0,PICO_PORT_ADDRESS, command, value,&rdata); // send command
           if (!smf) { answer[0] = rdata; return false;}  // Save error and return
           break;
 
@@ -352,7 +367,7 @@ bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, 
           portd = 0;   // register to save value read
           for (i = 0; i <= 7; i++) {  // loop to read each bit of the port
               gp = gpiod[port][i]; // get Gpio associated to bit and port
-              smf= send_master(PICO_PORT_ADDRESS, command, gp,&rdata); // send command
+              smf= send_master(i2c0,PICO_PORT_ADDRESS, command, gp,&rdata); // send command
               if (!smf) { answer[0] = rdata; return false;}  // Save error and return
               portd += (rdata << i); // save value based on bit position  
           }
@@ -366,21 +381,21 @@ bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, 
           } else { 
             command = DIR_GP_IN; // command number for set GPIO direction IN
           }
-          smf= send_master(PICO_PORT_ADDRESS, command, gp,&rdata); // send command
+          smf= send_master(i2c0,PICO_PORT_ADDRESS, command, gp,&rdata); // send command
           if (!smf) { answer[0] = rdata; return false;}  // Save error and return
           break;
         
         case RBDIR:
           command =  DIR_GP_READ;  // command to send to read direction
           gp = gpiod[port][bit]; // get Gpio associated to bit and port
-          smf= send_master(PICO_PORT_ADDRESS, command, gp,&rdata); // send command
+          smf= send_master(i2c0,PICO_PORT_ADDRESS, command, gp,&rdata); // send command
           if (!smf) { answer[0] = rdata; return false;}  // Save error and return
           answer[0]= rdata; // return answer
           break;
 
         case SOUT:
           command = DIG_OUT + (port * 10); // change command number following port selected
-          smf= send_master(PICO_PORT_ADDRESS, command, value,&rdata); // send command
+          smf= send_master(i2c0,PICO_PORT_ADDRESS, command, value,&rdata); // send command
           if (!smf) { answer[0] = rdata; return false;}  // Save error and return
           break;
 
@@ -391,13 +406,13 @@ bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, 
           } else { 
             command = DIG_GP_OUT_CLEAR; // command number for set GPIO at low
           }
-          smf= send_master(PICO_PORT_ADDRESS, command, gp,&rdata); // send command
+          smf= send_master(i2c0,PICO_PORT_ADDRESS, command, gp,&rdata); // send command
           if (!smf) { answer[0] = rdata; return false;}  // Save error and return
           break;
 
         case RIN:
           command = DIG_IN + (port * 10); // change command number following port selected
-          smf= send_master(PICO_PORT_ADDRESS, command, value,&rdata); // send command
+          smf= send_master(i2c0,PICO_PORT_ADDRESS, command, value,&rdata); // send command
           if (!smf) { answer[0] = rdata; return false;}  // Save error and return
           answer[0] = rdata;  // return read value
           break;
@@ -405,7 +420,7 @@ bool  digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, 
         case RBIN:
           command = DIG_GP_IN; // command to sent for read gpio
           gp = gpiod[port][bit]; // get Gpio associated to bit and port
-          smf= send_master(PICO_PORT_ADDRESS, command, gp,&rdata); // send command
+          smf= send_master(i2c0,PICO_PORT_ADDRESS, command, gp,&rdata); // send command
           if (!smf) { answer[0] = rdata; return false;}  // Save error and return
           answer[0] = rdata;  // return read value
           break;
@@ -436,12 +451,12 @@ bool  gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, 
             } else { 
                 command = DIR_GP_IN; // command number for set GPIO direction IN
             }
-          
+         
             if (slave == PICO_MASTER_ADDRESS) {
                 gpio_set_dir(gpio,value);  // send direct command to set direction
                 fprintf(stdout,"Cmd %02d, Set Dir IN(0) OUT(1): %d  Gpio: %02d \r\n ",command, value,gpio);
             } else {
-                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                smf= send_master(i2c0,slave, command, gpio,answer); // send i2c command to slave
                 if (!smf) { return false;}  // Error return
             }
             break;
@@ -454,7 +469,7 @@ bool  gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, 
                 answer[0] = rval;
                 fprintf(stdout,"Cmd %02d, read Direction Gpio: %02d. State: %01d \r\n ", command, gpio,rval);
             } else {
-                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                smf= send_master(i2c0,slave, command, gpio,answer); // send i2c command to slave
                 if (!smf) { return false;}  // Error return
             }
             break;
@@ -471,7 +486,7 @@ bool  gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, 
                 gpio_put(gpio,value);  // send direct command to read direction
                 fprintf(stdout,"Cmd %02d, Set Output Gpio: %02d. State: %01d \r\n ", command, gpio,value);
             } else {
-                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                smf= send_master(i2c0,slave, command, gpio,answer); // send i2c command to slave
                 if (!smf) { return false;}  // Error return
             }
             break;
@@ -484,7 +499,7 @@ bool  gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, 
                 answer[0] = rval;
                 fprintf(stdout,"Cmd %02d, read value Gpio: %02d. State: %01d \r\n ", command, gpio,rval);
             } else {
-                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                smf= send_master(i2c0,slave, command, gpio,answer); // send i2c command to slave
                 if (!smf) { return false;}  // Error return
             }
             break;
@@ -497,9 +512,9 @@ bool  gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, 
                 hw_write_masked(&padsbank0_hw ->io[gpio],value,maskvalue); // Set Pad state
                 fprintf(stdout,"Cmd %02d, Set Pad State to Gpio: %02d ,State: 0x%01x \r\n",command,  gpio, value);
             } else { // 2 commands required to set PAD value
-                smf= send_master(slave, GP_PAD_VALUE, value,answer); // send i2c command to slave
+                smf= send_master(i2c0,slave, GP_PAD_VALUE, value,answer); // send i2c command to slave
                 if (!smf) { return false;}  // Error return
-                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                smf= send_master(i2c0,slave, command, gpio,answer); // send i2c command to slave
                 if (!smf) { return false;}  // Error return
             }
             break;
@@ -513,7 +528,7 @@ bool  gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, 
                 answer[0] = pval;  // save value to be returned
                 fprintf(stdout,"Cmd %02d, Gpio: %02d ,Read PAD State: 0x%01x \r\n",command,  gpio,pval);
             } else {
-                smf= send_master(slave, command, gpio,answer); // send i2c command to slave
+                smf= send_master(i2c0,slave, command, gpio,answer); // send i2c command to slave
                 if (!smf) { return false;}  // Error return
             }
     }
@@ -538,11 +553,11 @@ bool  system_execute(uint8_t action, uint16_t *answer) {
                 answer[j++] = IO_MASTER_VERSION_MINOR;
                 fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
             } else {
-                smf= send_master(slave, MJR_VERSION, 0,value); // send i2c command to slave
+                smf= send_master(i2c0,slave, MJR_VERSION, 0,value); // send i2c command to slave
                 if (!smf) {return false;}  // Error return
                 answer[j++] = value[0];
 
-                smf= send_master(slave, MIN_VERSION, 0,value); // send i2c command to slave
+                smf= send_master(i2c0,slave, MIN_VERSION, 0,value); // send i2c command to slave
                 if (!smf) { return false;}  // Error return
                 answer[j++] = value[0];
 
@@ -554,7 +569,7 @@ bool  system_execute(uint8_t action, uint16_t *answer) {
     if (action == GSTA) { // Run device status for each slave
         for (i=1; i<4 ; i++) {
             slave = address[i]; /// Set I2C address
-            smf= send_master(slave, SL_DEV_STATUS, 0,value); // send i2c command to slave
+            smf= send_master(i2c0,slave, SL_DEV_STATUS, 0,value); // send i2c command to slave
             if (!smf) {return false;}  // Error return
             answer[j++] = value[0];
             fprintf(stdout,"PICO Slave address 0x%x,   Device Status byte: %x\n", slave,answer[j-1]);
