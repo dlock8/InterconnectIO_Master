@@ -5,13 +5,19 @@
  *
  * SPDX-License-Identifier: MIT
  */
+
+#ifndef test_H
+#define test_H
+
+
 #define V 1     // Volts
 #define I 2     // mA
 #define P 3     // mW
 #define S 4     // mV
 
-char out_buffer[1024];
-size_t out_buffer_pos;
+
+extern char out_buffer[1024];
+extern size_t out_buffer_pos;
 
 
 
@@ -27,4 +33,4 @@ void test_design(void);
 int onewiretest(void);
 void test_com_command(void);
  
- 
+#endif /* BUFFER_H */

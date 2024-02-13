@@ -97,6 +97,11 @@ extern "C" {
 #define R1W    85     // Read on 1-Wire devices
 #define C1W    86     // Check on 1-Wire devices
 
+#define CIE    88     // Enable communication protocol
+#define CID    89     // Disable communication protocol, set pin as GPIO
+#define CRI    90     // Read status communication protocol
+
+
 
 #define SCPI_BANK1 1     // Open BK1 relay tag
 #define SCPI_BANK2 2     // Open BK2 relay tag
@@ -110,6 +115,10 @@ extern "C" {
 #define SCPI_OC1   10     // Open collector 
 #define SCPI_OC2   11     // Open collector 
 #define SCPI_OC3   12     // Open collector 
+
+#define SCPI_UART  15     // Uart communication 
+#define SCPI_SPI   16     // SPI communication 
+#define SCPI_I2C   17     // I2C communication 
 
 
 #define GPIO_LPR1  8     // Gpio number to control Power relay 

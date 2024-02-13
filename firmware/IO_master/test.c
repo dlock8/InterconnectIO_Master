@@ -17,8 +17,9 @@
 #include "hardware/spi.h"
 
 
-
-
+/**> Global variables */
+char out_buffer[1024];
+size_t out_buffer_pos;
 
 
 
@@ -1476,11 +1477,14 @@ int onewiretest() {
 void test_com_command(void){
    int result;
 
+/*
   TEST_SCPI_INPUT("COM:OW:CHECK? 2\r\n");
-
   TEST_SCPI_INPUT("COM:OWIRE:WRITE '2D4CE282200000CC, 500-1010-020, 000001, J1' \r\n");
   TEST_SCPI_INPUT("COM:OWIRE:READ? 2 \r\n");
   TEST_SCPI_INPUT("COM:OWIRE:WRITE '2DC1C38220000059, 500-1010-020, 000001, J2' \r\n");
   TEST_SCPI_INPUT("COM:OWIRE:READ? 2 \r\n");
+*/
+
+  TEST_SCPI_INPUT("COM:INIT:ENA  SPI\r\n");
   
 }

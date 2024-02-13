@@ -116,7 +116,7 @@ SYSTEM:LED:ERRor {0|1|OFF|ON}
 SYSTEM:LED:ERRor? 
 ??SYSTEM:RESet  (*RST)
 SYSTEM:MODule_option?  [TBD]
-SYSTEM:INITialize {SPI|UART2|UART4|I2C|ADC} [TBD]   
+
 SYSTEM:OUTput    {0|1|OFF|ON}      // Turn ON/OFF internal 5V available to UUT.
 SYSTEM:SLAves    {0|1|OFF|ON}      // Turn ON/OFF Pico slaves
 SYSTEM:OUTput?
@@ -132,7 +132,12 @@ CFG:Read:Eeprom:STR?      <varname><svalues>
 CFG:Write:Eeprom:Default     // Special command to write default value to eeprom
 CFG:Read:Eeprom:Full?        // Special command to read all data on eeprom
 
-COM:1WIRE:CHECK? [Nb of Onewire devices]
+
+COM:INITialize:ENAble  {SPI|UART|I2C}  // Set pin as communication
+COM:INITialize:DISable {SPI|UART|I2C} // Reset pin as GPIO
+COM:INITialize:STATus?  {SPI|UART|I2C} // Read if communication is enable or disable
+
+COM:1WIRE:CHECK? [Nb of expected Onewire devices on a link]
 COM:1WIRE:WRITE {String 64 chars maximum starting with 64bits lasered ROM}
 COM:1WIRE:READ?  [Nb of Onewire devices]  // read string of all the 1-Wire devices on the link
 

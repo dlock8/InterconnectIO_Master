@@ -28,7 +28,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -171,6 +171,30 @@ scpi_interface_t scpi_interface = {
     .control = SCPI_Control,
     .flush = SCPI_Flush, 
 	.reset = SCPI_Reset,
+};
+
+
+// List of special string not already defined on SCPI parser
+const scpi_choice_def_t scpi_special_all_numbers_def[] = {
+    {/* name */ "ALL", /* type */ SCPI_BANK_ALL},
+    {/* name */ "BANK1", /* type */ SCPI_BANK1},
+    {/* name */ "BANK2", /* type */ SCPI_BANK2},
+    {/* name */ "BANK3", /* type */ SCPI_BANK3},
+    {/* name */ "BANK4", /* type */ SCPI_BANK4},
+    {/* name */ "LPR1", /* type */ SCPI_LPR1},
+    {/* name */ "LPR2", /* type */ SCPI_LPR2},
+    {/* name */ "HPR1", /* type */ SCPI_HPR1},
+    {/* name */ "SSR1", /* type */ SCPI_SSR1},
+    {/* name */ "OC1", /* type */ SCPI_OC1},
+    {/* name */ "OC2", /* type */ SCPI_OC2},
+    {/* name */ "OC3", /* type */ SCPI_OC3},
+    {/* name */ "ON", /* type */ 1},
+    {/* name */ "OFF", /* type */ 0},
+    {/* name */ "SPI", /* type */ SCPI_SPI},
+    {/* name */ "UART", /* type */ SCPI_UART},
+    {/* name */ "I2C", /* type */ SCPI_I2C},
+
+    SCPI_CHOICE_LIST_END,
 };
 
 /**
@@ -406,27 +430,6 @@ static scpi_result_t Callback_Relay_scpi(scpi_t *context) {
     return SCPI_RES_OK;
 
 }
-
-// List of special string not already defined on SCPI parser
-const scpi_choice_def_t scpi_special_all_numbers_def[] = {
-    {/* name */ "ALL", /* type */ SCPI_BANK_ALL},
-    {/* name */ "BANK1", /* type */ SCPI_BANK1},
-    {/* name */ "BANK2", /* type */ SCPI_BANK2},
-    {/* name */ "BANK3", /* type */ SCPI_BANK3},
-    {/* name */ "BANK4", /* type */ SCPI_BANK4},
-    {/* name */ "LPR1", /* type */ SCPI_LPR1},
-    {/* name */ "LPR2", /* type */ SCPI_LPR2},
-    {/* name */ "HPR1", /* type */ SCPI_HPR1},
-    {/* name */ "SSR1", /* type */ SCPI_SSR1},
-    {/* name */ "OC1", /* type */ SCPI_OC1},
-    {/* name */ "OC2", /* type */ SCPI_OC2},
-    {/* name */ "OC3", /* type */ SCPI_OC3},
-    {/* name */ "ON", /* type */ 1},
-    {/* name */ "OFF", /* type */ 0},
-
-    SCPI_CHOICE_LIST_END,
-};
-
 
 
 // Open  particular Relay bank or all relay
@@ -1065,6 +1068,8 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t *context) {
 static scpi_result_t Callback_com_scpi(scpi_t *context) {
     scpi_bool_t res;
     scpi_parameter_t param1;
+    scpi_number_t paramCom;
+
     uint16_t answer;  // will contains the answer returned by command
     uint8_t tag,ecode;
     uint32_t val=0;
@@ -1073,17 +1078,12 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
 
     char* sdata = NULL;
     char winfo[NB_INFO];   
-                                                                  \
-
-
-
+                                                                
     fprintf(stdout, "\nOn communication execute \r\n");
 
     tag = SCPI_CmdTag(context);   //extract tag from the command
 
-
     if ( tag == C1W || tag == R1W ) {
-
         res = SCPI_Parameter(context, &param1, true);  // Read first parameter
         if (res) {
             // Is parameter a number without suffix?
@@ -1096,7 +1096,6 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
     }
 
     if ( tag == W1W ) {
-
         res = SCPI_Parameter(context, &param1, true);  // Read first parameter
         if (res) {
             char str[NB_INFO];
@@ -1112,6 +1111,28 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
         }
     }
 
+    if ( tag == CIE || tag == CID || tag == CRI  ) {
+            // extract special word as parameter 
+           while(SCPI_ParamNumber(context, scpi_special_all_numbers_def, &paramCom, TRUE)){
+                if (paramCom.special) {
+                    switch (paramCom.content.tag) {
+                        case SCPI_SPI: 
+                            if (tag == CIE) {
+                                fprintf(stdout, "Enable SPI communication\r\n");
+                            }
+                            if (tag == CID) {
+                                fprintf(stdout, "Disable SPI communication\r\n");
+                            }
+                            if (tag == CRI) {
+                                fprintf(stdout, "Read status SPI communication: %d\r\n",val);
+                            }
+                        break;
+
+                    }
+                }
+
+           }
+    }
 
 
     switch (tag) {
@@ -1257,6 +1278,10 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "COM:OWire:Write", .callback = Callback_com_scpi,W1W},
     {.pattern = "COM:OWire:Read?", .callback = Callback_com_scpi,R1W},
     {.pattern = "COM:OWire:Check?", .callback = Callback_com_scpi,C1W},
+
+    {.pattern = "COM:INITialize:ENAble", .callback = Callback_com_scpi,CIE},
+    {.pattern = "COM:INITialize:DISable", .callback = Callback_com_scpi,CID},
+    {.pattern = "COM:INITialize:STATus?", .callback = Callback_com_scpi,CRI},
 
 
 	SCPI_CMD_LIST_END

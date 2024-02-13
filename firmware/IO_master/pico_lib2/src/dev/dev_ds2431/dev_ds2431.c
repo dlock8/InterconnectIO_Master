@@ -509,7 +509,7 @@ static bool onewire_read_id(struct rom *romid, size_t nb_devices_expected){
                         sprintf(romstr + strlen(romstr), "%02X", id[i]); 
                         romid->id[nb][i] = id[i];  // fill info on structure
                     }
-                    romstr[17]= '\0';
+                    romstr[16]= '\0';
                     fprintf(stdout,"ID of Device # %d: %s\n",nb,romstr);
                     strcpy(&romid->idstr[nb][0], romstr);
 
@@ -583,7 +583,7 @@ uint8_t onewire_write_info(const char* info,int start_address){
             fprintf(stdout,"Error on writing EEprom, error # %d\n", valid);
             return OW_WRITE_FAIL; // return error
         }
-        pinfo[9] = '\0';
+        pinfo[8] = '\0';
         fprintf(stdout,"Cut String address %d, str= %s\n",epos,pinfo);
     }
 
