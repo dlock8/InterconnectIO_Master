@@ -1485,6 +1485,9 @@ void test_com_command(void){
   TEST_SCPI_INPUT("COM:OWIRE:READ? 2 \r\n");
 */
 
+  TEST_SCPI_INPUT("SYST:OUT ON\r\n"); 
+  sleep_ms(300);
+
   TEST_SCPI_INPUT("COM:INIT:ENA  SPI\r\n");
   
 }
