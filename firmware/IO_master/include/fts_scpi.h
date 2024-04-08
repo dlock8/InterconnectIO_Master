@@ -87,7 +87,6 @@ extern "C" {
 #define RPP     73     // Read Power in milliwatt
 #define CPI     74     // Calibrate current on power device
 
-
 #define WEEP   78     // Write to eeprom 
 #define REEP   79     // Read from eeprom
 #define WDEF   80     // Write default value to EEprom
@@ -101,6 +100,40 @@ extern "C" {
 #define CID    89     // Disable communication protocol, set pin as GPIO
 #define CRI    90     // Read status communication protocol
 
+#define CSWD    100     // Write Data on user serial port, no answer
+#define CSRD    101     // Write Data on user serial port and wait for the answer
+#define CSWB    102     // Write user serial baudrate
+#define CSRB    103     // Read user serial baudrate
+#define CSWP    104     // Write user serial Protocol
+#define CSRP    105     // Read user serial Protocol
+#define CSWH    106     // Write user serial Handshake (RTS-CTS)
+#define CSRH    107     // Read user serial Handshake
+#define CSWT    108     // Write user serial Timeout
+#define CSRT    109     // Read user serial Timeout
+
+
+
+#define SPWB    121     // Write Data Byte on SPI port, no answer
+#define SPRB    122     // Write Data Byte on SPI port, read the answer
+#define SPWW    123     // Write Data Word on SPI port, no answer
+#define SPRW    124     // Write Data Word on SPI port, read the answer
+#define SPWT    125     // Write Data Word on SPI port, read the answer
+#define SPWRT   126     // Write Data  SPI port,and read number of bytes
+#define SPWRB   127
+#define SPWRW   128
+#define SPRT    129     // 
+
+#define SPWD    110     // Write Data on SPI port, no answer
+#define SPWR    111     // Write Data and read data  on SPI port
+#define SPRD    112     // Read Data  on SPI port
+#define SPWF    113     // Write user Spi baudrate
+#define SPRF    114     // Read user Spi baudrate
+#define SPWDB   115     // Write user Spi databits
+#define SPRDB   116     // Read user Spi databits
+#define SPWM    117    // Write user Spi mode
+#define SPRM    118     // Read user Spi mode
+#define SPWCS   119     // Set gpio used for SPI chipselect
+#define SPRCS   120     // Read Gpio used for SPI chipselect
 
 
 #define SCPI_BANK1 1     // Open BK1 relay tag

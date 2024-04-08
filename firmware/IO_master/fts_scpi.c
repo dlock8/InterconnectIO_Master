@@ -35,6 +35,8 @@
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
 #include "pico_lib2/src/dev/dev_ds2431/dev_ds2431.h"
+#include "pico_lib2/src/sys/include/sys_uart.h"
+#include "pico_lib2/src/sys/include/sys_spi.h"
 #include "include/scpi_user_config.h"
 #include "include/test.h"
 #include "include/fts_scpi.h"
@@ -82,9 +84,9 @@ size_t SCPI_write(scpi_t *context, const char *data, size_t len) {
     // added code to add null termination to the string data. uart_puts do not support parameter lenght.
     //char t[128];          // temporay buffer 
 
-    char outbuf[128];  // Global variable output buffer used to test code
+    char outbuf[SCPI_INPUT_BUFFER_SIZE];  // Global variable output buffer used to test code
 
-    strncpy(outbuf,data,128); // save data string to temporay buffer
+    strncpy(outbuf,data,SCPI_INPUT_BUFFER_SIZE); // save data string to temporay buffer
     outbuf[len] = '\0';      // add string termination
     uart_puts(UART_ID, outbuf); // send answer to serial port
     output_buffer_write(data, len);  // USED BY TEST to capture output of the command
@@ -196,6 +198,8 @@ const scpi_choice_def_t scpi_special_all_numbers_def[] = {
 
     SCPI_CHOICE_LIST_END,
 };
+
+
 
 /**
  * Reimplement IEEE488.2 *TST?
@@ -729,8 +733,7 @@ volatile    uint8_t tag;
             }
             break;
 
-        
-
+    
         case SLERR:  // Ctrl of led error
             fprintf (stdout, "Set Error led on gpio %d to: %d \r\n",GPIO_LED,value);
             gpio_put(GPIO_LED, value);
@@ -1075,15 +1078,36 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
     uint32_t val=0;
     size_t lgt,eid;
     bool retv = false;
+    bool bval;
+    const char *dpr;
 
     char* sdata = NULL;
-    char winfo[NB_INFO];   
+    char winfo[SCPI_INPUT_BUFFER_SIZE];   // big string to contents filtered data
+    char ustr[SCPI_INPUT_BUFFER_SIZE];    // big string to get temporary data
                                                                 
     fprintf(stdout, "\nOn communication execute \r\n");
 
+    winfo[0] = '\0';
+
+
+    ecode =NOERR;
     tag = SCPI_CmdTag(context);   //extract tag from the command
 
-    if ( tag == C1W || tag == R1W ) {
+    fprintf(stdout, "Tag = %d \r\n", tag);
+    
+    if (tag == CSWH) { 
+        // if ON or OFF, transform to value 0 or 1
+        res = SCPI_Parameter(context, &param1, true);  // Read first parameter
+        if (res && param1.type == SCPI_TOKEN_PROGRAM_MNEMONIC) {
+           SCPI_ParamToChoice(context, &param1, scpi_special_all_numbers_def, &val);
+        } else {
+               // Convert parameter to number, result  is in value.
+                 SCPI_ParamToUInt32(context, &param1, &val);
+        }
+    }
+
+
+    if ( tag == C1W || tag == R1W || tag == CSWB || tag == CSWT || tag == SPWF || tag == SPWM  ) {
         res = SCPI_Parameter(context, &param1, true);  // Read first parameter
         if (res) {
             // Is parameter a number without suffix?
@@ -1095,7 +1119,9 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
         }
     }
 
-    if ( tag == W1W ) {
+
+
+    if ( tag == W1W || tag == CSWP  ) {
         res = SCPI_Parameter(context, &param1, true);  // Read first parameter
         if (res) {
             char str[NB_INFO];
@@ -1111,51 +1137,227 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
         }
     }
 
+    if ( tag == CSWD || tag == CSRD) {
+        if (tag == CSWD) { res = SCPI_Parameter(context, &param1, true); } // Read parameter mandatory
+        if (tag == CSRD) { res = SCPI_Parameter(context, &param1, false); } // Read parameter, not mandatory
+        if (res) {
+            size_t i,j,ctr;
+            j = 0;
+            strcpy(ustr,param1.ptr);
+            for (i = 0; i < strlen(ustr); i++) {
+                //remove  comma character from string
+                if (ustr[i] != '\'' && ustr[i] != '"'){ 
+                    winfo[j++] = ustr[i];
+                } else { ctr = j;}  //save pointer to detect end of string
+            }
+            winfo[ctr] = '\0'; // add end of string marker
+        }
+    }
+
+
     if ( tag == CIE || tag == CID || tag == CRI  ) {
             // extract special word as parameter 
-           while(SCPI_ParamNumber(context, scpi_special_all_numbers_def, &paramCom, TRUE)){
+           while(SCPI_ParamNumber(context, scpi_special_all_numbers_def, &paramCom, FALSE)){
                 if (paramCom.special) {
                     switch (paramCom.content.tag) {
                         case SCPI_SPI: 
                             if (tag == CIE) {
+                                sys_spi_enable();
                                 fprintf(stdout, "Enable SPI communication\r\n");
                             }
                             if (tag == CID) {
+                                sys_spi_disable();
                                 fprintf(stdout, "Disable SPI communication\r\n");
                             }
                             if (tag == CRI) {
-                                fprintf(stdout, "Read status SPI communication: %d\r\n",val);
+                                bval = sys_spi_status();
+                                fprintf(stdout, "Read status SPI communication: %d\r\n",bval);
+                                SCPI_ResultBool(context,bval);
                             }
                         break;
 
+                        case SCPI_UART: 
+                            if (tag == CIE) {
+                                sys_uart_enable();
+                                fprintf(stdout, "Enable UART communication\r\n");
+                            }
+                            if (tag == CID) {
+                                sys_uart_disable();
+                                fprintf(stdout, "Disable UART communication\r\n");
+                            }
+                            if (tag == CRI) {
+                                bval = sys_uart_status();
+                                fprintf(stdout, "Read status UART communication: %d\r\n",bval);
+                                SCPI_ResultBool(context,bval);
+                            }
+                        break;
                     }
                 }
 
            }
     }
 
-
     switch (tag) {
         case C1W: 
             ecode = onewire_check_devices(&sdata, eid );     //check presence of one wire 
             SCPI_ResultText(context,sdata);
-            retv = true;   // no value returned
+            retv = true;   //  value returned
             break;
 
         case R1W: 
             ecode = onewire_read_info(&sdata,ADDR_INFO,NB_INFO,eid );  
             SCPI_ResultText(context,sdata);
-            retv = true;   // no value returned
+            retv = true;   //  value returned
             break;
 
         case W1W: 
             ecode = onewire_write_info(winfo,ADDR_INFO);  
             SCPI_ResultText(context,sdata);
+            retv = true;   // value returned
+            break;
+
+        case CSWB: 
+            fprintf(stdout, "Uart set Baudrate to %d\r\n", val);
+            sys_uart_set_baudrate(val);  
+            retv = false;   // no value returned
+            break;
+
+        case CSRB: 
+            val = sys_uart_get_baudrate();
+            fprintf(stdout, "Uart readback actual Baudrate, speed= %d\r\n", val); 
+            SCPI_ResultInt32(context,val); 
             retv = true;   // no value returned
             break;
 
-    }
+        case CSWT: 
+            fprintf(stdout, "Uart set Timeout_ms to %d\r\n", val);
+            sys_uart_set_timeout(val);  
+            retv = false;   // no value returned
+            break;
 
+        case CSRT: 
+            val = sys_uart_get_timeout();
+            fprintf(stdout, "Uart readback Timeout_ms: %d\r\n", val); 
+            SCPI_ResultInt32(context,val); 
+            retv = true;   // value returned
+            break;
+
+        case CSWH: 
+            fprintf(stdout, "Uart set RTS-CTS Handshake to %d\r\n", val);
+            sys_uart_set_handshake(val);  
+            retv = false;   // no value returned
+            break;
+
+        case CSRH: 
+            bval = sys_uart_get_handshake();
+            fprintf(stdout, "Uart readback RTS-CTS Handshake: %d\r\n", bval); 
+            SCPI_ResultBool(context,bval);
+            retv = true;   //  value returned
+            break;
+        
+        case CSWP: 
+            ecode = sys_uart_set_protocol(winfo);
+            if (ecode != NOERR) { 
+                fprintf(stdout, "Uart protocol error with value: %s\r\n", &winfo);
+            } else {
+                fprintf(stdout, "Uart set protocol to: %s\r\n", &winfo); 
+            }
+            retv = false;   //  value returned
+            break;
+
+        case CSRP: 
+            dpr = sys_uart_get_protocol();
+            fprintf(stdout, "Uart readback protocol: %s\r\n", dpr); 
+            SCPI_ResultText(context,dpr);
+            retv = true;   //  value returned
+            break;
+
+        case CSWD: // Write data to uart only, the answer is discarded
+            fprintf(stdout, "Uart transmit data: %s\r\n", &winfo);
+            sys_uart_write_data(winfo); // write data, do not expect answer
+            retv = false;   //  value returned
+            break;
+
+        case CSRD: 
+            ecode = sys_uart_write_read_data(winfo, ustr,SCPI_INPUT_BUFFER_SIZE); // write data, expect answer
+            if (ecode != NOCERR) { 
+                fprintf(stdout, "Uart Error with string: %s\r\n", winfo);
+            } else {
+                fprintf(stdout, "Uart transmit data: %s\r\n", &winfo);
+                fprintf(stdout, "Uart Received data: %s\r\n", &ustr); 
+            }
+            SCPI_ResultText(context,ustr); // return string with or without error
+            retv = false;   //  value returned
+            break;
+
+        case SPWF: 
+            fprintf(stdout, "SPI set Baudrate to %d\r\n", val);
+            sys_spi_set_baudrate(val);  
+            retv = false;   // no value returned
+            break;
+
+        case SPRF: 
+            val = sys_spi_get_baudrate();
+            fprintf(stdout, "SPI readback Baudrate, speed= %d\r\n", val); 
+            SCPI_ResultInt32(context,val); 
+            retv = true;   // no value returned
+            break;
+
+        case SPWCS: 
+            ecode = sys_spi_set_chipselect(val); 
+            if (ecode == 0) {
+                fprintf(stdout, "SPI set Chipselect to %d\r\n", val);
+            } else { 
+                fprintf(stdout, "Unable to set SPI chipselect to gpio:  %d\r\n", val);
+            }
+            retv = false;   // no value returned
+            break;
+
+        case SPRCS: 
+            val = sys_spi_get_chipselect();
+            fprintf(stdout, "SPI readback chipselect gpio= %d\r\n", val); 
+            SCPI_ResultInt32(context,val); 
+            retv = true;   // no value returned
+            break;
+
+
+        case SPWDB: 
+            ecode = sys_spi_set_databits(val); 
+            if (ecode == 0) {
+                fprintf(stdout, "SPI set Chipselect to %d\r\n", val);
+            } else { 
+                fprintf(stdout, "Unable to set SPI chipselect to gpio:  %d\r\n", val);
+            }
+            retv = false;   // no value returned
+            break;
+
+        case SPRDB: 
+            val = sys_spi_get_databits();
+            fprintf(stdout, "SPI readback chipselect gpio= %d\r\n", val); 
+            SCPI_ResultInt32(context,val); 
+            retv = true;   // no value returned
+            break;
+
+        case SPWM: 
+            fprintf(stdout, "SPI set Mode to %d\r\n", val);
+            sys_spi_set_mode(val);  
+            retv = false;   // no value returned
+            break;
+
+        case SPRM: 
+            val = sys_spi_get_mode();
+            fprintf(stdout, "SPI Mode is set to = %d\r\n", val); 
+            SCPI_ResultInt32(context,val); 
+            retv = true;   // no value returned
+            break;
+
+        case SPWT: // Write data to SPI only, the answer is discarded
+            fprintf(stdout, "SPI transmit data: %s\r\n", &winfo);
+            //sys_uart_write_data(winfo); // write data, do not expect answer
+            retv = false;   //  value returned
+            break;
+        
+    }
 
 
        // raise error if is the case
@@ -1168,9 +1370,16 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
         case OW_WRITE_FAIL:   { answer= WRITE_ONEWIRE; break;}
         case OW_READ_FAIL:   { answer= READ_ONEWIRES; break;}
         case OW_NO_VALIDID:   { answer= HEX_VALIDID; break;}
+        case UART_PROT_NUM_NOTVALID: { answer= UART_NUMBER_ERROR; break;}
+        case UART_PROT_LETTER_NOVALID: { answer= UART_LETTER_ERROR; break;}
+        case UART_RX_TIMEOUT_MS : { answer= UART_RX_ERROR; break;}
+        case UART_LASTCHAR_TIMEOUT_MS: { answer= UART_LASTCHAR_ERROR; break;}
+        case UART_BUFFER_FULL: { answer= UART_RXBUFFER_ERROR; break;}
+        case SPI_MODE_NUM_NOTVALID: { answer= SPI_MODE_ERROR; break;}
+        case SPI_CS_NUM_ERROR: { answer= SPI_CS_ERROR; break;}
     }    
 
-
+   
     if (ecode != NOERR) {
         SCPI_ErrorPush(context, answer);  // push errors 
         return SCPI_RES_ERR;
@@ -1180,6 +1389,116 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
     }
     free(sdata);
 }
+
+// Low level command
+static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
+    scpi_bool_t res;
+    scpi_parameter_t param1;
+    scpi_number_t paramCom;
+
+   // uint16_t answer;  // will contains the answer returned by command
+    uint8_t tag,ecode;
+    uint32_t val=0;
+    int32_t readlen[1];
+    uint64_t lval;
+   // size_t lgt,eid;
+   // bool retv = false;
+   // bool bval;
+   // const char *dpr;
+
+   // char* sdata = NULL;
+   volatile uint8_t wdata[SCPI_INPUT_BUFFER_SIZE];   // array to content the data to write
+   volatile uint8_t rdata[SCPI_INPUT_BUFFER_SIZE];    // array to content the data read from function
+    int idx = 0;  // array pointer index
+
+    const char *data;  // Pointer to received data
+    size_t length = 0;     // Length of received data
+                                                                
+    fprintf(stdout, "\nOn synchrounous communication execute \r\n");
+   // winfo[0] = '\0';
+
+    ecode =NOERR;
+    tag = SCPI_CmdTag(context);   //extract tag from the command
+
+    fprintf(stdout, "Tag = %d \r\n", tag);
+
+    if ( tag == SPWT ) { 
+
+        SCPI_CommandNumbers(context, readlen, 1,0);
+        fprintf(stdout, "Read length: %d \r\n", readlen[0]);
+
+
+        //Loop to extract all data from the parameters
+        while(SCPI_Parameter(context, &param1, FALSE)){
+            if (SCPI_ParamIsNumber(&param1, TRUE)) {
+                // Convert parameter to unsigned int. Result is in value.
+                SCPI_ParamToUInt64(context, &param1, &lval);
+                fprintf(stdout, "Value to write: 0x%x \r\n", lval);
+                int plen = param1.len / 2;  // Calculate number of byte based on string length
+                // loop to save each byte on the write array
+                for (int i = 0; i < plen; i++) {
+                    wdata[idx++] = (lval >> (8 * (plen - 1 - i))) & 0xff;
+                }
+            }
+            const char *dpr;
+            if (param1.type  == SCPI_TOKEN_ARBITRARY_BLOCK_PROGRAM_DATA) {
+                 // Call SCPI_ParamArbitraryBlock function
+                scpi_bool_t result = SCPI_ParamArbitraryBlock(context, &dpr, &length, true);
+                if (result == true) {
+                    // Convert char array to byte array
+                    for (int j = 0; j < length; j++) {
+                        printf("0x%x, %d :", dpr[j],(unsigned char)dpr[j]);
+                        wdata[idx++] = (unsigned char)dpr[j];
+                    }
+                    
+                } else {
+                    printf("Error: Failed to receive block of data.\n");
+                }
+            }
+        
+        }
+
+
+
+            res = SCPI_Parameter(context, &param1, FALSE);
+
+
+                        // Is parameter a number without suffix?
+            if (SCPI_ParamIsNumber(&param1, TRUE)) {
+                // Convert parameter to unsigned int. Result is in value.
+                 SCPI_ParamToUInt32(context, &param1, &val);
+                 // change number to size_t
+            }
+
+
+            if (param1.type  == SCPI_TOKEN_ARBITRARY_BLOCK_PROGRAM_DATA) {
+                printf("Parameter are ARB block DATA");
+            }
+            // Call SCPI_ParamArbitraryBlock function
+            scpi_bool_t result = SCPI_ParamArbitraryBlock(context, &data, &length, true);
+
+            if (result == true) {
+                printf("Received block of data with length %zu bytes.\n", length);
+                printf("First few bytes of received data: ");
+                for (size_t i = 0; i < length && i < 10; i++) {
+                    printf("0x%x, %02X :", data[i],(unsigned char)data[i]);
+                }
+                printf("\n");
+                SCPI_ResultArbitraryBlockHeader(context,length);
+                printf("\nData: ");
+                SCPI_ResultArbitraryBlockData(context, data, length);
+                printf("\n");
+                // Process the received data...
+            } else {
+                printf("Error: Failed to receive block of data.\n");
+            }
+          
+    }
+
+
+
+}
+
 
     // The SCPI commands we support and the callbacks they use.
 scpi_command_t scpi_commands[] = {
@@ -1282,6 +1601,40 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "COM:INITialize:ENAble", .callback = Callback_com_scpi,CIE},
     {.pattern = "COM:INITialize:DISable", .callback = Callback_com_scpi,CID},
     {.pattern = "COM:INITialize:STATus?", .callback = Callback_com_scpi,CRI},
+
+    {.pattern = "COM:SERIAL:Write", .callback = Callback_com_scpi,CSWD},
+    {.pattern = "COM:SERIAL:Read?", .callback = Callback_com_scpi,CSRD},
+    {.pattern = "COM:SERIAL:Baudrate", .callback = Callback_com_scpi,CSWB},
+    {.pattern = "COM:SERIAL:Baudrate?", .callback = Callback_com_scpi,CSRB},
+    {.pattern = "COM:SERIAL:Protocol", .callback = Callback_com_scpi,CSWP},
+    {.pattern = "COM:SERIAL:Protocol?", .callback = Callback_com_scpi,CSRP},
+    {.pattern = "COM:SERIAL:Handshake", .callback = Callback_com_scpi,CSWH},
+    {.pattern = "COM:SERIAL:Handshake?", .callback = Callback_com_scpi,CSRH},
+    {.pattern = "COM:SERIAL:Timeout", .callback = Callback_com_scpi,CSWT},
+    {.pattern = "COM:SERIAL:Timeout?", .callback = Callback_com_scpi,CSRT},
+
+    {.pattern = "COM:SPI:WRIte:REAd:LENgth#", .callback = Callback_sync_com_scpi,SPWT},
+    {.pattern = "COM:SPI:WRIte[:Byte]", .callback = Callback_com_scpi,SPWB},
+    {.pattern = "COM:SPI:WRIte[:Word]", .callback = Callback_com_scpi,SPWW},
+    {.pattern = "COM:SPI:WRIte:REAd?", .callback = Callback_com_scpi,SPWRT},
+    {.pattern = "COM:SPI:WRIte:REAd[:Byte]?", .callback = Callback_com_scpi,SPWRB},
+    {.pattern = "COM:SPI:WRIte:REAd[:Word]?", .callback = Callback_com_scpi,SPWRW},
+    {.pattern = "COM:SPI:REAd?", .callback = Callback_com_scpi,SPRT},
+    {.pattern = "COM:SPI:REAd[:Byte]?", .callback = Callback_com_scpi,SPRB},
+    {.pattern = "COM:SPI:REAd[:Word]?", .callback = Callback_com_scpi,SPRW},
+
+   // {.pattern = "COM:SPI:READ?", .callback = Callback_com_scpi,SPRB},
+   // {.pattern = "COM:SPI:READ?", .callback = Callback_com_scpi,SPRB},
+   // {.pattern = "COM:SPI:WRITEW", .callback = Callback_com_scpi,SPWW},
+   // {.pattern = "COM:SPI:READW?", .callback = Callback_com_scpi,SPRW},
+    {.pattern = "COM:SPI:Baudrate", .callback = Callback_com_scpi,SPWF},
+    {.pattern = "COM:SPI:Baudrate?", .callback = Callback_com_scpi,SPRF},
+    {.pattern = "COM:SPI:CS", .callback = Callback_com_scpi,SPWCS},
+    {.pattern = "COM:SPI:CS?", .callback = Callback_com_scpi,SPRCS},
+    {.pattern = "COM:SPI:Mode", .callback = Callback_com_scpi,SPWM},
+    {.pattern = "COM:SPI:Mode?", .callback = Callback_com_scpi,SPRM},
+
+
 
 
 	SCPI_CMD_LIST_END

@@ -72,7 +72,15 @@ extern "C" {
 #define GP_PAD_VALUE        60
 #define GP_PAD_SET          61
 #define GP_PAD_READ         65
+#define GP_FUNCTION         75
 #define SL_DEV_STATUS       100
+#define ENABLE_UART         101
+#define DISABLE_UART        102
+#define SET_UART_PROT       103
+#define GET_UART_CFG        105
+
+
+
 
 
 

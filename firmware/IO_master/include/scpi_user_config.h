@@ -71,8 +71,15 @@ extern "C" {
     X(NO_ONEWIRES,              -375,  "Presence of Onewire devices has not been detected") \
     X(READ_ONEWIRES,            -376,  "Error raise during read of Onewire devices") \
     X(HEX_VALIDID,              -377,  "Onewire device ID contains illegal character (hexadecimal only)") \
-
-
+    X(UART_NUMBER_ERROR,        -378,  "Uart protocol number is invalid, check value for Data_bits or Stop_bits") \
+    X(UART_LETTER_ERROR,        -379,  "Uart protocol letter is invalid, check letter used to define parity (expected: O,N,E)") \
+    X(UART_PROTOCOL_ERROR,      -380,  "Uart protocol value is invalid, expect 3 characters on any orders ex: 8N1,7O1") \
+    X(UART_RX_ERROR,            -381,  "Uart serial communication error, Timeout occur on waiting to receive char") \
+    X(UART_LASTCHAR_ERROR,      -382,  "Uart Timeout occur on waiting to receive last character of string (last char is the same of Tx)") \
+    X(UART_RXBUFFER_ERROR,      -383,  "Uart Receiver buffer overrun. String received too long") \
+    X(SPI_MODE_ERROR,           -384,  "SPI mode number is invalid, expect Mode value between 0 and 3") \
+    X(SPI_CS_ERROR,             -385,  "SPI chipselect gpio number is invalid." ) \
+  
 
 // Definition of each bit of the Operation Condition Event Register (QER) 
 #define OPER_BOOT_FAIL           0   // <1>

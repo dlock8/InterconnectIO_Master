@@ -1485,9 +1485,96 @@ void test_com_command(void){
   TEST_SCPI_INPUT("COM:OWIRE:READ? 2 \r\n");
 */
 
+  fprintf(stdout,"\nON TEST COMMAND\n");
+
+// i2c is the communication channel to talk to the Pico on selftest board. if communication fail,
+//everything will fail.
+ printf("I2C communication example\n");
+
+
+  setup_i2c_extern();
+  //scan_i2c_bus(i2c0);
+ // scan_i2c_bus(i2c1);
+
+
+  printf("SPI communication example\n");
+
   TEST_SCPI_INPUT("SYST:OUT ON\r\n"); 
   sleep_ms(300);
 
-  TEST_SCPI_INPUT("COM:INIT:ENA  SPI\r\n");
+ //TEST_SCPI_INPUT("COM:SPI:WRI 6,10\r\n");
+ // TEST_SCPI_INPUT("COM:SPI:WRI #H15, 12\r\n");
+
+ // TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN8 #H55,#H1234,#H567890,#Haabbccdd, #H1122334455667788  \r\n");
+  TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN24 #204ABCD \r\n");
+  TEST_SCPI_INPUT("COM:SPI:WRI #06789\r\n");
+
+  TEST_SCPI_INPUT("COM:SPI:WRITE:BYTE\r\n");
+  TEST_SCPI_INPUT("COM:SPI:WRITE:WORD\r\n");
+
+
+
+
+
+
+ printf("SERIAL communication example\n");
+
+ uint16_t rdata;
+uint16_t answer[1];  // will contains the answer returned by command
+ // setup selftest board uart 8N1
+  send_master(i2c1,PICO_SELFTEST_ADDRESS, SET_UART_PROT, 0b11001100,&rdata); // send command to close K17
+  answer[0] = rdata;  // return read value
+  send_master(i2c1,PICO_SELFTEST_ADDRESS, GET_UART_CFG, 0,&rdata); // send command to close K17
+  answer[0] = rdata;  // return read value
+  //send_master(i2c1,PICO_SELFTEST_ADDRESS,  ENABLE_UART , 0,&rdata); // send command to close K17
+
+  send_master(i2c1,PICO_SELFTEST_ADDRESS,  DISABLE_UART , 0,&rdata); // send command to close K17
+
+  TEST_SCPI_INPUT("COM:SERIAL:B 57600\r\n");
+  TEST_SCPI_INPUT("COM:SERIAL:P 8N1\r\n"); // error number
+  TEST_SCPI_INPUT("COM:SERIAL:H OFF\r\n");
+  TEST_SCPI_INPUT("COM:SERIAL:H?\r\n");
+
+  TEST_SCPI_INPUT("COM:INIT:ENA UART\r\n");
+
+  TEST_SCPI_INPUT("COM:SERIAL:T 4000\n");
+  TEST_SCPI_INPUT("COM:SERIAL:T?\r\n");
+
+  TEST_SCPI_INPUT("COM:SERIAL:W  'ABCDEFGHIJKLPMNOP\n' \r\n");
+  TEST_SCPI_INPUT("COM:SERIAL:R?  'test\r' \r\n");
+  TEST_SCPI_INPUT("COM:SERIAL:R?  'test1\r' \r\n");
+  TEST_SCPI_INPUT("COM:SERIAL:R?  'test2\r' \r\n");
+  TEST_SCPI_INPUT("COM:SERIAL:R?  'test3\r' \r\n");
+
+
+
+  TEST_SCPI_INPUT("COM:SERIAL:P 5O2\r\n");
+  TEST_SCPI_INPUT("COM:SERIAL:P?\r\n");
+
+  TEST_SCPI_INPUT("COM:SERIAL:P 7N\r\n"); // missing value
+  TEST_SCPI_INPUT("COM:SERIAL:P?\r\n");
+
+  TEST_SCPI_INPUT("COM:SERIAL:P 9N1\r\n"); // error number
+  TEST_SCPI_INPUT("COM:SERIAL:P 8,N,1\r\n"); // error number
+  TEST_SCPI_INPUT("COM:SERIAL:P 6N4\r\n"); // error number
+  TEST_SCPI_INPUT("COM:SERIAL:P 8D2\r\n"); // error letter
+
+
+
+
+
+  TEST_SCPI_INPUT("COM:SERIAL:H ON\r\n");
+  TEST_SCPI_INPUT("COM:SERIAL:H?\r\n");
+  TEST_SCPI_INPUT("COM:SERIAL:H OFF\r\n");
+  TEST_SCPI_INPUT("COM:SERIAL:H?\r\n");
+
+
+   TEST_SCPI_INPUT("COM:SERIAL:B 230000\r\n");
+   TEST_SCPI_INPUT("COM:SERIAL:B?\r\n");
+
+  TEST_SCPI_INPUT("COM:INIT:ENA UART\r\n");
+  TEST_SCPI_INPUT("COM:INIT:STAT? UART\r\n");
+  TEST_SCPI_INPUT("COM:INIT:DIS UART\r\n");
+  TEST_SCPI_INPUT("COM:INIT:STAT? UART\r\n");
   
 }

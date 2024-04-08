@@ -11,7 +11,8 @@ if (NOT TARGET lib2_sys)
      #   ${CMAKE_CURRENT_LIST_DIR}/sys_fn.c
      #   ${CMAKE_CURRENT_LIST_DIR}/sys_util.c
         ${CMAKE_CURRENT_LIST_DIR}/sys_i2c.c
-     #   ${CMAKE_CURRENT_LIST_DIR}/sys_spi.c
+        ${CMAKE_CURRENT_LIST_DIR}/sys_spi.c
+        ${CMAKE_CURRENT_LIST_DIR}/sys_uart.c
      #   ${CMAKE_CURRENT_LIST_DIR}/sys_time.c
     )
 
@@ -23,6 +24,7 @@ if (NOT TARGET lib2_sys)
         hardware_spi
         hardware_i2c
         hardware_gpio
+        hardware_uart
         dev_ina219
         dev_mcp4725
         dev_24lc32
