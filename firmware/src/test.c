@@ -9,15 +9,16 @@
 #include "pico_lib2/src/dev/dev_ds2431/dev_ds2431.h"
 #include "pico_lib2/src/sys/include/sys_adc.h"
 #include "hardware/uart.h"
-//#include "hardware/spi.h"
+#include "hardware/spi.h"
 #include "hardware/i2c.h"
 #include "include/functadv.h"
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
 #include "include/test.h"
 #include "include/scpi_spi.h"
+#include "include/scpi_i2c.h"
 
-#include "/home/pi/pico/pico-sdk/src/rp2_common/hardware_spi/include/hardware/spi.h"
+//#include "/home/pi/pico/pico-sdk/src/rp2_common/hardware_spi/include/hardware/spi.h"
 
 
 

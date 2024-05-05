@@ -35,8 +35,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include "pico/stdlib.h"
-//#include "hardware/spi.h"
-#include "/home/pi/pico/pico-sdk/src/rp2_common/hardware_spi/include/hardware/spi.h"
+#include "hardware/spi.h"
 #include "include/scpi_spi.h"
 
 

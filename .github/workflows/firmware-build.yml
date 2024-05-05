@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -22,7 +22,7 @@ jobs:
         run: git ls-remote https://github.com/raspberrypi/pico-sdk.git master | cut -f 1 | tee .sdk-master-id
 
       - name: Cache SDK
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ./pico-sdk
           key: ${{ runner.os }}-pico-sdk-repo-${{ hashFiles('.sdk-master-id') }}
