@@ -25,7 +25,7 @@ message(STATUS "Cmake source directory: ${CMAKE_SOURCE_DIR}")
 
 
 
-add_subdirectory(IO_master)
+add_subdirectory(src)
 #add_subdirectory(IO_slave)
 
 

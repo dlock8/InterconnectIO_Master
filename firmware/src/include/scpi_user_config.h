@@ -79,7 +79,11 @@ extern "C" {
     X(UART_RXBUFFER_ERROR,      -383,  "Uart Receiver buffer overrun. String received too long") \
     X(SPI_MODE_ERROR,           -384,  "SPI mode number is invalid, expect Mode value between 0 and 3") \
     X(SPI_CS_ERROR,             -385,  "SPI chipselect gpio number is invalid." ) \
-  
+    X(MEMORY_ALLOCATION_ERROR,  -386,  "Internal error, memory allocation raise error." ) \
+    X(ARB_WORD_FORMAT_ERROR,    -387,  "Arbitrary block data length is odd, expect even number for word size." ) \
+
+ 
+
 
 // Definition of each bit of the Operation Condition Event Register (QER) 
 #define OPER_BOOT_FAIL           0   // <1>

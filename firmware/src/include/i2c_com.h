@@ -27,10 +27,6 @@ extern "C" {
 #define I2C_MASTER_SDA_PIN  20 // GPIO used to I2C SDA
 #define I2C_MASTER_SCL_PIN  21 // GPIO used to I2C SCL
 
-#define I2C_EXTERN_SDA_PIN  6 // GPIO used to I2C SDA
-#define I2C_EXTERN_SCL_PIN  7 // GPIO used to I2C SCL
-
-
 
 // Array of relay index to pico gpio assigned to control the relay actuation
 #define RBK {{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7},\
@@ -78,20 +74,10 @@ extern "C" {
 #define DISABLE_UART        102
 #define SET_UART_PROT       103
 #define GET_UART_CFG        105
-
-
-
-
-
-
-
-
-
-
-// Error code from I2C sub
-
-//#define I2C_COM_ERROR       125  // I2C communication error
-//#define RELAY_NUM_ERROR     126  // Relay numbering erro
+#define ENABLE_SPI          111
+#define DISABLE_SPI         112
+#define SET_SPI_CFG         113
+#define GET_SPI_CFG         115
 
 
 
@@ -102,7 +88,6 @@ bool relay_execute(uint16_t *list,uint8_t action, uint16_t *answer);
 bool digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, uint16_t *answer);
 bool gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, uint16_t *answer);
 bool system_execute(uint8_t action, uint16_t *answer);
-void setup_i2c_extern(void);
 
 
 #endif // 

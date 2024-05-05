@@ -11,8 +11,6 @@ if (NOT TARGET lib2_sys)
      #   ${CMAKE_CURRENT_LIST_DIR}/sys_fn.c
      #   ${CMAKE_CURRENT_LIST_DIR}/sys_util.c
         ${CMAKE_CURRENT_LIST_DIR}/sys_i2c.c
-        ${CMAKE_CURRENT_LIST_DIR}/sys_spi.c
-        ${CMAKE_CURRENT_LIST_DIR}/sys_uart.c
      #   ${CMAKE_CURRENT_LIST_DIR}/sys_time.c
     )
 

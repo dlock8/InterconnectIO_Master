@@ -29,8 +29,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _SYS_UART_H_
-#define _SYS_UART_H_
+#ifndef _SCPI_UART_H_
+#define _SCPI_UART_H_
 
 #ifdef __cplusplus
  extern "C" {
@@ -65,19 +65,19 @@
 #define UART_BUFFER_FULL            36
 
 
-void sys_uart_enable(void);
-void sys_uart_disable(void);
-bool sys_uart_status(void);
-void sys_uart_set_baudrate(uint32_t speed);
-uint32_t sys_uart_get_baudrate(void); 
-void sys_uart_set_timeout(uint32_t time);
-uint32_t sys_uart_get_timeout(void); 
-void sys_uart_set_handshake(bool val);
-bool sys_uart_get_handshake(void);
-uint8_t sys_uart_set_protocol(char* str);
-const char* sys_uart_get_protocol(void);
-void sys_uart_write_data(char* dwrt);
-uint8_t sys_uart_write_read_data(char* strd, char* dpr,size_t rsize); // write data, expect answer
+void scpi_uart_enable(void);
+void scpi_uart_disable(void);
+bool scpi_uart_status(void);
+void scpi_uart_set_baudrate(uint32_t speed);
+uint32_t scpi_uart_get_baudrate(void); 
+void scpi_uart_set_timeout(uint32_t time);
+uint32_t scpi_uart_get_timeout(void); 
+void scpi_uart_set_handshake(bool val);
+bool scpi_uart_get_handshake(void);
+uint8_t scpi_uart_set_protocol(char* str);
+const char* scpi_uart_get_protocol(void);
+void scpi_uart_write_data(char* dwrt);
+uint8_t scpi_uart_write_read_data(char* strd, char* dpr,size_t rsize); // write data, expect answer
 
 
 #ifdef __cplusplus

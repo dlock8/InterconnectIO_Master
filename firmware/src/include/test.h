@@ -31,6 +31,8 @@ void test_command(void);
 static void output_buffer_clear(void);
 void test_design(void);
 int onewiretest(void);
+void test_spi_adx(void);
 void test_com_command(void);
+
  
 #endif /* BUFFER_H */

@@ -113,27 +113,25 @@ extern "C" {
 
 
 
-#define SPWB    121     // Write Data Byte on SPI port, no answer
-#define SPRB    122     // Write Data Byte on SPI port, read the answer
-#define SPWW    123     // Write Data Word on SPI port, no answer
-#define SPRW    124     // Write Data Word on SPI port, read the answer
-#define SPWT    125     // Write Data Word on SPI port, read the answer
-#define SPWRT   126     // Write Data  SPI port,and read number of bytes
-#define SPWRB   127
-#define SPWRW   128
-#define SPRT    129     // 
-
-#define SPWD    110     // Write Data on SPI port, no answer
+#define SPWD    110     // Write Data on SPI port, read data
 #define SPWR    111     // Write Data and read data  on SPI port
 #define SPRD    112     // Read Data  on SPI port
 #define SPWF    113     // Write user Spi baudrate
 #define SPRF    114     // Read user Spi baudrate
 #define SPWDB   115     // Write user Spi databits
 #define SPRDB   116     // Read user Spi databits
-#define SPWM    117    // Write user Spi mode
+#define SPWM    117     // Write user Spi mode
 #define SPRM    118     // Read user Spi mode
 #define SPWCS   119     // Set gpio used for SPI chipselect
 #define SPRCS   120     // Read Gpio used for SPI chipselect
+
+#define ICWD    130     // Write Data on I2C port
+#define ICRD    131     // Read Data  on I2C port
+#define ICWF    132     // Write user I2C baudrate
+#define ICRF    133     // Read user I2C baudrate
+#define ICWDB   134     // Write user I2C databits
+#define ICRDB   135     // Read user I2C databits
+
 
 
 #define SCPI_BANK1 1     // Open BK1 relay tag
@@ -174,6 +172,9 @@ extern "C" {
 
 #define ESR_USER_BIT 6       // User Request Bit position on ESR
 #define ESR_PON_BIT 7       // Power ON Bit position on ESR
+
+// Error 
+#define ARB_ODD_ERR  1   // Error on  Arbitrary block for word defintion 
 
 
 /* Reset Block for master

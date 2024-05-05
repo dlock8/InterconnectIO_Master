@@ -26,9 +26,9 @@ message(STATUS "Binary=${PROJECT_BINARY_DIR}")
 
 # Configure Major and minor version 
 configure_file (
-  "${PROJECT_SOURCE_DIR}/IO_master/include/userconfig.h.in"
- "${PROJECT_BINARY_DIR}/IO_master/include/userconfig.h"  ) 
-include_directories("${PROJECT_BINARY_DIR}/IO_master/include") 
+  "${PROJECT_SOURCE_DIR}/src/include/userconfig.h.in"
+ "${PROJECT_BINARY_DIR}/src/include/userconfig.h"  ) 
+include_directories("${PROJECT_BINARY_DIR}/src/include") 
 
 
 #set(PICO_LIB2_PATH "${PROJECT_SOURCE_DIR}/IO_master/pico_lib2" CACHE PATH "Path to the PICO LIB2" FORCE)
@@ -45,31 +45,40 @@ add_dependencies(scpi_parser scpi_parser_build)
 target_link_libraries(scpi_parser INTERFACE "${scpi_parser_PREFIX}/libscpi.a")
 target_include_directories(scpi_parser INTERFACE "${scpi_parser_SOURCE_DIR}/inc")
 
+# Define libraries
+add_library(fts_scpi INTERFACE)
+add_library(i2c_com INTERFACE)
+add_library(functadv INTERFACE)
+add_library(test INTERFACE)
+add_library(scpi_uart INTERFACE)
+add_library(scpi_spi INTERFACE)
+add_library(scpi_i2c INTERFACE)
 
 
-
-
-add_library(fts_scpi INTERFACE) #DL
+# Set include directories
 target_include_directories(fts_scpi INTERFACE ./include)
-target_sources(fts_scpi INTERFACE fts_scpi.c)
-
-add_library(i2c_com INTERFACE) #DL
 target_include_directories(i2c_com INTERFACE ./include)
-target_sources(i2c_com INTERFACE i2c_com.c)
-
-add_library(functadv INTERFACE) #DL
 target_include_directories(functadv INTERFACE ./include)
-target_sources(functadv INTERFACE functadv.c)
-
-add_library(test INTERFACE) #DL
 target_include_directories(test INTERFACE ./include)
-target_sources(test INTERFACE test.c)
+target_include_directories(scpi_uart INTERFACE ./include)
+target_include_directories(scpi_spi INTERFACE ./include)
+target_include_directories(scpi_i2c INTERFACE ./include)
+
+# Set source files
+target_sources(fts_scpi INTERFACE ./fts_scpi.c)
+target_sources(i2c_com INTERFACE ./i2c_com.c)
+target_sources(functadv INTERFACE ./functadv.c)
+target_sources(test INTERFACE ./test.c)
+target_sources(test INTERFACE ./scpi_uart.c)
+target_sources(test INTERFACE ./scpi_spi.c)
+target_sources(test INTERFACE ./scpi_i2c.c)
+
 
 MESSAGE(STATUS "Picolib2= ${PICO_LIB2_PATH}") 
 
-add_subdirectory(pico_lib2)   # add Pico_lib2 to project
+# add_subdirectory(pico_lib2)   # add Pico_lib2 to project
 
-set(SOURCES_FILES master.c test.c i2c_com.c functadv.c fts_scpi.c)
+set(SOURCES_FILES master.c test.c i2c_com.c functadv.c fts_scpi.c scpi_uart scpi_spi scpi_i2c)
 add_executable(master ${SOURCES_FILES})
 
 pico_enable_stdio_usb(master 1)
@@ -86,5 +95,8 @@ target_link_libraries(master
 	i2c_com
 	functadv
 	test
+	scpi_uart
+	scpi_spi
+	scpi_i2c
 	lib2_sys
 )

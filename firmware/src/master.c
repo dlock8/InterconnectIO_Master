@@ -341,9 +341,11 @@ int main(void) {
   init_scpi();
   setup_master();  // Initialize of internal I2C_communication
   Hardware_Default_Setting();
-  
+
+
   init_main_com();  // Setup serial communication parameter
  
+  
   stdio_uart_init_full(UART_ID,PICO_DEFAULT_UART_BAUD_RATE,PICO_DEFAULT_UART_TX_PIN,PICO_DEFAULT_UART_RX_PIN);
 
   init_queue(); // initialise queue for message received

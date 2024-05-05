@@ -8,13 +8,17 @@
 #include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
 #include "pico_lib2/src/dev/dev_ds2431/dev_ds2431.h"
 #include "pico_lib2/src/sys/include/sys_adc.h"
+#include "hardware/uart.h"
+//#include "hardware/spi.h"
 #include "hardware/i2c.h"
 #include "include/functadv.h"
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
 #include "include/test.h"
-#include "hardware/uart.h"
-#include "hardware/spi.h"
+#include "include/scpi_spi.h"
+
+#include "/home/pi/pico/pico-sdk/src/rp2_common/hardware_spi/include/hardware/spi.h"
+
 
 
 /**> Global variables */
@@ -1323,10 +1327,12 @@ void test_design(void){
 
   
  //send and read data
- spi_write_read_blocking(spi_default, outb, inb, BUF_LEN);
- sleep_ms(100); // wait to be sure of slave RX interrupt is complete
- spi_write_read_blocking(spi_default, 0, inb, BUF_LEN*2);
-
+ while(1){
+  printf("+");
+  spi_write_read_blocking(spi_default, outb, inb, BUF_LEN);
+  sleep_ms(100); // wait to be sure of slave RX interrupt is complete
+  spi_write_read_blocking(spi_default, 0, inb, BUF_LEN*2);
+ }
 
 bool id = true;
 
@@ -1411,7 +1417,7 @@ if (strcmp(SendData, RecData) == 0) {
  printf("I2C communication example\n");
 
 
-  setup_i2c_extern();
+  //setup_i2c_extern();
   //scan_i2c_bus(i2c0);
   scan_i2c_bus(i2c1);
 
@@ -1477,6 +1483,9 @@ int onewiretest() {
 void test_com_command(void){
    int result;
 
+   uint16_t rdata;
+   uint16_t answer[1];  // will contains the answer returned by command
+
 /*
   TEST_SCPI_INPUT("COM:OW:CHECK? 2\r\n");
   TEST_SCPI_INPUT("COM:OWIRE:WRITE '2D4CE282200000CC, 500-1010-020, 000001, J1' \r\n");
@@ -1487,12 +1496,17 @@ void test_com_command(void){
 
   fprintf(stdout,"\nON TEST COMMAND\n");
 
+
+ // test_spi_adx();
+
 // i2c is the communication channel to talk to the Pico on selftest board. if communication fail,
 //everything will fail.
  printf("I2C communication example\n");
 
 
-  setup_i2c_extern();
+
+
+  //setup_i2c_extern();
   //scan_i2c_bus(i2c0);
  // scan_i2c_bus(i2c1);
 
@@ -1502,11 +1516,101 @@ void test_com_command(void){
   TEST_SCPI_INPUT("SYST:OUT ON\r\n"); 
   sleep_ms(300);
 
- //TEST_SCPI_INPUT("COM:SPI:WRI 6,10\r\n");
- // TEST_SCPI_INPUT("COM:SPI:WRI #H15, 12\r\n");
+//test_spi_adx();
 
- // TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN8 #H55,#H1234,#H567890,#Haabbccdd, #H1122334455667788  \r\n");
-  TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN24 #204ABCD \r\n");
+
+  TEST_SCPI_INPUT("COM:SPI:D 8 \r\n");
+  TEST_SCPI_INPUT("COM:SPI:M 4 \r\n");  // Mode 0 + CS at each byte
+  TEST_SCPI_INPUT("COM:INIT:ENA SPI\r\n");
+
+  send_master(i2c1,PICO_SELFTEST_ADDRESS, SET_SPI_CFG , 0b00010000,&rdata); // set SPI to 8 bit
+   answer[0] = rdata;  // return read value
+
+ // setup selftest board SPI
+  send_master(i2c1,PICO_SELFTEST_ADDRESS, GET_SPI_CFG , 0,&rdata); // send command to get config
+  answer[0] = rdata;  // return read value
+  fprintf(stdout,"\nSPI config: 0x%x\n", answer[0]);
+
+  send_master(i2c1,PICO_SELFTEST_ADDRESS, ENABLE_SPI , 0,&rdata); // send command to close K17
+  answer[0] = rdata;  // return read value
+
+
+
+  TEST_SCPI_INPUT("COM:SPI:WRI  #H12,#H34,#H56,#H78,#H90,#Hab,#Hcd,#Hef \r\n"); 
+  TEST_SCPI_INPUT("COM:SPI:REA:LEN7 #H21 \r\n");  // return 7 values
+  TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN3 #H43 \r\n"); // return 4 values
+
+
+
+ // Test of 16 bits SPI size
+  
+  TEST_SCPI_INPUT("COM:SPI:D 16 \r\n");
+  TEST_SCPI_INPUT("COM:SPI:M 4 \r\n");  // Mode 0 + CS at each byte
+  TEST_SCPI_INPUT("COM:INIT:ENA SPI\r\n");
+  send_master(i2c1,PICO_SELFTEST_ADDRESS, SET_SPI_CFG , 0b00011000,&rdata); // set SPI to 16 bit
+   answer[0] = rdata;  // return read value
+
+ // setup selftest board SPI
+  send_master(i2c1,PICO_SELFTEST_ADDRESS, GET_SPI_CFG , 0,&rdata); // send command to get config
+  answer[0] = rdata;  // return read value
+  fprintf(stdout,"\nSPI config: 0x%x\n", answer[0]);
+
+  send_master(i2c1,PICO_SELFTEST_ADDRESS, ENABLE_SPI , 0,&rdata); // send command to close K17
+  answer[0] = rdata;  // return read value
+
+
+
+  TEST_SCPI_INPUT("COM:SPI:WRI  #H1234,#H5678,#H90ab,#Hcdef,#H5555,#H6666,#H7777,#H8888 \r\n"); 
+  TEST_SCPI_INPUT("COM:SPI:REA:LEN7 #H1234 \r\n");  // return 7 values
+  TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN3 #H1234 \r\n"); // return 4 values
+
+
+
+
+// TEST_SCPI_INPUT("COM:SPI:WRI 6,10\r\n");
+ // TEST_SCPI_INPUT("COM:SPI:WRI #H15, 12\r\n");
+gpio_set_function(1, GPIO_FUNC_SIO);
+gpio_set_dir(1, GPIO_IN);
+gpio_pull_up(1); 
+
+
+
+
+while(1) {
+
+// fprintf(stdout, "---------------> Press Button\r\n");
+
+// while (!gpio_get(1)) {
+ //  sleep_ms(300);
+// }
+
+ //TEST_SCPI_INPUT("COM:SPI:WRI  #H0100 \r\n");
+
+
+
+//   TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN0 #203ABC \r\n");
+
+ //TEST_SCPI_INPUT("COM:SPI:WRI  #H1111,#H2222,#H3333,#H4444\r\n");
+
+ // TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN8  #H12,#H34,#H56,#H78,#H90,#Hab,#Hcd,#Hef \r\n"); 
+ // TEST_SCPI_INPUT("COM:SPI:WRI  #H12,#H34,#H56,#H78,#H90,#Hab,#Hcd,#Hef \r\n");
+ /// sleep_ms(1000); 
+ // TEST_SCPI_INPUT("COM:SPI:WRI  #H12, #H34 \r\n");
+ // sleep_ms(1000); 
+ // TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN8  #H4321, #H8765\r\n");
+ //TEST_SCPI_INPUT("COM:SPI:REA:LEN7 #H1234 \r\n");
+ TEST_SCPI_INPUT("COM:SPI:REA:LEN3 \r\n");
+
+  TEST_SCPI_INPUT("COM:SPI:REA:LEN0 \r\n");
+ // sleep_ms(1000); 
+ // TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN1 #56");
+ 
+  sleep_ms(1000*2);
+
+}
+
+  TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN0 #204ABCD,#HEF,'allo',#H1234,#H567890,#Haabbccdd, #H1122334455667788  \r\n");
+  TEST_SCPI_INPUT("COM:SPI:WRI:REA:LEN24?  #204ABCD \r\n");
   TEST_SCPI_INPUT("COM:SPI:WRI #06789\r\n");
 
   TEST_SCPI_INPUT("COM:SPI:WRITE:BYTE\r\n");
@@ -1519,8 +1623,7 @@ void test_com_command(void){
 
  printf("SERIAL communication example\n");
 
- uint16_t rdata;
-uint16_t answer[1];  // will contains the answer returned by command
+ 
  // setup selftest board uart 8N1
   send_master(i2c1,PICO_SELFTEST_ADDRESS, SET_UART_PROT, 0b11001100,&rdata); // send command to close K17
   answer[0] = rdata;  // return read value
@@ -1577,4 +1680,81 @@ uint16_t answer[1];  // will contains the answer returned by command
   TEST_SCPI_INPUT("COM:INIT:DIS UART\r\n");
   TEST_SCPI_INPUT("COM:INIT:STAT? UART\r\n");
   
+}
+
+/**
+ * @brief the software code below is not used by application but could be used, as example
+ *        on how to work with SPI interface. This example was a proof of concept on SPI 
+ *        command available with a true device (ADXL345).
+ *
+ *        The SPI command available on Pico SDK are basic and do not set the read bit,
+ *        normally defined as bit 7 = 1 for read and bit 7 = 0 for write. The user will 
+ *        need to set the bit as showed on code below.
+ * 
+ */
+void test_spi_adx(){
+
+  int result;
+  fprintf(stdout, "Test of SPI with  ADXL345\r\n");
+
+  TEST_SCPI_INPUT("COM:SPI:D 8 \r\n"); // Set Databits to 8
+  TEST_SCPI_INPUT("COM:SPI:M 3\r\n");  // set mode to 3
+  TEST_SCPI_INPUT("COM:INIT:ENA SPI\r\n");  // Enable SPI
+
+
+  TEST_SCPI_INPUT("COM:SPI:WRI  #H00, #H00 \r\n"); // Dummy write to set clock to high as default state
+  TEST_SCPI_INPUT("COM:SPI:WRI  #H31, #H83 \r\n"); // set Selftest bit + 16g Range
+  TEST_SCPI_INPUT("COM:SPI:REA:LEN1 #HB1 \r\n");   //  Read bit 7 (1) + Register 0x31 
+
+
+  TEST_SCPI_INPUT("COM:SPI:WRI  #H2d, #H08 \r\n");   // Write bit 7 (0) + Register 0x2d
+  TEST_SCPI_INPUT("COM:SPI:WRI  #H1e, #H00 \r\n");   // Write bit 7 (0) + Register 0x1e
+  TEST_SCPI_INPUT("COM:SPI:WRI  #H1f, #H00 \r\n");   // Write bit 7 (0) + Register 0x1f
+  TEST_SCPI_INPUT("COM:SPI:WRI  #H20, #H05 \r\n");   // Write bit 7 (0) + Register 0x20
+
+  TEST_SCPI_INPUT("COM:SPI:REA:LEN1 #H9e\r\n");      //  Read bit 7 (1) + Register 0x1e
+  TEST_SCPI_INPUT("COM:SPI:REA:LEN1 #HA0\r\n");      //  Read bit 7 (1) + Register 0x20
+
+  TEST_SCPI_INPUT("COM:SPI:REA:LEN1 #H80\r\n");   // Read bit 7 (1) + Register 0x00
+  TEST_SCPI_INPUT("COM:SPI:REA:LEN1 #HAc\r\n");   // Read bit 7 (1) + Register 0x2c
+  TEST_SCPI_INPUT("COM:SPI:REA:LEN1 #HB0\r\n");   // Read bit 7 (1) + Register 0x30
+
+  while(1){
+
+    output_buffer_clear();      // clear SCPI output result for get only results
+
+    // launch command to read X,Y,Z acceleration
+    TEST_SCPI_INPUT("COM:SPI:REA:LEN6 #Hf2\r\n"); // Read bit 7 (1) + Multiple byte bit 6 (1) + register 0x32
+
+    uint8_t dta[6];
+    memset(dta,0,6);
+
+    // converting string answer located in output buffer to number
+      int num = 0;
+      size_t ind = 0;
+      for (int i = 0; out_buffer[i] != '\0'; i++) { 
+          if (out_buffer[i] == ',' || out_buffer[i] == '\r' || out_buffer[i] == '\n' ) {
+            dta[ind] = num;
+            num = 0;
+            ind++;
+          } else {
+            num = num * 10 + (out_buffer[i] - 48); // if valid number add to the nuber
+          }
+      } 
+
+    int16_t accelerometer_dta[3];
+    // Unpack data
+      for (int j=0;j<3;++j) {
+          accelerometer_dta[j] = (int16_t)dta[2*j] + (((int16_t)dta[2*j + 1]) << 8);
+        //  fprintf(stdout, "Accelerometer value j:%d, value: 0x%x\r\n",j,accelerometer_dta[j]);
+      }
+
+      fprintf(stdout, "Accelerometer X: %d\r\n",accelerometer_dta[0]);
+      fprintf(stdout, "Accelerometer Y: %d\r\n",accelerometer_dta[1]);
+      fprintf(stdout, "Accelerometer Z: %d\r\n",accelerometer_dta[2]);
+
+      sleep_ms(1000 *2);
+
+  }
+  fprintf(stdout, "End of SPI Test of ADXL345\r\n");
 }

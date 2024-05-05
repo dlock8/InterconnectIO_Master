@@ -35,10 +35,11 @@
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
 #include "pico_lib2/src/dev/dev_ds2431/dev_ds2431.h"
-#include "pico_lib2/src/sys/include/sys_uart.h"
-#include "pico_lib2/src/sys/include/sys_spi.h"
 #include "include/scpi_user_config.h"
 #include "include/test.h"
+#include "include/scpi_uart.h"
+#include "include/scpi_spi.h"
+#include "include/scpi_i2c.h"
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
 #include "include/master.h"
@@ -1107,7 +1108,7 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
     }
 
 
-    if ( tag == C1W || tag == R1W || tag == CSWB || tag == CSWT || tag == SPWF || tag == SPWM  ) {
+    if ( tag == C1W || tag == R1W || tag == CSWB || tag == CSWT ) {
         res = SCPI_Parameter(context, &param1, true);  // Read first parameter
         if (res) {
             // Is parameter a number without suffix?
@@ -1162,15 +1163,15 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
                     switch (paramCom.content.tag) {
                         case SCPI_SPI: 
                             if (tag == CIE) {
-                                sys_spi_enable();
+                                scpi_spi_enable();
                                 fprintf(stdout, "Enable SPI communication\r\n");
                             }
                             if (tag == CID) {
-                                sys_spi_disable();
+                                scpi_spi_disable();
                                 fprintf(stdout, "Disable SPI communication\r\n");
                             }
                             if (tag == CRI) {
-                                bval = sys_spi_status();
+                                bval = scpi_spi_status();
                                 fprintf(stdout, "Read status SPI communication: %d\r\n",bval);
                                 SCPI_ResultBool(context,bval);
                             }
@@ -1178,15 +1179,15 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
 
                         case SCPI_UART: 
                             if (tag == CIE) {
-                                sys_uart_enable();
+                                scpi_uart_enable();
                                 fprintf(stdout, "Enable UART communication\r\n");
                             }
                             if (tag == CID) {
-                                sys_uart_disable();
+                                scpi_uart_disable();
                                 fprintf(stdout, "Disable UART communication\r\n");
                             }
                             if (tag == CRI) {
-                                bval = sys_uart_status();
+                                bval = scpi_uart_status();
                                 fprintf(stdout, "Read status UART communication: %d\r\n",bval);
                                 SCPI_ResultBool(context,bval);
                             }
@@ -1201,85 +1202,73 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
         case C1W: 
             ecode = onewire_check_devices(&sdata, eid );     //check presence of one wire 
             SCPI_ResultText(context,sdata);
-            retv = true;   //  value returned
             break;
 
         case R1W: 
             ecode = onewire_read_info(&sdata,ADDR_INFO,NB_INFO,eid );  
             SCPI_ResultText(context,sdata);
-            retv = true;   //  value returned
             break;
 
         case W1W: 
             ecode = onewire_write_info(winfo,ADDR_INFO);  
             SCPI_ResultText(context,sdata);
-            retv = true;   // value returned
             break;
 
         case CSWB: 
             fprintf(stdout, "Uart set Baudrate to %d\r\n", val);
-            sys_uart_set_baudrate(val);  
-            retv = false;   // no value returned
+            scpi_uart_set_baudrate(val);  
             break;
 
         case CSRB: 
-            val = sys_uart_get_baudrate();
+            val = scpi_uart_get_baudrate();
             fprintf(stdout, "Uart readback actual Baudrate, speed= %d\r\n", val); 
             SCPI_ResultInt32(context,val); 
-            retv = true;   // no value returned
             break;
 
         case CSWT: 
             fprintf(stdout, "Uart set Timeout_ms to %d\r\n", val);
-            sys_uart_set_timeout(val);  
-            retv = false;   // no value returned
+            scpi_uart_set_timeout(val);  
             break;
 
         case CSRT: 
-            val = sys_uart_get_timeout();
+            val = scpi_uart_get_timeout();
             fprintf(stdout, "Uart readback Timeout_ms: %d\r\n", val); 
             SCPI_ResultInt32(context,val); 
-            retv = true;   // value returned
             break;
 
         case CSWH: 
             fprintf(stdout, "Uart set RTS-CTS Handshake to %d\r\n", val);
-            sys_uart_set_handshake(val);  
-            retv = false;   // no value returned
+            scpi_uart_set_handshake(val);  
             break;
 
         case CSRH: 
-            bval = sys_uart_get_handshake();
+            bval = scpi_uart_get_handshake();
             fprintf(stdout, "Uart readback RTS-CTS Handshake: %d\r\n", bval); 
             SCPI_ResultBool(context,bval);
-            retv = true;   //  value returned
             break;
         
         case CSWP: 
-            ecode = sys_uart_set_protocol(winfo);
+            ecode = scpi_uart_set_protocol(winfo);
             if (ecode != NOERR) { 
                 fprintf(stdout, "Uart protocol error with value: %s\r\n", &winfo);
             } else {
                 fprintf(stdout, "Uart set protocol to: %s\r\n", &winfo); 
             }
-            retv = false;   //  value returned
             break;
 
         case CSRP: 
-            dpr = sys_uart_get_protocol();
+            dpr = scpi_uart_get_protocol();
             fprintf(stdout, "Uart readback protocol: %s\r\n", dpr); 
             SCPI_ResultText(context,dpr);
-            retv = true;   //  value returned
             break;
 
         case CSWD: // Write data to uart only, the answer is discarded
             fprintf(stdout, "Uart transmit data: %s\r\n", &winfo);
-            sys_uart_write_data(winfo); // write data, do not expect answer
-            retv = false;   //  value returned
+            scpi_uart_write_data(winfo); // write data, do not expect answer
             break;
 
         case CSRD: 
-            ecode = sys_uart_write_read_data(winfo, ustr,SCPI_INPUT_BUFFER_SIZE); // write data, expect answer
+            ecode = scpi_uart_write_read_data(winfo, ustr,SCPI_INPUT_BUFFER_SIZE); // write data, expect answer
             if (ecode != NOCERR) { 
                 fprintf(stdout, "Uart Error with string: %s\r\n", winfo);
             } else {
@@ -1287,76 +1276,8 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
                 fprintf(stdout, "Uart Received data: %s\r\n", &ustr); 
             }
             SCPI_ResultText(context,ustr); // return string with or without error
-            retv = false;   //  value returned
             break;
-
-        case SPWF: 
-            fprintf(stdout, "SPI set Baudrate to %d\r\n", val);
-            sys_spi_set_baudrate(val);  
-            retv = false;   // no value returned
-            break;
-
-        case SPRF: 
-            val = sys_spi_get_baudrate();
-            fprintf(stdout, "SPI readback Baudrate, speed= %d\r\n", val); 
-            SCPI_ResultInt32(context,val); 
-            retv = true;   // no value returned
-            break;
-
-        case SPWCS: 
-            ecode = sys_spi_set_chipselect(val); 
-            if (ecode == 0) {
-                fprintf(stdout, "SPI set Chipselect to %d\r\n", val);
-            } else { 
-                fprintf(stdout, "Unable to set SPI chipselect to gpio:  %d\r\n", val);
-            }
-            retv = false;   // no value returned
-            break;
-
-        case SPRCS: 
-            val = sys_spi_get_chipselect();
-            fprintf(stdout, "SPI readback chipselect gpio= %d\r\n", val); 
-            SCPI_ResultInt32(context,val); 
-            retv = true;   // no value returned
-            break;
-
-
-        case SPWDB: 
-            ecode = sys_spi_set_databits(val); 
-            if (ecode == 0) {
-                fprintf(stdout, "SPI set Chipselect to %d\r\n", val);
-            } else { 
-                fprintf(stdout, "Unable to set SPI chipselect to gpio:  %d\r\n", val);
-            }
-            retv = false;   // no value returned
-            break;
-
-        case SPRDB: 
-            val = sys_spi_get_databits();
-            fprintf(stdout, "SPI readback chipselect gpio= %d\r\n", val); 
-            SCPI_ResultInt32(context,val); 
-            retv = true;   // no value returned
-            break;
-
-        case SPWM: 
-            fprintf(stdout, "SPI set Mode to %d\r\n", val);
-            sys_spi_set_mode(val);  
-            retv = false;   // no value returned
-            break;
-
-        case SPRM: 
-            val = sys_spi_get_mode();
-            fprintf(stdout, "SPI Mode is set to = %d\r\n", val); 
-            SCPI_ResultInt32(context,val); 
-            retv = true;   // no value returned
-            break;
-
-        case SPWT: // Write data to SPI only, the answer is discarded
-            fprintf(stdout, "SPI transmit data: %s\r\n", &winfo);
-            //sys_uart_write_data(winfo); // write data, do not expect answer
-            retv = false;   //  value returned
-            break;
-        
+                   
     }
 
 
@@ -1375,8 +1296,6 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
         case UART_RX_TIMEOUT_MS : { answer= UART_RX_ERROR; break;}
         case UART_LASTCHAR_TIMEOUT_MS: { answer= UART_LASTCHAR_ERROR; break;}
         case UART_BUFFER_FULL: { answer= UART_RXBUFFER_ERROR; break;}
-        case SPI_MODE_NUM_NOTVALID: { answer= SPI_MODE_ERROR; break;}
-        case SPI_CS_NUM_ERROR: { answer= SPI_CS_ERROR; break;}
     }    
 
    
@@ -1397,110 +1316,269 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
     scpi_number_t paramCom;
 
    // uint16_t answer;  // will contains the answer returned by command
-    uint8_t tag,ecode;
+    uint8_t tag;
+    volatile uint8_t ecode;
+    uint16_t maxdata;
     uint32_t val=0;
-    int32_t readlen[1];
+    uint32_t readlen[1];
     uint64_t lval;
-   // size_t lgt,eid;
-   // bool retv = false;
-   // bool bval;
-   // const char *dpr;
+    bool retv = false;
 
-   // char* sdata = NULL;
-   volatile uint8_t wdata[SCPI_INPUT_BUFFER_SIZE];   // array to content the data to write
-   volatile uint8_t rdata[SCPI_INPUT_BUFFER_SIZE];    // array to content the data read from function
-    int idx = 0;  // array pointer index
 
-    const char *data;  // Pointer to received data
-    size_t length = 0;     // Length of received data
+    maxdata = SCPI_INPUT_BUFFER_SIZE;
+    uint8_t wdata[maxdata];   // array to content the data to write
+    uint8_t rdata[maxdata];    // array to content the data read from function
+    int8_t idx = 0;  // array pointer index
+
+    const char *dpr;  // Pointer to received data
+    size_t lenblk = 0;     // Length of received data
+    readlen[0] = 0;  // initialize
                                                                 
     fprintf(stdout, "\nOn synchrounous communication execute \r\n");
-   // winfo[0] = '\0';
-
+   
     ecode =NOERR;
     tag = SCPI_CmdTag(context);   //extract tag from the command
 
-    fprintf(stdout, "Tag = %d \r\n", tag);
+    //fprintf(stdout, "Tag = %d \r\n", tag);
 
-    if ( tag == SPWT ) { 
-
-        SCPI_CommandNumbers(context, readlen, 1,0);
-        fprintf(stdout, "Read length: %d \r\n", readlen[0]);
-
-
-        //Loop to extract all data from the parameters
-        while(SCPI_Parameter(context, &param1, FALSE)){
-            if (SCPI_ParamIsNumber(&param1, TRUE)) {
-                // Convert parameter to unsigned int. Result is in value.
-                SCPI_ParamToUInt64(context, &param1, &lval);
-                fprintf(stdout, "Value to write: 0x%x \r\n", lval);
-                int plen = param1.len / 2;  // Calculate number of byte based on string length
-                // loop to save each byte on the write array
-                for (int i = 0; i < plen; i++) {
-                    wdata[idx++] = (lval >> (8 * (plen - 1 - i))) & 0xff;
-                }
-            }
-            const char *dpr;
-            if (param1.type  == SCPI_TOKEN_ARBITRARY_BLOCK_PROGRAM_DATA) {
-                 // Call SCPI_ParamArbitraryBlock function
-                scpi_bool_t result = SCPI_ParamArbitraryBlock(context, &dpr, &length, true);
-                if (result == true) {
-                    // Convert char array to byte array
-                    for (int j = 0; j < length; j++) {
-                        printf("0x%x, %d :", dpr[j],(unsigned char)dpr[j]);
-                        wdata[idx++] = (unsigned char)dpr[j];
-                    }
-                    
-                } else {
-                    printf("Error: Failed to receive block of data.\n");
-                }
-            }
-        
-        }
-
-
-
-            res = SCPI_Parameter(context, &param1, FALSE);
-
-
-                        // Is parameter a number without suffix?
+    //!< Tag to read single data 
+    if ( tag == SPWCS || tag == SPWDB || tag == SPWF || tag == SPWM  ) {
+        res = SCPI_Parameter(context, &param1, true);  // Read first parameter
+        if (res) {
+            // Is parameter a number without suffix?
             if (SCPI_ParamIsNumber(&param1, TRUE)) {
                 // Convert parameter to unsigned int. Result is in value.
                  SCPI_ParamToUInt32(context, &param1, &val);
-                 // change number to size_t
             }
+        }
+    }
 
+    //!< Tag to read all data, using loop. The data could be in many forms
+    if ( tag == SPWR  ||tag == SPWD || tag == SPRD || tag == ICWD || tag == ICRD) { 
 
-            if (param1.type  == SCPI_TOKEN_ARBITRARY_BLOCK_PROGRAM_DATA) {
-                printf("Parameter are ARB block DATA");
-            }
-            // Call SCPI_ParamArbitraryBlock function
-            scpi_bool_t result = SCPI_ParamArbitraryBlock(context, &data, &length, true);
+        SCPI_CommandNumbers(context, readlen, 1,0); // extract number of bytes to read
+        fprintf(stdout, "On Command, Nb of byte/word  to Read: %d \r\n", readlen[0]);
 
-            if (result == true) {
-                printf("Received block of data with length %zu bytes.\n", length);
-                printf("First few bytes of received data: ");
-                for (size_t i = 0; i < length && i < 10; i++) {
-                    printf("0x%x, %02X :", data[i],(unsigned char)data[i]);
+            //Loop to extract all data from the parameters
+            while(SCPI_Parameter(context, &param1, FALSE)){     // extract first paramater
+
+                // Section to check if parameters data is in format of Arbitrary block
+                if (param1.type == SCPI_TOKEN_ARBITRARY_BLOCK_PROGRAM_DATA) {
+                    dpr = param1.ptr;
+                    lenblk = param1.len;
+
+                    if (lenblk % 2 == 0) {
+                        // Convert char array send by Arb to byte array
+                        for (int j = 0; j < lenblk/2; j++) {
+                            uint8_t byte = 0;
+                            char sval[3] = {dpr[j * 2], dpr[j * 2 + 1], '\0'};
+                            fprintf(stdout,"Data string # %d : %s\n",idx,sval);
+                            wdata[idx++] = (unsigned char)strtol(sval, NULL, 16);
+                        }          
+                    } else {
+                        printf("Error: Arbitrary block data length is odd, expect even number, Length: %d.\n", lenblk);
+                        ecode =  ARB_ODD_ERR;
+                    }
                 }
-                printf("\n");
-                SCPI_ResultArbitraryBlockHeader(context,length);
-                printf("\nData: ");
-                SCPI_ResultArbitraryBlockData(context, data, length);
-                printf("\n");
-                // Process the received data...
-            } else {
-                printf("Error: Failed to receive block of data.\n");
+
+                // Section to check if parameters data is a number
+                if (SCPI_ParamIsNumber(&param1, TRUE)) {        // if paramater is number
+                    SCPI_ParamToUInt64(context, &param1, &lval);
+                    fprintf(stdout, "Value to write: 0x%x \r\n", lval);
+                    int plen = param1.len / 2;  // Calculate number of byte based on string length
+                    // loop to save each byte on the write array
+                    for (int i = 0; i < plen; i++) {
+                        wdata[idx++] = (lval >> (8 * (plen - 1 - i))) & 0xff;
+                    }
+                }
             }
-          
+              
+    } // end of tag
+
+    bool wordsize;  // flag to indicate of data is on word size
+
+    if (ecode != 0) { tag =0;} // if error found, do not execute instruction
+
+    switch (tag) {
+        case SPWR:
+            fprintf(stdout, "SPI write-Read,nbytes write: %d , nbw read: %d\r\n", idx,readlen[0] );
+            ecode = scpi_spi_wri_read_data(wdata,idx,rdata,readlen[0],&wordsize);
+            break;
+
+        case SPWD:
+            fprintf(stdout, "SPI write data only, nbw to write: %d\r\n", idx);
+            ecode = scpi_spi_wri_read_data(wdata,idx,rdata,readlen[0],&wordsize);
+            break;
+
+        case SPRD:
+            fprintf(stdout, "SPI read data only, nbw read: %d\r\n", readlen[0]);
+            ecode = scpi_spi_wri_read_data(wdata,idx,rdata,readlen[0],&wordsize);
+            break;
+        
+        case SPWF: 
+            fprintf(stdout, "SPI set Baudrate to %d\r\n", val);
+            scpi_spi_set_baudrate(val);  
+            break;
+
+        case SPRF: 
+            val = scpi_spi_get_baudrate();
+            fprintf(stdout, "SPI readback Baudrate, speed= %d\r\n", val); 
+            retv = true;
+            SCPI_ResultInt32(context,val); 
+            break;
+
+        case SPWCS: 
+            ecode = scpi_spi_set_chipselect(val); 
+            if (ecode == 0) {
+                fprintf(stdout, "SPI set Chipselect to %d\r\n", val);
+            } else { 
+                fprintf(stdout, "Unable to set SPI chipselect to gpio:  %d\r\n", val);
+            }
+            break;
+
+        case SPRCS: 
+            val = scpi_spi_get_chipselect();
+            fprintf(stdout, "SPI readback chipselect gpio= %d\r\n", val);
+            retv = true;
+            SCPI_ResultInt32(context,val); 
+            break;
+
+        case SPWDB: 
+            ecode = scpi_spi_set_databits(val); 
+            if (ecode == 0) {
+                fprintf(stdout, "SPI set databits to %d\r\n", val);
+            } else { 
+                fprintf(stdout, "Unable to set SPI databits to:  %d\r\n", val);
+            }
+            break;
+
+        case SPRDB: 
+            val = scpi_spi_get_databits();
+            fprintf(stdout, "SPI readback databits=  %d\r\n", val); 
+            retv = true;
+            SCPI_ResultInt32(context,val); 
+            break;
+
+        case SPWM: 
+            fprintf(stdout, "SPI set Mode to %d\r\n", val);
+            scpi_spi_set_mode(val);  
+            break;
+
+        case SPRM: 
+            val = scpi_spi_get_mode();
+            fprintf(stdout, "SPI Mode is set to = %d\r\n", val);
+            retv = true; 
+            break;
+
+        case ICWD:
+            fprintf(stdout, "I2C write data only, nbw to write: %d\r\n", idx);
+           // ecode = scpi_i2c_wri_read_data(wdata,idx,rdata,readlen[0],&wordsize);
+            break;
+
+        case ICRD:
+            fprintf(stdout, "I2C read data only, nbw read: %d\r\n", readlen[0]);
+          //  ecode = scpi_i2c_wri_read_data(wdata,idx,rdata,readlen[0],&wordsize);
+            break;
+        
+        case ICWF: 
+            fprintf(stdout, "I2C set Baudrate to %d\r\n", val);
+            scpi_i2c_set_baudrate(val);  
+            break;
+
+        case ICRF: 
+            val = scpi_i2c_get_baudrate();
+            fprintf(stdout, "I2C readback Baudrate, speed= %d\r\n", val); 
+            retv = true;
+            SCPI_ResultInt32(context,val); 
+            break;
+
+         case ICWDB: 
+            ecode = scpi_i2c_set_databits(val); 
+            if (ecode == 0) {
+                fprintf(stdout, "I2C set databits to %d\r\n", val);
+            } else { 
+                fprintf(stdout, "Unable to set I2C databits to:  %d\r\n", val);
+            }
+            break;
+
+        case ICRDB: 
+            val = scpi_i2c_get_databits();
+            fprintf(stdout, "I2C readback databits=  %d\r\n", val); 
+            retv = true;
+            SCPI_ResultInt32(context,val); 
+            break;
     }
 
 
+    if (retv == true) { //!< if single value need to be returned
+                 SCPI_ResultInt32(context,val); //!< return value 
+    }     
 
-}
+    
+    // return byte array or word array result
+    if ( tag == SPWR  || tag == SPRD || tag == ICRD ) { 
+        if (!wordsize) { // if bytes size need to be returned
+                uint8_t* bptr; // contains starting position for the read data
+                uint8_t barr; // contains total bytes to return
+              // return valid result. idx is added to rdata to remove data read in same time of write in case of
+                if (tag == SPRD || tag == ICRD) { bptr  = rdata+idx;barr = readlen[0];} // return answer after write
+                if (tag == SPWR) { bptr  = rdata;barr = idx + readlen[0];} // return everything
+                SCPI_ResultArrayUInt8(context, bptr,barr,SCPI_FORMAT_ASCII);
+
+        } else { // if word size need to be returned
+                uint16_t *wrdata = NULL;    // create pointer to store word data, required if databits = 16
+                int warr = idx/2;  // Number of word written 
+                int sarr = readlen[0]; // number of word read
+                // Dynamically allocate memory for wwdata
+                wrdata = (uint16_t *)malloc((sarr+warr) * sizeof(uint16_t));
+                if (wrdata == NULL) {
+                    // Error handling: unable to allocate memory
+                    fprintf(stdout, "Failed to allocate memory for wrdata\n");
+                    ecode = MALLOC_FAILURE;
+                } else {   
+                    uint16_t* wptr; // contains starting position for the read data
+                    uint8_t tarr;  // total number of word to return
+                    if (tag == SPRD || tag == ICRD) { wptr  = wrdata+warr;tarr = sarr;} // return answer after write
+                    if (tag == SPWR) { wptr  = wrdata;tarr = sarr+warr;} // return everything
+
+                   // transform array of byte in array of word
+                    for (size_t i = 0; i < sarr+warr; i++) {
+                            wrdata[i] = rdata[2*i]| (rdata[2*i + 1] << 8); //!< transform 2 bytes in 1 word
+                            fprintf(stdout, "bytes to word # %d, data: %02x\r\n",i,wrdata[i]);
+                    }
+                    SCPI_ResultArrayUInt16(context, wptr,tarr,SCPI_FORMAT_ASCII);
+                    free(wrdata);
+                }
+
+        }
+    }
 
 
-    // The SCPI commands we support and the callbacks they use.
+    // raise error if is the case
+    switch (ecode) {
+        case NOERR: { break;}
+        case SPI_MODE_NUM_NOTVALID: { val= SPI_MODE_ERROR; break;}
+        case SPI_CS_NUM_ERROR: { val= SPI_CS_ERROR; break;}
+        case MALLOC_FAILURE: { val= MEMORY_ALLOCATION_ERROR; break;}
+        case ARB_ODD_ERR:  { val= ARB_WORD_FORMAT_ERROR; break;}
+        default: {val = ecode; break;}
+    }    
+
+    //!< if error found, send result to SCPI error queue
+    if (ecode != NOERR) {
+        SCPI_ErrorPush(context, val);  // push errors 
+        return SCPI_RES_ERR;    //!< raise error flah
+    } else {
+        return SCPI_RES_OK;
+    }
+   
+
+
+} // end of sub
+
+
+
+//!< The SCPI commands supported by the pico master and the callbacks they use.
 scpi_command_t scpi_commands[] = {
 	
     /* IEEE Mandated Commands (SCPI std V1999.0 4.1.1) */
@@ -1613,26 +1691,24 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "COM:SERIAL:Timeout", .callback = Callback_com_scpi,CSWT},
     {.pattern = "COM:SERIAL:Timeout?", .callback = Callback_com_scpi,CSRT},
 
-    {.pattern = "COM:SPI:WRIte:REAd:LENgth#", .callback = Callback_sync_com_scpi,SPWT},
-    {.pattern = "COM:SPI:WRIte[:Byte]", .callback = Callback_com_scpi,SPWB},
-    {.pattern = "COM:SPI:WRIte[:Word]", .callback = Callback_com_scpi,SPWW},
-    {.pattern = "COM:SPI:WRIte:REAd?", .callback = Callback_com_scpi,SPWRT},
-    {.pattern = "COM:SPI:WRIte:REAd[:Byte]?", .callback = Callback_com_scpi,SPWRB},
-    {.pattern = "COM:SPI:WRIte:REAd[:Word]?", .callback = Callback_com_scpi,SPWRW},
-    {.pattern = "COM:SPI:REAd?", .callback = Callback_com_scpi,SPRT},
-    {.pattern = "COM:SPI:REAd[:Byte]?", .callback = Callback_com_scpi,SPRB},
-    {.pattern = "COM:SPI:REAd[:Word]?", .callback = Callback_com_scpi,SPRW},
+    {.pattern = "COM:SPI:WRIte:REAd:LENgth#", .callback = Callback_sync_com_scpi,SPWR},
+    {.pattern = "COM:SPI:WRIte", .callback = Callback_sync_com_scpi,SPWD},
+    {.pattern = "COM:SPI:REAd:LENgth#", .callback = Callback_sync_com_scpi,SPRD},
+    {.pattern = "COM:SPI:Baudrate", .callback = Callback_sync_com_scpi,SPWF},
+    {.pattern = "COM:SPI:Baudrate?", .callback = Callback_sync_com_scpi,SPRF},
+    {.pattern = "COM:SPI:Databits", .callback = Callback_sync_com_scpi,SPWDB},
+    {.pattern = "COM:SPI:Databits?", .callback = Callback_sync_com_scpi,SPRDB},
+    {.pattern = "COM:SPI:CS", .callback = Callback_sync_com_scpi,SPWCS},
+    {.pattern = "COM:SPI:CS?", .callback = Callback_sync_com_scpi,SPRCS},
+    {.pattern = "COM:SPI:Mode", .callback = Callback_sync_com_scpi,SPWM},
+    {.pattern = "COM:SPI:Mode?", .callback = Callback_sync_com_scpi,SPRM},
 
-   // {.pattern = "COM:SPI:READ?", .callback = Callback_com_scpi,SPRB},
-   // {.pattern = "COM:SPI:READ?", .callback = Callback_com_scpi,SPRB},
-   // {.pattern = "COM:SPI:WRITEW", .callback = Callback_com_scpi,SPWW},
-   // {.pattern = "COM:SPI:READW?", .callback = Callback_com_scpi,SPRW},
-    {.pattern = "COM:SPI:Baudrate", .callback = Callback_com_scpi,SPWF},
-    {.pattern = "COM:SPI:Baudrate?", .callback = Callback_com_scpi,SPRF},
-    {.pattern = "COM:SPI:CS", .callback = Callback_com_scpi,SPWCS},
-    {.pattern = "COM:SPI:CS?", .callback = Callback_com_scpi,SPRCS},
-    {.pattern = "COM:SPI:Mode", .callback = Callback_com_scpi,SPWM},
-    {.pattern = "COM:SPI:Mode?", .callback = Callback_com_scpi,SPRM},
+    {.pattern = "COM:I2C:WRIte", .callback = Callback_sync_com_scpi,ICWD},
+    {.pattern = "COM:I2C:REAd:LENgth#?", .callback = Callback_sync_com_scpi,ICRD},
+    {.pattern = "COM:I2C:Baudrate", .callback = Callback_sync_com_scpi,ICWF},
+    {.pattern = "COM:I2C:Baudrate?", .callback = Callback_sync_com_scpi,ICRF},
+    {.pattern = "COM:I2C:Databits", .callback = Callback_sync_com_scpi,ICWDB},
+    {.pattern = "COM:I2C:Databits?", .callback = Callback_sync_com_scpi,ICRDB},
 
 
 

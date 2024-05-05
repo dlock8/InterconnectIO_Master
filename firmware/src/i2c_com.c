@@ -54,22 +54,7 @@ void setup_master() {
     i2c_init(i2c0, I2C_BAUDRATE);
 }
 
-/**
- * @brief Configuration of I2C used to external communication 
- * 
- */
-void setup_i2c_extern(void) {
-    gpio_init(I2C_EXTERN_SDA_PIN);
-    gpio_set_function(I2C_EXTERN_SDA_PIN, GPIO_FUNC_I2C);
-    // pull-ups are already active on slave side, this is just a fail-safe in case the wiring is faulty
-    gpio_pull_up(I2C_EXTERN_SDA_PIN);
 
-    gpio_init(I2C_EXTERN_SCL_PIN);
-    gpio_set_function(I2C_EXTERN_SCL_PIN, GPIO_FUNC_I2C);
-    gpio_pull_up(I2C_EXTERN_SCL_PIN);
-
-    i2c_init(i2c1, I2C_BAUDRATE);
-}
 
 
 bool send_master(i2c_inst_t* i2c,uint8_t i2c_add,uint8_t cmd, uint16_t wdata, uint16_t *rback)  {
