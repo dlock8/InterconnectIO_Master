@@ -125,12 +125,15 @@ extern "C" {
 #define SPWCS   119     // Set gpio used for SPI chipselect
 #define SPRCS   120     // Read Gpio used for SPI chipselect
 
-#define ICWD    130     // Write Data on I2C port
-#define ICRD    131     // Read Data  on I2C port
-#define ICWF    132     // Write user I2C baudrate
-#define ICRF    133     // Read user I2C baudrate
-#define ICWDB   134     // Write user I2C databits
-#define ICRDB   135     // Read user I2C databits
+#define ICWD    131     // Write Data on I2C port
+#define ICRD    132     // Read Data  on I2C port
+#define ICWA    133     // Set Device Address to use I2C port
+#define ICRA    134     // Get Device Address to use I2C port
+#define ICWF    135     // Write user I2C baudrate
+#define ICRF    136     // Read user I2C baudrate
+#define ICWDB   137     // Write user I2C databits
+#define ICRDB   138     // Read user I2C databits
+
 
 
 

@@ -42,13 +42,18 @@
 
 #define DEF_I2C_USER        i2c1     //!< i2c1 is the user communication channel to external
 #define DEF_I2C_BAUD        1E5      //!< i2c baudrate is set at 100Khz by default
+#define DEF_I2C_ADDR        0        //!< Default device Address
 #define DEF_I2C_DATABITS    8        //!< i2c number of bits used for comunication
 #define DEF_I2C_STATUS      0        //!< spi is disable by default
 
 #define NOERR                     0
-//#define SPI_MODE_NUM_NOTVALID     40     //!< spi error
-//#define SPI_CS_NUM_ERROR          41
+#define I2C_GENERIC_ERR           -1
+#define I2C_TIMEOUT_ERR           -2 
+#define I2C_ADDRESS_NACK          -3 
+#define I2C_DATA_NACK             -4 
+#define I2C_BUS_ERR               -5 
 #define I2C_MALLOC_FAILURE          52
+
 
 
 
@@ -61,13 +66,15 @@ uint32_t scpi_i2c_get_baudrate(void);
 uint8_t scpi_i2c_set_databits(uint32_t num);
 uint32_t scpi_i2c_get_databits(void); 
 
-uint8_t scpi_i2c_wri_read_data(uint8_t* wdata,uint8_t wlen,uint8_t* rdata,uint8_t rlen, bool* wflag);
-void i2c_bytes_to_words(uint8_t *byte_array, uint16_t *word_array, size_t length);
-void I2C_words_to_bytes(uint16_t *word_array, uint8_t *byte_array, size_t length);
+uint8_t scpi_i2c_set_address(uint32_t num);
+uint32_t scpi_i2c_get_address(void);
+
+int8_t scpi_i2c_wri_read_data(bool regflag,uint8_t* wdata,uint8_t wlen,uint8_t* rdata,uint8_t rlen, bool* wflag);
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // _SYS_SPI_H_
+#endif // _SCPI_I2C_H_
 

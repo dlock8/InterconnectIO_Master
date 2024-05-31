@@ -18,8 +18,6 @@
 #include "include/scpi_spi.h"
 #include "include/scpi_i2c.h"
 
-//#include "/home/pi/pico/pico-sdk/src/rp2_common/hardware_spi/include/hardware/spi.h"
-
 
 
 /**> Global variables */
@@ -1500,9 +1498,7 @@ void test_com_command(void){
 
  // test_spi_adx();
 
-// i2c is the communication channel to talk to the Pico on selftest board. if communication fail,
-//everything will fail.
- printf("I2C communication example\n");
+
 
 
 
@@ -1517,12 +1513,69 @@ void test_com_command(void){
   TEST_SCPI_INPUT("SYST:OUT ON\r\n"); 
   sleep_ms(300);
 
+
+  // i2c is the communication channel to talk to the Pico on selftest board. if communication fail,
+//everything will fail.
+ printf("I2C communication example\n");
+
+ //test_i2c_adx();  // working fine
+
+ //TEST_SCPI_INPUT("COM:SPI:WRI  #H83,0,125,#B11110000,#Q77, #H112233 \r\n");
+ // TEST_SCPI_INPUT("COM:SPI:WRI  0,#H1111,#H222,#H3333,#H4444\r\n");
+
+ // Test I2C using ina219device
+
+  //TEST_SCPI_INPUT("COM:i2C:WRI   #Q77, #B10100101, #B11, 255,0,#H00, #H0080, #H0000, #H1234 \r\n");  // bug command
+
+
+  TEST_SCPI_INPUT("COM:I2C:D 8 \r\n");
+  TEST_SCPI_INPUT("COM:I2C:B 200000 \r\n");
+  TEST_SCPI_INPUT("COM:INIT:ENA I2C\r\n");
+  TEST_SCPI_INPUT("COM:I2C:ADDR #H40 \r\n");
+
+  // test using 8 bits 
+  TEST_SCPI_INPUT("COM:i2C:WRI #H00, #H80, #H00 \r\n"); 
+  TEST_SCPI_INPUT("COM:i2C:REA:LEN2? #H00 \r\n");  // expect  399F
+
+  // test using 16 bits 
+  TEST_SCPI_INPUT("COM:I2C:D 16 \r\n");
+  TEST_SCPI_INPUT("COM:i2C:WRI #H00, #H8000 \r\n");  // good
+  TEST_SCPI_INPUT("COM:i2C:REA:LEN1? #H00 \r\n");
+
+ // TEST_SCPI_INPUT("COM:i2C:WRI:REG #H00, #H8000 \r\n"); // no good
+ // TEST_SCPI_INPUT("COM:i2C:REA:LEN1? #H00 \r\n");
+
+  TEST_SCPI_INPUT("COM:i2C:WRI #H0080, #H00 \r\n"); //good
+  TEST_SCPI_INPUT("COM:i2C:REA:LEN1? #H00 \r\n");
+
+
+
+TEST_SCPI_INPUT("COM:I2C:ADDR #H40 \r\n");
+
+  TEST_SCPI_INPUT("COM:i2C:REA:LEN2? #H00 \r\n");
 //test_spi_adx();
+// test_i2c_adx();
 
 
-  TEST_SCPI_INPUT("COM:SPI:D 8 \r\n");
-  TEST_SCPI_INPUT("COM:SPI:M 4 \r\n");  // Mode 0 + CS at each byte
-  TEST_SCPI_INPUT("COM:INIT:ENA SPI\r\n");
+  TEST_SCPI_INPUT("COM:I2C:D 8 \r\n");
+  TEST_SCPI_INPUT("COM:I2C:B 200000 \r\n");
+  TEST_SCPI_INPUT("COM:INIT:ENA I2C\r\n");
+  TEST_SCPI_INPUT("COM:I2C:ADDR #H20 \r\n");
+
+
+
+  TEST_SCPI_INPUT("COM:i2C:WRI:REG 75,8 \r\n"); 
+  TEST_SCPI_INPUT("COM:i2C:REA:LEN1? 75 \r\n");
+  //TEST_SCPI_INPUT("COM:i2C:REA:LEN1? 113 \r\n"); 
+ // TEST_SCPI_INPUT("COM:i2C:WRI:REG 113,#H10 \r\n"); 
+
+  //TEST_SCPI_INPUT("COM:i2C:WRI #H20,#H1234,#H5678,#H90ab,#Hcdef \r\n"); 
+  // SET_SPI_CFG = 113
+  //GET_SPI_CFG         115
+   send_master(i2c1,PICO_SELFTEST_ADDRESS, GP_FUNCTION , 7,&rdata); // set SPI to 8 bit
+  answer[0] = rdata;  // return read value
+  fprintf(stdout,"\nAnswer: 0x%x\n", answer[0]);
+
 
   send_master(i2c1,PICO_SELFTEST_ADDRESS, SET_SPI_CFG , 0b00010000,&rdata); // set SPI to 8 bit
    answer[0] = rdata;  // return read value
@@ -1758,4 +1811,101 @@ void test_spi_adx(){
 
   }
   fprintf(stdout, "End of SPI Test of ADXL345\r\n");
+}
+
+
+/**
+ * @brief the software code below is not used by application but could be used, as example
+ *        on how to work with I2C interface. This example was a proof of concept on I2C 
+ *        command available with a true device (ADXL345).
+
+ * 
+ */
+void test_i2c_adx(){
+
+  volatile int result;
+  fprintf(stdout, "Test of I2C with  ADXL345\r\n");
+  
+  result = 0xA6>>1;
+
+
+  TEST_SCPI_INPUT("COM:I2C:D 16 \r\n");
+  TEST_SCPI_INPUT("COM:I2C:B 200000 \r\n");
+  TEST_SCPI_INPUT("COM:INIT:ENA I2C\r\n");
+  TEST_SCPI_INPUT("COM:I2C:ADDR #H53 \r\n");
+
+ // Test of command for data = word
+  TEST_SCPI_INPUT("COM:I2C:WRI  #H1e,#H1234 \r\n");   //Check write only
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN1? #H1e \r\n");   // Check  write-read
+  TEST_SCPI_INPUT("COM:I2C:WRI  #H20,#H5678 \r\n");   //Check write only
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN1? #H20 \r\n");   // Check  write-read
+  TEST_SCPI_INPUT("COM:I2C:WRI  #H1e \r\n");   //Check write only
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN2? \r\n");   //Check read only
+
+// Test of command for data = byte
+  TEST_SCPI_INPUT("COM:I2C:D 8 \r\n");
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN1? #H00 \r\n");   // Check  write-read, device id = 0xe5
+
+  TEST_SCPI_INPUT("COM:I2C:WRI  #H1e,#H55 \r\n");   //Check write only
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN1? #H1e \r\n");   // Check  write-read
+  TEST_SCPI_INPUT("COM:I2C:WRI  #H1f,#H66 \r\n");   //Check write only
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN1? #H1f \r\n");   // Check  write-read
+  TEST_SCPI_INPUT("COM:I2C:WRI  #H20,#H77 \r\n");   //Check write only
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN1? #H20 \r\n");   // Check  write-read
+  TEST_SCPI_INPUT("COM:I2C:WRI  #H21,#H88 \r\n");   //Check write only
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN1? #H21 \r\n");   // Check  write-read
+  TEST_SCPI_INPUT("COM:I2C:WRI  #H1e \r\n");   //Check write only
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN4? \r\n");   //Check read only
+
+
+// Normal test for device
+  TEST_SCPI_INPUT("COM:I2C:WRI  #H2d, #H08 \r\n");   //  Register 0x2d
+  TEST_SCPI_INPUT("COM:I2C:WRI  #H1e, #H00 \r\n");   //  Register 0x1e
+  TEST_SCPI_INPUT("COM:I2C:WRI #H1f, #H00 \r\n");   //  Register 0x1f
+  TEST_SCPI_INPUT("COM:I2C:WRI #H20, #H05 \r\n");   // Register 0x20
+
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN1? #H2d\r\n");      //   Register 0x1e
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN1? #H20\r\n");      //  Register 0x20
+
+  TEST_SCPI_INPUT("COM:I2C:REA:LEN1? #H00\r\n");   //   Register 0x00
+
+
+  while(1){
+
+    output_buffer_clear();      // clear SCPI output result for get only results
+
+    // launch command to read X,Y,Z acceleration
+    TEST_SCPI_INPUT("COM:I2C:REA:LEN6? #H32\r\n"); // register 0x32
+
+    uint8_t dta[6];
+    memset(dta,0,6);
+
+    // converting string answer located in output buffer to number
+      int num = 0;
+      size_t ind = 0;
+      for (int i = 0; out_buffer[i] != '\0'; i++) { 
+          if (out_buffer[i] == ',' || out_buffer[i] == '\r' || out_buffer[i] == '\n' ) {
+            dta[ind] = num;
+            num = 0;
+            ind++;
+          } else {
+            num = num * 10 + (out_buffer[i] - 48); // if valid number add to the nuber
+          }
+      } 
+
+    int16_t accelerometer_dta[3];
+    // Unpack data
+      for (int j=0;j<3;++j) {
+          accelerometer_dta[j] = (int16_t)dta[2*j] + (((int16_t)dta[2*j + 1]) << 8);
+        //  fprintf(stdout, "Accelerometer value j:%d, value: 0x%x\r\n",j,accelerometer_dta[j]);
+      }
+
+      fprintf(stdout, "Accelerometer X: %d\r\n",accelerometer_dta[0]);
+      fprintf(stdout, "Accelerometer Y: %d\r\n",accelerometer_dta[1]);
+      fprintf(stdout, "Accelerometer Z: %d\r\n",accelerometer_dta[2]);
+
+      sleep_ms(1000 *2);
+
+  }
+  fprintf(stdout, "End of I2C Test of ADXL345\r\n");
 }

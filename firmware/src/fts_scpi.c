@@ -1192,6 +1192,22 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
                                 SCPI_ResultBool(context,bval);
                             }
                         break;
+
+                        case SCPI_I2C: 
+                            if (tag == CIE) {
+                                scpi_i2c_enable();
+                                fprintf(stdout, "Enable I2C communication\r\n");
+                            }
+                            if (tag == CID) {
+                                scpi_i2c_disable();
+                                fprintf(stdout, "Disable I2C communication\r\n");
+                            }
+                            if (tag == CRI) {
+                                bval = scpi_i2c_status();
+                                fprintf(stdout, "Read status I2C communication: %d\r\n",bval);
+                                SCPI_ResultBool(context,bval);
+                            }
+                        break;
                     }
                 }
 
@@ -1317,7 +1333,7 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
 
    // uint16_t answer;  // will contains the answer returned by command
     uint8_t tag;
-    volatile uint8_t ecode;
+    volatile int8_t ecode;
     uint16_t maxdata;
     uint32_t val=0;
     uint32_t readlen[1];
@@ -1342,7 +1358,7 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
     //fprintf(stdout, "Tag = %d \r\n", tag);
 
     //!< Tag to read single data 
-    if ( tag == SPWCS || tag == SPWDB || tag == SPWF || tag == SPWM  ) {
+    if ( tag == SPWCS || tag == SPWDB || tag == SPWF || tag == SPWM || tag == ICWDB || tag == ICWF || tag == ICWA) {
         res = SCPI_Parameter(context, &param1, true);  // Read first parameter
         if (res) {
             // Is parameter a number without suffix?
@@ -1384,19 +1400,34 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
                 // Section to check if parameters data is a number
                 if (SCPI_ParamIsNumber(&param1, TRUE)) {        // if paramater is number
                     SCPI_ParamToUInt64(context, &param1, &lval);
-                    fprintf(stdout, "Value to write: 0x%x \r\n", lval);
-                    int plen = param1.len / 2;  // Calculate number of byte based on string length
-                    // loop to save each byte on the write array
+
+                    // determine number of bytes to be saved in array based on number type
+                    size_t plen=0;
+                    uint64_t val =lval;
+                    if (param1.type == SCPI_TOKEN_HEXNUM) { plen = param1.len/2;} // hex numbers 
+                    if (param1.type == SCPI_TOKEN_OCTNUM) { plen = param1.len/2;} // octal numbers 
+                    if (param1.type == SCPI_TOKEN_BINNUM) { plen = param1.len/8;} // binary numbers 
+                    if (param1.type == SCPI_TOKEN_DECIMAL_NUMERIC_PROGRAM_DATA) { 
+                        while (val > 0) { // loop to find number of bytes
+                            plen++;
+                            val >>= 8; // Shift right by 8 bits (1 byte)
+                        }
+                    }
+                    if (lval >= 0 && plen == 0 ) { plen = 1;} // particular case when plen = 0
+                    // loop to save each byte on the write array, higher value first
                     for (int i = 0; i < plen; i++) {
-                        wdata[idx++] = (lval >> (8 * (plen - 1 - i))) & 0xff;
+                        wdata[idx] = (lval >> (8 * (plen - 1 - i))) & 0xff;
+                        fprintf(stdout, "Byte from string: 0x%02x \r\n", wdata[idx]);
+                        idx++;
                     }
                 }
             }
               
     } // end of tag
-
+ 
     bool wordsize;  // flag to indicate of data is on word size
-
+    bool regf;
+    
     if (ecode != 0) { tag =0;} // if error found, do not execute instruction
 
     switch (tag) {
@@ -1472,12 +1503,16 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
 
         case ICWD:
             fprintf(stdout, "I2C write data only, nbw to write: %d\r\n", idx);
-           // ecode = scpi_i2c_wri_read_data(wdata,idx,rdata,readlen[0],&wordsize);
+            ecode = scpi_i2c_wri_read_data(false,wdata,idx,rdata,readlen[0],&wordsize);
             break;
 
         case ICRD:
-            fprintf(stdout, "I2C read data only, nbw read: %d\r\n", readlen[0]);
-          //  ecode = scpi_i2c_wri_read_data(wdata,idx,rdata,readlen[0],&wordsize);
+            if (idx == 0) {
+                fprintf(stdout, "I2C read data only, Nb byte/word: %d\r\n", readlen[0]);
+            } else{
+                fprintf(stdout, "I2C write & read data, nb write %d, nb byte/word read: %d\r\n",idx, readlen[0]);
+            }
+            ecode = scpi_i2c_wri_read_data(regf,wdata,idx,rdata,readlen[0],&wordsize);
             break;
         
         case ICWF: 
@@ -1488,6 +1523,18 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
         case ICRF: 
             val = scpi_i2c_get_baudrate();
             fprintf(stdout, "I2C readback Baudrate, speed= %d\r\n", val); 
+            retv = true;
+            SCPI_ResultInt32(context,val); 
+            break;
+
+        case ICWA: 
+            fprintf(stdout, "I2C set Device Address to 0x%x\r\n", val);
+            scpi_i2c_set_address(val);  
+            break;
+
+        case ICRA: 
+            val = scpi_i2c_get_address();
+            fprintf(stdout, "I2C readback Device Address, addr= 0x%x\r\n", val); 
             retv = true;
             SCPI_ResultInt32(context,val); 
             break;
@@ -1511,12 +1558,26 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
 
 
     if (retv == true) { //!< if single value need to be returned
-                 SCPI_ResultInt32(context,val); //!< return value 
-    }     
+            SCPI_ResultInt32(context,val); //!< return value 
+    } 
+
+    if (tag == ICRD)  {
+        if (!wordsize) { // if bytes size need to be returned
+            SCPI_ResultArrayUInt8(context, rdata,readlen[0],SCPI_FORMAT_ASCII);
+        } else {
+            uint16_t *wrdata = NULL;    // create pointer to read word data
+            wrdata = (uint16_t*)(uintptr_t)rdata; // adjust pointer to word data
+            // swap byte due to endianess
+            for (size_t i = 0; i < readlen[0]; ++i) {
+                wrdata[i] = (wrdata[i] << 8) | (wrdata[i] >> 8);
+            }  
+            SCPI_ResultArrayUInt16(context, wrdata,readlen[0],SCPI_FORMAT_ASCII);
+        } 
+    }
 
     
     // return byte array or word array result
-    if ( tag == SPWR  || tag == SPRD || tag == ICRD ) { 
+    if ( tag == SPWR  || tag == SPRD) { 
         if (!wordsize) { // if bytes size need to be returned
                 uint8_t* bptr; // contains starting position for the read data
                 uint8_t barr; // contains total bytes to return
@@ -1561,13 +1622,19 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
         case SPI_CS_NUM_ERROR: { val= SPI_CS_ERROR; break;}
         case MALLOC_FAILURE: { val= MEMORY_ALLOCATION_ERROR; break;}
         case ARB_ODD_ERR:  { val= ARB_WORD_FORMAT_ERROR; break;}
+        case I2C_MALLOC_FAILURE: { val= MEMORY_ALLOCATION_ERROR; break;}
+        case I2C_GENERIC_ERR: { val= I2C_GENERIC_ERROR; break;}
+        case I2C_TIMEOUT_ERR: { val= I2C_TIMEOUT_ERROR; break;}
+        case I2C_ADDRESS_NACK: { val= I2C_ADDRESS_NACK_ERROR; break;}
+        case I2C_DATA_NACK: { val= I2C_DATA_NACK_ERROR; break;}
+        case I2C_BUS_ERR: { val= I2C_BUS_ERROR; break;}
         default: {val = ecode; break;}
     }    
 
     //!< if error found, send result to SCPI error queue
     if (ecode != NOERR) {
         SCPI_ErrorPush(context, val);  // push errors 
-        return SCPI_RES_ERR;    //!< raise error flah
+        return SCPI_RES_ERR;    //!< raise error 
     } else {
         return SCPI_RES_OK;
     }
@@ -1705,6 +1772,8 @@ scpi_command_t scpi_commands[] = {
 
     {.pattern = "COM:I2C:WRIte", .callback = Callback_sync_com_scpi,ICWD},
     {.pattern = "COM:I2C:REAd:LENgth#?", .callback = Callback_sync_com_scpi,ICRD},
+    {.pattern = "COM:I2C:ADDRess", .callback = Callback_sync_com_scpi,ICWA},
+    {.pattern = "COM:I2C:ADDRess?", .callback = Callback_sync_com_scpi,ICRA},
     {.pattern = "COM:I2C:Baudrate", .callback = Callback_sync_com_scpi,ICWF},
     {.pattern = "COM:I2C:Baudrate?", .callback = Callback_sync_com_scpi,ICRF},
     {.pattern = "COM:I2C:Databits", .callback = Callback_sync_com_scpi,ICWDB},

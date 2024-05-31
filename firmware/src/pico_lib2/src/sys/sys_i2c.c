@@ -64,7 +64,7 @@ int32_t sys_i2c_rbyte(i2c_inst_t* i2c, uint8_t addr, uint8_t* rb)
 int32_t sys_i2c_rbyte_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* rb)
 {
     ENTER_SECTION;
-    int32_t ret = i2c_write_timeout_us(i2c, addr, &reg, 1, true, I2C_TIMEOUT_CHAR);
+    int32_t ret = i2c_write_timeout_us(i2c, addr, &reg, 1, true, I2C_TIMEOUT_CHAR); // nostop = true
     if (ret > 0)
         ret = i2c_read_timeout_us(i2c, addr, rb, 1, false, I2C_TIMEOUT_CHAR);
     EXIT_SECTION;
@@ -88,42 +88,28 @@ int32_t sys_i2c_wbyte_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t wb
     return ret;
 }
 
-int32_t sys_i2c_rword(i2c_inst_t* i2c, uint8_t addr, uint16_t* rw)
-{
-    return i2c_read_timeout_us(i2c, addr, (uint8_t*)rw, 2, false, 2 * I2C_TIMEOUT_CHAR);
-}
 
-int32_t sys_i2c_rword_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint16_t* rw)
-{
+
+int32_t sys_i2c_wbuf_rbuf(i2c_inst_t* i2c, uint8_t addr, uint8_t* wBuf, uint32_t wlen,uint8_t* rBuf, uint32_t rlen)
+{ 
     ENTER_SECTION;
-    int32_t ret = i2c_write_timeout_us(i2c, addr, &reg, 1, true, I2C_TIMEOUT_CHAR);
-    if (ret > 0)
-        ret = i2c_read_timeout_us(i2c, addr, (uint8_t*)rw, 2, false, 2 * I2C_TIMEOUT_CHAR);
+    int32_t ret = i2c_write_timeout_us(i2c, addr, wBuf, wlen, true, wlen * I2C_TIMEOUT_CHAR);
+    if (ret > 0) {
+        ret = i2c_read_timeout_us(i2c, addr, rBuf, rlen, false, rlen * I2C_TIMEOUT_CHAR);
+    }
     EXIT_SECTION;
+
     return ret;
 }
 
-int32_t sys_i2c_wword(i2c_inst_t* i2c, uint8_t addr, uint16_t ww)
-{
-    return i2c_write_timeout_us(i2c, addr, (uint8_t*)&ww, 2, false, 2 * I2C_TIMEOUT_CHAR);
-}
-
-int32_t sys_i2c_wword_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint16_t ww)
-{
-    ENTER_SECTION;
-    uint8_t buffer[3];
-    buffer[0] = reg;
-    buffer[1] = ww;
-    buffer[2] = ww >> 8;
-    int32_t ret = i2c_write_timeout_us(i2c, addr, buffer, 3, false, 3 * I2C_TIMEOUT_CHAR);
-    EXIT_SECTION;
-    return ret;
-}
 
 int32_t sys_i2c_rbuf(i2c_inst_t* i2c, uint8_t addr, uint8_t* pBuf, uint32_t len)
 {
-    return i2c_read_timeout_us(i2c, addr, pBuf, len, false, len * I2C_TIMEOUT_CHAR);
+   
+    int32_t ret = i2c_read_timeout_us(i2c, addr, pBuf, len, false, len * I2C_TIMEOUT_CHAR);
+    return ret;
 }
+
 
 
 int32_t sys_i2c_rbuf_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* pBuf, uint32_t len)
@@ -136,6 +122,7 @@ int32_t sys_i2c_rbuf_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* pB
     return ret;
 }
 
+
 int32_t sys_i2c_wbuf(i2c_inst_t* i2c, uint8_t addr, const uint8_t* pBuf, uint32_t len)
 {
     return i2c_write_timeout_us(i2c, addr, pBuf, len, false, len * I2C_TIMEOUT_CHAR);
@@ -145,12 +132,13 @@ int32_t sys_i2c_wbuf(i2c_inst_t* i2c, uint8_t addr, const uint8_t* pBuf, uint32_
 int32_t sys_i2c_wbuf_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* pBuf, uint32_t len)
 {
     ENTER_SECTION;
-    int32_t ret = i2c_write_timeout_us(i2c, addr, &reg, 1, true, I2C_TIMEOUT_CHAR);
+    int32_t ret = i2c_write_timeout_us(i2c, addr, &reg, 1, true, I2C_TIMEOUT_CHAR); //was true
     if (ret > 0)
         ret = i2c_write_timeout_us(i2c, addr, pBuf, len, false, len * I2C_TIMEOUT_CHAR);
     EXIT_SECTION;
     return ret;
 }
+
 
 int32_t sys_i2c_rbyte_eeprom(i2c_inst_t* i2c, uint8_t addr, uint8_t* ee_address, uint8_t* pBuf, uint32_t len)
 {

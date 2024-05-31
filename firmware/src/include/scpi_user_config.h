@@ -81,7 +81,11 @@ extern "C" {
     X(SPI_CS_ERROR,             -385,  "SPI chipselect gpio number is invalid." ) \
     X(MEMORY_ALLOCATION_ERROR,  -386,  "Internal error, memory allocation raise error." ) \
     X(ARB_WORD_FORMAT_ERROR,    -387,  "Arbitrary block data length is odd, expect even number for word size." ) \
-
+    X(I2C_GENERIC_ERROR,        -388,  "I2C Generic Error (Error not defined)." ) \
+    X(I2C_TIMEOUT_ERROR,        -389,  "I2C Operation timed out." ) \
+    X(I2C_ADDRESS_NACK_ERROR,   -390,  "I2C No acknowledgment from the addressed device (Address NACK)." ) \
+    X(I2C_DATA_NACK_ERROR,      -391,  "I2C No acknowledgment after sending data.(Data NACK)" ) \
+    X(I2C_BUS_ERROR,            -392,  "An error occurred on the I2C bus.(Bus Error)" ) \
  
 
 

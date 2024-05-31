@@ -175,7 +175,10 @@ However, there are two caveats:
 |COM:SPI:Mode? ||
 | ||
 |COM:I2C:WRIte      |\<data\> | Spi write data
-|COM:I2C:REAd:LENx? |\<value\> | Spi read x bytes
+|COM:I2C:REAd:LENx? |\<opt:register\> | Spi read x bytes
+|COM:I2C:ADDRress |   \<Device address\> |   Address to use to talk to the device
+|COM:I2C:ADDRress? ||
+|COM:I2C:Baud? ||
 |COM:I2C:Baud  |   \<value\> |   baudrate speed 
 |COM:I2C:Baud? ||
 |COM:I2C:Databits  | \<value\>   |  // Number of databits to write or read. Normally 8 (bytes) or 16 (word) 

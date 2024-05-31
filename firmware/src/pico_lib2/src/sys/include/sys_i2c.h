@@ -34,7 +34,7 @@
     @def I2C_TIMEOUT_CHAR timeout (500us)
     @n
 */
-#define I2C_TIMEOUT_CHAR 500  
+#define I2C_TIMEOUT_CHAR 500
 
 /*! $**Default i2c0 pins**
     @def SYS_SDA0 sda pin
@@ -127,61 +127,8 @@ int32_t sys_i2c_rbyte_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* r
 */
 int32_t sys_i2c_wbyte_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t wb);
 
-/*! $## **Word functions:**
-    @--
-    @n
-*/
 
-/*! @brief - Read i2c word
-    @param i2c I2C channel i2c0 or i2c1
-    @param addr I2C address
-    @param rw Word to read
-    @return Bytes read
-    @return[error] PICO_ERROR_GENERIC On error
-    @return[error] PICO_ERROR_TIMEOUT On timeout
-*/
-int32_t sys_i2c_rword(i2c_inst_t* i2c, uint8_t addr, uint16_t* rw);
-
-
-/*! @brief - Write i2c word
-    @param i2c I2C channel i2c0 or i2c1
-    @param addr I2C address
-    @param ww Word to write
-    @return Bytes written
-    @return[error] PICO_ERROR_GENERIC On error
-    @return[error] PICO_ERROR_TIMEOUT On timeout
-*/
-int32_t sys_i2c_wword(i2c_inst_t* i2c, uint8_t addr, uint16_t ww);
-
-
-/*! @brief - Read i2c word register
-    @param i2c I2C channel i2c0 or i2c1
-    @param addr I2C address
-    @param reg Register address
-    @param rw Word to read
-    @return Bytes read
-    @return[error] PICO_ERROR_GENERIC On error
-    @return[error] PICO_ERROR_TIMEOUT On timeout
-*/
-int32_t sys_i2c_rword_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint16_t* rw);
-
-/*! @brief - Write i2c word register
-    @param i2c I2C channel i2c0 or i2c1
-    @param addr I2C address
-    @param reg Register address
-    @param ww Word to write
-    @return Bytes written
-    @return[error] PICO_ERROR_GENERIC On error
-    @return[error] PICO_ERROR_TIMEOUT On timeout
-*/
-int32_t sys_i2c_wword_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint16_t ww);
-
-/*! $## **Buffer functions:**
-    @--
-    @n
-*/
-
-/*! @brief - Read i2c buffer
+/*! @brief - Read i2c buffer by byte
     @param i2c I2C channel i2c0 or i2c1
     @param addr I2C address
     @param pBuf Buffer to read
@@ -191,7 +138,6 @@ int32_t sys_i2c_wword_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint16_t w
     @return[error] PICO_ERROR_TIMEOUT On timeout
 */
 int32_t sys_i2c_rbuf(i2c_inst_t* i2c, uint8_t addr, uint8_t* pBuf, uint32_t len);
-
 
 /*! @brief - Write i2c buffer
     @param i2c I2C channel i2c0 or i2c1
@@ -205,7 +151,7 @@ int32_t sys_i2c_rbuf(i2c_inst_t* i2c, uint8_t addr, uint8_t* pBuf, uint32_t len)
 int32_t sys_i2c_wbuf(i2c_inst_t* i2c, uint8_t addr, const uint8_t* pBuf, uint32_t len);
 
 
-/*! @brief - Read i2c buffer register
+/*! @brief - Read i2c buffer register using byte
     @param i2c I2C channel i2c0 or i2c1
     @param addr I2C address
     @param reg Register address
@@ -217,7 +163,8 @@ int32_t sys_i2c_wbuf(i2c_inst_t* i2c, uint8_t addr, const uint8_t* pBuf, uint32_
 */
 int32_t sys_i2c_rbuf_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* pBuf, uint32_t len);
 
-/*! @brief - Write i2c buffer register
+
+/*! @brief - Write i2c buffer register and byte data
     @param i2c I2C channel i2c0 or i2c1
     @param addr I2C address
     @param reg Register address
@@ -228,6 +175,19 @@ int32_t sys_i2c_rbuf_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* pB
     @return[error] PICO_ERROR_TIMEOUT On timeout
 */
 int32_t sys_i2c_wbuf_reg(i2c_inst_t* i2c, uint8_t addr, uint8_t reg, uint8_t* pBuf, uint32_t len);
+
+/*! @brief - Write i2c buffer and read byte data
+    @param i2c I2C channel i2c0 or i2c1
+    @param addr I2C address
+    @param wBuf Write Buffer
+    @param wlen Length to write
+    @param rBuf Buffer to read
+    @param rlen Length to read
+    @return Bytes read
+    @return[error] PICO_ERROR_GENERIC On error
+    @return[error] PICO_ERROR_TIMEOUT On timeout
+*/
+int32_t sys_i2c_wbuf_rbuf(i2c_inst_t* i2c, uint8_t addr, uint8_t* wBuf, uint32_t wlen,uint8_t* rBuf, uint32_t rlen);
 
 /*! @brief - Read i2c byte on eeprom  at word address
     @param i2c I2C channel i2c0 or i2c1
