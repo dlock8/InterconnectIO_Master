@@ -194,7 +194,7 @@ const scpi_choice_def_t scpi_special_all_numbers_def[] = {
     {/* name */ "ON", /* type */ 1},
     {/* name */ "OFF", /* type */ 0},
     {/* name */ "SPI", /* type */ SCPI_SPI},
-    {/* name */ "UART", /* type */ SCPI_UART},
+    {/* name */ "SERIAL", /* type */ SCPI_SERIAL},
     {/* name */ "I2C", /* type */ SCPI_I2C},
 
     SCPI_CHOICE_LIST_END,
@@ -1177,18 +1177,18 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
                             }
                         break;
 
-                        case SCPI_UART: 
+                        case SCPI_SERIAL: 
                             if (tag == CIE) {
                                 scpi_uart_enable();
-                                fprintf(stdout, "Enable UART communication\r\n");
+                                fprintf(stdout, "Enable SERIAL communication\r\n");
                             }
                             if (tag == CID) {
                                 scpi_uart_disable();
-                                fprintf(stdout, "Disable UART communication\r\n");
+                                fprintf(stdout, "Disable SERIAL communication\r\n");
                             }
                             if (tag == CRI) {
                                 bval = scpi_uart_status();
-                                fprintf(stdout, "Read status UART communication: %d\r\n",bval);
+                                fprintf(stdout, "Read status SERIAL communication: %d\r\n",bval);
                                 SCPI_ResultBool(context,bval);
                             }
                         break;
@@ -1231,69 +1231,68 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
             break;
 
         case CSWB: 
-            fprintf(stdout, "Uart set Baudrate to %d\r\n", val);
+            fprintf(stdout, "Serial set Baudrate to %d\r\n", val);
             scpi_uart_set_baudrate(val);  
             break;
 
         case CSRB: 
             val = scpi_uart_get_baudrate();
-            fprintf(stdout, "Uart readback actual Baudrate, speed= %d\r\n", val); 
+            fprintf(stdout, "Serial readback actual Baudrate, speed= %d\r\n", val); 
             SCPI_ResultInt32(context,val); 
             break;
 
         case CSWT: 
-            fprintf(stdout, "Uart set Timeout_ms to %d\r\n", val);
+            fprintf(stdout, "Serial set Timeout_ms to %d\r\n", val);
             scpi_uart_set_timeout(val);  
             break;
 
         case CSRT: 
             val = scpi_uart_get_timeout();
-            fprintf(stdout, "Uart readback Timeout_ms: %d\r\n", val); 
+            fprintf(stdout, "Serial readback Timeout_ms: %d\r\n", val); 
             SCPI_ResultInt32(context,val); 
             break;
 
         case CSWH: 
-            fprintf(stdout, "Uart set RTS-CTS Handshake to %d\r\n", val);
+            fprintf(stdout, "Serial set RTS-CTS Handshake to %d\r\n", val);
             scpi_uart_set_handshake(val);  
             break;
 
         case CSRH: 
             bval = scpi_uart_get_handshake();
-            fprintf(stdout, "Uart readback RTS-CTS Handshake: %d\r\n", bval); 
+            fprintf(stdout, "Serial readback RTS-CTS Handshake: %d\r\n", bval); 
             SCPI_ResultBool(context,bval);
             break;
         
         case CSWP: 
             ecode = scpi_uart_set_protocol(winfo);
             if (ecode != NOERR) { 
-                fprintf(stdout, "Uart protocol error with value: %s\r\n", &winfo);
+                fprintf(stdout, "Serial protocol error with value: %s\r\n", &winfo);
             } else {
-                fprintf(stdout, "Uart set protocol to: %s\r\n", &winfo); 
+                fprintf(stdout, "Serial set protocol to: %s\r\n", &winfo); 
             }
             break;
 
         case CSRP: 
             dpr = scpi_uart_get_protocol();
-            fprintf(stdout, "Uart readback protocol: %s\r\n", dpr); 
+            fprintf(stdout, "Serial readback protocol: %s\r\n", dpr); 
             SCPI_ResultText(context,dpr);
             break;
 
         case CSWD: // Write data to uart only, the answer is discarded
-            fprintf(stdout, "Uart transmit data: %s\r\n", &winfo);
-            scpi_uart_write_data(winfo); // write data, do not expect answer
+            fprintf(stdout, "Serial transmit data: %s\r\n", &winfo);
+            ecode = scpi_uart_write_data(winfo); // write data, do not expect answer
             break;
 
         case CSRD: 
             ecode = scpi_uart_write_read_data(winfo, ustr,SCPI_INPUT_BUFFER_SIZE); // write data, expect answer
             if (ecode != NOCERR) { 
-                fprintf(stdout, "Uart Error with string: %s\r\n", winfo);
+                fprintf(stdout, "Serial Error with string: %s\r\n", winfo);
             } else {
-                fprintf(stdout, "Uart transmit data: %s\r\n", &winfo);
-                fprintf(stdout, "Uart Received data: %s\r\n", &ustr); 
+                fprintf(stdout, "Serial transmit data: %s\r\n", &winfo);
+                fprintf(stdout, "Serial Received data: %s\r\n", &ustr); 
+                SCPI_ResultText(context,ustr); // return string with or without error
             }
-            SCPI_ResultText(context,ustr); // return string with or without error
-            break;
-                   
+            break;              
     }
 
 
@@ -1312,6 +1311,7 @@ static scpi_result_t Callback_com_scpi(scpi_t *context) {
         case UART_RX_TIMEOUT_MS : { answer= UART_RX_ERROR; break;}
         case UART_LASTCHAR_TIMEOUT_MS: { answer= UART_LASTCHAR_ERROR; break;}
         case UART_BUFFER_FULL: { answer= UART_RXBUFFER_ERROR; break;}
+        case UART_NOT_ENABLED: { answer= UART_ENABLE_ERROR; break;}
     }    
 
    
@@ -1370,7 +1370,7 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
     }
 
     //!< Tag to read all data, using loop. The data could be in many forms
-    if ( tag == SPWR  ||tag == SPWD || tag == SPRD || tag == ICWD || tag == ICRD) { 
+    if ( tag == SPWD || tag == SPRD || tag == ICWD || tag == ICRD) { 
 
         SCPI_CommandNumbers(context, readlen, 1,0); // extract number of bytes to read
         fprintf(stdout, "On Command, Nb of byte/word  to Read: %d \r\n", readlen[0]);
@@ -1431,10 +1431,6 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
     if (ecode != 0) { tag =0;} // if error found, do not execute instruction
 
     switch (tag) {
-        case SPWR:
-            fprintf(stdout, "SPI write-Read,nbytes write: %d , nbw read: %d\r\n", idx,readlen[0] );
-            ecode = scpi_spi_wri_read_data(wdata,idx,rdata,readlen[0],&wordsize);
-            break;
 
         case SPWD:
             fprintf(stdout, "SPI write data only, nbw to write: %d\r\n", idx);
@@ -1442,7 +1438,11 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
             break;
 
         case SPRD:
-            fprintf(stdout, "SPI read data only, nbw read: %d\r\n", readlen[0]);
+            if (idx == 0) {
+                fprintf(stdout, "SPI read data only, Nb byte/word: %d\r\n", readlen[0]);
+            } else{
+                fprintf(stdout, "SPI write & read data, nb write %d, nb byte/word read: %d\r\n",idx, readlen[0]);
+            }
             ecode = scpi_spi_wri_read_data(wdata,idx,rdata,readlen[0],&wordsize);
             break;
         
@@ -1455,7 +1455,6 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
             val = scpi_spi_get_baudrate();
             fprintf(stdout, "SPI readback Baudrate, speed= %d\r\n", val); 
             retv = true;
-            SCPI_ResultInt32(context,val); 
             break;
 
         case SPWCS: 
@@ -1471,7 +1470,6 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
             val = scpi_spi_get_chipselect();
             fprintf(stdout, "SPI readback chipselect gpio= %d\r\n", val);
             retv = true;
-            SCPI_ResultInt32(context,val); 
             break;
 
         case SPWDB: 
@@ -1487,12 +1485,11 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
             val = scpi_spi_get_databits();
             fprintf(stdout, "SPI readback databits=  %d\r\n", val); 
             retv = true;
-            SCPI_ResultInt32(context,val); 
             break;
 
         case SPWM: 
             fprintf(stdout, "SPI set Mode to %d\r\n", val);
-            scpi_spi_set_mode(val);  
+            ecode = scpi_spi_set_mode(val);  
             break;
 
         case SPRM: 
@@ -1524,7 +1521,6 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
             val = scpi_i2c_get_baudrate();
             fprintf(stdout, "I2C readback Baudrate, speed= %d\r\n", val); 
             retv = true;
-            SCPI_ResultInt32(context,val); 
             break;
 
         case ICWA: 
@@ -1536,7 +1532,6 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
             val = scpi_i2c_get_address();
             fprintf(stdout, "I2C readback Device Address, addr= 0x%x\r\n", val); 
             retv = true;
-            SCPI_ResultInt32(context,val); 
             break;
 
          case ICWDB: 
@@ -1552,7 +1547,6 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
             val = scpi_i2c_get_databits();
             fprintf(stdout, "I2C readback databits=  %d\r\n", val); 
             retv = true;
-            SCPI_ResultInt32(context,val); 
             break;
     }
 
@@ -1561,12 +1555,23 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
             SCPI_ResultInt32(context,val); //!< return value 
     } 
 
-    if (tag == ICRD)  {
+    if ((tag == ICRD && ecode == NOERR) ||(tag == SPRD && ecode == NOERR)  )  {
         if (!wordsize) { // if bytes size need to be returned
             SCPI_ResultArrayUInt8(context, rdata,readlen[0],SCPI_FORMAT_ASCII);
         } else {
             uint16_t *wrdata = NULL;    // create pointer to read word data
             wrdata = (uint16_t*)(uintptr_t)rdata; // adjust pointer to word data
+            SCPI_ResultArrayUInt16(context, wrdata,readlen[0],SCPI_FORMAT_ASCII);
+        } 
+    }
+/*
+    if (tag == SPRD && ecode == NOERR)  {
+         if (!wordsize) { // if bytes size need to be returned
+            SCPI_ResultArrayUInt8(context, rdata,readlen[0],SCPI_FORMAT_ASCII);
+        } else {
+            uint16_t *wrdata = NULL;    // create pointer to read word data
+            wrdata = (uint16_t*)(uintptr_t)rdata; // adjust pointer to word data
+            uint8_t woff = idx/2;  // Offset to add due to write data
             // swap byte due to endianess
             for (size_t i = 0; i < readlen[0]; ++i) {
                 wrdata[i] = (wrdata[i] << 8) | (wrdata[i] >> 8);
@@ -1574,16 +1579,16 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
             SCPI_ResultArrayUInt16(context, wrdata,readlen[0],SCPI_FORMAT_ASCII);
         } 
     }
-
-    
+*/
+/*
     // return byte array or word array result
-    if ( tag == SPWR  || tag == SPRD) { 
+    if ( tag == SPRD && ecode == NOERR) { 
         if (!wordsize) { // if bytes size need to be returned
                 uint8_t* bptr; // contains starting position for the read data
                 uint8_t barr; // contains total bytes to return
               // return valid result. idx is added to rdata to remove data read in same time of write in case of
-                if (tag == SPRD || tag == ICRD) { bptr  = rdata+idx;barr = readlen[0];} // return answer after write
-                if (tag == SPWR) { bptr  = rdata;barr = idx + readlen[0];} // return everything
+               if (tag == SPRD) { bptr  = rdata+idx;barr = readlen[0];} // return answer after write
+            //    if (tag == SPWR) { bptr  = rdata;barr = idx + readlen[0];} // return everything
                 SCPI_ResultArrayUInt8(context, bptr,barr,SCPI_FORMAT_ASCII);
 
         } else { // if word size need to be returned
@@ -1599,8 +1604,8 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
                 } else {   
                     uint16_t* wptr; // contains starting position for the read data
                     uint8_t tarr;  // total number of word to return
-                    if (tag == SPRD || tag == ICRD) { wptr  = wrdata+warr;tarr = sarr;} // return answer after write
-                    if (tag == SPWR) { wptr  = wrdata;tarr = sarr+warr;} // return everything
+                    if (tag == SPRD) { wptr  = wrdata+warr;tarr = sarr;} // return answer after write
+                    //if (tag == SPWR) { wptr  = wrdata;tarr = sarr+warr;} // return everything
 
                    // transform array of byte in array of word
                     for (size_t i = 0; i < sarr+warr; i++) {
@@ -1614,13 +1619,15 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
         }
     }
 
-
+*/
     // raise error if is the case
     switch (ecode) {
         case NOERR: { break;}
         case SPI_MODE_NUM_NOTVALID: { val= SPI_MODE_ERROR; break;}
         case SPI_CS_NUM_ERROR: { val= SPI_CS_ERROR; break;}
         case MALLOC_FAILURE: { val= MEMORY_ALLOCATION_ERROR; break;}
+        case SPI_TIMEOUT: { val= SPI_TIMEOUT_ERROR; break;}
+        case SPI_NOT_ENABLED: { val= SPI_ENABLE_ERROR; break;}
         case ARB_ODD_ERR:  { val= ARB_WORD_FORMAT_ERROR; break;}
         case I2C_MALLOC_FAILURE: { val= MEMORY_ALLOCATION_ERROR; break;}
         case I2C_GENERIC_ERR: { val= I2C_GENERIC_ERROR; break;}
@@ -1628,6 +1635,7 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t *context) {
         case I2C_ADDRESS_NACK: { val= I2C_ADDRESS_NACK_ERROR; break;}
         case I2C_DATA_NACK: { val= I2C_DATA_NACK_ERROR; break;}
         case I2C_BUS_ERR: { val= I2C_BUS_ERROR; break;}
+        case I2C_NOT_ENABLED: { val= I2C_ENABLE_ERROR; break;}
         default: {val = ecode; break;}
     }    
 
@@ -1758,9 +1766,8 @@ scpi_command_t scpi_commands[] = {
     {.pattern = "COM:SERIAL:Timeout", .callback = Callback_com_scpi,CSWT},
     {.pattern = "COM:SERIAL:Timeout?", .callback = Callback_com_scpi,CSRT},
 
-    {.pattern = "COM:SPI:WRIte:REAd:LENgth#", .callback = Callback_sync_com_scpi,SPWR},
     {.pattern = "COM:SPI:WRIte", .callback = Callback_sync_com_scpi,SPWD},
-    {.pattern = "COM:SPI:REAd:LENgth#", .callback = Callback_sync_com_scpi,SPRD},
+    {.pattern = "COM:SPI:REAd:LENgth#?", .callback = Callback_sync_com_scpi,SPRD},
     {.pattern = "COM:SPI:Baudrate", .callback = Callback_sync_com_scpi,SPWF},
     {.pattern = "COM:SPI:Baudrate?", .callback = Callback_sync_com_scpi,SPRF},
     {.pattern = "COM:SPI:Databits", .callback = Callback_sync_com_scpi,SPWDB},

@@ -52,7 +52,8 @@
 #define I2C_ADDRESS_NACK          -3 
 #define I2C_DATA_NACK             -4 
 #define I2C_BUS_ERR               -5 
-#define I2C_MALLOC_FAILURE          52
+#define I2C_MALLOC_FAILURE        52
+#define I2C_NOT_ENABLED           53
 
 
 

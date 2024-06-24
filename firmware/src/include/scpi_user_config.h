@@ -77,15 +77,20 @@ extern "C" {
     X(UART_RX_ERROR,            -381,  "Uart serial communication error, Timeout occur on waiting to receive char") \
     X(UART_LASTCHAR_ERROR,      -382,  "Uart Timeout occur on waiting to receive last character of string (last char is the same of Tx)") \
     X(UART_RXBUFFER_ERROR,      -383,  "Uart Receiver buffer overrun. String received too long") \
-    X(SPI_MODE_ERROR,           -384,  "SPI mode number is invalid, expect Mode value between 0 and 3") \
-    X(SPI_CS_ERROR,             -385,  "SPI chipselect gpio number is invalid." ) \
-    X(MEMORY_ALLOCATION_ERROR,  -386,  "Internal error, memory allocation raise error." ) \
-    X(ARB_WORD_FORMAT_ERROR,    -387,  "Arbitrary block data length is odd, expect even number for word size." ) \
-    X(I2C_GENERIC_ERROR,        -388,  "I2C Generic Error (Error not defined)." ) \
-    X(I2C_TIMEOUT_ERROR,        -389,  "I2C Operation timed out." ) \
-    X(I2C_ADDRESS_NACK_ERROR,   -390,  "I2C No acknowledgment from the addressed device (Address NACK)." ) \
-    X(I2C_DATA_NACK_ERROR,      -391,  "I2C No acknowledgment after sending data.(Data NACK)" ) \
-    X(I2C_BUS_ERROR,            -392,  "An error occurred on the I2C bus.(Bus Error)" ) \
+    X(UART_ENABLE_ERROR,        -384,  "Uart Serial communication not enabled, send command to enable SERIAL" ) \
+    X(SPI_MODE_ERROR,           -385,  "SPI mode number is invalid, expect Mode value between 0 and 7") \
+    X(SPI_CS_ERROR,             -386,  "SPI chipselect gpio number is invalid." ) \
+    X(SPI_TIMEOUT_ERROR,        -387,  "SPI timeout error (no device?)" ) \
+    X(SPI_ENABLE_ERROR,         -388,  "SPI master not enabled, send command to enable SPI" ) \
+    X(MEMORY_ALLOCATION_ERROR,  -389,  "Internal error, memory allocation raise error." ) \
+    X(ARB_WORD_FORMAT_ERROR,    -390,  "Arbitrary block data length is odd, expect even number for word size." ) \
+    X(I2C_GENERIC_ERROR,        -391,  "I2C Generic Error (Error not defined)." ) \
+    X(I2C_TIMEOUT_ERROR,        -392,  "I2C Operation timed out." ) \
+    X(I2C_ADDRESS_NACK_ERROR,   -393,  "I2C No acknowledgment from the addressed device (Address NACK)." ) \
+    X(I2C_DATA_NACK_ERROR,      -394,  "I2C No acknowledgment after sending data.(Data NACK)" ) \
+    X(I2C_BUS_ERROR,            -395,  "An error occurred on the I2C bus.(Bus Error)" ) \
+    X(I2C_ENABLE_ERROR,         -396,  "I2C master not enabled, send command to enable I2C" ) \
+
  
 
 

@@ -113,8 +113,7 @@ extern "C" {
 
 
 
-#define SPWD    110     // Write Data on SPI port, read data
-#define SPWR    111     // Write Data and read data  on SPI port
+#define SPWD    111     // Write Data on SPI port, read data
 #define SPRD    112     // Read Data  on SPI port
 #define SPWF    113     // Write user Spi baudrate
 #define SPRF    114     // Read user Spi baudrate
@@ -150,9 +149,9 @@ extern "C" {
 #define SCPI_OC2   11     // Open collector 
 #define SCPI_OC3   12     // Open collector 
 
-#define SCPI_UART  15     // Uart communication 
-#define SCPI_SPI   16     // SPI communication 
-#define SCPI_I2C   17     // I2C communication 
+#define SCPI_SERIAL 15     // Uart serial communication 
+#define SCPI_SPI    16     // SPI communication 
+#define SCPI_I2C    17     // I2C communication 
 
 
 #define GPIO_LPR1  8     // Gpio number to control Power relay 

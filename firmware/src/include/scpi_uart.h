@@ -63,6 +63,7 @@
 #define UART_RX_TIMEOUT_MS          34
 #define UART_LASTCHAR_TIMEOUT_MS    35
 #define UART_BUFFER_FULL            36
+#define UART_NOT_ENABLED            37
 
 
 void scpi_uart_enable(void);
@@ -76,7 +77,7 @@ void scpi_uart_set_handshake(bool val);
 bool scpi_uart_get_handshake(void);
 uint8_t scpi_uart_set_protocol(char* str);
 const char* scpi_uart_get_protocol(void);
-void scpi_uart_write_data(char* dwrt);
+uint8_t scpi_uart_write_data(char* dwrt);
 uint8_t scpi_uart_write_read_data(char* strd, char* dpr,size_t rsize); // write data, expect answer
 
 

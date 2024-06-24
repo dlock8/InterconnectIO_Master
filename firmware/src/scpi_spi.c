@@ -132,12 +132,12 @@ void scpi_spi_set_baudrate(uint32_t speed) {
 }
 
 /**
- * @brief function to return the actual baudrate
+ * @brief function to return the baudrate
  * 
  * @return uint32_t  baudrate
  */
 uint32_t scpi_spi_get_baudrate() {
-   return spi_get_baudrate(uspi.spi_id);
+   return uspi.baudrate;
 }
 
 /**
@@ -188,19 +188,16 @@ uint32_t scpi_spi_get_chipselect() {
 
 
 /**
- * @brief Function to update the number of databits to be used. 
+ * @brief Function to update the value of databits to be used. 
  * 
  * @param num  Databits to write 
  */
 uint8_t scpi_spi_set_databits(uint32_t num) {
-
-   if (num != uspi.databits) {  // if value changed
-        uspi.databits = num;
-        if (uspi.status) {      // id SPI is enabled, update the baudrate
-            //spi_set_format(uspi.spi_id,uspi.databits,uspi.cpol,uspi.cpha,uspi.msb);
-            fprintf(stdout, "SPI Parameter databit updated to  %d\r\n", num);
-        }
+   if (num != uspi.databits) { 
+     uspi.databits = num;
+     scpi_spi_set_mode(uspi.mode);   
    }
+   fprintf(stdout, "SPI Parameter databit updated to  %d\r\n", num);
    return NOERR;
 }
 
@@ -220,7 +217,7 @@ uint32_t scpi_spi_get_databits() {
  * @param mode  value of mode to use
  * @return uint8_t error number
  */
-void scpi_spi_set_mode(uint8_t mode){
+uint8_t scpi_spi_set_mode(uint8_t mode){
   bool cpol,cpha,msb,cs;
 
     msb = SPI_MSB_FIRST; // LSB First is not supported
@@ -234,11 +231,14 @@ void scpi_spi_set_mode(uint8_t mode){
         case 5: { cs = 1; cpol = SPI_CPOL_0; cpha = SPI_CPHA_1;break;}
         case 6: { cs = 1 ;cpol = SPI_CPOL_1; cpha = SPI_CPHA_0;break;}
         case 7: { cs = 1 ;cpol = SPI_CPOL_1; cpha = SPI_CPHA_1;break;}
+        default: { return SPI_MODE_NUM_NOTVALID;}
 
     }
     uspi.mode = mode; //!< save mode used in structure
     spi_set_format(uspi.spi_id,uspi.databits,cpol,cpha,msb); //!< set format 
-    fprintf(stdout, "SPI Mode = %d, define: CS = %d,Cpol = %d, Cpha = %d, Msb = %d, Baudrate: %d \r\n", mode,cs,cpol,cpha,msb,uspi.baudrate );
+    uint32_t speed=  spi_get_baudrate(uspi.spi_id);
+    fprintf(stdout, "SPI Mode=%d, mean: CS=%d, Cpol=%d, Cpha=%d, Msb=%d, Baud=%d, Actual Baud=%d\r\n", mode,cs,cpol,cpha,msb,uspi.baudrate,speed );
+    return NOERR;
 }
 
 
@@ -283,6 +283,17 @@ void spi_words_to_bytes(uint16_t *word_array, uint8_t *byte_array, size_t length
     }
 }
 
+bool spi_timeout = false;  // Global variable
+
+int64_t spi_alert_function(alarm_id_t id, void *user_data) {
+    spi_timeout = true;
+    if(uspi.status)  { // if SPI enabled 
+        scpi_spi_disable();  // disable SPI to get out of blockomg function
+    }
+    // set GPIO pin ...
+    return 0;
+}
+
 /**
  * @brief function who write/read bytes to defined SPI port
  * 
@@ -292,11 +303,14 @@ void spi_words_to_bytes(uint16_t *word_array, uint8_t *byte_array, size_t length
  * @param rdata Pointer who will contains the data read
  * @param rlen contain length of the read array
  */
-static void spi_bytes(uint8_t mode,uint8_t* wdata,uint8_t wlen,uint8_t* rdata,uint8_t rlen){
+static  uint8_t spi_bytes(uint8_t mode,uint8_t* wdata,uint8_t wlen,uint8_t* rdata,uint8_t rlen){
    uint8_t csdelay = 1; // 1 us delay 
    uint8_t i,j;
 
-    for(i =0; i < wlen+rlen; i++) { // loop to write single byte
+ //  If required, add alarm to get out of blocking function
+ //  alarm_id_t r = add_alarm_in_us(ALARM_TIMEOUT, &spi_alert_function, NULL, true);
+   fprintf(stdout, "On SPI bytes\r\n");
+   for(i =0; i < wlen+rlen; i++) { // loop to write single byte
         if (i >= wlen) { wdata[i]= 0;} // send 0 as default value
         gpio_put (uspi.cs,0);  //!< Active Chipselect
         sleep_us(csdelay);    //!<  wait small delay for let CS goes active
@@ -317,9 +331,15 @@ static void spi_bytes(uint8_t mode,uint8_t* wdata,uint8_t wlen,uint8_t* rdata,ui
           gpio_put (uspi.cs,1); // De-activate CS
     }
  
+    if (spi_timeout) {
+         fprintf(stdout, "SPI timeout Occurs\r\n");
+         scpi_spi_enable(); // enable SPI
+         return SPI_TIMEOUT;
+
+    }
 
     if (mode == SPIW) {   //!<  send message to monitor to help debug
-              fprintf(stdout, "SPI write, nb of bytes  written: %d \r\n",rlen);
+              fprintf(stdout, "SPI write, nb of bytes  written: %d \r\n",wlen);
     }
 
     if (mode == SPIWR) {  //!<  send message to monitor to help debug
@@ -336,7 +356,12 @@ static void spi_bytes(uint8_t mode,uint8_t* wdata,uint8_t wlen,uint8_t* rdata,ui
         }
     }
 
+    return NOERR;
+
 }
+
+
+
 
 /**
  * @brief function who write/read word to defined SPI port
@@ -347,9 +372,11 @@ static void spi_bytes(uint8_t mode,uint8_t* wdata,uint8_t wlen,uint8_t* rdata,ui
  * @param rdata Pointer who will contains the data read
  * @param rlen contain length of the read array
  */
-static void spi_word(uint8_t mode,uint16_t* wdata,uint8_t wlen,uint16_t* rdata,uint8_t rlen){
+static   uint8_t spi_word(uint8_t mode,uint16_t* wdata,uint8_t wlen,uint16_t* rdata,uint8_t rlen){
    uint8_t csdelay = 1; // 1 us delay 
    uint8_t i,j;
+
+   // alarm_id_t r = add_alarm_in_us(ALARM_TIMEOUT, &spi_alert_function, NULL, true);
 
     for(i =0; i < wlen+rlen; i++) { // loop to write single byte
         if (i >= wlen) { wdata[i]= 0;} // send 0 as default value
@@ -371,6 +398,13 @@ static void spi_word(uint8_t mode,uint16_t* wdata,uint8_t wlen,uint16_t* rdata,u
           gpio_put (uspi.cs,1); // De-activate CS
     }
 
+    if (spi_timeout) {
+         fprintf(stdout, "SPI timeout Occurs\r\n");
+         scpi_spi_enable(); // enable SPI
+         return SPI_TIMEOUT;
+
+    }
+
     if (mode == SPIW) { //!<  send message to monitor to help debug
         fprintf(stdout, "SPI write, nb of word  written: %d\r\n",wlen);
     }
@@ -388,6 +422,7 @@ static void spi_word(uint8_t mode,uint16_t* wdata,uint8_t wlen,uint16_t* rdata,u
             fprintf(stdout, "SPI read,# %d, Read: 0x%04x\r\n",j,rdata[j]);
         }
     }
+    return NOERR;
 
 }
 
@@ -407,74 +442,71 @@ uint8_t scpi_spi_wri_read_data(uint8_t* wdata,uint8_t wlen,uint8_t* rdata,uint8_
   bool swrd = false;
   size_t saw,sar;
   size_t i,j;
+  volatile uint8_t ret = NOERR;
 
   uint16_t *wwdata = NULL;    // create pointer to write word data, required if databits = 16
   uint16_t *wrdata = NULL;    // create pointer to read word data, required if databits = 16
+
+  if(uspi.status == 0) { return SPI_NOT_ENABLED;}
+ 
+  if (uspi.databits > 8){ // if we need to write data using word size
+        wrdata = (uint16_t*)(uintptr_t)rdata; // adjust pointer to word data
+        wwdata = (uint16_t*)(uintptr_t)wdata; // adjust pointer to word data
+        // swap byte due to endianess
+        for (size_t i = 0; i < wlen; ++i) {
+                wwdata[i] = (wwdata[i] << 8) | (wwdata[i] >> 8);
+        }
+        wlen = wlen/2; // Adjust length to word
+  }
  
 
-  // data to write is received in byte. Transformaton is required from array of byte to array of
-  // word before writing on port
-  if (uspi.databits > 8){ // if we need to write data using word size
-    saw = wlen/2;  // 2 bytes by word, size divide by two
-    sar = rlen;
-    if (wlen > 0) {
-       //!<  Dynamically allocate memory for wwdata
-        wwdata = (uint16_t *)malloc(saw * sizeof(uint16_t));
-        if (wwdata == NULL) {
-            // Error handling: unable to allocate memory
-            fprintf(stdout, "Failed to allocate memory for wwdata\n");
-            exit(MALLOC_FAILURE);
-        }
-        // Convert bytes to words
-        spi_bytes_to_words(wdata,wwdata,wlen);
-        swwd = true;
-    }
-    if (rlen>0) {
-        // Dynamically allocate memory for wrdata
-        wrdata = (uint16_t *)malloc(sar * sizeof(uint16_t));
-        if (wrdata == NULL) {
-            // Error handling: unable to allocate memory
-            fprintf(stderr, "Failed to allocate memory for wrdata\n");
-            exit(MALLOC_FAILURE);
-        }
-    }
-
-  }
-  
- //fprintf(stdout, "SPI Info, Databits: %d , Mode %d, Chipselect %d\r\n",uspi.databits,uspi.mode,uspi.cs);
 
   if (wlen > 0 && rlen== 0 ) { // if we need to perform write only
       if (uspi.databits <=8) {
-        spi_bytes(SPIW,wdata,wlen,rdata,rlen); //!< bytes command
+        ret = spi_bytes(SPIW,wdata,wlen,rdata,rlen); //!< bytes command
      } else {
-        spi_word(SPIW,wwdata,saw,wrdata,sar); //!< word command
+        ret = spi_word(SPIW,wwdata,wlen,wrdata,rlen); //!< word command
      }
   }
 
   if (wlen > 0 && rlen > 0){ // if some data to write and read
      if (uspi.databits <=8) {
-         spi_bytes(SPIWR,wdata,wlen,rdata,rlen);  //!< bytes command
+        ret = spi_bytes(SPIWR,wdata,wlen,rdata,rlen);  //!< bytes command
      } else {
-         spi_word(SPIWR,wwdata,saw,wrdata,sar); //!< word command
+        ret = spi_word(SPIWR,wwdata,wlen,wrdata,rlen); //!< word command
      }
   }
 
   if (wlen == 0 && rlen > 0){ // if some data to  read
      if (uspi.databits <=8) {
-         spi_bytes(SPIR,wdata,wlen,rdata,rlen); //!< bytes command
+        ret = spi_bytes(SPIR,wdata,wlen,rdata,rlen); //!< bytes command
      } else {
-        spi_word(SPIR,wwdata,saw,wrdata,sar);   //!< word command
+        ret =spi_word(SPIR,wwdata,wlen,wrdata,rlen);   //!< word command
      }
   }
 
-  if (uspi.databits >8) {  // if word read, transform to byte and save in rdata
-      spi_words_to_bytes(wrdata, rdata,sar*2+wlen ); 
+  //  This section remove from the read array the data read during write
+  //  by moving the data read  to the beginning of array
+  if (wlen > 0) { 
+      for (size_t i = 0; i < wlen+rlen; ++i) {  // Bring data to beginning of array
+            if (uspi.databits >8 ) {  // if word size
+                wrdata[i] = (wrdata[i+wlen]); // move word data
+            } else {
+                rdata[i] = (rdata[i+wlen]); // move byte data 
+            }
+    }
+
   }
+  
+  //if (uspi.databits >8 ) {  // if word read, transform to byte and save in rdata
+  //     spi_words_to_bytes(wrdata, rdata,rlen*2+wlen ); 
+  //}
 
   *wflag = (uspi.databits <=8)? false:true;  //!< set flag to determine size of data read
  // free(wrdata);
  // free(wwdata);
-  return NOERR;
+  
+  return ret;
 }
 
 

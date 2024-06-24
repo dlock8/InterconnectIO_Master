@@ -208,6 +208,8 @@ int8_t scpi_i2c_wri_read_data(bool regflag, uint8_t* wdata,uint8_t wlen,uint8_t*
   size_t j;
   int32_t ret;
 
+  if(uiic.status == 0) { return I2C_NOT_ENABLED;}
+
   if (wlen > 0 && rlen== 0 ) { // if we need to perform write only
         ret = sys_i2c_wbuf(uiic.i2c_id,uiic.address,wdata,wlen);
         for(j =0; j < wlen; j++) { // loop to print
@@ -249,13 +251,23 @@ int8_t scpi_i2c_wri_read_data(bool regflag, uint8_t* wdata,uint8_t wlen,uint8_t*
 
   *wflag = (uiic.databits <=8)? false:true;  //!< set flag to return the size of data (byte or word)
 
+   if (*wflag) {  //if databits is word (16 bits)
+        // swap byte due to endianess of memory
+        for (size_t i = 0; i < rlen; i+=2) {
+            uint8_t temp = rdata[i];
+            rdata[i] = rdata[i+1];
+            rdata[i+1] = temp;
+        }  
+   }
+
+   
 //  return error if value is negative or return number of bytes read or write
- if (ret >= 0) { 
-    return NOERR;
- } else {
-    fprintf(stdout, "I2C Error return:  %d,\r\n",ret);
-    return (int8_t) ret;
- }
+  if (ret >= 0) { 
+     return NOERR;
+  } else {
+     fprintf(stdout, "I2C Error return:  %d,\r\n",ret);
+     return (int8_t) ret;
+  }
   
 }
 

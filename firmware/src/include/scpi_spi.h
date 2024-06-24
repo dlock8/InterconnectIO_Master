@@ -53,6 +53,7 @@
 #define DEF_SPI_CS          5        //!< spi gpio used to perform chipselect
 #define DEF_SPI_MODE        0        //!< define mode paramaters: cs,cpol,cpha and MSB
 #define DEF_SPI_STATUS      0        //!< spi is disable by default
+#define ALARM_TIMEOUT       1000000  // Timeout
 
 #define SPI_DEFAULT_VALUE   0       //!< spi data to write when we perform read
 
@@ -64,6 +65,8 @@
 #define SPI_MODE_NUM_NOTVALID     40     //!< spi error
 #define SPI_CS_NUM_ERROR          41
 #define MALLOC_FAILURE            42
+#define SPI_TIMEOUT               43
+#define SPI_NOT_ENABLED           44
 
 
 
@@ -77,7 +80,7 @@ uint32_t scpi_spi_get_chipselect(void);
 
 uint8_t scpi_spi_set_databits(uint32_t num);
 uint32_t scpi_spi_get_databits(void); 
-void scpi_spi_set_mode(uint8_t mode);
+uint8_t scpi_spi_set_mode(uint8_t mode);
 uint8_t scpi_spi_get_mode(void);
 
 uint8_t scpi_spi_wri_read_data(uint8_t* wdata,uint8_t wlen,uint8_t* rdata,uint8_t rlen, bool* wflag);

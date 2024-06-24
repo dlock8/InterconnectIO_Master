@@ -359,11 +359,11 @@ int main(void) {
 fprintf(stdout,"Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
 
 // test_command();     /** Used to validate the SCPI command */
-// test_selftest();   /** Used to validate the hardware */
+test_selftest();   /** Used to validate the hardware */
 
 
 //test_design();
-test_com_command();
+//test_com_command();
 
 
 

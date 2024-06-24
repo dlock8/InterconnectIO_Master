@@ -258,7 +258,7 @@ uint8_t scpi_uart_set_protocol(char* str){
       ucom.data_bits = data;  //!< save data bits value on structure
       ucom.stop_bits = stp;   //!< save stops bits value on structure
       uart_set_format(ucom.uart_id, ucom.data_bits,ucom.stop_bits,ucom.parity);
-      fprintf(stdout, "UART Protocol updated to  %s\r\n", str);
+      fprintf(stdout, "UART Protocol updated to  %3s\r\n", str);
       // uart_set_format(UART_ID, DATA_BITS, STOP_BITS, PARITY);
     } else { 
       err= UART_PROT_MISSING;  //!< if error not already found, define one
@@ -340,9 +340,12 @@ static char receive_char_with_timeout(uint32_t timeout_ms) {
  * @brief function to send data to uart without checking to receive data. The last charcater is saved for later.
  * 
  * @param dwrt   string to write on the uart
+ * @return uint8_t Error code to success or error
  */
-void scpi_uart_write_data(char* dwrt){ // write data only
+uint8_t scpi_uart_write_data(char* dwrt){ // write data only
    int tctr = 0; // Counter for transmit characters
+   if(ucom.status == 0) { return UART_NOT_ENABLED;} // if serial not enabled
+
    do {
       if (dwrt[tctr] != '\0') {  // if string is not empty
         send_char(dwrt[tctr]);
@@ -353,6 +356,7 @@ void scpi_uart_write_data(char* dwrt){ // write data only
 
    ucom.lastchr = dwrt[tctr-1];  // identify the last valid character of string, expect CR or LF
    fprintf(stdout,"lastchar Tx only: 0x%x\n", dwrt[tctr-1]);
+   return NOCERR;
 }
 
 
@@ -364,6 +368,8 @@ void scpi_uart_write_data(char* dwrt){ // write data only
  * @return uint8_t Error code to success or error
  */
 uint8_t scpi_uart_write_read_data(char* dwrt, char* dread, size_t rsize){ // write data, expect answer
+
+    if(ucom.status == 0) { return UART_NOT_ENABLED;} // if serial not enabled
 
     clear_receive_fifo(); // clear Rx fifo
     dread[0] = '\0';      //clear receive buffer

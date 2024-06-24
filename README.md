@@ -139,9 +139,9 @@ However, there are two caveats:
 |COM:1WIRE:WRITE |{String 64 chars maximum starting with 64bits lasered ROM}|
 |COM:1WIRE:READ?  |[Nb of Onewire devices] | read string of all the 1-Wire devices on the link
 | ||
-|COM:INITialize:ENAble  |{SPI\|UART\|I2C}|  Configure communication port
-|COM:INITialize:DISable  |{SPI\|UART\|I2C}|  Configure communication port to GPIO
-|COM:INITialize:STATus? | {SPI\|UART\|I2C}| Read if communication is enable or disable
+|COM:INITialize:ENAble  |{SPI\|SERIAL\|I2C}|  Configure communication port
+|COM:INITialize:DISable  |{SPI\|SERIAL\|I2C}|  Configure communication port to GPIO
+|COM:INITialize:STATus? | {SPI\|SERIAL\|I2C}| Read if communication is enable or disable
 | ||
 |COM:SERIAL:WRITE   |\<svalues\>  |  send string, don't wait for answer
 |COM:SERIAL:READ?   | \<svalues\> |  send string, wait for answer
@@ -154,15 +154,14 @@ However, there are two caveats:
 |COM:SERIAL:Timeout  |\<values\>  | Timeout in ms (32bits)
 |COM:SERIAL:Timeout?||
 | ||
-|COM:SPI:WRIte      |\<data\> | Spi write data (byte if databit =8 or word if databits = 16)
-|COM:SPI:WRIte:REAd:LENx |(\<data\>) | Write data first and read x bytes 
-|COM:SPI:REAd:LENx |\<value\> | Spi read x bytes
-|COM:SPI:Baud  |   \<value\> |   baudrate speed 
-|COM:SPI:Baud? ||
+|COM:SPI:WRIte      |\<data\> | Spi write data (byte if databit =8 or word if databits = 16) 
+|COM:SPI:REAd:LENx? |\<opt:register\> | Spi read x bytes
+|COM:SPI:Baudrate  |   \<value\> |   baudrate speed 
+|COM:SPI:Baudrate? ||
 |COM:SPI:CS     | \<gpio\>   |   Set Chipselect gpio,default is 5, valid num = {0,1,5,6,7,12,13,14,15,16,17}
 |COM:SPI:CS?   ||  Get  Chipselect gpio number
 |COM:SPI:Databits  | \<value\>   |  // number of data bits to read or write during SPI communication, normally 8 (bytes) or 16 (word) 
-|COM:SPI:DATAbits? ||
+|COM:SPI:Databits? ||
 |COM:SPI:Mode   | {0\|1\|2\|3\|4\|5\|6\|7\}  | Normal SPI mode + CS mode (0:End of transmit, 1: At each byte)
 |                           ||  mode 0: Cs=0, Cpol=0, CPha=0  
 |                           ||  mode 1: Cs=0, Cpol=0, Cpha=1  

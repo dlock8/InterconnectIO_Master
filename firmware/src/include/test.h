@@ -9,6 +9,10 @@
 #ifndef test_H
 #define test_H
 
+#define BUFFER_SIZE 32      // maximum deep size of circular buffer
+#define MESSAGE_LENGTH 120  // Maximum number of character by string
+
+
 
 #define V 1     // Volts
 #define I 2     // mA
@@ -33,7 +37,10 @@ void test_design(void);
 int onewiretest(void);
 void test_spi_adx(void);
 void test_i2c_adx(void);
+void test_i2c_ina219(void);
 void test_com_command(void);
+int spi_test(void);
+int testt(void);
 
  
 #endif /* BUFFER_H */
