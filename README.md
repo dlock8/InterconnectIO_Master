@@ -53,12 +53,27 @@ Build of this cmake project is performed with Visual Studio
 
 ## Installation
 
-* The Files Master.uf2 contains the firmware to be loaded on the Pico RP2040 board using USB cable and boot button.
+* The Files master.uf2 contains the firmware to be loaded on the Pico RP2040 board using USB cable and boot button.
 * When software loaded, the Pico board should be installed on the location marked MASTER on interconnectIO Board.
 * On board Pico Led will flash slowly (heartbeat) on power ON.
+* Loading master.uf2 will trigger the watchdog, resulting in a burst of beeps during the boot sequence to signal the watchdog timeout. Only cycling the power ON/OFF will reset the watchdog trigger flag."
+
+## Beep code
+
+The boot sequence performs basic diagnostics. A failure in the tests will result in a burst of beeps. The error codes are as follows:
+
+*   1 Beep Burst:  Master Pico's temperature is too high 
+*   2 Beep Burst:   Master Pico's system voltage (VSYS) is out of limits
+*   3 Beep Burst:    Error in the internal I2C communication
+*   4 Beep Burst:    Error reading parameters from I2C EEPROM; default values will be used
+*   5 Beep Burst:    A watchdog timeout has occurred on the Master Pico. 
 
 
-## SCPI command supported by the Interconnect IO Board
+
+## SCPI command supported by the InterconnectIO Board
+
+The main communication for the InterconnectIO Board is based on the SCPI standard, developed by Jan Breuer [https://www.jaybee.cz/scpi-parser/]. According to the SCPI standard, some commands are mandatory, while others can be developed by the designer. In this section, we provide a list of the required SCPI commands as well as those developed specifically to control the InterconnectIO Board.
+
 
 ## Required SCPI commands
 
@@ -87,7 +102,7 @@ Build of this cmake project is performed with Visual Studio
 |STATus:OPERation:ENABle| set the status enable register (OPERE) for the operation Data register
 |STATus:OPERation:ENABle?| queries the status enable register (OPERE) for the operation Data register
 
-## SCPI command associated to the Interconnect IO Board
+## SCPI command associated to the InterconnectIO Board
 
 | SCPI_COMMAND| PARAMETER | COMMENT
 | :-----| :-----| :----- |
@@ -216,15 +231,14 @@ Build of this cmake project is performed with Visual Studio
 
 ## Relay numbering scheme
 
-## Differential relay will be located on lower address. 
-## Single ended relay to be connected to high or low side following the address.
-
     Relay bank 1   Differential: 10 @ 17    Single: 100 @ 107 (High) 108 @ 115 (Low)    
     Relay bank 2   Differential: 20 @ 27    Single: 200 @ 215 (High) 208 @ 215 (Low) 
     Relay bank 3   Differential: 30 @ 37    Single: 300 @ 315 (High) 308 @ 315 (Low) 
     Relay bank 4   Differential: 40 @ 47    Single: 400 @ 415 (High) 108 @ 415 (Low) 
- 
-* relay @10, @100 and @108 are the same physical relay.  
+
+* Relay type are DPDT (Double Pole Double Throw). Relay could be connected in differential mode or configured in single ended mode
+* Relay address used reflect the difference between the differential and single mode.
+* Relay @10, @100 and @108 are the same physical relay.  
 * If relay @10 is closed, the high side of the relay (BK1_CH0_H) will be connected on high side of the commun point (BK1_COM_H). The low side of the relay (BK1_CH0_L) will be connected on the low side of the commun point (BK1_COM_L)
 * If relay @100 is closed, the high side of the relay (BK1_CH0_H) will be connected on high side of the commun point (BK1_COM_H). The low side of the relay (BK1_CH0_L) will be connected on the low side of the commun point (BK1_COM_L)
 *   If relay @108 is closed, the high side of the relay (BK1_CH0_H) will be connected on low side of the commun point (BK1_COM_L) because the reverse relay will be actuated on the same time of the relay @108. The low side of the relay (BK1_CH0_L) will be connected on the high side of the commun point (BK1_COM_H)

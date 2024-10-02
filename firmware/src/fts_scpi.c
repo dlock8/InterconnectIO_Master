@@ -118,9 +118,9 @@ scpi_result_t SCPI_Reset(scpi_t * context) {
     (void) context;
     fprintf(stdout, "*Reset execute begin\r\n");
 
-    // perform a system reset using  Application Interrupt and Reset Control Register (AIRCR) 
-
-    AIRCR_Register = 0x5FA0004;
+    // perform a system reset using  Application Interrupt and Reset Control Register (AIRCR)
+     // Trigger a system reset via the SCB_AIRCR register
+    scb_hw->aircr = (0x5FA << 16) | (1 << 2);  // 0x5FA is the key, bit 2 (SYSRESETREQ) causes reset 
     return SCPI_RES_OK;
 }
 

@@ -23,6 +23,14 @@ extern "C" {
 #endif
 
 /**
+ * @brief maximum time before watchdog trig
+ * 
+ */
+#define WATCHDOG_TIMEOUT 3000   /**< Watchdog set for 3 seconds. */
+
+
+
+/**
  * @brief UART configuration and default settings.
  *
  * This group contains default values and pin assignments for UART configuration.
@@ -141,11 +149,11 @@ extern eep ee;  /**< External declaration of EEPROM union for global use. */
 
 
 
-#define  BEEP_I2C_FAIL  2  //!< Define burst of Beep
-#define  BEEP_EEP_FAIL   3  //!< Define burst of Beep
-#define  BEEP_VSYS_OUT   4  //!< Define burst of Beep
-#define  BEEP_TEMP_HIGH  5  //!< Define burst of Beep
-#define  BEEP_WATCHDOG   6  //!< Define burst of Beep
+#define  BEEP_I2C_FAIL   3  //!< Define burst of Beep
+#define  BEEP_EEP_FAIL   4  //!< Define burst of Beep
+#define  BEEP_VSYS_OUT   2  //!< Define burst of Beep
+#define  BEEP_TEMP_HIGH  1  //!< Define burst of Beep
+#define  BEEP_WATCHDOG   5  //!< Define burst of Beep
 
 #define MAX_PICO_TEMP   60  //!< Maximum temperature acceptable for pico
 #define MAX_VSYS_VOLT   6   //!< Maximum voltage to Pico Master Vsys

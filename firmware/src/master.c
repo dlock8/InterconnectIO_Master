@@ -371,8 +371,9 @@ int main(void) {
 
   init_scpi();
   setup_master();  // Initialize of internal I2C_communication
-  Hardware_Default_Setting();
 
+
+  Hardware_Default_Setting();
 
   init_main_com();  // Setup serial communication parameter
 
@@ -386,6 +387,9 @@ int main(void) {
       pulse = 50;  // fast flashing led to indicate watchdog trig
       RegBitHdwrErr(WATCH_TRIG,FALSE);  // Set Questionable event register based on results
   }
+
+
+  watchdog_enable(WATCHDOG_TIMEOUT, 1);  // Enable the watchdog with the timeout and auto-reset
 
   init_queue(); // initialise queue for SCPI message received
 

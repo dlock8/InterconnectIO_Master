@@ -31,6 +31,7 @@
 #include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
 #include "pico_lib2/src/dev/dev_ds2431/dev_ds2431.h"
 #include "pico_lib2/src/sys/include/sys_adc.h"
+#include "hardware/watchdog.h"  // Include watchdog functions
 #include "hardware/uart.h"
 #include "hardware/spi.h"
 #include "hardware/i2c.h"
@@ -335,6 +336,10 @@ void test_cmd_substring(const char *title, const char *cmd,char *expected_substr
   //Disable RX interrupt to take control of serial input port
    uart_set_irq_enables(UART_ID, false, false);
 
+
+  watchdog_enable(90000, 1);  // Set the watchdog timer to 90 secs (enough time to run selftest)
+
+
   // loop until exit key is pressed
   while(lp){
 
@@ -351,14 +356,26 @@ void test_cmd_substring(const char *title, const char *cmd,char *expected_substr
       sprintf(sval,"\tEnter test number to execute and press enter: ");  uart_puts(UART_ID, sval); // Send string 
       
 
-      // read first character
-      uart_read_blocking(UART_ID,&in[0],1); // read one character and save on array
-      in[1] = '\n'; in[2] = 0; // complete string before send to serial
-      uart_puts(UART_ID, in); // Send string 
-      
-      // only first character is important
-      tnb = in[0] - '0'; // transform character read to number
+      bool lf = true;
+      while(lf) {
+        if (uart_is_readable(UART_ID)) {
+          // read first character
+          uart_read_blocking(UART_ID,&in[0],1); // read one character and save on array
+          in[1] = '\n'; in[2] = 0; // complete string before send to serial
+          uart_puts(UART_ID, in); // Send string 
+        
+          // only first character is important
+          tnb = in[0] - '0'; // transform character read to number
+          lf= false;
+        } else {
+          // Feed the watchdog while waiting for data
+              watchdog_update();
+        }
 
+
+      }
+   
+     
       // loop to clear all character received in serial port 
       int i=0;
       sleep_ms(100);  // let time to receive all characters in serial port
@@ -406,6 +423,8 @@ void test_cmd_substring(const char *title, const char *cmd,char *expected_substr
 
   //Enable RX interrupt to take control of serial input
    uart_set_irq_enables(UART_ID, true, false);
+
+  watchdog_enable(WATCHDOG_TIMEOUT, 1);  // Enable the watchdog with the normal timeout 
 
    sprintf(sval,"\nEnd of Internal Test Sequence\n");  uart_puts(UART_ID, sval); // Send string 
 }
