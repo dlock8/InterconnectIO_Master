@@ -1,0 +1,57 @@
+\hypertarget{structrom}{}\doxysection{rom Struct Reference}
+\label{structrom}\index{rom@{rom}}
+
+
+Structure used to contain information about each One\+Wire device found on the link.  
+
+
+
+
+{\ttfamily \#include $<$dev\+\_\+ds2431.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structrom_af5cb5d7e17c42b688d69c08389251d33}{id}} \mbox{[}\mbox{\hyperlink{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}{MAX\+\_\+\+ONEWIRE}}\mbox{]}\mbox{[}8\mbox{]}
+\item 
+char \mbox{\hyperlink{structrom_a05dc40d1a44e4658dd050b8ab13963ed}{idstr}} \mbox{[}\mbox{\hyperlink{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}{MAX\+\_\+\+ONEWIRE}}\mbox{]}\mbox{[}16+1\mbox{]}
+\item 
+int \mbox{\hyperlink{structrom_a4a470d9a1d8f558bb5e1c4e37d2a97a1}{ecode}} \mbox{[}\mbox{\hyperlink{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}{MAX\+\_\+\+ONEWIRE}}\mbox{]}
+\item 
+size\+\_\+t \mbox{\hyperlink{structrom_a8c707e12d495efd6e677e3a3646baf85}{nbid}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure used to contain information about each One\+Wire device found on the link. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structrom_a4a470d9a1d8f558bb5e1c4e37d2a97a1}\label{structrom_a4a470d9a1d8f558bb5e1c4e37d2a97a1}} 
+\index{rom@{rom}!ecode@{ecode}}
+\index{ecode@{ecode}!rom@{rom}}
+\doxysubsubsection{\texorpdfstring{ecode}{ecode}}
+{\footnotesize\ttfamily int rom\+::ecode\mbox{[}\mbox{\hyperlink{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}{MAX\+\_\+\+ONEWIRE}}\mbox{]}}
+
+Contains error codes for each device on the link. \mbox{\Hypertarget{structrom_af5cb5d7e17c42b688d69c08389251d33}\label{structrom_af5cb5d7e17c42b688d69c08389251d33}} 
+\index{rom@{rom}!id@{id}}
+\index{id@{id}!rom@{rom}}
+\doxysubsubsection{\texorpdfstring{id}{id}}
+{\footnotesize\ttfamily uint8\+\_\+t rom\+::id\mbox{[}\mbox{\hyperlink{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}{MAX\+\_\+\+ONEWIRE}}\mbox{]}\mbox{[}8\mbox{]}}
+
+Contains the device ID in byte format. \mbox{\Hypertarget{structrom_a05dc40d1a44e4658dd050b8ab13963ed}\label{structrom_a05dc40d1a44e4658dd050b8ab13963ed}} 
+\index{rom@{rom}!idstr@{idstr}}
+\index{idstr@{idstr}!rom@{rom}}
+\doxysubsubsection{\texorpdfstring{idstr}{idstr}}
+{\footnotesize\ttfamily char rom\+::idstr\mbox{[}\mbox{\hyperlink{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}{MAX\+\_\+\+ONEWIRE}}\mbox{]}\mbox{[}16+1\mbox{]}}
+
+Contains string representation of the device ID + null character. \mbox{\Hypertarget{structrom_a8c707e12d495efd6e677e3a3646baf85}\label{structrom_a8c707e12d495efd6e677e3a3646baf85}} 
+\index{rom@{rom}!nbid@{nbid}}
+\index{nbid@{nbid}!rom@{rom}}
+\doxysubsubsection{\texorpdfstring{nbid}{nbid}}
+{\footnotesize\ttfamily size\+\_\+t rom\+::nbid}
+
+Counter for the number of devices found on the One\+Wire link. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+firmware/src/pico\+\_\+lib2/src/dev/dev\+\_\+ds2431/\mbox{\hyperlink{dev__ds2431_8h}{dev\+\_\+ds2431.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,204 @@
+\hypertarget{dev__ina219_8c}{}\doxysection{firmware/src/pico\+\_\+lib2/src/dev/dev\+\_\+ina219/dev\+\_\+ina219.c File Reference}
+\label{dev__ina219_8c}\index{firmware/src/pico\_lib2/src/dev/dev\_ina219/dev\_ina219.c@{firmware/src/pico\_lib2/src/dev/dev\_ina219/dev\_ina219.c}}
+
+
+Driver for the TI INA219 current/power monitor.  
+
+
+{\ttfamily \#include \char`\"{}dev\+\_\+ina219.\+h\char`\"{}}\newline
+Include dependency graph for dev\+\_\+ina219.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=321pt]{dev__ina219_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{dev__ina219_8c_af689fd46743cbb4d4453ff8a27141c4a}{ina219\+Set\+Calibration\+\_\+32\+V\+\_\+2A}} (void)
+\begin{DoxyCompactList}\small\item\em Configures to INA219 to be able to measure up to 32V and 2A of current. Each unit of current corresponds to 100uA, and each unit of power corresponds to 2mW. Counter overflow occurs at 3.\+2A. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{dev__ina219_8c_a13e153c23838f8402313939b9e090349}{ina219\+Set\+Calibration\+\_\+32\+V\+\_\+1A}} (void)
+\begin{DoxyCompactList}\small\item\em Configures to INA219 to be able to measure up to 32V and 1A of current. Each unit of current corresponds to 40uA, and each unit of power corresponds to 800{\ucr}W. Counter overflow occurs at 1.\+3A. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{dev__ina219_8c_a0f3082d3ff4d3b02eeacde87f6508601}{ina219\+Set\+Calibration\+\_\+16\+V\+\_\+500mA}} (void)
+\begin{DoxyCompactList}\small\item\em Configures to INA219 to be able to measure up to 16V and 500mA of current. Each unit of current corresponds to 25uA, and each unit of power corresponds to 500{\ucr}W. Counter overflow occurs at 800mA. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{dev__ina219_8c_a0555986238248c917cdd71076aa56417}{ina219\+Set\+Calibration\+\_\+16\+V\+\_\+200mA}} (void)
+\begin{DoxyCompactList}\small\item\em Configures to INA219 to be able to measure up to 16V and 200mA of current. Each unit of current corresponds to 10uA, and each unit of power corresponds to 200{\ucr}W. Counter overflow occurs at 327mA. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8c_ad1082efd7eef489c5ed57c7884eac570}\label{dev__ina219_8c_ad1082efd7eef489c5ed57c7884eac570}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8c_ad1082efd7eef489c5ed57c7884eac570}{ina219\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialises the I2C block. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8c_a9dd812ec2d9030c7edaa1ea397d2c53e}\label{dev__ina219_8c_a9dd812ec2d9030c7edaa1ea397d2c53e}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8c_a9dd812ec2d9030c7edaa1ea397d2c53e}{ina219\+Get\+Shunt\+Voltage}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the shunt voltage (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8c_a439f8a8e2a42bbe0ca5b2b48da9a1e80}\label{dev__ina219_8c_a439f8a8e2a42bbe0ca5b2b48da9a1e80}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8c_a439f8a8e2a42bbe0ca5b2b48da9a1e80}{ina219\+Get\+Bus\+Voltage}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the Bus voltage (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8c_a1cc61b66b7d48f392e3f71196df47d16}\label{dev__ina219_8c_a1cc61b66b7d48f392e3f71196df47d16}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8c_a1cc61b66b7d48f392e3f71196df47d16}{ina219\+Get\+Power}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the raw power value (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8c_a9cecf583ae9c089a9e251c60c2ead1cd}\label{dev__ina219_8c_a9cecf583ae9c089a9e251c60c2ead1cd}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8c_a9cecf583ae9c089a9e251c60c2ead1cd}{ina219\+Get\+Power\+\_\+mW}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the power value in mW, taking into account the config settings and power LSB. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8c_a6817c5f0df62fbc15d365d4278e9fedc}\label{dev__ina219_8c_a6817c5f0df62fbc15d365d4278e9fedc}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8c_a6817c5f0df62fbc15d365d4278e9fedc}{ina219\+Get\+Current}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the raw current value (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8c_a8878cb36e1b8abff9203dfe682f3a067}\label{dev__ina219_8c_a8878cb36e1b8abff9203dfe682f3a067}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8c_a8878cb36e1b8abff9203dfe682f3a067}{ina219\+Get\+Current\+\_\+mA}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the current value in mA, taking into account the config settings and current LSB. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8c_ab897a88801b40429e32328c6ef29e410}\label{dev__ina219_8c_ab897a88801b40429e32328c6ef29e410}} 
+bool \mbox{\hyperlink{dev__ina219_8c_ab897a88801b40429e32328c6ef29e410}{ina219\+Calibrate\+Current\+\_\+mA}} (float ina219current, float meascurrent)
+\begin{DoxyCompactList}\small\item\em Compute the Corrected Full scale calibration based on measurement made by external Ampmeter. The new calibration value will be written the calibration register. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+uint32\+\_\+t \mbox{\hyperlink{dev__ina219_8c_ab1bcd28186de164efc41cc366368628e}{ina219\+\_\+current\+Divider\+\_\+mA}} = 0
+\item 
+uint32\+\_\+t \mbox{\hyperlink{dev__ina219_8c_a1f1847658f37c1987b967057d6640871}{ina219\+\_\+power\+Divider\+\_\+mW}} = 0
+\item 
+uint32\+\_\+t \mbox{\hyperlink{dev__ina219_8c_a17c394eedef550e5d5a929136e14a3a0}{ina219\+\_\+\+Calfactor}} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Driver for the TI INA219 current/power monitor. 
+
+Modifications to improve INA219 functionality and optimization.
+
+\begin{DoxyAuthor}{Author}
+K. Townsend (micro\+Builder.\+eu)
+\end{DoxyAuthor}
+\hypertarget{dev__ina219_8c_DESCRIPTION}{}\doxysubsection{DESCRIPTION}\label{dev__ina219_8c_DESCRIPTION}
+The INA219 is an I2\+C-\/based current/power monitor that monitors the voltage drop across a shunt resistor, as well as the supply voltage.\hypertarget{dev__ina219_8c_EXAMPLE}{}\doxysubsection{EXAMPLE}\label{dev__ina219_8c_EXAMPLE}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\mbox{\hyperlink{dev__ina219_8c_ad1082efd7eef489c5ed57c7884eac570}{ina219Init}}();}
+\DoxyCodeLine{}
+\DoxyCodeLine{int16\_t current = 0;}
+\DoxyCodeLine{int16\_t power = 0;}
+\DoxyCodeLine{int16\_t current\_mA = 0;}
+\DoxyCodeLine{int16\_t power\_mW = 0;}
+\DoxyCodeLine{int16\_t busvoltage = 0;}
+\DoxyCodeLine{int16\_t shuntvoltage = 0;}
+\DoxyCodeLine{int16\_t loadVoltage = 0;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\textcolor{keywordflow}{while}(1)}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  shuntvoltage  = \mbox{\hyperlink{dev__ina219_8c_a9dd812ec2d9030c7edaa1ea397d2c53e}{ina219GetShuntVoltage}}();}
+\DoxyCodeLine{  busvoltage    = \mbox{\hyperlink{dev__ina219_8c_a439f8a8e2a42bbe0ca5b2b48da9a1e80}{ina219GetBusVoltage}}();}
+\DoxyCodeLine{  power         = \mbox{\hyperlink{dev__ina219_8c_a1cc61b66b7d48f392e3f71196df47d16}{ina219GetPower}}();}
+\DoxyCodeLine{  current       = \mbox{\hyperlink{dev__ina219_8c_a6817c5f0df62fbc15d365d4278e9fedc}{ina219GetCurrent}}();}
+\DoxyCodeLine{  power\_mW      = \mbox{\hyperlink{dev__ina219_8c_a9cecf583ae9c089a9e251c60c2ead1cd}{ina219GetPower\_mW}}();}
+\DoxyCodeLine{  current\_mA    = \mbox{\hyperlink{dev__ina219_8c_a8878cb36e1b8abff9203dfe682f3a067}{ina219GetCurrent\_mA}}();}
+\DoxyCodeLine{  loadVoltage   = busvoltage + (shuntvoltage / 100);}
+\DoxyCodeLine{  printf(\textcolor{stringliteral}{"{}\%-\/15s \%6d = \%d.\%dmV (\%duV) \(\backslash\)r\(\backslash\)n"{}}, \textcolor{stringliteral}{"{}Shunt Voltage:"{}}, shuntvoltage, shuntvoltage / 100, shuntvoltage \% 100, shuntvoltage * 10);}
+\DoxyCodeLine{  printf(\textcolor{stringliteral}{"{}\%-\/15s \%6d = \%d.\%dV \(\backslash\)r\(\backslash\)n"{}},         \textcolor{stringliteral}{"{}Bus Voltage:"{}},   busvoltage, busvoltage / 1000, busvoltage \% 1000);}
+\DoxyCodeLine{  printf(\textcolor{stringliteral}{"{}\%-\/15s \%6d = \%d.\%dV \(\backslash\)r\(\backslash\)n"{}},         \textcolor{stringliteral}{"{}Load Voltage:"{}},  loadVoltage, loadVoltage / 1000, loadVoltage \% 1000);}
+\DoxyCodeLine{  printf(\textcolor{stringliteral}{"{}\%-\/15s \%6d = \%dmW \(\backslash\)r\(\backslash\)n"{}},           \textcolor{stringliteral}{"{}Power:"{}},         power, power\_mW);}
+\DoxyCodeLine{  printf(\textcolor{stringliteral}{"{}\%-\/15s \%6d = \%dmA \(\backslash\)r\(\backslash\)n"{}},           \textcolor{stringliteral}{"{}Current:"{}},       current, current\_mA);}
+\DoxyCodeLine{  printf(\textcolor{stringliteral}{"{}\(\backslash\)r\(\backslash\)n"{}});}
+\DoxyCodeLine{  systickDelay(5000);}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+\hypertarget{dev__ina219_8c_LICENSE}{}\doxysubsection{LICENSE}\label{dev__ina219_8c_LICENSE}
+Software License Agreement (BSD License)
+
+Copyright (c) 2012 Kevin Townsend All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\+:
+\begin{DoxyEnumerate}
+\item Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+\item Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+\item Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+\end{DoxyEnumerate}
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS \textquotesingle{}\textquotesingle{}AS IS\textquotesingle{}\textquotesingle{} AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+\hypertarget{dev__ina219_8c_MODIFICATIONS}{}\doxysubsection{MODIFICATIONS}\label{dev__ina219_8c_MODIFICATIONS}
+
+\begin{DoxyItemize}
+\item Return current = 0 if current is negative on ina219\+Get\+Current\+\_\+mA
+\item Add function ina219\+Calibrate\+Current\+\_\+mA to perform calibration from know value 
+\end{DoxyItemize}
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{dev__ina219_8c_a0555986238248c917cdd71076aa56417}\label{dev__ina219_8c_a0555986238248c917cdd71076aa56417}} 
+\index{dev\_ina219.c@{dev\_ina219.c}!ina219SetCalibration\_16V\_200mA@{ina219SetCalibration\_16V\_200mA}}
+\index{ina219SetCalibration\_16V\_200mA@{ina219SetCalibration\_16V\_200mA}!dev\_ina219.c@{dev\_ina219.c}}
+\doxysubsubsection{\texorpdfstring{ina219SetCalibration\_16V\_200mA()}{ina219SetCalibration\_16V\_200mA()}}
+{\footnotesize\ttfamily void ina219\+Set\+Calibration\+\_\+16\+V\+\_\+200mA (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Configures to INA219 to be able to measure up to 16V and 200mA of current. Each unit of current corresponds to 10uA, and each unit of power corresponds to 200{\ucr}W. Counter overflow occurs at 327mA. 
+
+\begin{DoxyNote}{Note}
+These calculations assume a 0.\+1 ohm resistor is present 
+\end{DoxyNote}
+\mbox{\Hypertarget{dev__ina219_8c_a0f3082d3ff4d3b02eeacde87f6508601}\label{dev__ina219_8c_a0f3082d3ff4d3b02eeacde87f6508601}} 
+\index{dev\_ina219.c@{dev\_ina219.c}!ina219SetCalibration\_16V\_500mA@{ina219SetCalibration\_16V\_500mA}}
+\index{ina219SetCalibration\_16V\_500mA@{ina219SetCalibration\_16V\_500mA}!dev\_ina219.c@{dev\_ina219.c}}
+\doxysubsubsection{\texorpdfstring{ina219SetCalibration\_16V\_500mA()}{ina219SetCalibration\_16V\_500mA()}}
+{\footnotesize\ttfamily void ina219\+Set\+Calibration\+\_\+16\+V\+\_\+500mA (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Configures to INA219 to be able to measure up to 16V and 500mA of current. Each unit of current corresponds to 25uA, and each unit of power corresponds to 500{\ucr}W. Counter overflow occurs at 800mA. 
+
+\begin{DoxyNote}{Note}
+These calculations assume a 0.\+1 ohm resistor is present 
+\end{DoxyNote}
+\mbox{\Hypertarget{dev__ina219_8c_a13e153c23838f8402313939b9e090349}\label{dev__ina219_8c_a13e153c23838f8402313939b9e090349}} 
+\index{dev\_ina219.c@{dev\_ina219.c}!ina219SetCalibration\_32V\_1A@{ina219SetCalibration\_32V\_1A}}
+\index{ina219SetCalibration\_32V\_1A@{ina219SetCalibration\_32V\_1A}!dev\_ina219.c@{dev\_ina219.c}}
+\doxysubsubsection{\texorpdfstring{ina219SetCalibration\_32V\_1A()}{ina219SetCalibration\_32V\_1A()}}
+{\footnotesize\ttfamily void ina219\+Set\+Calibration\+\_\+32\+V\+\_\+1A (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Configures to INA219 to be able to measure up to 32V and 1A of current. Each unit of current corresponds to 40uA, and each unit of power corresponds to 800{\ucr}W. Counter overflow occurs at 1.\+3A. 
+
+\begin{DoxyNote}{Note}
+These calculations assume a 0.\+1 ohm resistor is present 
+\end{DoxyNote}
+\mbox{\Hypertarget{dev__ina219_8c_af689fd46743cbb4d4453ff8a27141c4a}\label{dev__ina219_8c_af689fd46743cbb4d4453ff8a27141c4a}} 
+\index{dev\_ina219.c@{dev\_ina219.c}!ina219SetCalibration\_32V\_2A@{ina219SetCalibration\_32V\_2A}}
+\index{ina219SetCalibration\_32V\_2A@{ina219SetCalibration\_32V\_2A}!dev\_ina219.c@{dev\_ina219.c}}
+\doxysubsubsection{\texorpdfstring{ina219SetCalibration\_32V\_2A()}{ina219SetCalibration\_32V\_2A()}}
+{\footnotesize\ttfamily void ina219\+Set\+Calibration\+\_\+32\+V\+\_\+2A (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Configures to INA219 to be able to measure up to 32V and 2A of current. Each unit of current corresponds to 100uA, and each unit of power corresponds to 2mW. Counter overflow occurs at 3.\+2A. 
+
+\begin{DoxyNote}{Note}
+These calculations assume a 0.\+1 ohm resistor is present 
+\end{DoxyNote}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{dev__ina219_8c_a17c394eedef550e5d5a929136e14a3a0}\label{dev__ina219_8c_a17c394eedef550e5d5a929136e14a3a0}} 
+\index{dev\_ina219.c@{dev\_ina219.c}!ina219\_Calfactor@{ina219\_Calfactor}}
+\index{ina219\_Calfactor@{ina219\_Calfactor}!dev\_ina219.c@{dev\_ina219.c}}
+\doxysubsubsection{\texorpdfstring{ina219\_Calfactor}{ina219\_Calfactor}}
+{\footnotesize\ttfamily uint32\+\_\+t ina219\+\_\+\+Calfactor = 0}
+
+Default calibration factor for INA219 \mbox{\Hypertarget{dev__ina219_8c_ab1bcd28186de164efc41cc366368628e}\label{dev__ina219_8c_ab1bcd28186de164efc41cc366368628e}} 
+\index{dev\_ina219.c@{dev\_ina219.c}!ina219\_currentDivider\_mA@{ina219\_currentDivider\_mA}}
+\index{ina219\_currentDivider\_mA@{ina219\_currentDivider\_mA}!dev\_ina219.c@{dev\_ina219.c}}
+\doxysubsubsection{\texorpdfstring{ina219\_currentDivider\_mA}{ina219\_currentDivider\_mA}}
+{\footnotesize\ttfamily uint32\+\_\+t ina219\+\_\+current\+Divider\+\_\+mA = 0}
+
+Multiplier for converting raw current values to milliamps (mA) \mbox{\Hypertarget{dev__ina219_8c_a1f1847658f37c1987b967057d6640871}\label{dev__ina219_8c_a1f1847658f37c1987b967057d6640871}} 
+\index{dev\_ina219.c@{dev\_ina219.c}!ina219\_powerDivider\_mW@{ina219\_powerDivider\_mW}}
+\index{ina219\_powerDivider\_mW@{ina219\_powerDivider\_mW}!dev\_ina219.c@{dev\_ina219.c}}
+\doxysubsubsection{\texorpdfstring{ina219\_powerDivider\_mW}{ina219\_powerDivider\_mW}}
+{\footnotesize\ttfamily uint32\+\_\+t ina219\+\_\+power\+Divider\+\_\+mW = 0}
+
+Multiplier for converting raw power values to milliwatts (mW) 

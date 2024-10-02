@@ -1,0 +1,65 @@
+\hypertarget{structat24cx__dev__t}{}\doxysection{at24cx\+\_\+dev\+\_\+t Struct Reference}
+\label{structat24cx__dev__t}\index{at24cx\_dev\_t@{at24cx\_dev\_t}}
+
+
+Structure representing the AT24\+CX EEPROM device characteristics.  
+
+
+
+
+{\ttfamily \#include $<$dev\+\_\+24lc32.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structat24cx__dev__t_a6087cef114ad08fe68a4a22d2c09b1bf}{status}}\+: 1
+\item 
+uint32\+\_\+t \mbox{\hyperlink{structat24cx__dev__t_ae0cf7dc0d87c1075dde28c05987dd68e}{byte\+\_\+size}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structat24cx__dev__t_ac9f415427064b89d4681794535df4bf5}{page\+\_\+write\+\_\+size}}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{structat24cx__dev__t_af78e01ea33774fd49de68c6aa52b713c}{i2c\+\_\+addres}}
+\item 
+uint16\+\_\+t \mbox{\hyperlink{structat24cx__dev__t_ae879ca6494e34f75b7d5b46494decc0e}{dev\+\_\+chip}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure representing the AT24\+CX EEPROM device characteristics. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structat24cx__dev__t_ae0cf7dc0d87c1075dde28c05987dd68e}\label{structat24cx__dev__t_ae0cf7dc0d87c1075dde28c05987dd68e}} 
+\index{at24cx\_dev\_t@{at24cx\_dev\_t}!byte\_size@{byte\_size}}
+\index{byte\_size@{byte\_size}!at24cx\_dev\_t@{at24cx\_dev\_t}}
+\doxysubsubsection{\texorpdfstring{byte\_size}{byte\_size}}
+{\footnotesize\ttfamily uint32\+\_\+t at24cx\+\_\+dev\+\_\+t\+::byte\+\_\+size}
+
+Total byte size of the EEPROM device. \mbox{\Hypertarget{structat24cx__dev__t_ae879ca6494e34f75b7d5b46494decc0e}\label{structat24cx__dev__t_ae879ca6494e34f75b7d5b46494decc0e}} 
+\index{at24cx\_dev\_t@{at24cx\_dev\_t}!dev\_chip@{dev\_chip}}
+\index{dev\_chip@{dev\_chip}!at24cx\_dev\_t@{at24cx\_dev\_t}}
+\doxysubsubsection{\texorpdfstring{dev\_chip}{dev\_chip}}
+{\footnotesize\ttfamily uint16\+\_\+t at24cx\+\_\+dev\+\_\+t\+::dev\+\_\+chip}
+
+Chip identifier for the EEPROM device. \mbox{\Hypertarget{structat24cx__dev__t_af78e01ea33774fd49de68c6aa52b713c}\label{structat24cx__dev__t_af78e01ea33774fd49de68c6aa52b713c}} 
+\index{at24cx\_dev\_t@{at24cx\_dev\_t}!i2c\_addres@{i2c\_addres}}
+\index{i2c\_addres@{i2c\_addres}!at24cx\_dev\_t@{at24cx\_dev\_t}}
+\doxysubsubsection{\texorpdfstring{i2c\_addres}{i2c\_addres}}
+{\footnotesize\ttfamily uint8\+\_\+t at24cx\+\_\+dev\+\_\+t\+::i2c\+\_\+addres}
+
+I2C address of the EEPROM device. \mbox{\Hypertarget{structat24cx__dev__t_ac9f415427064b89d4681794535df4bf5}\label{structat24cx__dev__t_ac9f415427064b89d4681794535df4bf5}} 
+\index{at24cx\_dev\_t@{at24cx\_dev\_t}!page\_write\_size@{page\_write\_size}}
+\index{page\_write\_size@{page\_write\_size}!at24cx\_dev\_t@{at24cx\_dev\_t}}
+\doxysubsubsection{\texorpdfstring{page\_write\_size}{page\_write\_size}}
+{\footnotesize\ttfamily uint16\+\_\+t at24cx\+\_\+dev\+\_\+t\+::page\+\_\+write\+\_\+size}
+
+Size of each page that can be written to. \mbox{\Hypertarget{structat24cx__dev__t_a6087cef114ad08fe68a4a22d2c09b1bf}\label{structat24cx__dev__t_a6087cef114ad08fe68a4a22d2c09b1bf}} 
+\index{at24cx\_dev\_t@{at24cx\_dev\_t}!status@{status}}
+\index{status@{status}!at24cx\_dev\_t@{at24cx\_dev\_t}}
+\doxysubsubsection{\texorpdfstring{status}{status}}
+{\footnotesize\ttfamily uint8\+\_\+t at24cx\+\_\+dev\+\_\+t\+::status}
+
+Status of the device (e.\+g., ready or busy). 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+firmware/src/pico\+\_\+lib2/src/dev/dev\+\_\+24lc32/dev\+\_\+24lc32.\+h\end{DoxyCompactItemize}

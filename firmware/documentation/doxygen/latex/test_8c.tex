@@ -1,0 +1,711 @@
+\hypertarget{test_8c}{}\doxysection{firmware/src/test.c File Reference}
+\label{test_8c}\index{firmware/src/test.c@{firmware/src/test.c}}
+
+
+Software code used to validate the software and hardware developped on this project.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico/binary\+\_\+info.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+ina219/dev\+\_\+ina219.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+mcp4725/dev\+\_\+mcp4725.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+24lc32/dev\+\_\+24lc32.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+ds2431/dev\+\_\+ds2431.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/sys/include/sys\+\_\+adc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/uart.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/spi.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/i2c.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/functadv.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/fts\+\_\+scpi.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/i2c\+\_\+com.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/master.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/test.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/scpi\+\_\+spi.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/scpi\+\_\+i2c.\+h\char`\"{}}\newline
+Include dependency graph for test.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{test_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}}
+\begin{DoxyCompactList}\small\item\em Structure who contains circular buffer messages and pointer. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structTestResult}{Test\+Result}}
+\begin{DoxyCompactList}\small\item\em Structure to count the test result during seltest sequence. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{test_8c_a688698feef67230ede6647246e24b000}{TEST\+\_\+\+SCPI\+\_\+\+INPUT}}(cmd)~result = SCPI\+\_\+\+Input(\&\mbox{\hyperlink{fts__scpi_8h_ac6f639c26fd1c7e210c2da424cfe628d}{scpi\+\_\+context}}, cmd, strlen(cmd))
+\begin{DoxyCompactList}\small\item\em Macro to simulate SCPI command input via the master serial port. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{test_8c_a519adc2af3ba06a8f0548b6690050a89}{PAGESIZE}}~32
+\begin{DoxyCompactList}\small\item\em Size of a single page in the EEPROM. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{test_8c_ae9ee3c5eb7aa12299c6e815edd421d59}{EEMODEL}}~32
+\begin{DoxyCompactList}\small\item\em Model number for the 24LC32 EEPROM. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{test_8c_aa0d8a13def46c49728aeecf05029691e}{RWTESTSIZE}}~8
+\begin{DoxyCompactList}\small\item\em Number of bytes to read/write during the EEPROM validation test. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{test_8c_a9313b8b09e2402dbd3215a879dfa18d2}{remove\+CRLF}} (char $\ast$str)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Chat\+GPt function to remove CR and LF from a strng 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_a964f12386d49fd5a0df6add2daf20508}{init\+\_\+buffer}} (\mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$buffer)
+\begin{DoxyCompactList}\small\item\em Initialisation of the index for circular buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_ac470ff61e56e684cfbe729e66aedf0c1}{add\+\_\+message}} (\mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$buffer, const char $\ast$message)
+\begin{DoxyCompactList}\small\item\em Function to add\+\_\+message on circular buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_ade29dc0be6bd27144ab8ac944fad90de}{print\+\_\+messages}} (const \mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$buffer)
+\begin{DoxyCompactList}\small\item\em Function to print message saved on circular buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_ae11722dd4c251d464333ba534f481483}{test\+\_\+cmd\+\_\+result}} (const char $\ast$title, const char $\ast$cmd, float expect\+\_\+value, const char $\ast$unit, float lolimit, float hilimit, struct \mbox{\hyperlink{structTestResult}{Test\+Result}} $\ast$counter, \mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$buffer)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Send SCPI command and validate the value for PASS or FAIL. The analog value returned by command is validated to determine is between determined limit 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_af9513558e25e8efc4248c5f6c4dcd18e}{test\+\_\+cmd\+\_\+out}} (const char $\ast$title, const char $\ast$cmd, char $\ast$expected\+\_\+result, struct \mbox{\hyperlink{structTestResult}{Test\+Result}} $\ast$counter, \mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$buffer)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Send SCPI command and validate the value for PASS or FAIL. The answer value returned by command is validated with the expected result 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_a032a8eab3b1447960ec13ee39358c450}{test\+\_\+cmd\+\_\+substring}} (const char $\ast$title, const char $\ast$cmd, char $\ast$expected\+\_\+substring, struct \mbox{\hyperlink{structTestResult}{Test\+Result}} $\ast$counter, \mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$buffer)
+\begin{DoxyCompactList}\small\item\em Tests if the given command string contains the expected substring. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_ac9d279cdda41da5b1e2775dbfeaae220}{internal\+\_\+test\+\_\+sequence}} (const char $\ast$testboard\+\_\+num, uint8\+\_\+t run)
+\begin{DoxyCompactList}\small\item\em Main routine to perform internal test using selftest board. The routine has been used to validate hardware and software during development if run=0, the menu will be displayed to operator to select which internal test to run. IF run $>$ 0, the internal test will run directly. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{test_8c_acb420da0ba7e8e1e84b61fec9b4de4b9}{test\+\_\+selftest}} (const char $\ast$testboard\+\_\+num, uint8\+\_\+t run)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Run test sequence to validate hardware with selftest board 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_a7c4492986b11310638a7730bf6658532}{test\+\_\+inst\+\_\+manual}} ()
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item The function perform the seltest of the instruments connected to the interconnect\+\_\+\+IO board. The instruments are controlled manually using instruction on the master serial port 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_ad171446f146deeb8c2c79986e0f843c7}{test\+\_\+command}} (void)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item The function has been used to test the scpi command function. Mainly used to validate software functionalities. selftest board could be required to be present. ~\newline
+ 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{test_8c_a0acd1ee00e871f30689aab1a7246feb0}{test\+\_\+ioboard}} ()
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Function not used during normal execution The function is used to validate the hardware after parts has been soldered and pico has firmware programmed ~\newline
+ 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{test_8c_a3c9d45ad6f08748305ee5abf775a9544}{test\+\_\+eeprom}} ()
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Function not used during normal execution The function has been used to validate the eeprom read write by byte and by page 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+int \mbox{\hyperlink{test_8c_a47a0e9953fea609fecae7ddc8fbc33a3}{onewiretest}} ()
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Function not used during normal execution function used to validate the onewire write and read 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{test_8c_a2c187f3a1a5e046de0872ebd623e8d56}{test\+\_\+adc}} ()
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Function not used during normal execution The test\+\_\+adc was used to test to get all the measure in same time from the Pico ADC 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_a74346a55978a0cec00fea16b92e3cd35}{test\+\_\+ina219}} (void)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Function not used during normal execution The function was used to test to get all the measure in same time from the INA219 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{test_8c_afced784f998c7b95f4563f9ff40d5fc8}{power\+\_\+test}} (uint8\+\_\+t mode, float expect\+\_\+value, float percentage\+\_\+lo, float percentage\+\_\+hi)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Function not used during normal execution The power\+\_\+test was used to test the hardware of interconnect IO board connected to selftest board without using of SCPI command ~\newline
+ 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{test_8c_a7fd0a3e557c0c44cce4de05c0f581406}{test\+\_\+dac}} (float value)
+\begin{DoxyCompactList}\small\item\em Function used to set a value on the DAC device. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{test_8c_ada61a5d73ba9477f5805e729284f4e17}{adc\+\_\+test}} (uint8\+\_\+t channel, float expect\+\_\+value, float percentage\+\_\+lo, float percentage\+\_\+hi)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Function not used during normal execution The adc\+\_\+test was used to test the hardware of interconnect IO board connected to selftest board without using of SCPI command ~\newline
+ 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_ae9ec3dc653dc7431f107092091e4dafc}{test\+\_\+spi\+\_\+adx}} ()
+\begin{DoxyCompactList}\small\item\em the software code below is not used by application but could be used, as example on how to work with SPI interface. This example was a proof of concept on SPI command available with a true device (ADXL345). \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{test_8c_a38960f95c19009813882cb32075767d8}\label{test_8c_a38960f95c19009813882cb32075767d8}} 
+void \mbox{\hyperlink{test_8c_a38960f95c19009813882cb32075767d8}{test\+\_\+i2c\+\_\+adx}} ()
+\begin{DoxyCompactList}\small\item\em the software code below is not used by application but could be used, as example on how to work with I2C interface. This example was a proof of concept on I2C command available with a true device (ADXL345) connected to interconnect io board \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_a2820d2a0e21922a80ee5edaa25d95367}{test\+\_\+i2c\+\_\+ina219}} ()
+\begin{DoxyCompactList}\small\item\em the software code below is not used by application but could be used, as example on how to work with I2C interface. This example was a proof of concept on I2C command available with a true device (INA219). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{test_8c_af935e2bc2c8e175077947a8197df0234}{wait\+\_\+button\+\_\+pressed}} ()
+\begin{DoxyCompactList}\small\item\em Utility function to help debug of firmware Button is connected between pin 1 and 4 of CTRL INST connector on the back of interconnect IO. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+char \mbox{\hyperlink{test_8c_af4c8396614d93905c2a91f60b9d2b4fd}{out\+\_\+buffer}} \mbox{[}1024\mbox{]}
+\begin{DoxyCompactList}\small\item\em Output buffer for storing data to be sent. \end{DoxyCompactList}\item 
+size\+\_\+t \mbox{\hyperlink{test_8c_a668cec89f06b89ddf4d1ee33527eba18}{out\+\_\+buffer\+\_\+pos}}
+\begin{DoxyCompactList}\small\item\em Current position in the output buffer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Software code used to validate the software and hardware developped on this project. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+This file contains all software functions used to validate the combination of the selftest board connected to the interconnect IO board. The SCPI command has been validated, and the interconnect IO board hardware has been validated using a step-\/by-\/step debugger.
+
+The internal selftest is a complete example of how to test the interconnect IO board using the selftest board. External instruments connected to the interconnect IO board are validated using true instruments or a loopback connector.
+
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{test_8c_ae9ee3c5eb7aa12299c6e815edd421d59}\label{test_8c_ae9ee3c5eb7aa12299c6e815edd421d59}} 
+\index{test.c@{test.c}!EEMODEL@{EEMODEL}}
+\index{EEMODEL@{EEMODEL}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{EEMODEL}{EEMODEL}}
+{\footnotesize\ttfamily \#define EEMODEL~32}
+
+
+
+Model number for the 24LC32 EEPROM. 
+
+This macro represents the model number of the EEPROM being used. In this case, it indicates the 24LC32 EEPROM. \mbox{\Hypertarget{test_8c_a519adc2af3ba06a8f0548b6690050a89}\label{test_8c_a519adc2af3ba06a8f0548b6690050a89}} 
+\index{test.c@{test.c}!PAGESIZE@{PAGESIZE}}
+\index{PAGESIZE@{PAGESIZE}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{PAGESIZE}{PAGESIZE}}
+{\footnotesize\ttfamily \#define PAGESIZE~32}
+
+
+
+Size of a single page in the EEPROM. 
+
+This macro defines the number of bytes in a single page of the 24LC32 EEPROM. It is used to control how data is written and read from the EEPROM. \mbox{\Hypertarget{test_8c_aa0d8a13def46c49728aeecf05029691e}\label{test_8c_aa0d8a13def46c49728aeecf05029691e}} 
+\index{test.c@{test.c}!RWTESTSIZE@{RWTESTSIZE}}
+\index{RWTESTSIZE@{RWTESTSIZE}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{RWTESTSIZE}{RWTESTSIZE}}
+{\footnotesize\ttfamily \#define RWTESTSIZE~8}
+
+
+
+Number of bytes to read/write during the EEPROM validation test. 
+
+This macro defines the size of data blocks to be used for read/write operations during EEPROM testing. \mbox{\Hypertarget{test_8c_a688698feef67230ede6647246e24b000}\label{test_8c_a688698feef67230ede6647246e24b000}} 
+\index{test.c@{test.c}!TEST\_SCPI\_INPUT@{TEST\_SCPI\_INPUT}}
+\index{TEST\_SCPI\_INPUT@{TEST\_SCPI\_INPUT}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{TEST\_SCPI\_INPUT}{TEST\_SCPI\_INPUT}}
+{\footnotesize\ttfamily \#define TEST\+\_\+\+SCPI\+\_\+\+INPUT(\begin{DoxyParamCaption}\item[{}]{cmd }\end{DoxyParamCaption})~result = SCPI\+\_\+\+Input(\&\mbox{\hyperlink{fts__scpi_8h_ac6f639c26fd1c7e210c2da424cfe628d}{scpi\+\_\+context}}, cmd, strlen(cmd))}
+
+
+
+Macro to simulate SCPI command input via the master serial port. 
+
+This macro simulates receiving an SCPI command string and processes it using the SCPI context. It calls the {\ttfamily SCPI\+\_\+\+Input} function to handle the command input.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & The SCPI command string to be processed.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyNote}{Note}
+This macro assigns the result of {\ttfamily SCPI\+\_\+\+Input} to a variable named {\ttfamily result}. Ensure that the variable {\ttfamily result} is defined before using this macro. 
+\end{DoxyNote}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{test_8c_ada61a5d73ba9477f5805e729284f4e17}\label{test_8c_ada61a5d73ba9477f5805e729284f4e17}} 
+\index{test.c@{test.c}!adc\_test@{adc\_test}}
+\index{adc\_test@{adc\_test}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{adc\_test()}{adc\_test()}}
+{\footnotesize\ttfamily bool adc\+\_\+test (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{channel,  }\item[{float}]{expect\+\_\+value,  }\item[{float}]{percentage\+\_\+lo,  }\item[{float}]{percentage\+\_\+hi }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Function not used during normal execution The adc\+\_\+test was used to test the hardware of interconnect IO board connected to selftest board without using of SCPI command ~\newline
+ 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em channel} & Number to define wich measurement channel is required \\
+\hline
+{\em expect\+\_\+value} & Value expected to be a valid value \\
+\hline
+{\em percentage\+\_\+lo} & Lower deviation from expect\+\_\+value acceptable to PASS the test \\
+\hline
+{\em percentage\+\_\+hi} & Higher deviation from expect\+\_\+value acceptable to PASS the test \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{test_8c_ac470ff61e56e684cfbe729e66aedf0c1}\label{test_8c_ac470ff61e56e684cfbe729e66aedf0c1}} 
+\index{test.c@{test.c}!add\_message@{add\_message}}
+\index{add\_message@{add\_message}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{add\_message()}{add\_message()}}
+{\footnotesize\ttfamily void add\+\_\+message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$}]{buffer,  }\item[{const char $\ast$}]{message }\end{DoxyParamCaption})}
+
+
+
+Function to add\+\_\+message on circular buffer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & pointer to structure who contains messages \\
+\hline
+{\em message} & pointer to message to save on structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{test_8c_a964f12386d49fd5a0df6add2daf20508}\label{test_8c_a964f12386d49fd5a0df6add2daf20508}} 
+\index{test.c@{test.c}!init\_buffer@{init\_buffer}}
+\index{init\_buffer@{init\_buffer}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{init\_buffer()}{init\_buffer()}}
+{\footnotesize\ttfamily void init\+\_\+buffer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$}]{buffer }\end{DoxyParamCaption})}
+
+
+
+Initialisation of the index for circular buffer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & Structure who contains the index and message \\
+\hline
+\end{DoxyParams}
+$<$ Initialize Start index of the buffer
+
+$<$ Initialize End index of the buffer
+
+$<$ Initialize Flag indicating if the buffer is full\mbox{\Hypertarget{test_8c_ac9d279cdda41da5b1e2775dbfeaae220}\label{test_8c_ac9d279cdda41da5b1e2775dbfeaae220}} 
+\index{test.c@{test.c}!internal\_test\_sequence@{internal\_test\_sequence}}
+\index{internal\_test\_sequence@{internal\_test\_sequence}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{internal\_test\_sequence()}{internal\_test\_sequence()}}
+{\footnotesize\ttfamily void internal\+\_\+test\+\_\+sequence (\begin{DoxyParamCaption}\item[{const char $\ast$}]{testboard\+\_\+num,  }\item[{uint8\+\_\+t}]{run }\end{DoxyParamCaption})}
+
+
+
+Main routine to perform internal test using selftest board. The routine has been used to validate hardware and software during development if run=0, the menu will be displayed to operator to select which internal test to run. IF run $>$ 0, the internal test will run directly. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em testboard\+\_\+num} & Partnumber of the selftest board to be validated using 1-\/wire data \\
+\hline
+{\em run} & Test number to run, if equal to 0, the test menu will be displayed \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{test_8c_a47a0e9953fea609fecae7ddc8fbc33a3}\label{test_8c_a47a0e9953fea609fecae7ddc8fbc33a3}} 
+\index{test.c@{test.c}!onewiretest@{onewiretest}}
+\index{onewiretest@{onewiretest}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{onewiretest()}{onewiretest()}}
+{\footnotesize\ttfamily int onewiretest (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Function not used during normal execution function used to validate the onewire write and read 
+\end{DoxyItemize}
+
+\begin{DoxyReturn}{Returns}
+int return 0 when completed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{test_8c_afced784f998c7b95f4563f9ff40d5fc8}\label{test_8c_afced784f998c7b95f4563f9ff40d5fc8}} 
+\index{test.c@{test.c}!power\_test@{power\_test}}
+\index{power\_test@{power\_test}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{power\_test()}{power\_test()}}
+{\footnotesize\ttfamily bool power\+\_\+test (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{mode,  }\item[{float}]{expect\+\_\+value,  }\item[{float}]{percentage\+\_\+lo,  }\item[{float}]{percentage\+\_\+hi }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Function not used during normal execution The power\+\_\+test was used to test the hardware of interconnect IO board connected to selftest board without using of SCPI command ~\newline
+ 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode} & Number to define wich measurement need to be performed$\ast$\\
+\hline
+{\em expect\+\_\+value} & Value expected to be a valid value \\
+\hline
+{\em percentage\+\_\+lo} & Lower deviation from expect\+\_\+value acceptable to PASS the test \\
+\hline
+{\em percentage\+\_\+hi} & Higher deviation from expect\+\_\+value acceptable to PASS the test \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{test_8c_ade29dc0be6bd27144ab8ac944fad90de}\label{test_8c_ade29dc0be6bd27144ab8ac944fad90de}} 
+\index{test.c@{test.c}!print\_messages@{print\_messages}}
+\index{print\_messages@{print\_messages}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{print\_messages()}{print\_messages()}}
+{\footnotesize\ttfamily void print\+\_\+messages (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$}]{buffer }\end{DoxyParamCaption})}
+
+
+
+Function to print message saved on circular buffer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & pointer to structure who contains messages \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{test_8c_a9313b8b09e2402dbd3215a879dfa18d2}\label{test_8c_a9313b8b09e2402dbd3215a879dfa18d2}} 
+\index{test.c@{test.c}!removeCRLF@{removeCRLF}}
+\index{removeCRLF@{removeCRLF}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{removeCRLF()}{removeCRLF()}}
+{\footnotesize\ttfamily void remove\+CRLF (\begin{DoxyParamCaption}\item[{char $\ast$}]{str }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Chat\+GPt function to remove CR and LF from a strng 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & String who contains the CR and LF to remove \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+String without CR and LF 
+\end{DoxyReturn}
+\mbox{\Hypertarget{test_8c_a2c187f3a1a5e046de0872ebd623e8d56}\label{test_8c_a2c187f3a1a5e046de0872ebd623e8d56}} 
+\index{test.c@{test.c}!test\_adc@{test\_adc}}
+\index{test\_adc@{test\_adc}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_adc()}{test\_adc()}}
+{\footnotesize\ttfamily bool test\+\_\+adc (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Function not used during normal execution The test\+\_\+adc was used to test to get all the measure in same time from the Pico ADC 
+\end{DoxyItemize}
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{test_8c_af9513558e25e8efc4248c5f6c4dcd18e}\label{test_8c_af9513558e25e8efc4248c5f6c4dcd18e}} 
+\index{test.c@{test.c}!test\_cmd\_out@{test\_cmd\_out}}
+\index{test\_cmd\_out@{test\_cmd\_out}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_cmd\_out()}{test\_cmd\_out()}}
+{\footnotesize\ttfamily void test\+\_\+cmd\+\_\+out (\begin{DoxyParamCaption}\item[{const char $\ast$}]{title,  }\item[{const char $\ast$}]{cmd,  }\item[{char $\ast$}]{expected\+\_\+result,  }\item[{struct \mbox{\hyperlink{structTestResult}{Test\+Result}} $\ast$}]{counter,  }\item[{\mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$}]{buffer }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Send SCPI command and validate the value for PASS or FAIL. The answer value returned by command is validated with the expected result 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & Test title to be used to report the purpose of the measure \\
+\hline
+{\em cmd} & String command to send to the SCPI engine \\
+\hline
+{\em expected\+\_\+result} & String to validate with the result returned by the commansd \\
+\hline
+{\em counter} & Structure who content the result of test. Be used by final report \\
+\hline
+{\em buffer} & Pointer to circular buffer, who contains the error \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+Send command to SCPI engine\mbox{\Hypertarget{test_8c_ae11722dd4c251d464333ba534f481483}\label{test_8c_ae11722dd4c251d464333ba534f481483}} 
+\index{test.c@{test.c}!test\_cmd\_result@{test\_cmd\_result}}
+\index{test\_cmd\_result@{test\_cmd\_result}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_cmd\_result()}{test\_cmd\_result()}}
+{\footnotesize\ttfamily void test\+\_\+cmd\+\_\+result (\begin{DoxyParamCaption}\item[{const char $\ast$}]{title,  }\item[{const char $\ast$}]{cmd,  }\item[{float}]{expect\+\_\+value,  }\item[{const char $\ast$}]{unit,  }\item[{float}]{lolimit,  }\item[{float}]{hilimit,  }\item[{struct \mbox{\hyperlink{structTestResult}{Test\+Result}} $\ast$}]{counter,  }\item[{\mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$}]{buffer }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Send SCPI command and validate the value for PASS or FAIL. The analog value returned by command is validated to determine is between determined limit 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & Test title to be used to report the purpose of the measure \\
+\hline
+{\em cmd} & String command to send to the SCPI engine \\
+\hline
+{\em expect\+\_\+value} & Value expected to be returned by the measure \\
+\hline
+{\em unit} & unit to use on printf \\
+\hline
+{\em lolimit} & Lower deviation from expect\+\_\+value acceptable to PASS the test \\
+\hline
+{\em hilimit} & Higher deviation from expect\+\_\+value acceptable to PASS the test \\
+\hline
+{\em counter} & Structure who content the result of test. Be used by final report \\
+\hline
+{\em buffer} & Pointer to circular buffer, who contains the error \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+Send command to SCPI engine\mbox{\Hypertarget{test_8c_a032a8eab3b1447960ec13ee39358c450}\label{test_8c_a032a8eab3b1447960ec13ee39358c450}} 
+\index{test.c@{test.c}!test\_cmd\_substring@{test\_cmd\_substring}}
+\index{test\_cmd\_substring@{test\_cmd\_substring}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_cmd\_substring()}{test\_cmd\_substring()}}
+{\footnotesize\ttfamily void test\+\_\+cmd\+\_\+substring (\begin{DoxyParamCaption}\item[{const char $\ast$}]{title,  }\item[{const char $\ast$}]{cmd,  }\item[{char $\ast$}]{expected\+\_\+substring,  }\item[{struct \mbox{\hyperlink{structTestResult}{Test\+Result}} $\ast$}]{counter,  }\item[{\mbox{\hyperlink{structCircularBuffer}{Circular\+Buffer}} $\ast$}]{buffer }\end{DoxyParamCaption})}
+
+
+
+Tests if the given command string contains the expected substring. 
+
+This function checks whether a given SCPI command string contains the specified expected substring and updates the test results accordingly.
+
+
+\begin{DoxyParams}{Parameters}
+{\em title} & Description or title of the test case. \\
+\hline
+{\em cmd} & The SCPI command string to be tested. \\
+\hline
+{\em expected\+\_\+substring} & The substring that is expected to be found within the command string. \\
+\hline
+{\em counter} & A pointer to the test result structure to store the success or failure of the test. \\
+\hline
+{\em buffer} & A pointer to a circular buffer used for handling the input/output during testing.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the expected substring is found in the command string, false otherwise. 
+\end{DoxyReturn}
+Send command to SCPI engine\mbox{\Hypertarget{test_8c_ad171446f146deeb8c2c79986e0f843c7}\label{test_8c_ad171446f146deeb8c2c79986e0f843c7}} 
+\index{test.c@{test.c}!test\_command@{test\_command}}
+\index{test\_command@{test\_command}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_command()}{test\_command()}}
+{\footnotesize\ttfamily void test\+\_\+command (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item The function has been used to test the scpi command function. Mainly used to validate software functionalities. selftest board could be required to be present. ~\newline
+ 
+\end{DoxyItemize}
+
+Turn ON red led
+
+Turn OFF red led
+
+PAD REGISTER
+
+PRINT FINAL REPORT AFTER TEST COMPLETION\mbox{\Hypertarget{test_8c_a7fd0a3e557c0c44cce4de05c0f581406}\label{test_8c_a7fd0a3e557c0c44cce4de05c0f581406}} 
+\index{test.c@{test.c}!test\_dac@{test\_dac}}
+\index{test\_dac@{test\_dac}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_dac()}{test\_dac()}}
+{\footnotesize\ttfamily bool test\+\_\+dac (\begin{DoxyParamCaption}\item[{float}]{value }\end{DoxyParamCaption})}
+
+
+
+Function used to set a value on the DAC device. 
+
+This function sets the specified voltage value on the MCP4725 DAC device. It is primarily for testing purposes and is not used during normal execution.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & The voltage value (in volts) to set on the DAC device.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the value was successfully set on the DAC. 
+
+false if an error occurred while setting the DAC value. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{test_8c_a3c9d45ad6f08748305ee5abf775a9544}\label{test_8c_a3c9d45ad6f08748305ee5abf775a9544}} 
+\index{test.c@{test.c}!test\_eeprom@{test\_eeprom}}
+\index{test\_eeprom@{test\_eeprom}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_eeprom()}{test\_eeprom()}}
+{\footnotesize\ttfamily bool test\+\_\+eeprom (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Function not used during normal execution The function has been used to validate the eeprom read write by byte and by page 
+\end{DoxyItemize}
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{test_8c_a2820d2a0e21922a80ee5edaa25d95367}\label{test_8c_a2820d2a0e21922a80ee5edaa25d95367}} 
+\index{test.c@{test.c}!test\_i2c\_ina219@{test\_i2c\_ina219}}
+\index{test\_i2c\_ina219@{test\_i2c\_ina219}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_i2c\_ina219()}{test\_i2c\_ina219()}}
+{\footnotesize\ttfamily void test\+\_\+i2c\+\_\+ina219 (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+the software code below is not used by application but could be used, as example on how to work with I2C interface. This example was a proof of concept on I2C command available with a true device (INA219). 
+
+Mainly used to validate the reading of 16 bits register using I2C word \mbox{\Hypertarget{test_8c_a74346a55978a0cec00fea16b92e3cd35}\label{test_8c_a74346a55978a0cec00fea16b92e3cd35}} 
+\index{test.c@{test.c}!test\_ina219@{test\_ina219}}
+\index{test\_ina219@{test\_ina219}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_ina219()}{test\_ina219()}}
+{\footnotesize\ttfamily void test\+\_\+ina219 (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Function not used during normal execution The function was used to test to get all the measure in same time from the INA219 
+\end{DoxyItemize}
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{test_8c_a7c4492986b11310638a7730bf6658532}\label{test_8c_a7c4492986b11310638a7730bf6658532}} 
+\index{test.c@{test.c}!test\_inst\_manual@{test\_inst\_manual}}
+\index{test\_inst\_manual@{test\_inst\_manual}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_inst\_manual()}{test\_inst\_manual()}}
+{\footnotesize\ttfamily void test\+\_\+inst\+\_\+manual (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item The function perform the seltest of the instruments connected to the interconnect\+\_\+\+IO board. The instruments are controlled manually using instruction on the master serial port 
+\end{DoxyItemize}
+
+Disable slaves Pico to reset configuration
+
+Start slaves Pico after reset
+
+Turn OFF red led
+
+Close Power Relay et apply 5V to Selftest board
+
+Wait to let time to relay to close and power the selftest board
+
+Open Power Relay et remove 5V to Selftest board
+
+Wait to let time to relay to close and power the selftest board\mbox{\Hypertarget{test_8c_a0acd1ee00e871f30689aab1a7246feb0}\label{test_8c_a0acd1ee00e871f30689aab1a7246feb0}} 
+\index{test.c@{test.c}!test\_ioboard@{test\_ioboard}}
+\index{test\_ioboard@{test\_ioboard}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_ioboard()}{test\_ioboard()}}
+{\footnotesize\ttfamily bool test\+\_\+ioboard (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Function not used during normal execution The function is used to validate the hardware after parts has been soldered and pico has firmware programmed ~\newline
+ 
+\end{DoxyItemize}
+
+Normally run step by step with debugger and hardware verified by visual check or by measuring voltage \mbox{\Hypertarget{test_8c_acb420da0ba7e8e1e84b61fec9b4de4b9}\label{test_8c_acb420da0ba7e8e1e84b61fec9b4de4b9}} 
+\index{test.c@{test.c}!test\_selftest@{test\_selftest}}
+\index{test\_selftest@{test\_selftest}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_selftest()}{test\_selftest()}}
+{\footnotesize\ttfamily uint8\+\_\+t test\+\_\+selftest (\begin{DoxyParamCaption}\item[{const char $\ast$}]{testboard\+\_\+num,  }\item[{uint8\+\_\+t}]{run }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Run test sequence to validate hardware with selftest board 
+\end{DoxyItemize}
+
+This function perform the selftest to validate the hardware using only internal instruments. The test sequence follow the Validation\+\_\+\+Test.\+xls Excel list
+
+Detailed report is send to stdout port (usb) Summary report is send to serial port
+
+\begin{DoxyReturn}{Returns}
+return value of 1 is selftest board is not detected 
+\end{DoxyReturn}
+$<$ Variable used by TEST\+\_\+\+SCPI\+\_\+\+INPUT
+
+$<$ array who will contains parts of SCPI command
+
+Read 1-\/wire to detect if the selftest board is connected to interconnect IO
+
+Disable slaves Pico to reset configuration
+
+Start slaves Pico after reset
+
+Turn OFF red led
+
+Close Power Relay et apply 5V to Selftest board
+
+Wait to let time to relay to close and power the selftest board
+
+RELAY BANK TEST
+
+Loop to test BK1-\/\+BK2 channel
+
+Test the High side of relay
+
+Test the LOW side of relay
+
+Loop to test BK3-\/\+BK4 channel
+
+Test the High side of relay
+
+Test the LOW side of relay
+
+PRINT FINAL REPORT AFTER TEST COMPLETION\mbox{\Hypertarget{test_8c_ae9ec3dc653dc7431f107092091e4dafc}\label{test_8c_ae9ec3dc653dc7431f107092091e4dafc}} 
+\index{test.c@{test.c}!test\_spi\_adx@{test\_spi\_adx}}
+\index{test\_spi\_adx@{test\_spi\_adx}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{test\_spi\_adx()}{test\_spi\_adx()}}
+{\footnotesize\ttfamily void test\+\_\+spi\+\_\+adx (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+the software code below is not used by application but could be used, as example on how to work with SPI interface. This example was a proof of concept on SPI command available with a true device (ADXL345). 
+
+The SPI command available on Pico SDK are basic and do not set the read bit, normally defined as bit 7 = 1 for read and bit 7 = 0 for write. The user will need to set the bit as showed on code below. \mbox{\Hypertarget{test_8c_af935e2bc2c8e175077947a8197df0234}\label{test_8c_af935e2bc2c8e175077947a8197df0234}} 
+\index{test.c@{test.c}!wait\_button\_pressed@{wait\_button\_pressed}}
+\index{wait\_button\_pressed@{wait\_button\_pressed}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{wait\_button\_pressed()}{wait\_button\_pressed()}}
+{\footnotesize\ttfamily void wait\+\_\+button\+\_\+pressed (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Utility function to help debug of firmware Button is connected between pin 1 and 4 of CTRL INST connector on the back of interconnect IO. 
+
+function exit when button pressed 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{test_8c_af4c8396614d93905c2a91f60b9d2b4fd}\label{test_8c_af4c8396614d93905c2a91f60b9d2b4fd}} 
+\index{test.c@{test.c}!out\_buffer@{out\_buffer}}
+\index{out\_buffer@{out\_buffer}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{out\_buffer}{out\_buffer}}
+{\footnotesize\ttfamily char out\+\_\+buffer\mbox{[}1024\mbox{]}}
+
+
+
+Output buffer for storing data to be sent. 
+
+This buffer holds the data that will be sent via the output channel (e.\+g., serial or communication port). It has a fixed size of 1024 bytes. \mbox{\Hypertarget{test_8c_a668cec89f06b89ddf4d1ee33527eba18}\label{test_8c_a668cec89f06b89ddf4d1ee33527eba18}} 
+\index{test.c@{test.c}!out\_buffer\_pos@{out\_buffer\_pos}}
+\index{out\_buffer\_pos@{out\_buffer\_pos}!test.c@{test.c}}
+\doxysubsubsection{\texorpdfstring{out\_buffer\_pos}{out\_buffer\_pos}}
+{\footnotesize\ttfamily size\+\_\+t out\+\_\+buffer\+\_\+pos}
+
+
+
+Current position in the output buffer. 
+
+Tracks the position in the {\ttfamily out\+\_\+buffer} where the next byte of data will be written. 

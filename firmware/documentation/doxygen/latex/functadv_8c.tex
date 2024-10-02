@@ -1,0 +1,320 @@
+\hypertarget{functadv_8c}{}\doxysection{firmware/src/functadv.c File Reference}
+\label{functadv_8c}\index{firmware/src/functadv.c@{firmware/src/functadv.c}}
+
+
+Software code used to perform communication with the all the devices available on the board.  
+
+
+{\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$limits.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}pico/binary\+\_\+info.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/functadv.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}stdio.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}string.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/scpi\+\_\+user\+\_\+config.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/master.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/fts\+\_\+scpi.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/adc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/i2c.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/i2c\+\_\+com.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+ina219/dev\+\_\+ina219.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+mcp4725/dev\+\_\+mcp4725.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+24lc32/dev\+\_\+24lc32.\+h\char`\"{}}\newline
+Include dependency graph for functadv.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{functadv_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{functadv_8c_a4aacdec19f6c81a7fe4c76c5e7ad0868}{setup\+\_\+\+ADC}} (bool enable)
+\begin{DoxyCompactList}\small\item\em Set the up ADC object. ADC is configured as GPIO when is disabled. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{functadv_8c_a6c2cf0c9535f9fa71cdb14b806ffe05e}{read\+\_\+master\+\_\+adc}} (uint8\+\_\+t channel)
+\begin{DoxyCompactList}\small\item\em Function to read ADC value and return the result. Function called by a SCPI command. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{functadv_8c_acd4acc6743b6cabe7721f5d2aa3702bb}{read\+\_\+power}} (uint8\+\_\+t mode)
+\begin{DoxyCompactList}\small\item\em function to read value from the I2C devices INA219 (current/power monitor). Function called by a SCPI command \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{functadv_8c_a4cc4d88d31f1d255a19e35b88d50048f}{calibrate\+\_\+power}} (float actual, float expected)
+\begin{DoxyCompactList}\small\item\em SCPI function to calibrate the current on the power device INA219. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{functadv_8c_aeb2f97389a21ddcd9bb6f71b3e453412}{dac\+\_\+set}} (float value, bool save)
+\begin{DoxyCompactList}\small\item\em Function used by SCPI command to set DAC voltage The voltage value is validated to be in the range of DAC before set the DAC. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{functadv_8c_a5733933b4f9b59a48e7a72422b4c63a7}{eeprom\+\_\+data\+\_\+valid}} (bool check\+\_\+data, \mbox{\hyperlink{structat24cx__dev__t}{at24cx\+\_\+dev\+\_\+t}} $\ast$eeprom)
+\begin{DoxyCompactList}\small\item\em This function check if the eeprom is detected and if the data is valid. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{functadv_8c_a84b836efc8bc5a3e76177273b7992b3f}{cfg\+\_\+eeprom\+\_\+rw}} (char mode, uint32\+\_\+t eeaddr, uint8\+\_\+t eedatalen, char $\ast$data, uint8\+\_\+t datalen)
+\begin{DoxyCompactList}\small\item\em Function to read and write data on the I2C configuration eeprom. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{functadv_8c_a334e43ee30644a3623e33207987bad9d}{cfg\+\_\+eeprom\+\_\+read\+\_\+full}} ()
+\begin{DoxyCompactList}\small\item\em Read the entire contents of the configuration eeprom and store data on eeprom config structure EEprom structure is global (defined on \mbox{\hyperlink{master_8h}{master.\+h}}) \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{functadv_8c_ae0302adfd83eb620eb11b76936403670}{cfg\+\_\+eeprom\+\_\+write\+\_\+default}} ()
+\begin{DoxyCompactList}\small\item\em Write the default values on EEprom. EEprom is written by page EEprom structure is global (defined on \mbox{\hyperlink{master_8h}{master.\+h}}) \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{functadv_8c_acfe7d8f6b31a062f1253cb4ecb10859e}{stringtonumber}} (const char $\ast$str, size\+\_\+t lgs, long $\ast$result)
+\begin{DoxyCompactList}\small\item\em Function to extract number from string. Mainly used to convert EEprom Cfg string to number. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{functadv_8c_a65d5a960b762f3f80432ac49bfd7a239}{Boot\+\_\+check}} ()
+\begin{DoxyCompactList}\small\item\em Perform Boot check by validating i2C device in the chain. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{functadv_8c_acb717495a9c37a468e5494f571ef1607}\label{functadv_8c_acb717495a9c37a468e5494f571ef1607}} 
+bool \mbox{\hyperlink{functadv_8c_acb717495a9c37a468e5494f571ef1607}{IOBoard\+\_\+\+Selftest}} ()
+\begin{DoxyCompactList}\small\item\em Run internal board tests to verifies hardware functionality,. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{functadv_8c_a8618bf928432d3969d2fde39e61fbeee}{reserved\+\_\+addr}} (uint8\+\_\+t addr)
+\begin{DoxyCompactList}\small\item\em function to check if the I2C address required to check if a reserved address \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{functadv_8c_a0a1dd209f11841a2690f544547c24cf2}{scan\+\_\+i2c\+\_\+bus}} (i2c\+\_\+inst\+\_\+t $\ast$i2c)
+\begin{DoxyCompactList}\small\item\em Function found on internet to scan the internal I2C bus. Function called during boot up of the master pico and information printed on USB. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Software code used to perform communication with the all the devices available on the board. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+This module contains all software functions to execute low level action on device ressource available on the board. The configuration eeprom is controlled by function on this module. A basic selftest of the board is also executed on this module
+
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{functadv_8c_a65d5a960b762f3f80432ac49bfd7a239}\label{functadv_8c_a65d5a960b762f3f80432ac49bfd7a239}} 
+\index{functadv.c@{functadv.c}!Boot\_check@{Boot\_check}}
+\index{Boot\_check@{Boot\_check}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{Boot\_check()}{Boot\_check()}}
+{\footnotesize\ttfamily bool Boot\+\_\+check (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Perform Boot check by validating i2C device in the chain. 
+
+\begin{DoxyReturn}{Returns}
+true if success with the boot validation 
+
+false if fail the boot validation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{functadv_8c_a4cc4d88d31f1d255a19e35b88d50048f}\label{functadv_8c_a4cc4d88d31f1d255a19e35b88d50048f}} 
+\index{functadv.c@{functadv.c}!calibrate\_power@{calibrate\_power}}
+\index{calibrate\_power@{calibrate\_power}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{calibrate\_power()}{calibrate\_power()}}
+{\footnotesize\ttfamily void calibrate\+\_\+power (\begin{DoxyParamCaption}\item[{float}]{actual,  }\item[{float}]{expected }\end{DoxyParamCaption})}
+
+
+
+SCPI function to calibrate the current on the power device INA219. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em actual} & Current value read with the hardware \\
+\hline
+{\em expected} & Expected value according to calculation \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{functadv_8c_a334e43ee30644a3623e33207987bad9d}\label{functadv_8c_a334e43ee30644a3623e33207987bad9d}} 
+\index{functadv.c@{functadv.c}!cfg\_eeprom\_read\_full@{cfg\_eeprom\_read\_full}}
+\index{cfg\_eeprom\_read\_full@{cfg\_eeprom\_read\_full}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{cfg\_eeprom\_read\_full()}{cfg\_eeprom\_read\_full()}}
+{\footnotesize\ttfamily uint8\+\_\+t cfg\+\_\+eeprom\+\_\+read\+\_\+full (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Read the entire contents of the configuration eeprom and store data on eeprom config structure EEprom structure is global (defined on \mbox{\hyperlink{master_8h}{master.\+h}}) 
+
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t Number to define success or failure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{functadv_8c_a84b836efc8bc5a3e76177273b7992b3f}\label{functadv_8c_a84b836efc8bc5a3e76177273b7992b3f}} 
+\index{functadv.c@{functadv.c}!cfg\_eeprom\_rw@{cfg\_eeprom\_rw}}
+\index{cfg\_eeprom\_rw@{cfg\_eeprom\_rw}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{cfg\_eeprom\_rw()}{cfg\_eeprom\_rw()}}
+{\footnotesize\ttfamily uint8\+\_\+t cfg\+\_\+eeprom\+\_\+rw (\begin{DoxyParamCaption}\item[{char}]{mode,  }\item[{uint32\+\_\+t}]{eeaddr,  }\item[{uint8\+\_\+t}]{eedatalen,  }\item[{char $\ast$}]{data,  }\item[{uint8\+\_\+t}]{datalen }\end{DoxyParamCaption})}
+
+
+
+Function to read and write data on the I2C configuration eeprom. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode} & Character to define if we read (r) or write (w) data \\
+\hline
+{\em eeaddr} & Eeprom address to define the beginning of data string \\
+\hline
+{\em eedatalen} & Number of character reserved for the data field on eeprom \\
+\hline
+{\em data} & Pointer to the data to read or write \\
+\hline
+{\em datalen} & Length of the data to read or write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t 
+\end{DoxyReturn}
+\mbox{\Hypertarget{functadv_8c_ae0302adfd83eb620eb11b76936403670}\label{functadv_8c_ae0302adfd83eb620eb11b76936403670}} 
+\index{functadv.c@{functadv.c}!cfg\_eeprom\_write\_default@{cfg\_eeprom\_write\_default}}
+\index{cfg\_eeprom\_write\_default@{cfg\_eeprom\_write\_default}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{cfg\_eeprom\_write\_default()}{cfg\_eeprom\_write\_default()}}
+{\footnotesize\ttfamily uint8\+\_\+t cfg\+\_\+eeprom\+\_\+write\+\_\+default (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Write the default values on EEprom. EEprom is written by page EEprom structure is global (defined on \mbox{\hyperlink{master_8h}{master.\+h}}) 
+
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t Number to define success or failure 
+\end{DoxyReturn}
+\mbox{\Hypertarget{functadv_8c_aeb2f97389a21ddcd9bb6f71b3e453412}\label{functadv_8c_aeb2f97389a21ddcd9bb6f71b3e453412}} 
+\index{functadv.c@{functadv.c}!dac\_set@{dac\_set}}
+\index{dac\_set@{dac\_set}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{dac\_set()}{dac\_set()}}
+{\footnotesize\ttfamily uint8\+\_\+t dac\+\_\+set (\begin{DoxyParamCaption}\item[{float}]{value,  }\item[{bool}]{save }\end{DoxyParamCaption})}
+
+
+
+Function used by SCPI command to set DAC voltage The voltage value is validated to be in the range of DAC before set the DAC. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & Value in volt to set the DAC \\
+\hline
+{\em save} & Flag to save voltage value as default at power ON \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Number to indicate success or error in the execution 
+\end{DoxyReturn}
+\mbox{\Hypertarget{functadv_8c_a5733933b4f9b59a48e7a72422b4c63a7}\label{functadv_8c_a5733933b4f9b59a48e7a72422b4c63a7}} 
+\index{functadv.c@{functadv.c}!eeprom\_data\_valid@{eeprom\_data\_valid}}
+\index{eeprom\_data\_valid@{eeprom\_data\_valid}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{eeprom\_data\_valid()}{eeprom\_data\_valid()}}
+{\footnotesize\ttfamily uint8\+\_\+t eeprom\+\_\+data\+\_\+valid (\begin{DoxyParamCaption}\item[{bool}]{check\+\_\+data,  }\item[{\mbox{\hyperlink{structat24cx__dev__t}{at24cx\+\_\+dev\+\_\+t}} $\ast$}]{eeprom }\end{DoxyParamCaption})}
+
+
+
+This function check if the eeprom is detected and if the data is valid. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em check\+\_\+data} & Flag to indicate if the check number need to be validated \\
+\hline
+{\em eeprom} & Pointer to eeprom structure \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t Number to indicate success or error in the execution 
+\end{DoxyReturn}
+\mbox{\Hypertarget{functadv_8c_a6c2cf0c9535f9fa71cdb14b806ffe05e}\label{functadv_8c_a6c2cf0c9535f9fa71cdb14b806ffe05e}} 
+\index{functadv.c@{functadv.c}!read\_master\_adc@{read\_master\_adc}}
+\index{read\_master\_adc@{read\_master\_adc}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{read\_master\_adc()}{read\_master\_adc()}}
+{\footnotesize\ttfamily float read\+\_\+master\+\_\+adc (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{channel }\end{DoxyParamCaption})}
+
+
+
+Function to read ADC value and return the result. Function called by a SCPI command. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em channel} & ADC channel to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Float value read from ADC channel ~\newline
+ 
+\end{DoxyReturn}
+\mbox{\Hypertarget{functadv_8c_acd4acc6743b6cabe7721f5d2aa3702bb}\label{functadv_8c_acd4acc6743b6cabe7721f5d2aa3702bb}} 
+\index{functadv.c@{functadv.c}!read\_power@{read\_power}}
+\index{read\_power@{read\_power}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{read\_power()}{read\_power()}}
+{\footnotesize\ttfamily float read\+\_\+power (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{mode }\end{DoxyParamCaption})}
+
+
+
+function to read value from the I2C devices INA219 (current/power monitor). Function called by a SCPI command 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode} & Number to select which register value to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float Float value read from the device 
+\end{DoxyReturn}
+\mbox{\Hypertarget{functadv_8c_a8618bf928432d3969d2fde39e61fbeee}\label{functadv_8c_a8618bf928432d3969d2fde39e61fbeee}} 
+\index{functadv.c@{functadv.c}!reserved\_addr@{reserved\_addr}}
+\index{reserved\_addr@{reserved\_addr}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{reserved\_addr()}{reserved\_addr()}}
+{\footnotesize\ttfamily bool reserved\+\_\+addr (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{addr }\end{DoxyParamCaption})}
+
+
+
+function to check if the I2C address required to check if a reserved address 
+
+Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
+
+SPDX-\/\+License-\/\+Identifier\+: BSD-\/3-\/\+Clause
+
+
+\begin{DoxyParams}{Parameters}
+{\em addr} & Address to validate \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Address is a reserved address 
+
+false Address is valid 
+\end{DoxyReturn}
+\mbox{\Hypertarget{functadv_8c_a0a1dd209f11841a2690f544547c24cf2}\label{functadv_8c_a0a1dd209f11841a2690f544547c24cf2}} 
+\index{functadv.c@{functadv.c}!scan\_i2c\_bus@{scan\_i2c\_bus}}
+\index{scan\_i2c\_bus@{scan\_i2c\_bus}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{scan\_i2c\_bus()}{scan\_i2c\_bus()}}
+{\footnotesize\ttfamily void scan\+\_\+i2c\+\_\+bus (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c }\end{DoxyParamCaption})}
+
+
+
+Function found on internet to scan the internal I2C bus. Function called during boot up of the master pico and information printed on USB. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & Define which I2C is scanned \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{functadv_8c_a4aacdec19f6c81a7fe4c76c5e7ad0868}\label{functadv_8c_a4aacdec19f6c81a7fe4c76c5e7ad0868}} 
+\index{functadv.c@{functadv.c}!setup\_ADC@{setup\_ADC}}
+\index{setup\_ADC@{setup\_ADC}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{setup\_ADC()}{setup\_ADC()}}
+{\footnotesize\ttfamily void setup\+\_\+\+ADC (\begin{DoxyParamCaption}\item[{bool}]{enable }\end{DoxyParamCaption})}
+
+
+
+Set the up ADC object. ADC is configured as GPIO when is disabled. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em enable} & True to use the ADC, False to configure as GPIO \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{functadv_8c_acfe7d8f6b31a062f1253cb4ecb10859e}\label{functadv_8c_acfe7d8f6b31a062f1253cb4ecb10859e}} 
+\index{functadv.c@{functadv.c}!stringtonumber@{stringtonumber}}
+\index{stringtonumber@{stringtonumber}!functadv.c@{functadv.c}}
+\doxysubsubsection{\texorpdfstring{stringtonumber()}{stringtonumber()}}
+{\footnotesize\ttfamily uint8\+\_\+t stringtonumber (\begin{DoxyParamCaption}\item[{const char $\ast$}]{str,  }\item[{size\+\_\+t}]{lgs,  }\item[{long $\ast$}]{result }\end{DoxyParamCaption})}
+
+
+
+Function to extract number from string. Mainly used to convert EEprom Cfg string to number. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & Pointer to string of character to transform \\
+\hline
+{\em lgs} & Length of the string \\
+\hline
+{\em result} & Number converted from the string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t Number to define success or failure 
+\end{DoxyReturn}

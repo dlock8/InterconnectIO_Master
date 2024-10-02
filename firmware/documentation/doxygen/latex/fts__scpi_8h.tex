@@ -1,0 +1,694 @@
+\hypertarget{fts__scpi_8h}{}\doxysection{firmware/src/include/fts\+\_\+scpi.h File Reference}
+\label{fts__scpi_8h}\index{firmware/src/include/fts\_scpi.h@{firmware/src/include/fts\_scpi.h}}
+
+
+Header file defining constants and macros used for SCPI interpreter.  
+
+
+{\ttfamily \#include \char`\"{}scpi/scpi.\+h\char`\"{}}\newline
+Include dependency graph for fts\+\_\+scpi.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{fts__scpi_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{fts__scpi_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{fts__scpi_8h_a442c3ab34e2b6b9a5d575e512035f687}{SCPI\+\_\+\+INPUT\+\_\+\+BUFFER\+\_\+\+SIZE}}~256
+\begin{DoxyCompactList}\small\item\em Size of the SCPI input buffer. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{fts__scpi_8h_ae75d934bc66feba83b6ba36afd102038}{SCPI\+\_\+\+ERROR\+\_\+\+QUEUE\+\_\+\+SIZE}}~20
+\begin{DoxyCompactList}\small\item\em Size of the SCPI error queue. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{fts__scpi_8h_a7a9c666bc3c0cc8761296b27f98a6f2d}{SCPI\+\_\+\+IDN1}}~\char`\"{}First\+Test\+Station\char`\"{}
+\begin{DoxyCompactList}\small\item\em \char`\"{}\+IDN?\char`\"{} fields. Their meanings are \char`\"{}suggestions\char`\"{} in the standard. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{fts__scpi_8h_a7fa20c1929f72df229fed21c8399bbd1}{SCPI\+\_\+\+IDN2}}~\char`\"{}Interconnect\+IO\char`\"{}
+\item 
+\#define \mbox{\hyperlink{fts__scpi_8h_a96cf9fe96205c85f4e2259ddb56b426d}{SCPI\+\_\+\+IDN3}}~\char`\"{}2022A\char`\"{}
+\item 
+\#define \mbox{\hyperlink{fts__scpi_8h_a04fb0a36f4c1a484d85ea9e8d50fe42e}{SCPI\+\_\+\+IDN4}}~\char`\"{}1.\+0\char`\"{}
+\item 
+\#define \mbox{\hyperlink{fts__scpi_8h_a8d5458b97ec1d8e8f92d3dc1209bb856}{MAXROW}}~36
+\begin{DoxyCompactList}\small\item\em Maximum number of rows for relay matrix. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{fts__scpi_8h_aef214bee44b8ea3707359a56c8c921c6}{MAXCOL}}~1
+\begin{DoxyCompactList}\small\item\em Maximum number of columns. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{fts__scpi_8h_a674c1a85fb1c09ec56b0b8f6319e7b97}{MAXDIM}}~1
+\begin{DoxyCompactList}\small\item\em Maximum number of dimensions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ab52aa94d1630afa328889477ea6c6894}\label{fts__scpi_8h_ab52aa94d1630afa328889477ea6c6894}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ab52aa94d1630afa328889477ea6c6894}{RCLOSE}}~1
+\begin{DoxyCompactList}\small\item\em Close relay tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ad3834f62551a2bba6d70b40d6c43308b}\label{fts__scpi_8h_ad3834f62551a2bba6d70b40d6c43308b}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ad3834f62551a2bba6d70b40d6c43308b}{RCLEX}}~2
+\begin{DoxyCompactList}\small\item\em Close Exclusive relay tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a6c4ae41c510211b5881a8fa22773f6d1}\label{fts__scpi_8h_a6c4ae41c510211b5881a8fa22773f6d1}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a6c4ae41c510211b5881a8fa22773f6d1}{ROPEN}}~3
+\begin{DoxyCompactList}\small\item\em Open relay tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_aef806d6d9d19313f5a16c06e26171d16}\label{fts__scpi_8h_aef806d6d9d19313f5a16c06e26171d16}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_aef806d6d9d19313f5a16c06e26171d16}{ROPALL}}~4
+\begin{DoxyCompactList}\small\item\em Open all relay tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a7e5f9ec8f6b050fe6d085ea94190c451}\label{fts__scpi_8h_a7e5f9ec8f6b050fe6d085ea94190c451}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a7e5f9ec8f6b050fe6d085ea94190c451}{RSTATE}}~5
+\begin{DoxyCompactList}\small\item\em Read relay state tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a104e459b3a4e390afddd000b998efab6}\label{fts__scpi_8h_a104e459b3a4e390afddd000b998efab6}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a104e459b3a4e390afddd000b998efab6}{BSTATE}}~6
+\begin{DoxyCompactList}\small\item\em Read relay bank state tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ae2f6c6502ff7414c7872886c3cf54a2b}\label{fts__scpi_8h_ae2f6c6502ff7414c7872886c3cf54a2b}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ae2f6c6502ff7414c7872886c3cf54a2b}{SESTATE}}~7
+\begin{DoxyCompactList}\small\item\em Read relay single ended or reverse relay state tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_abc872ce6c09f4825277dbc43356a8568}\label{fts__scpi_8h_abc872ce6c09f4825277dbc43356a8568}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_abc872ce6c09f4825277dbc43356a8568}{SECLOSE}}~8
+\begin{DoxyCompactList}\small\item\em Close REVerse relay tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a4e58dc83aff7a4eb9900368139038a28}\label{fts__scpi_8h_a4e58dc83aff7a4eb9900368139038a28}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a4e58dc83aff7a4eb9900368139038a28}{SEOPEN}}~9
+\begin{DoxyCompactList}\small\item\em Open REVerse relay tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a52f70c8d908aff4858efa09a29b6ae69}\label{fts__scpi_8h_a52f70c8d908aff4858efa09a29b6ae69}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a52f70c8d908aff4858efa09a29b6ae69}{SDIR}}~10
+\begin{DoxyCompactList}\small\item\em Set direction of digital IO. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ae798de7c47f001461fe4223c9cb821c3}\label{fts__scpi_8h_ae798de7c47f001461fe4223c9cb821c3}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ae798de7c47f001461fe4223c9cb821c3}{SBDIR}}~11
+\begin{DoxyCompactList}\small\item\em Set direction of digital IO Bit. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_acd42c4cd5d68b1af392b552d2275a15b}\label{fts__scpi_8h_acd42c4cd5d68b1af392b552d2275a15b}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_acd42c4cd5d68b1af392b552d2275a15b}{SOUT}}~12
+\begin{DoxyCompactList}\small\item\em Set port digital Output. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_af5fdd4b7540f54964b483565cfbee600}\label{fts__scpi_8h_af5fdd4b7540f54964b483565cfbee600}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_af5fdd4b7540f54964b483565cfbee600}{SBOUT}}~13
+\begin{DoxyCompactList}\small\item\em Set bit on port digital Output. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a3a5fc4c1bf4e339bbd4f749999569fb0}\label{fts__scpi_8h_a3a5fc4c1bf4e339bbd4f749999569fb0}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a3a5fc4c1bf4e339bbd4f749999569fb0}{RIN}}~14
+\begin{DoxyCompactList}\small\item\em Read port digital input. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a7f4c2953becdf290414172c9179cb5d1}\label{fts__scpi_8h_a7f4c2953becdf290414172c9179cb5d1}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a7f4c2953becdf290414172c9179cb5d1}{RBIN}}~15
+\begin{DoxyCompactList}\small\item\em Read port bit digital input. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a87b72a06d4f475065639f00fba02d5e7}\label{fts__scpi_8h_a87b72a06d4f475065639f00fba02d5e7}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a87b72a06d4f475065639f00fba02d5e7}{RDIR}}~16
+\begin{DoxyCompactList}\small\item\em Read direction of digital IO port. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a9463ba1db8185e0e2c896e8feddd5f0a}\label{fts__scpi_8h_a9463ba1db8185e0e2c896e8feddd5f0a}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a9463ba1db8185e0e2c896e8feddd5f0a}{RBDIR}}~17
+\begin{DoxyCompactList}\small\item\em Read direction for a bit on a port. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a39bba6455edb164e5d7643f3c30739cc}\label{fts__scpi_8h_a39bba6455edb164e5d7643f3c30739cc}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a39bba6455edb164e5d7643f3c30739cc}{GPSDIR}}~18
+\begin{DoxyCompactList}\small\item\em Set direction for a single GPIO on a particular device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a16331c9e579c7b0b948e95f38ffed4df}\label{fts__scpi_8h_a16331c9e579c7b0b948e95f38ffed4df}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a16331c9e579c7b0b948e95f38ffed4df}{GPRDIR}}~19
+\begin{DoxyCompactList}\small\item\em Read direction for a single GPIO on a particular device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a7ff312611f4611e5c3e447585e04bf17}\label{fts__scpi_8h_a7ff312611f4611e5c3e447585e04bf17}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a7ff312611f4611e5c3e447585e04bf17}{GPOUT}}~20
+\begin{DoxyCompactList}\small\item\em Set output for a single gpio on a particular device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_aa20b4789fe98a486d39ab0db8c60e052}\label{fts__scpi_8h_aa20b4789fe98a486d39ab0db8c60e052}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_aa20b4789fe98a486d39ab0db8c60e052}{GPIN}}~21
+\begin{DoxyCompactList}\small\item\em Read a single gpio on a particular device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a1878caa48122d80eace477808a127ff0}\label{fts__scpi_8h_a1878caa48122d80eace477808a127ff0}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a1878caa48122d80eace477808a127ff0}{GPSPAD}}~22
+\begin{DoxyCompactList}\small\item\em Set digital IO PAD parameter. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a094cb972fd529482789f7a1cf5e6fda7}\label{fts__scpi_8h_a094cb972fd529482789f7a1cf5e6fda7}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a094cb972fd529482789f7a1cf5e6fda7}{GPGPAD}}~23
+\begin{DoxyCompactList}\small\item\em Read digital IO PAD parameter. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ac4cb18349bb3c4f5dfe882506198bb72}\label{fts__scpi_8h_ac4cb18349bb3c4f5dfe882506198bb72}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ac4cb18349bb3c4f5dfe882506198bb72}{PWCLOSE}}~24
+\begin{DoxyCompactList}\small\item\em CLose power relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_aa97e910c86dd18847726f2544924b117}\label{fts__scpi_8h_aa97e910c86dd18847726f2544924b117}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_aa97e910c86dd18847726f2544924b117}{PWOPEN}}~25
+\begin{DoxyCompactList}\small\item\em OPen power relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a56eb3dccb3d75a7246d3553bf1cd0aa3}\label{fts__scpi_8h_a56eb3dccb3d75a7246d3553bf1cd0aa3}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a56eb3dccb3d75a7246d3553bf1cd0aa3}{PWSTATE}}~26
+\begin{DoxyCompactList}\small\item\em Read state of power relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a9b6da9192fd000a3bcaef10abba54113}\label{fts__scpi_8h_a9b6da9192fd000a3bcaef10abba54113}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a9b6da9192fd000a3bcaef10abba54113}{OCCLOSE}}~27
+\begin{DoxyCompactList}\small\item\em Active Open Collector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_afb00e8bccbc190e8d7bf731d23eb65da}\label{fts__scpi_8h_afb00e8bccbc190e8d7bf731d23eb65da}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_afb00e8bccbc190e8d7bf731d23eb65da}{OCOPEN}}~28
+\begin{DoxyCompactList}\small\item\em Desactive Open Collector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a6a5ad49e2f82e670d1461024fcaa2e3c}\label{fts__scpi_8h_a6a5ad49e2f82e670d1461024fcaa2e3c}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a6a5ad49e2f82e670d1461024fcaa2e3c}{OCSTATE}}~29
+\begin{DoxyCompactList}\small\item\em Read state of Open Collector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_aaf0094ef205160ea78026dc989670a14}\label{fts__scpi_8h_aaf0094ef205160ea78026dc989670a14}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_aaf0094ef205160ea78026dc989670a14}{SBEEP}}~50
+\begin{DoxyCompactList}\small\item\em Send Beep pulse. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a14ab2c8a9af0c4cfe71cb917ae08a471}\label{fts__scpi_8h_a14ab2c8a9af0c4cfe71cb917ae08a471}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a14ab2c8a9af0c4cfe71cb917ae08a471}{SVER}}~51
+\begin{DoxyCompactList}\small\item\em Read version of Pico Master and slave. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a714bbf69fb0e57695428e4b961a080fd}\label{fts__scpi_8h_a714bbf69fb0e57695428e4b961a080fd}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a714bbf69fb0e57695428e4b961a080fd}{SLERR}}~52
+\begin{DoxyCompactList}\small\item\em Control of error led. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a393861ff2fbd5ed95a77d5693095dd52}\label{fts__scpi_8h_a393861ff2fbd5ed95a77d5693095dd52}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a393861ff2fbd5ed95a77d5693095dd52}{SRUN}}~53
+\begin{DoxyCompactList}\small\item\em Pico SLaves ON/\+OFF. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a20de21b091ffb20e10f6d6ff6ea1b4d3}\label{fts__scpi_8h_a20de21b091ffb20e10f6d6ff6ea1b4d3}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a20de21b091ffb20e10f6d6ff6ea1b4d3}{SOE}}~54
+\begin{DoxyCompactList}\small\item\em Digital Output Enable ON/\+OFF. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_afea78919ae677b9a0c317c9a25f36f3b}\label{fts__scpi_8h_afea78919ae677b9a0c317c9a25f36f3b}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_afea78919ae677b9a0c317c9a25f36f3b}{GLERR}}~55
+\begin{DoxyCompactList}\small\item\em Read error led. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a8e73fb7b8fbbfb62488ffd9610cb456f}\label{fts__scpi_8h_a8e73fb7b8fbbfb62488ffd9610cb456f}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a8e73fb7b8fbbfb62488ffd9610cb456f}{GRUN}}~56
+\begin{DoxyCompactList}\small\item\em Read Pico SLaves RUN status. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a2f2dc0c319a2680b5eed1d24a2885144}\label{fts__scpi_8h_a2f2dc0c319a2680b5eed1d24a2885144}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a2f2dc0c319a2680b5eed1d24a2885144}{GOE}}~57
+\begin{DoxyCompactList}\small\item\em Read status Output Enable ON/\+OFF. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a7eb6c8716a503ef902e680c670800ea8}\label{fts__scpi_8h_a7eb6c8716a503ef902e680c670800ea8}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a7eb6c8716a503ef902e680c670800ea8}{GSTA}}~58
+\begin{DoxyCompactList}\small\item\em Read Slave Device status byte. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a0d6e88ae166e1673f12677eaf0b89c2a}\label{fts__scpi_8h_a0d6e88ae166e1673f12677eaf0b89c2a}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a0d6e88ae166e1673f12677eaf0b89c2a}{STBR}}~59
+\begin{DoxyCompactList}\small\item\em Run complete test with selftest board connected. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_af735dbc1b748fcbbe3325339877fed6b}\label{fts__scpi_8h_af735dbc1b748fcbbe3325339877fed6b}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_af735dbc1b748fcbbe3325339877fed6b}{SDAC}}~63
+\begin{DoxyCompactList}\small\item\em Set DAC Voltage. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a2092beb10f72f81de8ecb580f9ded80e}\label{fts__scpi_8h_a2092beb10f72f81de8ecb580f9ded80e}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a2092beb10f72f81de8ecb580f9ded80e}{WDAC}}~64
+\begin{DoxyCompactList}\small\item\em Set DAC Voltage and save as default value. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_af062eb98fd50b7b53939888a26086b04}\label{fts__scpi_8h_af062eb98fd50b7b53939888a26086b04}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_af062eb98fd50b7b53939888a26086b04}{RADC0}}~65
+\begin{DoxyCompactList}\small\item\em Read ADC0 Voltage. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ad1316eb167ba626ab4f61482c61242d2}\label{fts__scpi_8h_ad1316eb167ba626ab4f61482c61242d2}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ad1316eb167ba626ab4f61482c61242d2}{RADC1}}~66
+\begin{DoxyCompactList}\small\item\em Read ADC1 Voltage. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_acf93dad7c1ef876b9675e639b1098018}\label{fts__scpi_8h_acf93dad7c1ef876b9675e639b1098018}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_acf93dad7c1ef876b9675e639b1098018}{RADC3}}~67
+\begin{DoxyCompactList}\small\item\em Read Vsys Voltage. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a0688385e7ea98fdc6299704726d9ff28}\label{fts__scpi_8h_a0688385e7ea98fdc6299704726d9ff28}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a0688385e7ea98fdc6299704726d9ff28}{RADC4}}~68
+\begin{DoxyCompactList}\small\item\em Read Master Temperature. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a165f7abc298aed1afe0606f6f38922d0}\label{fts__scpi_8h_a165f7abc298aed1afe0606f6f38922d0}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a165f7abc298aed1afe0606f6f38922d0}{RPV}}~70
+\begin{DoxyCompactList}\small\item\em Read Power monitor Voltage. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a3b4dd0d578ffce3f6cbe25f637781d0e}\label{fts__scpi_8h_a3b4dd0d578ffce3f6cbe25f637781d0e}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a3b4dd0d578ffce3f6cbe25f637781d0e}{RPS}}~71
+\begin{DoxyCompactList}\small\item\em Read Power Shunt Voltage. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a954b61d0bed4bfa938d89c7590c45fb4}\label{fts__scpi_8h_a954b61d0bed4bfa938d89c7590c45fb4}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a954b61d0bed4bfa938d89c7590c45fb4}{RPI}}~72
+\begin{DoxyCompactList}\small\item\em Read Power current in milli\+Ampere. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ab27b91d4128c63b2fa1ff9d4c7f179a5}\label{fts__scpi_8h_ab27b91d4128c63b2fa1ff9d4c7f179a5}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ab27b91d4128c63b2fa1ff9d4c7f179a5}{RPP}}~73
+\begin{DoxyCompactList}\small\item\em Read Power in milliwatt. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ae3a1f955c0d869cfed47f5538f4c9deb}\label{fts__scpi_8h_ae3a1f955c0d869cfed47f5538f4c9deb}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ae3a1f955c0d869cfed47f5538f4c9deb}{CPI}}~74
+\begin{DoxyCompactList}\small\item\em Calibrate current on power device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a9832bd687a23b8ed19e06406fdc373a5}\label{fts__scpi_8h_a9832bd687a23b8ed19e06406fdc373a5}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a9832bd687a23b8ed19e06406fdc373a5}{WEEP}}~78
+\begin{DoxyCompactList}\small\item\em Write to eeprom. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a7e65895a90febc8c1a2cd5282fdd95c0}\label{fts__scpi_8h_a7e65895a90febc8c1a2cd5282fdd95c0}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a7e65895a90febc8c1a2cd5282fdd95c0}{REEP}}~79
+\begin{DoxyCompactList}\small\item\em Read from eeprom. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a6c3be67b3fd40e98fcc95ed9fa6be9bc}\label{fts__scpi_8h_a6c3be67b3fd40e98fcc95ed9fa6be9bc}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a6c3be67b3fd40e98fcc95ed9fa6be9bc}{WDEF}}~80
+\begin{DoxyCompactList}\small\item\em Write default value to EEprom. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a88b2a63bb3e18af9a7a19bfb9c0ea16f}\label{fts__scpi_8h_a88b2a63bb3e18af9a7a19bfb9c0ea16f}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a88b2a63bb3e18af9a7a19bfb9c0ea16f}{RFUL}}~81
+\begin{DoxyCompactList}\small\item\em Read complete data on Eeprom. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a29e98cdc9b52ed0b60c9c7a13462c308}\label{fts__scpi_8h_a29e98cdc9b52ed0b60c9c7a13462c308}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a29e98cdc9b52ed0b60c9c7a13462c308}{W1W}}~84
+\begin{DoxyCompactList}\small\item\em Write on 1-\/Wire devices. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a6e628595f0392335b7968bd4179a8e0b}\label{fts__scpi_8h_a6e628595f0392335b7968bd4179a8e0b}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a6e628595f0392335b7968bd4179a8e0b}{R1W}}~85
+\begin{DoxyCompactList}\small\item\em Read on 1-\/Wire devices. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a01808c128181a6ebf5c8168b23b9d922}\label{fts__scpi_8h_a01808c128181a6ebf5c8168b23b9d922}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a01808c128181a6ebf5c8168b23b9d922}{C1W}}~86
+\begin{DoxyCompactList}\small\item\em Check on 1-\/Wire devices. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a162d5f5e78986b1636888f7153ce534f}\label{fts__scpi_8h_a162d5f5e78986b1636888f7153ce534f}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a162d5f5e78986b1636888f7153ce534f}{CIE}}~88
+\begin{DoxyCompactList}\small\item\em Enable communication protocol. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a2c961a5aaa440aa4894444bd9dfde2c7}\label{fts__scpi_8h_a2c961a5aaa440aa4894444bd9dfde2c7}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a2c961a5aaa440aa4894444bd9dfde2c7}{CID}}~89
+\begin{DoxyCompactList}\small\item\em Disable communication protocol, set pin as GPIO. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ac52ba0564fabbf0ef0660ed2a1e29427}\label{fts__scpi_8h_ac52ba0564fabbf0ef0660ed2a1e29427}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ac52ba0564fabbf0ef0660ed2a1e29427}{CRI}}~90
+\begin{DoxyCompactList}\small\item\em Read status communication protocol. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a50563ee2b853d2a11a13c4a1e16087a7}\label{fts__scpi_8h_a50563ee2b853d2a11a13c4a1e16087a7}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a50563ee2b853d2a11a13c4a1e16087a7}{CSWD}}~100
+\begin{DoxyCompactList}\small\item\em Write Data on user serial port, no answer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ac58f2b5f8ceb23be752e05ca4b5d131c}\label{fts__scpi_8h_ac58f2b5f8ceb23be752e05ca4b5d131c}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ac58f2b5f8ceb23be752e05ca4b5d131c}{CSRD}}~101
+\begin{DoxyCompactList}\small\item\em Write Data on user serial port and wait for the answer. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ad77604977e1d7e5148e1d18a3670587a}\label{fts__scpi_8h_ad77604977e1d7e5148e1d18a3670587a}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ad77604977e1d7e5148e1d18a3670587a}{CSWB}}~102
+\begin{DoxyCompactList}\small\item\em Write user serial baudrate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ab2db288caf837b685322aa6c7aa65096}\label{fts__scpi_8h_ab2db288caf837b685322aa6c7aa65096}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ab2db288caf837b685322aa6c7aa65096}{CSRB}}~103
+\begin{DoxyCompactList}\small\item\em Read user serial baudrate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a8c243407e073fc8691cf1a68c2aba3d8}\label{fts__scpi_8h_a8c243407e073fc8691cf1a68c2aba3d8}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a8c243407e073fc8691cf1a68c2aba3d8}{CSWP}}~104
+\begin{DoxyCompactList}\small\item\em Write user serial Protocol. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a6a5c3a563ce63a0028351e81ade50767}\label{fts__scpi_8h_a6a5c3a563ce63a0028351e81ade50767}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a6a5c3a563ce63a0028351e81ade50767}{CSRP}}~105
+\begin{DoxyCompactList}\small\item\em Read user serial Protocol. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a605eca067c010daaa9e56af8964f61d6}\label{fts__scpi_8h_a605eca067c010daaa9e56af8964f61d6}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a605eca067c010daaa9e56af8964f61d6}{CSWH}}~106
+\begin{DoxyCompactList}\small\item\em Write user serial Handshake (RTS-\/\+CTS) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ad1602fa7bff1e061176cc97225568b9a}\label{fts__scpi_8h_ad1602fa7bff1e061176cc97225568b9a}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ad1602fa7bff1e061176cc97225568b9a}{CSRH}}~107
+\begin{DoxyCompactList}\small\item\em Read user serial Handshake. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a63a2bf788c3282cca5c77d72f50ab00b}\label{fts__scpi_8h_a63a2bf788c3282cca5c77d72f50ab00b}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a63a2bf788c3282cca5c77d72f50ab00b}{CSWT}}~108
+\begin{DoxyCompactList}\small\item\em Write user serial Timeout. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a025393c852466235cec1a27a72114ae3}\label{fts__scpi_8h_a025393c852466235cec1a27a72114ae3}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a025393c852466235cec1a27a72114ae3}{CSRT}}~109
+\begin{DoxyCompactList}\small\item\em Read user serial Timeout. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a20caf81f2a416bdd4d30f40ab96b14c0}\label{fts__scpi_8h_a20caf81f2a416bdd4d30f40ab96b14c0}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a20caf81f2a416bdd4d30f40ab96b14c0}{SPWD}}~111
+\begin{DoxyCompactList}\small\item\em Write Data on SPI port, read data. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ae483d83ff83e868906ad317d7b5a91eb}\label{fts__scpi_8h_ae483d83ff83e868906ad317d7b5a91eb}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ae483d83ff83e868906ad317d7b5a91eb}{SPRD}}~112
+\begin{DoxyCompactList}\small\item\em Read Data on SPI port. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a56602a22528d72f7b12f69c0f27362f1}\label{fts__scpi_8h_a56602a22528d72f7b12f69c0f27362f1}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a56602a22528d72f7b12f69c0f27362f1}{SPWF}}~113
+\begin{DoxyCompactList}\small\item\em Write user Spi baudrate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ac4d04acd2a9d9c8e0f56f63eb5dcfb58}\label{fts__scpi_8h_ac4d04acd2a9d9c8e0f56f63eb5dcfb58}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ac4d04acd2a9d9c8e0f56f63eb5dcfb58}{SPRF}}~114
+\begin{DoxyCompactList}\small\item\em Read user Spi baudrate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_afdc7e74fc6bd0d4ebd56066589dc78fc}\label{fts__scpi_8h_afdc7e74fc6bd0d4ebd56066589dc78fc}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_afdc7e74fc6bd0d4ebd56066589dc78fc}{SPWDB}}~115
+\begin{DoxyCompactList}\small\item\em Write user Spi databits. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a079fcc49d236ac475280d89a40a3c191}\label{fts__scpi_8h_a079fcc49d236ac475280d89a40a3c191}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a079fcc49d236ac475280d89a40a3c191}{SPRDB}}~116
+\begin{DoxyCompactList}\small\item\em Read user Spi databits. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a6a1b7371192076c28fc0384a81cd721d}\label{fts__scpi_8h_a6a1b7371192076c28fc0384a81cd721d}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a6a1b7371192076c28fc0384a81cd721d}{SPWM}}~117
+\begin{DoxyCompactList}\small\item\em Write user Spi mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a08750930716cb8f2c5c481b59b0b377a}\label{fts__scpi_8h_a08750930716cb8f2c5c481b59b0b377a}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a08750930716cb8f2c5c481b59b0b377a}{SPRM}}~118
+\begin{DoxyCompactList}\small\item\em Read user Spi mode. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a55d742c54dfda0bba163481161a43f61}\label{fts__scpi_8h_a55d742c54dfda0bba163481161a43f61}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a55d742c54dfda0bba163481161a43f61}{SPWCS}}~119
+\begin{DoxyCompactList}\small\item\em Set gpio used for SPI chipselect. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a9725555b0488c361d4f1713c7a01cc03}\label{fts__scpi_8h_a9725555b0488c361d4f1713c7a01cc03}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a9725555b0488c361d4f1713c7a01cc03}{SPRCS}}~120
+\begin{DoxyCompactList}\small\item\em Read Gpio used for SPI chipselect. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_add9bbd3bc4a27898e6c9edf581f71e52}\label{fts__scpi_8h_add9bbd3bc4a27898e6c9edf581f71e52}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_add9bbd3bc4a27898e6c9edf581f71e52}{ICWD}}~131
+\begin{DoxyCompactList}\small\item\em Write Data on I2C port. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ac53261f5f21c05a7b1c58a24cbd63db4}\label{fts__scpi_8h_ac53261f5f21c05a7b1c58a24cbd63db4}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ac53261f5f21c05a7b1c58a24cbd63db4}{ICRD}}~132
+\begin{DoxyCompactList}\small\item\em Read Data on I2C port. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ade48dc5e24caae85b0355f21231ab76a}\label{fts__scpi_8h_ade48dc5e24caae85b0355f21231ab76a}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ade48dc5e24caae85b0355f21231ab76a}{ICWA}}~133
+\begin{DoxyCompactList}\small\item\em Set Device Address to use I2C port. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_adb5e9008debd9f11d8b7b6ca038f29ee}\label{fts__scpi_8h_adb5e9008debd9f11d8b7b6ca038f29ee}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_adb5e9008debd9f11d8b7b6ca038f29ee}{ICRA}}~134
+\begin{DoxyCompactList}\small\item\em Get Device Address to use I2C port. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a8a0813c8cf34d11ed4946af90df077e4}\label{fts__scpi_8h_a8a0813c8cf34d11ed4946af90df077e4}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a8a0813c8cf34d11ed4946af90df077e4}{ICWF}}~135
+\begin{DoxyCompactList}\small\item\em Write user I2C baudrate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a230e35c6a7d37e9658c163878c7da559}\label{fts__scpi_8h_a230e35c6a7d37e9658c163878c7da559}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a230e35c6a7d37e9658c163878c7da559}{ICRF}}~136
+\begin{DoxyCompactList}\small\item\em Read user I2C baudrate. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_aebf15a43fa4a29d2a5281f7474794ae3}\label{fts__scpi_8h_aebf15a43fa4a29d2a5281f7474794ae3}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_aebf15a43fa4a29d2a5281f7474794ae3}{ICWDB}}~137
+\begin{DoxyCompactList}\small\item\em Write user I2C databits. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a8b68fef04e40c0e39b1c3ae42033b698}\label{fts__scpi_8h_a8b68fef04e40c0e39b1c3ae42033b698}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a8b68fef04e40c0e39b1c3ae42033b698}{ICRDB}}~138
+\begin{DoxyCompactList}\small\item\em Read user I2C databits. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a6031337a8cd4d4675bb22e00ffae67cf}\label{fts__scpi_8h_a6031337a8cd4d4675bb22e00ffae67cf}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a6031337a8cd4d4675bb22e00ffae67cf}{SCPI\+\_\+\+BANK1}}~1
+\begin{DoxyCompactList}\small\item\em Open BK1 relay tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a7e9a53011346bf2ca86a69745de35e38}\label{fts__scpi_8h_a7e9a53011346bf2ca86a69745de35e38}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a7e9a53011346bf2ca86a69745de35e38}{SCPI\+\_\+\+BANK2}}~2
+\begin{DoxyCompactList}\small\item\em Open BK2 relay tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ab05cdb891441427cac1aa2f84b4d2cb2}\label{fts__scpi_8h_ab05cdb891441427cac1aa2f84b4d2cb2}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ab05cdb891441427cac1aa2f84b4d2cb2}{SCPI\+\_\+\+BANK3}}~3
+\begin{DoxyCompactList}\small\item\em Open BK3 relay tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a0e3d88ceee098bc6cbbd3864d15a062c}\label{fts__scpi_8h_a0e3d88ceee098bc6cbbd3864d15a062c}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a0e3d88ceee098bc6cbbd3864d15a062c}{SCPI\+\_\+\+BANK4}}~4
+\begin{DoxyCompactList}\small\item\em Open BK4 relay tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a7ea383096d73661616554fce92f6236e}\label{fts__scpi_8h_a7ea383096d73661616554fce92f6236e}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a7ea383096d73661616554fce92f6236e}{SCPI\+\_\+\+BANK\+\_\+\+ALL}}~5
+\begin{DoxyCompactList}\small\item\em Open all relay tag. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a27fdd8d53548fae89e39ba04c2708025}\label{fts__scpi_8h_a27fdd8d53548fae89e39ba04c2708025}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a27fdd8d53548fae89e39ba04c2708025}{SCPI\+\_\+\+LPR1}}~6
+\begin{DoxyCompactList}\small\item\em Power relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a696dcaf639b34f3568e3b6dd9dec7bca}\label{fts__scpi_8h_a696dcaf639b34f3568e3b6dd9dec7bca}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a696dcaf639b34f3568e3b6dd9dec7bca}{SCPI\+\_\+\+LPR2}}~7
+\begin{DoxyCompactList}\small\item\em Power relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a33c2cbb0189c7fb337d388046dcfac2b}\label{fts__scpi_8h_a33c2cbb0189c7fb337d388046dcfac2b}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a33c2cbb0189c7fb337d388046dcfac2b}{SCPI\+\_\+\+HPR1}}~8
+\begin{DoxyCompactList}\small\item\em Power relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a398a5182ce2817de14dc1e156e5e9a44}\label{fts__scpi_8h_a398a5182ce2817de14dc1e156e5e9a44}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a398a5182ce2817de14dc1e156e5e9a44}{SCPI\+\_\+\+SSR1}}~9
+\begin{DoxyCompactList}\small\item\em Power Solid State relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a801d1f948e3502082fdf78d631374239}\label{fts__scpi_8h_a801d1f948e3502082fdf78d631374239}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a801d1f948e3502082fdf78d631374239}{SCPI\+\_\+\+OC1}}~10
+\begin{DoxyCompactList}\small\item\em Open collector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a893b08bb0d507f718b4e21b09ee535fe}\label{fts__scpi_8h_a893b08bb0d507f718b4e21b09ee535fe}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a893b08bb0d507f718b4e21b09ee535fe}{SCPI\+\_\+\+OC2}}~11
+\begin{DoxyCompactList}\small\item\em Open collector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a827384d14aa02c532effea0b3d4bf10e}\label{fts__scpi_8h_a827384d14aa02c532effea0b3d4bf10e}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a827384d14aa02c532effea0b3d4bf10e}{SCPI\+\_\+\+OC3}}~12
+\begin{DoxyCompactList}\small\item\em Open collector. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a37f051c653ab41ce9f0299696244bb82}\label{fts__scpi_8h_a37f051c653ab41ce9f0299696244bb82}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a37f051c653ab41ce9f0299696244bb82}{SCPI\+\_\+\+SERIAL}}~15
+\begin{DoxyCompactList}\small\item\em Uart serial communication. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ab67e39d260d99c6c6cd8353e6d98d97b}\label{fts__scpi_8h_ab67e39d260d99c6c6cd8353e6d98d97b}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ab67e39d260d99c6c6cd8353e6d98d97b}{SCPI\+\_\+\+SPI}}~16
+\begin{DoxyCompactList}\small\item\em SPI communication. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_afdeb8fca6ceb7250201e85bd6c1ddea8}\label{fts__scpi_8h_afdeb8fca6ceb7250201e85bd6c1ddea8}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_afdeb8fca6ceb7250201e85bd6c1ddea8}{SCPI\+\_\+\+I2C}}~17
+\begin{DoxyCompactList}\small\item\em I2C communication. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a9e0ecabdebd31fdd15917b4ee3d3131a}\label{fts__scpi_8h_a9e0ecabdebd31fdd15917b4ee3d3131a}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a9e0ecabdebd31fdd15917b4ee3d3131a}{GPIO\+\_\+\+LPR1}}~8
+\begin{DoxyCompactList}\small\item\em Gpio number to control Power relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a6bbc47f1f62e53f47c3365cb8cb08034}\label{fts__scpi_8h_a6bbc47f1f62e53f47c3365cb8cb08034}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a6bbc47f1f62e53f47c3365cb8cb08034}{GPIO\+\_\+\+LPR2}}~9
+\begin{DoxyCompactList}\small\item\em Gpio number to control Power relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a0579104f4d383fe0f98f84e381c556af}\label{fts__scpi_8h_a0579104f4d383fe0f98f84e381c556af}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a0579104f4d383fe0f98f84e381c556af}{GPIO\+\_\+\+HPR1}}~8
+\begin{DoxyCompactList}\small\item\em Gpio number to control Power relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ab09b9c9a2d48d7394027c84ffdf787ac}\label{fts__scpi_8h_ab09b9c9a2d48d7394027c84ffdf787ac}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ab09b9c9a2d48d7394027c84ffdf787ac}{GPIO\+\_\+\+SSR1}}~9
+\begin{DoxyCompactList}\small\item\em Gpio number to control Power relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_aa7b38cfc7a2a142dd27c8e64ccbf3993}\label{fts__scpi_8h_aa7b38cfc7a2a142dd27c8e64ccbf3993}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_aa7b38cfc7a2a142dd27c8e64ccbf3993}{GPIO\+\_\+\+OC1}}~28
+\begin{DoxyCompactList}\small\item\em Gpio number to open collector 1. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ad900cb48aa16e0850bd9c4316ba7db1d}\label{fts__scpi_8h_ad900cb48aa16e0850bd9c4316ba7db1d}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ad900cb48aa16e0850bd9c4316ba7db1d}{GPIO\+\_\+\+OC2}}~28
+\begin{DoxyCompactList}\small\item\em Gpio number to open collector 2. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ae52c4c27d05f48bd454f5e798376de7e}\label{fts__scpi_8h_ae52c4c27d05f48bd454f5e798376de7e}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ae52c4c27d05f48bd454f5e798376de7e}{GPIO\+\_\+\+OC3}}~28
+\begin{DoxyCompactList}\small\item\em Gpio number to open collector 3. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_aa219ed53d02ad25a6411da4e13d12a7c}\label{fts__scpi_8h_aa219ed53d02ad25a6411da4e13d12a7c}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_aa219ed53d02ad25a6411da4e13d12a7c}{GPIO\+\_\+\+BEEP}}~11
+\begin{DoxyCompactList}\small\item\em Gpio number used to drive the beeper. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a423ccfb5c3e8bf1a79d1420db66ffdb5}\label{fts__scpi_8h_a423ccfb5c3e8bf1a79d1420db66ffdb5}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a423ccfb5c3e8bf1a79d1420db66ffdb5}{GPIO\+\_\+\+RUN}}~18
+\begin{DoxyCompactList}\small\item\em Gpio number used to control RUN of the slave. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_af1cd76599fb3d13e03b66557ea1e66de}\label{fts__scpi_8h_af1cd76599fb3d13e03b66557ea1e66de}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_af1cd76599fb3d13e03b66557ea1e66de}{GPIO\+\_\+\+LED}}~19
+\begin{DoxyCompactList}\small\item\em Gpio number used to led monitor green. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a3122c837e647881b6d9e69c984ccb60d}\label{fts__scpi_8h_a3122c837e647881b6d9e69c984ccb60d}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a3122c837e647881b6d9e69c984ccb60d}{GPIO\+\_\+\+SYNC}}~22
+\begin{DoxyCompactList}\small\item\em Gpio number used to sync all module. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_af0f879b29a6611d523025b0096f0c2cd}\label{fts__scpi_8h_af0f879b29a6611d523025b0096f0c2cd}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_af0f879b29a6611d523025b0096f0c2cd}{GPIO\+\_\+\+OE}}~28
+\begin{DoxyCompactList}\small\item\em Gpio number to signal Ouput enable. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a325fec6a76860e23d5c2fe3f8b64fad5}\label{fts__scpi_8h_a325fec6a76860e23d5c2fe3f8b64fad5}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a325fec6a76860e23d5c2fe3f8b64fad5}{BEEP\+\_\+\+TIME}}~10
+\begin{DoxyCompactList}\small\item\em Beep time in mS. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ae3c289dc4cfa115168343c51a25b84b2}\label{fts__scpi_8h_ae3c289dc4cfa115168343c51a25b84b2}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_ae3c289dc4cfa115168343c51a25b84b2}{ESR\+\_\+\+USER\+\_\+\+BIT}}~6
+\begin{DoxyCompactList}\small\item\em User Request Bit position on ESR. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{fts__scpi_8h_a33b6eadb73c4a6a0fa72a5cc19cd0392}{ESR\+\_\+\+PON\+\_\+\+BIT}}~7
+\begin{DoxyCompactList}\small\item\em Power ON Bit position on ESR. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a6544142d7ea52e21582c8491b740e88a}\label{fts__scpi_8h_a6544142d7ea52e21582c8491b740e88a}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a6544142d7ea52e21582c8491b740e88a}{ARB\+\_\+\+ODD\+\_\+\+ERR}}~1
+\begin{DoxyCompactList}\small\item\em Error on Arbitrary block for word defintion. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a13228e625e6872acfa5674e71e076109}\label{fts__scpi_8h_a13228e625e6872acfa5674e71e076109}} 
+\#define \mbox{\hyperlink{fts__scpi_8h_a13228e625e6872acfa5674e71e076109}{RESETS\+\_\+\+MASTER}}~0b000000000000000111111111
+\begin{DoxyCompactList}\small\item\em Bitmask to reset the master. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef enum \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16}{\+\_\+reg\+\_\+info\+\_\+index\+\_\+t}} \mbox{\hyperlink{fts__scpi_8h_a85982a9f4f3912bfe0ba4286cd813ff2}{reg\+\_\+info\+\_\+index\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Enumeration for error indices used to set or clear errors in registers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16}{\+\_\+reg\+\_\+info\+\_\+index\+\_\+t}} \{ \newline
+\mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a8f537657cf625ed1ea7f224639d6d4a8}{BOOT\+\_\+\+I2C}} = 0
+, \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16ac49b3f0f3a861b803178d483955ba18c}{VSYS\+\_\+\+OUT}}
+, \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a00965bfcd12beed8c703e266a4764b08}{MTEMP\+\_\+\+HIGH}}
+, \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a50bb1c96cf063973ae1a350020060827}{WATCH\+\_\+\+TRIG}}
+, \newline
+\mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16ac0c428d120f285c783efcd4f8b301b9c}{EEPROM\+\_\+\+ERROR}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enumeration for error indices used to set or clear errors in registers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+scpi\+\_\+result\+\_\+t \mbox{\hyperlink{fts__scpi_8h_acf3067fd6de75a9dbecc0d7a9d2520a2}{Relay\+\_\+\+Chanlst}} (scpi\+\_\+t $\ast$context, uint16\+\_\+t $\ast$array)
+\begin{DoxyCompactList}\small\item\em Parses a list of channel numbers and stores them in a 1-\/dimensional array. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_ae1d030d34d5920300f08fbe69d1ee7f7}\label{fts__scpi_8h_ae1d030d34d5920300f08fbe69d1ee7f7}} 
+void \mbox{\hyperlink{fts__scpi_8h_ae1d030d34d5920300f08fbe69d1ee7f7}{init\+\_\+scpi}} ()
+\begin{DoxyCompactList}\small\item\em initialization of the SCPI library \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fts__scpi_8h_a8f1450d6537fd16a2aee2464e2c1389d}{Error\+Beep}} (uint8\+\_\+t nbeep)
+\begin{DoxyCompactList}\small\item\em Send a burst of beep code to alert for boot error. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fts__scpi_8h_af42bc85669ec90cef60c7e9ff2559982}{Reg\+Bit\+Hdwr\+Err}} (\mbox{\hyperlink{fts__scpi_8h_a85982a9f4f3912bfe0ba4286cd813ff2}{reg\+\_\+info\+\_\+index\+\_\+t}} index, bool scbit)
+\begin{DoxyCompactList}\small\item\em Set Bit on SCPI register Questionnable and Operation Send Bust of Beep to signal to operator the problem Send Error to Error Queue. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+scpi\+\_\+t \mbox{\hyperlink{fts__scpi_8h_ac6f639c26fd1c7e210c2da424cfe628d}{scpi\+\_\+context}}
+\begin{DoxyCompactList}\small\item\em SCPI instance for managing SCPI command processing. \end{DoxyCompactList}\item 
+char \mbox{\hyperlink{fts__scpi_8h_ab0b900a9b90448f4db8951d9e8353b50}{scpi\+\_\+input\+\_\+buffer}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Input buffer for reading SCPI commands. \end{DoxyCompactList}\item 
+scpi\+\_\+error\+\_\+t \mbox{\hyperlink{fts__scpi_8h_a2d3eb17031f61e52026122e3ddec687f}{scpi\+\_\+error\+\_\+queue}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em Error queue required by the SCPI library. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8h_a5e7d16395b247e2e2a10d526b97b76cb}\label{fts__scpi_8h_a5e7d16395b247e2e2a10d526b97b76cb}} 
+scpi\+\_\+command\+\_\+t \mbox{\hyperlink{fts__scpi_8h_a5e7d16395b247e2e2a10d526b97b76cb}{scpi\+\_\+commands}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em The SCPI commands supported by the pico master and the callbacks they use. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header file defining constants and macros used for SCPI interpreter. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021 Valentin Milea \href{mailto:valentin.milea@gmail.com}{\texttt{ valentin.\+milea@gmail.\+com}} SPDX-\/\+License-\/\+Identifier\+: MIT Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{fts__scpi_8h_a33b6eadb73c4a6a0fa72a5cc19cd0392}\label{fts__scpi_8h_a33b6eadb73c4a6a0fa72a5cc19cd0392}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!ESR\_PON\_BIT@{ESR\_PON\_BIT}}
+\index{ESR\_PON\_BIT@{ESR\_PON\_BIT}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{ESR\_PON\_BIT}{ESR\_PON\_BIT}}
+{\footnotesize\ttfamily \#define ESR\+\_\+\+PON\+\_\+\+BIT~7}
+
+
+
+Power ON Bit position on ESR. 
+
+Error \mbox{\Hypertarget{fts__scpi_8h_aef214bee44b8ea3707359a56c8c921c6}\label{fts__scpi_8h_aef214bee44b8ea3707359a56c8c921c6}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!MAXCOL@{MAXCOL}}
+\index{MAXCOL@{MAXCOL}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{MAXCOL}{MAXCOL}}
+{\footnotesize\ttfamily \#define MAXCOL~1}
+
+
+
+Maximum number of columns. 
+
+Maximum number of columns. \mbox{\Hypertarget{fts__scpi_8h_a674c1a85fb1c09ec56b0b8f6319e7b97}\label{fts__scpi_8h_a674c1a85fb1c09ec56b0b8f6319e7b97}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!MAXDIM@{MAXDIM}}
+\index{MAXDIM@{MAXDIM}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{MAXDIM}{MAXDIM}}
+{\footnotesize\ttfamily \#define MAXDIM~1}
+
+
+
+Maximum number of dimensions. 
+
+Maximum number of dimensions. \mbox{\Hypertarget{fts__scpi_8h_a8d5458b97ec1d8e8f92d3dc1209bb856}\label{fts__scpi_8h_a8d5458b97ec1d8e8f92d3dc1209bb856}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!MAXROW@{MAXROW}}
+\index{MAXROW@{MAXROW}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{MAXROW}{MAXROW}}
+{\footnotesize\ttfamily \#define MAXROW~36}
+
+
+
+Maximum number of rows for relay matrix. 
+
+Maximum number of rows for relay matrix. \mbox{\Hypertarget{fts__scpi_8h_ae75d934bc66feba83b6ba36afd102038}\label{fts__scpi_8h_ae75d934bc66feba83b6ba36afd102038}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!SCPI\_ERROR\_QUEUE\_SIZE@{SCPI\_ERROR\_QUEUE\_SIZE}}
+\index{SCPI\_ERROR\_QUEUE\_SIZE@{SCPI\_ERROR\_QUEUE\_SIZE}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{SCPI\_ERROR\_QUEUE\_SIZE}{SCPI\_ERROR\_QUEUE\_SIZE}}
+{\footnotesize\ttfamily \#define SCPI\+\_\+\+ERROR\+\_\+\+QUEUE\+\_\+\+SIZE~20}
+
+
+
+Size of the SCPI error queue. 
+
+Size of the SCPI error queue. \mbox{\Hypertarget{fts__scpi_8h_a7a9c666bc3c0cc8761296b27f98a6f2d}\label{fts__scpi_8h_a7a9c666bc3c0cc8761296b27f98a6f2d}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!SCPI\_IDN1@{SCPI\_IDN1}}
+\index{SCPI\_IDN1@{SCPI\_IDN1}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{SCPI\_IDN1}{SCPI\_IDN1}}
+{\footnotesize\ttfamily \#define SCPI\+\_\+\+IDN1~\char`\"{}First\+Test\+Station\char`\"{}}
+
+
+
+\char`\"{}\+IDN?\char`\"{} fields. Their meanings are \char`\"{}suggestions\char`\"{} in the standard. 
+
+Manufacturer. \mbox{\Hypertarget{fts__scpi_8h_a7fa20c1929f72df229fed21c8399bbd1}\label{fts__scpi_8h_a7fa20c1929f72df229fed21c8399bbd1}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!SCPI\_IDN2@{SCPI\_IDN2}}
+\index{SCPI\_IDN2@{SCPI\_IDN2}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{SCPI\_IDN2}{SCPI\_IDN2}}
+{\footnotesize\ttfamily \#define SCPI\+\_\+\+IDN2~\char`\"{}Interconnect\+IO\char`\"{}}
+
+Model. \mbox{\Hypertarget{fts__scpi_8h_a96cf9fe96205c85f4e2259ddb56b426d}\label{fts__scpi_8h_a96cf9fe96205c85f4e2259ddb56b426d}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!SCPI\_IDN3@{SCPI\_IDN3}}
+\index{SCPI\_IDN3@{SCPI\_IDN3}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{SCPI\_IDN3}{SCPI\_IDN3}}
+{\footnotesize\ttfamily \#define SCPI\+\_\+\+IDN3~\char`\"{}2022A\char`\"{}}
+
+Design Date. \mbox{\Hypertarget{fts__scpi_8h_a04fb0a36f4c1a484d85ea9e8d50fe42e}\label{fts__scpi_8h_a04fb0a36f4c1a484d85ea9e8d50fe42e}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!SCPI\_IDN4@{SCPI\_IDN4}}
+\index{SCPI\_IDN4@{SCPI\_IDN4}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{SCPI\_IDN4}{SCPI\_IDN4}}
+{\footnotesize\ttfamily \#define SCPI\+\_\+\+IDN4~\char`\"{}1.\+0\char`\"{}}
+
+Design Version. \mbox{\Hypertarget{fts__scpi_8h_a442c3ab34e2b6b9a5d575e512035f687}\label{fts__scpi_8h_a442c3ab34e2b6b9a5d575e512035f687}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!SCPI\_INPUT\_BUFFER\_SIZE@{SCPI\_INPUT\_BUFFER\_SIZE}}
+\index{SCPI\_INPUT\_BUFFER\_SIZE@{SCPI\_INPUT\_BUFFER\_SIZE}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{SCPI\_INPUT\_BUFFER\_SIZE}{SCPI\_INPUT\_BUFFER\_SIZE}}
+{\footnotesize\ttfamily \#define SCPI\+\_\+\+INPUT\+\_\+\+BUFFER\+\_\+\+SIZE~256}
+
+
+
+Size of the SCPI input buffer. 
+
+Size of the SCPI input buffer. 
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{fts__scpi_8h_a85982a9f4f3912bfe0ba4286cd813ff2}\label{fts__scpi_8h_a85982a9f4f3912bfe0ba4286cd813ff2}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!reg\_info\_index\_t@{reg\_info\_index\_t}}
+\index{reg\_info\_index\_t@{reg\_info\_index\_t}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{reg\_info\_index\_t}{reg\_info\_index\_t}}
+{\footnotesize\ttfamily typedef enum \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16}{\+\_\+reg\+\_\+info\+\_\+index\+\_\+t}} \mbox{\hyperlink{fts__scpi_8h_a85982a9f4f3912bfe0ba4286cd813ff2}{reg\+\_\+info\+\_\+index\+\_\+t}}}
+
+
+
+Enumeration for error indices used to set or clear errors in registers. 
+
+Typedef for the enumeration \+\_\+reg\+\_\+info\+\_\+index\+\_\+t.
+
+Typedef for the enumeration.
+
+This enumeration defines various error conditions that can be monitored by the system, allowing for appropriate error handling. Typedef for the enumeration 
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{fts__scpi_8h_a85fa31158420e2df60514439dac40c16}\label{fts__scpi_8h_a85fa31158420e2df60514439dac40c16}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!\_reg\_info\_index\_t@{\_reg\_info\_index\_t}}
+\index{\_reg\_info\_index\_t@{\_reg\_info\_index\_t}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{\_reg\_info\_index\_t}{\_reg\_info\_index\_t}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16}{\+\_\+reg\+\_\+info\+\_\+index\+\_\+t}}}
+
+
+
+Enumeration for error indices used to set or clear errors in registers. 
+
+This enumeration defines various error conditions that can be monitored by the system, allowing for appropriate error handling. \begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{BOOT\_I2C@{BOOT\_I2C}!fts\_scpi.h@{fts\_scpi.h}}\index{fts\_scpi.h@{fts\_scpi.h}!BOOT\_I2C@{BOOT\_I2C}}}\mbox{\Hypertarget{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a8f537657cf625ed1ea7f224639d6d4a8}\label{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a8f537657cf625ed1ea7f224639d6d4a8}} 
+BOOT\+\_\+\+I2C&Boot I2C Error \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{VSYS\_OUT@{VSYS\_OUT}!fts\_scpi.h@{fts\_scpi.h}}\index{fts\_scpi.h@{fts\_scpi.h}!VSYS\_OUT@{VSYS\_OUT}}}\mbox{\Hypertarget{fts__scpi_8h_a85fa31158420e2df60514439dac40c16ac49b3f0f3a861b803178d483955ba18c}\label{fts__scpi_8h_a85fa31158420e2df60514439dac40c16ac49b3f0f3a861b803178d483955ba18c}} 
+VSYS\+\_\+\+OUT&Vsys out of limits \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MTEMP\_HIGH@{MTEMP\_HIGH}!fts\_scpi.h@{fts\_scpi.h}}\index{fts\_scpi.h@{fts\_scpi.h}!MTEMP\_HIGH@{MTEMP\_HIGH}}}\mbox{\Hypertarget{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a00965bfcd12beed8c703e266a4764b08}\label{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a00965bfcd12beed8c703e266a4764b08}} 
+MTEMP\+\_\+\+HIGH&Master temperature too high \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{WATCH\_TRIG@{WATCH\_TRIG}!fts\_scpi.h@{fts\_scpi.h}}\index{fts\_scpi.h@{fts\_scpi.h}!WATCH\_TRIG@{WATCH\_TRIG}}}\mbox{\Hypertarget{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a50bb1c96cf063973ae1a350020060827}\label{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a50bb1c96cf063973ae1a350020060827}} 
+WATCH\+\_\+\+TRIG&Watchdog trigger \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{EEPROM\_ERROR@{EEPROM\_ERROR}!fts\_scpi.h@{fts\_scpi.h}}\index{fts\_scpi.h@{fts\_scpi.h}!EEPROM\_ERROR@{EEPROM\_ERROR}}}\mbox{\Hypertarget{fts__scpi_8h_a85fa31158420e2df60514439dac40c16ac0c428d120f285c783efcd4f8b301b9c}\label{fts__scpi_8h_a85fa31158420e2df60514439dac40c16ac0c428d120f285c783efcd4f8b301b9c}} 
+EEPROM\+\_\+\+ERROR&EEPROM access error or corruption \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{fts__scpi_8h_a8f1450d6537fd16a2aee2464e2c1389d}\label{fts__scpi_8h_a8f1450d6537fd16a2aee2464e2c1389d}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!ErrorBeep@{ErrorBeep}}
+\index{ErrorBeep@{ErrorBeep}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{ErrorBeep()}{ErrorBeep()}}
+{\footnotesize\ttfamily void Error\+Beep (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{nbeep }\end{DoxyParamCaption})}
+
+
+
+Send a burst of beep code to alert for boot error. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nbeep} & Number of beep on the burst \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fts__scpi_8h_af42bc85669ec90cef60c7e9ff2559982}\label{fts__scpi_8h_af42bc85669ec90cef60c7e9ff2559982}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!RegBitHdwrErr@{RegBitHdwrErr}}
+\index{RegBitHdwrErr@{RegBitHdwrErr}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{RegBitHdwrErr()}{RegBitHdwrErr()}}
+{\footnotesize\ttfamily void Reg\+Bit\+Hdwr\+Err (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{fts__scpi_8h_a85982a9f4f3912bfe0ba4286cd813ff2}{reg\+\_\+info\+\_\+index\+\_\+t}}}]{index,  }\item[{bool}]{scbit }\end{DoxyParamCaption})}
+
+
+
+Set Bit on SCPI register Questionnable and Operation Send Bust of Beep to signal to operator the problem Send Error to Error Queue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & Index to use on the Reginfo \\
+\hline
+{\em scbit} & Set or Clear particular bit on register \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fts__scpi_8h_acf3067fd6de75a9dbecc0d7a9d2520a2}\label{fts__scpi_8h_acf3067fd6de75a9dbecc0d7a9d2520a2}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!Relay\_Chanlst@{Relay\_Chanlst}}
+\index{Relay\_Chanlst@{Relay\_Chanlst}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{Relay\_Chanlst()}{Relay\_Chanlst()}}
+{\footnotesize\ttfamily scpi\+\_\+result\+\_\+t Relay\+\_\+\+Chanlst (\begin{DoxyParamCaption}\item[{scpi\+\_\+t $\ast$}]{context,  }\item[{uint16\+\_\+t $\ast$}]{array }\end{DoxyParamCaption})}
+
+
+
+Parses a list of channel numbers and stores them in a 1-\/dimensional array. 
+
+This function is based on the SCPI parser for parsing lists of numbers, specifically channel numbers greater than 0. It has been modified to support only 1-\/dimensional arrays, as opposed to the original 2-\/dimensional support.
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & SCPI context structure used for parsing SCPI commands. \\
+\hline
+{\em array} & Pointer to an array where the parsed channel numbers will be stored.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+scpi\+\_\+result\+\_\+t Result of the SCPI parsing operation (e.\+g., success or failure).
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Compare this implementation to SCPI-\/99 Vol 1, Ch. 8.\+3.\+2 for details on channel parsing. 
+\end{DoxyNote}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{fts__scpi_8h_ac6f639c26fd1c7e210c2da424cfe628d}\label{fts__scpi_8h_ac6f639c26fd1c7e210c2da424cfe628d}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!scpi\_context@{scpi\_context}}
+\index{scpi\_context@{scpi\_context}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_context}{scpi\_context}}
+{\footnotesize\ttfamily scpi\+\_\+t scpi\+\_\+context\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+SCPI instance for managing SCPI command processing. 
+
+Holds the SCPI context instance for command execution. \mbox{\Hypertarget{fts__scpi_8h_a2d3eb17031f61e52026122e3ddec687f}\label{fts__scpi_8h_a2d3eb17031f61e52026122e3ddec687f}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!scpi\_error\_queue@{scpi\_error\_queue}}
+\index{scpi\_error\_queue@{scpi\_error\_queue}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_error\_queue}{scpi\_error\_queue}}
+{\footnotesize\ttfamily scpi\+\_\+error\+\_\+t scpi\+\_\+error\+\_\+queue\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Error queue required by the SCPI library. 
+
+This array is used to hold error messages and statuses encountered during SCPI command processing. The size is determined based on the library documentation. Queue for SCPI error reporting. \mbox{\Hypertarget{fts__scpi_8h_ab0b900a9b90448f4db8951d9e8353b50}\label{fts__scpi_8h_ab0b900a9b90448f4db8951d9e8353b50}} 
+\index{fts\_scpi.h@{fts\_scpi.h}!scpi\_input\_buffer@{scpi\_input\_buffer}}
+\index{scpi\_input\_buffer@{scpi\_input\_buffer}!fts\_scpi.h@{fts\_scpi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_input\_buffer}{scpi\_input\_buffer}}
+{\footnotesize\ttfamily char scpi\+\_\+input\+\_\+buffer\mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Input buffer for reading SCPI commands. 
+
+This buffer is used to store incoming SCPI commands read from the external source before they are processed. Buffer to hold SCPI command strings. 

@@ -1,0 +1,225 @@
+\hypertarget{dev__ds2431_8c}{}\doxysection{firmware/src/pico\+\_\+lib2/src/dev/dev\+\_\+ds2431/dev\+\_\+ds2431.c File Reference}
+\label{dev__ds2431_8c}\index{firmware/src/pico\_lib2/src/dev/dev\_ds2431/dev\_ds2431.c@{firmware/src/pico\_lib2/src/dev/dev\_ds2431/dev\_ds2431.c}}
+
+
+Driver to perform communication with One\+Wire device.  
+
+
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico/binary\+\_\+info.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/gpio.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}dev\+\_\+ds2431.\+h\char`\"{}}\newline
+Include dependency graph for dev\+\_\+ds2431.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dev__ds2431_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{dev__ds2431_8c_a60c0eea7746c34297aed9150ee0335c4}{onewire\+\_\+select}} (const uint8\+\_\+t $\ast$id)
+\begin{DoxyCompactList}\small\item\em Selects the One\+Wire device by writing its 64-\/bit ID to the bus. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{dev__ds2431_8c_a133748d4159e147c2dd9ffb85a5929a1}{onewire\+\_\+write\+\_\+info}} (const char $\ast$info, int start\+\_\+address)
+\begin{DoxyCompactList}\small\item\em Write string information to the One-\/\+Wire Device The string is write on one\+Wire device following this device\+\_\+id. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{dev__ds2431_8c_a9842d8b3b4047b13c98cc8543af98012}{onewire\+\_\+read\+\_\+info}} (char $\ast$$\ast$rinfo, int start\+\_\+address, int length, size\+\_\+t nbid)
+\begin{DoxyCompactList}\small\item\em Main function to perform a read of all eeprom on 1-\/wire link. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{dev__ds2431_8c_ae5e1dd77a5682f84b9c06b58ed6da849}{onewire\+\_\+check\+\_\+devices}} (char $\ast$$\ast$owdata, size\+\_\+t nbid)
+\begin{DoxyCompactList}\small\item\em Check presence of one\+Wire and check Read Write capacity. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structmodel__type}{model\+\_\+type}} \mbox{\hyperlink{dev__ds2431_8c_aecd41d0bbcdd4fdaf5da73ed59ee5b42}{\+\_\+chip\+\_\+model\+\_\+list}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em List of One\+Wire chip models. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{dev__ds2431_8c_a9d063996b61210a9b7bc6d91c881bb1d}{ROM\+\_\+\+NO}} \mbox{[}8\mbox{]}
+\begin{DoxyCompactList}\small\item\em Global search state variables for One\+Wire devices. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{dev__ds2431_8c_ac3990e2ccef4f910a2218efddbfe2484}{Last\+Discrepancy}}
+\item 
+int \mbox{\hyperlink{dev__ds2431_8c_a06292b1b524cfd36e77c91b979b47a3e}{Last\+Family\+Discrepancy}}
+\item 
+bool \mbox{\hyperlink{dev__ds2431_8c_a79bdeed45208ca661d0f75733b7d040c}{Last\+Device\+Flag}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Driver to perform communication with One\+Wire device. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+One\+Wire driver to read / write on the EEprom of the Onewire Device. Plan to be used to detect what\textquotesingle{}s is connected to Interconnect IO Board before turning the main power.
+
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{dev__ds2431_8c_ae5e1dd77a5682f84b9c06b58ed6da849}\label{dev__ds2431_8c_ae5e1dd77a5682f84b9c06b58ed6da849}} 
+\index{dev\_ds2431.c@{dev\_ds2431.c}!onewire\_check\_devices@{onewire\_check\_devices}}
+\index{onewire\_check\_devices@{onewire\_check\_devices}!dev\_ds2431.c@{dev\_ds2431.c}}
+\doxysubsubsection{\texorpdfstring{onewire\_check\_devices()}{onewire\_check\_devices()}}
+{\footnotesize\ttfamily uint8\+\_\+t onewire\+\_\+check\+\_\+devices (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{owdata,  }\item[{size\+\_\+t}]{nbid }\end{DoxyParamCaption})}
+
+
+
+Check presence of one\+Wire and check Read Write capacity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em owdata} & Pointer who will contains the result string to return. Util to know device\+\_\+id available on the Onewire link \\
+\hline
+{\em nbid} & number of devices expected on one\+Wire link \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t Error number raised during operation 
+\end{DoxyReturn}
+$<$ to get error from the function
+
+$<$ flag to indicate of at least one One\+Wire device has been found
+
+$<$ Contains test string to write on device
+
+$<$ Contains string read from device
+
+$<$ Structure who contains result of the search devices\mbox{\Hypertarget{dev__ds2431_8c_a9842d8b3b4047b13c98cc8543af98012}\label{dev__ds2431_8c_a9842d8b3b4047b13c98cc8543af98012}} 
+\index{dev\_ds2431.c@{dev\_ds2431.c}!onewire\_read\_info@{onewire\_read\_info}}
+\index{onewire\_read\_info@{onewire\_read\_info}!dev\_ds2431.c@{dev\_ds2431.c}}
+\doxysubsubsection{\texorpdfstring{onewire\_read\_info()}{onewire\_read\_info()}}
+{\footnotesize\ttfamily uint8\+\_\+t onewire\+\_\+read\+\_\+info (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{rinfo,  }\item[{int}]{start\+\_\+address,  }\item[{int}]{length,  }\item[{size\+\_\+t}]{nbid }\end{DoxyParamCaption})}
+
+
+
+Main function to perform a read of all eeprom on 1-\/wire link. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rinfo} & Pointer who will contains the string read on Devices \\
+\hline
+{\em start\+\_\+address} & Start Address on EEprom memory to start to read \\
+\hline
+{\em length} & Number of characters to read \\
+\hline
+{\em nbid} & Number of expected device on the One\+Wire link Used on read loop to be sure we have read all expected devices ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t 
+\end{DoxyReturn}
+$<$ to get error from the function
+
+$<$ string to contents the result of the One\+Wire read
+
+$<$ Structure of device id\mbox{\Hypertarget{dev__ds2431_8c_a60c0eea7746c34297aed9150ee0335c4}\label{dev__ds2431_8c_a60c0eea7746c34297aed9150ee0335c4}} 
+\index{dev\_ds2431.c@{dev\_ds2431.c}!onewire\_select@{onewire\_select}}
+\index{onewire\_select@{onewire\_select}!dev\_ds2431.c@{dev\_ds2431.c}}
+\doxysubsubsection{\texorpdfstring{onewire\_select()}{onewire\_select()}}
+{\footnotesize\ttfamily void onewire\+\_\+select (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t $\ast$}]{id }\end{DoxyParamCaption})}
+
+
+
+Selects the One\+Wire device by writing its 64-\/bit ID to the bus. 
+
+This function sends the MATCHROM command followed by the device ID bytes to select a specific One\+Wire device for subsequent read or write operations.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & Pointer to an array containing the 8 bytes of the device ID. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{dev__ds2431_8c_a133748d4159e147c2dd9ffb85a5929a1}\label{dev__ds2431_8c_a133748d4159e147c2dd9ffb85a5929a1}} 
+\index{dev\_ds2431.c@{dev\_ds2431.c}!onewire\_write\_info@{onewire\_write\_info}}
+\index{onewire\_write\_info@{onewire\_write\_info}!dev\_ds2431.c@{dev\_ds2431.c}}
+\doxysubsubsection{\texorpdfstring{onewire\_write\_info()}{onewire\_write\_info()}}
+{\footnotesize\ttfamily uint8\+\_\+t onewire\+\_\+write\+\_\+info (\begin{DoxyParamCaption}\item[{const char $\ast$}]{info,  }\item[{int}]{start\+\_\+address }\end{DoxyParamCaption})}
+
+
+
+Write string information to the One-\/\+Wire Device The string is write on one\+Wire device following this device\+\_\+id. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em info} & String to write on One\+Wire \\
+\hline
+{\em start\+\_\+address} & The beginning address of the data to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t Return error number (0 = No Error) 
+\end{DoxyReturn}
+$<$ Number of character in string
+
+$<$ contain substring to write on Onewire
+
+$<$ Array of 8 bytes of the Device\+\_\+id
+
+$<$ Used to contains address to write on One\+Wire
+
+$<$ Used in for-\/loop for extract device id from the string
+
+$<$ Counter to number of bytes received
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{dev__ds2431_8c_aecd41d0bbcdd4fdaf5da73ed59ee5b42}\label{dev__ds2431_8c_aecd41d0bbcdd4fdaf5da73ed59ee5b42}} 
+\index{dev\_ds2431.c@{dev\_ds2431.c}!\_chip\_model\_list@{\_chip\_model\_list}}
+\index{\_chip\_model\_list@{\_chip\_model\_list}!dev\_ds2431.c@{dev\_ds2431.c}}
+\doxysubsubsection{\texorpdfstring{\_chip\_model\_list}{\_chip\_model\_list}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structmodel__type}{model\+\_\+type}} \+\_\+chip\+\_\+model\+\_\+list\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{    \{ 0x09, \textcolor{stringliteral}{"{}DS2502"{}}, 4, 2, \textcolor{keyword}{true} \},   }
+\DoxyCodeLine{    \{ 0x0B, \textcolor{stringliteral}{"{}DS2505"{}}, 64, 2, \textcolor{keyword}{true} \},  }
+\DoxyCodeLine{    \{ 0x14, \textcolor{stringliteral}{"{}DS2430"{}}, 1, 1, \textcolor{keyword}{false} \},  }
+\DoxyCodeLine{    \{ 0x2D, \textcolor{stringliteral}{"{}DS2431"{}}, 4, 2, \textcolor{keyword}{false} \},  }
+\DoxyCodeLine{    \{ 0x23, \textcolor{stringliteral}{"{}DS2433"{}}, 16, 2, \textcolor{keyword}{false} \}, }
+\DoxyCodeLine{    \{ 0, 0, 0, 0, 0 \}                 }
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+List of One\+Wire chip models. 
+
+This array contains information about the various One\+Wire chip models, including their unique identifier, name, memory size, number of pages, and a boolean indicating whether they support a certain feature. \mbox{\Hypertarget{dev__ds2431_8c_a79bdeed45208ca661d0f75733b7d040c}\label{dev__ds2431_8c_a79bdeed45208ca661d0f75733b7d040c}} 
+\index{dev\_ds2431.c@{dev\_ds2431.c}!LastDeviceFlag@{LastDeviceFlag}}
+\index{LastDeviceFlag@{LastDeviceFlag}!dev\_ds2431.c@{dev\_ds2431.c}}
+\doxysubsubsection{\texorpdfstring{LastDeviceFlag}{LastDeviceFlag}}
+{\footnotesize\ttfamily bool Last\+Device\+Flag}
+
+Flag indicating if the last device has been found in the search. \mbox{\Hypertarget{dev__ds2431_8c_ac3990e2ccef4f910a2218efddbfe2484}\label{dev__ds2431_8c_ac3990e2ccef4f910a2218efddbfe2484}} 
+\index{dev\_ds2431.c@{dev\_ds2431.c}!LastDiscrepancy@{LastDiscrepancy}}
+\index{LastDiscrepancy@{LastDiscrepancy}!dev\_ds2431.c@{dev\_ds2431.c}}
+\doxysubsubsection{\texorpdfstring{LastDiscrepancy}{LastDiscrepancy}}
+{\footnotesize\ttfamily int Last\+Discrepancy}
+
+Last discrepancy found during the ROM search process. \mbox{\Hypertarget{dev__ds2431_8c_a06292b1b524cfd36e77c91b979b47a3e}\label{dev__ds2431_8c_a06292b1b524cfd36e77c91b979b47a3e}} 
+\index{dev\_ds2431.c@{dev\_ds2431.c}!LastFamilyDiscrepancy@{LastFamilyDiscrepancy}}
+\index{LastFamilyDiscrepancy@{LastFamilyDiscrepancy}!dev\_ds2431.c@{dev\_ds2431.c}}
+\doxysubsubsection{\texorpdfstring{LastFamilyDiscrepancy}{LastFamilyDiscrepancy}}
+{\footnotesize\ttfamily int Last\+Family\+Discrepancy}
+
+Last discrepancy for the family code during the search. \mbox{\Hypertarget{dev__ds2431_8c_a9d063996b61210a9b7bc6d91c881bb1d}\label{dev__ds2431_8c_a9d063996b61210a9b7bc6d91c881bb1d}} 
+\index{dev\_ds2431.c@{dev\_ds2431.c}!ROM\_NO@{ROM\_NO}}
+\index{ROM\_NO@{ROM\_NO}!dev\_ds2431.c@{dev\_ds2431.c}}
+\doxysubsubsection{\texorpdfstring{ROM\_NO}{ROM\_NO}}
+{\footnotesize\ttfamily uint8\+\_\+t ROM\+\_\+\+NO\mbox{[}8\mbox{]}}
+
+
+
+Global search state variables for One\+Wire devices. 
+
+Array to store the ROM number of the found One\+Wire device. 

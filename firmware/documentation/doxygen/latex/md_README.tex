@@ -1,0 +1,273 @@
+The complete FTS project is documented on a github website\+: \href{https://dlock8.github.io/FTS_Website/}{\texttt{ https\+://dlock8.\+github.\+io/\+FTS\+\_\+\+Website/}}
+
+On this deposit, we have the firmware used to create the Master Pico load to control the interconnect\+IO board.
+
+The hardware support for the firmware is on github location\+: \href{https://github.com/dlock8/InterconnectIO_Board}{\texttt{ https\+://github.\+com/dlock8/\+Interconnect\+IO\+\_\+\+Board}}
+
+The Master Pico software is the earth of interconnect\+IO board. The software receive SCPI command from the serial port, execute the action requested by the command and return answer to the user.\hypertarget{md_README_autotoc_md1}{}\doxysection{License}\label{md_README_autotoc_md1}
+This project is licensed under the BSD 3-\/Clause License. See the \href{./LICENSE}{\texttt{ LICENSE}} file for more details.\hypertarget{md_README_autotoc_md2}{}\doxysection{Project setup}\label{md_README_autotoc_md2}
+This project has been developped on raspberry pi 4 following installation instruction from this pdf \href{./documentation/getting-started-with-pico_C.pdf}{\texttt{ getting-\/started-\/with-\/pico\+\_\+\+C.\+pdf}}, a copy of the pdf is located on the main folder. Visual studio has been used for developpment and rasberry pi 4 for Pico debug. ~\newline
+
+
+Initially based on \href{https://github.com/cronologic-de/webusb}{\texttt{ https\+://github.\+com/cronologic-\/de/webusb}}, the project has elvoved to be a complete SCPI instrument without frontend interface (next phase).
+
+The compilation is performed using Visual Studio and the extension installed are\+:
+
+
+\begin{DoxyItemize}
+\item Cmake v0.\+0.\+17
+\item Cmake Tools v1.\+20.\+10
+\item Cortex-\/\+Debug v1.\+12.\+1
+\item debug-\/tracker-\/vscode v0.\+0.\+15
+\item Doxygen Documentation Generator v1.\+4.\+0
+\item Doxygen runner v1.\+8.\+0
+\item Github Pull Request v0.\+96.\+0
+\item Hex Editor v1.\+10.\+0
+\item Memory\+View v0.\+0.\+25
+\item Periheral Viewer v1.\+4.\+6
+\item RTOS view v0.\+0.\+7
+\item C/\+C++ v1.\+21.\+6
+\end{DoxyItemize}
+
+I not sure if all extensions are required but is the one installed presently.\hypertarget{md_README_autotoc_md3}{}\doxysection{Building}\label{md_README_autotoc_md3}
+Build of this cmake project is performed with Visual Studio\hypertarget{md_README_autotoc_md4}{}\doxysection{Development}\label{md_README_autotoc_md4}
+
+\begin{DoxyItemize}
+\item \href{master.c}{\texttt{ {\ttfamily master.\+c}}} is the main source file for the firmware.
+\item \href{CMakeLists.txt}{\texttt{ {\ttfamily CMake\+Lists.\+txt}}} contains build instructions for CMake, including how to build the SCPI library.
+\item \href{pico_sdk_import.cmake}{\texttt{ {\ttfamily pico\+\_\+sdk\+\_\+import.\+cmake}}} was (as usual) copied verbatim from the Pico SDK and allows CMake to interact with the SDK’s functionality.
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md5}{}\doxysection{Installation}\label{md_README_autotoc_md5}
+
+\begin{DoxyItemize}
+\item The Files Master.\+uf2 contains the firmware to be loaded on the Pico RP2040 board using USB cable and boot button.
+\item When software loaded, the Pico board should be installed on the location marked MASTER on interconnect\+IO Board.
+\item On board Pico Led will flash slowly (heartbeat) on power ON.
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md6}{}\doxysection{SCPI command supported by the Interconnect IO Board}\label{md_README_autotoc_md6}
+\hypertarget{md_README_autotoc_md7}{}\doxysection{Required SCPI commands}\label{md_README_autotoc_md7}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-2}
+\endhead
+$\ast$\+IDN?   &Identification string    \\\cline{1-2}
+$\ast$\+RST   &Reset Command    \\\cline{1-2}
+$\ast$\+CLS   &Clear Status    \\\cline{1-2}
+$\ast$\+ESE   &Standard Event Status Enable Register    \\\cline{1-2}
+$\ast$\+ESR   &Standard Event Status Register    \\\cline{1-2}
+$\ast$\+OPC   &Operation Complete    \\\cline{1-2}
+$\ast$\+SRE   &Service Request Enable    \\\cline{1-2}
+$\ast$\+STB   &Read Status Byte    \\\cline{1-2}
+$\ast$\+TST   &Internal Self\+Test    \\\cline{1-2}
+$\ast$\+WAI   &Wait-\/to-\/\+Continue (Do nothing on this parser)    \\\cline{1-2}
+SYSTem\+:ERRor\mbox{[}\+:NEXT\mbox{]}?   &Read actual error on the error FIFO    \\\cline{1-2}
+SYSTem\+:\+ERRor\+:COUNt?   &read number of errors in the FIFO    \\\cline{1-2}
+SYSTem\+:VERSion?   &read SCPI version used    \\\cline{1-2}
+STATus\+:QUEStionable\mbox{[}\+:EVENt\mbox{]}?   &queries the event register (QUES) for the Questionable Data register    \\\cline{1-2}
+STATus\+:\+QUEStionable\+:CONDition?   &queries the condition register (QUESC) for the Questionable Data register    \\\cline{1-2}
+STATus\+:\+QUEStionable\+:ENABle   &set the status enable register (QUESE) for the Questionable Data register    \\\cline{1-2}
+STATus\+:\+QUEStionable\+:ENABle?   &queries the status enable register (QUESE) for the Questionable Data register    \\\cline{1-2}
+STATus\+:OPERation\mbox{[}\+:EVENt\mbox{]}?   &queries the event register (OPER) for the operation Data register    \\\cline{1-2}
+STATus\+:\+OPERation\+:CONDition?   &queries the condition register (OPERC) for the operation Data register    \\\cline{1-2}
+STATus\+:\+OPERation\+:ENABle   &set the status enable register (OPERE) for the operation Data register    \\\cline{1-2}
+STATus\+:\+OPERation\+:ENABle?   &queries the status enable register (OPERE) for the operation Data register   \\\cline{1-2}
+\end{longtabu}
+\hypertarget{md_README_autotoc_md8}{}\doxysection{SCPI command associated to the Interconnect IO Board}\label{md_README_autotoc_md8}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ PARAMETER   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ PARAMETER   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-3}
+\endhead
+ROUTe\+:CLOSe   &($<$ch\+\_\+list$>$)   &Close relay based on number    \\\cline{1-3}
+ROUTe\+:\+CLOSe\+:EXCLusive   &($<$ch\+\_\+list$>$)   &open relay already closed on the bank and close relay listed    \\\cline{1-3}
+ROUTe\+:\+CLOSe\+:Rev   &\{BANK1-\/\+BANK4\}   &Close reverse relay to move the contact from HIGH side to LOW side of differential relay    \\\cline{1-3}
+ROUTe\+:OPEN   &($<$ch\+\_\+list$>$)   &Open relay from the channel list    \\\cline{1-3}
+ROUTe\+:\+OPEN\+:Rev   &\{BANK1-\/\+BANK4\}   &Open reverse relay to move the contact to HIGH side of differential relay    \\\cline{1-3}
+ROUTe\+:\+OPEN\+:ALL   &\{BANK1-\/\+BANK4$|$ALL\}   &Open all relays from a particular Bank or all relays from all banks    \\\cline{1-3}
+ROUTe\+:\+CHANnel\+:STATe?   &($<$ch\+\_\+list$>$)   &Return state of the relay in the channel list, 0\+: open relay, 1\+: Close relay    \\\cline{1-3}
+ROUTe\+:\+BANK\+:STATe?   &\{BANK1-\/\+BANK4\}   &Read decimal value of relays state on the particular bank. Each bank is a byte long    \\\cline{1-3}
+ROUTe\+:\+REV\+:STATe?   &\{BANK1-\/\+BANK4\}   &Read contact side of reverse relay, LOW Side = 0, HIGH side = 1    \\\cline{1-3}
+ROUTe\+:\+CLOSe\+:PWR   &\{LPR1$|$HPR1$|$HPR2$|$SSR1\}   &Close the designated power relay    \\\cline{1-3}
+ROUTe\+:\+OPEN\+:PWR   &\{LPR1$|$HPR1$|$HPR2$|$SSR1\}   &Open the designated power relay    \\\cline{1-3}
+ROUTe\+:\+STATe\+:PWR?   &\{LPR1$|$HPR1$|$HPR2$|$SSR1\}   &Read state of the power relay, 0\+: Open, 1\+:Closed    \\\cline{1-3}
+ROUTE\+:\+CLOSe\+:OC   &\{OC1$|$OC2$|$OC3\}   &Close or activate the designated open collector transistor    \\\cline{1-3}
+ROUTE\+:\+OPEN\+:OC   &\{OC1$|$OC2$|$OC3\}   &Open or desactivate the designated open collector transistor    \\\cline{1-3}
+ROUTE\+:\+STATe\+:OC?   &\{OC1$|$OC2$|$OC3\}   &Read state of the the designated open collector transistor, 0\+: Open, 1\+:Closed    \\\cline{1-3}
+DIGital\+:\+In\+:PORTn?   &\{0-\/1\}   &Read Decimal value of the designated digital port (port0\+: 8 bits, port1\+: 8 bits)    \\\cline{1-3}
+DIGital\+:\+In\+:\+PORTn\+:BITn?   &\{0-\/1\}   &Read value of the bit position at the designated port    \\\cline{1-3}
+DIGital\+:\+Out\+:PORTn   &\{0-\/1\}\{$<$value$>$\}   &At the designated digital port, set the output to the value (byte)    \\\cline{1-3}
+DIGital\+:\+Out\+:\+PORTn\+:BItn   &\{0-\/1\} \{0-\/7\} \{$<$value$>$\}   &At the designated digital port and the designated bit, set the output to the value    \\\cline{1-3}
+DIGital\+:\+DIRection\+:PORTn   &\{0-\/1\}\{$|$value$|$\}   &Set the direction of the designated port to the value (byte), 0\+: input, 1\+: output    \\\cline{1-3}
+DIGital\+:\+DIRection\+:\+PORTn\+:BITn   &\{0-\/1\} \{0-\/7\} \{$<$value$>$\}   &At the designated digital port and the designated bit, set the direction to the value    \\\cline{1-3}
+DIGital\+:\+DIRection\+:PORTn?   &\{0-\/1\}   &Read the direction value for the designated port    \\\cline{1-3}
+DIGital\+:\+DIRection\+:\+PORTn\+:BITn?   &\{0-\/1\} \{0-\/7\}   &Read the direction value for the designated port and the designated bit position    \\\cline{1-3}
+GPIO\+:\+DIRection\+:DEVice\#\+:GP\#   &\{0-\/3\} \{0-\/28\} \{0-\/1\}   &At the designated device and defined gpio number, set the direction to input (0) or output (1). ~\newline
+DEVice0\+: Master\+\_\+\+Pico (SCPI interpreter) ~\newline
+ DEVice1\+: Slave1\+\_\+\+Pico (Digital Port 0 \& 1) ~\newline
+ DEVice2\+: Slave2\+\_\+\+Pico (relay bank 1 \& 3) ~\newline
+ DEVice3\+: Slave3\+\_\+\+Pico (relay bank 2 \& 4)    \\\cline{1-3}
+GPIO\+:\+Out\+:DEVice\#\+:GP\#   &\{0-\/3\} \{0-\/28\} \{0-\/1\}   &At the designated device and defined gpio number, set the output to the value.    \\\cline{1-3}
+GPIO\+:\+In\+:DEVice\#\+:GP\#?   &\{0-\/3\} \{0-\/28\}   &At the designated device and defined gpio number, read the value of the GPIO.    \\\cline{1-3}
+GPIO\+:\+SETPad\+:DEVice\#\+:GP\#   &\{0-\/3\} \{0-\/28\} \{$<$Value$>$\}   &At the designated device and defined gpio number, set the pad value.    \\\cline{1-3}
+GPIO\+:\+GETPad\+:DEVice\#\+:GP\#?   &\{0-\/3\} \{0-\/28\}   &At the designated device and defined gpio number,read the pad value. ~\newline
+ {\bfseries{PAD REGISTER DEFINITION}} ~\newline
+ Bit 7\+: \enskip{} OD Output disable ~\newline
+ Bit 6\+: \enskip{} IE Input enable ~\newline
+ Bit 5\+:4 \enskip{}DRIVE Strength 0x0\+: 2mA, 0x1\+: 4mA, 0x2\+: 8mA, 0x3\+: 12mA~\newline
+ Bit 3\+:\enskip{} PUE Pull up enable ~\newline
+Bit 2\+:\enskip{} PDE Pull down enable~\newline
+Bit 1\+:\enskip{} SCHT Enable schnitt trigger~\newline
+Bit 0\+:\enskip{} SLF Slew rate control 1=fast 0 = slow ~\newline
+    \\\cline{1-3}
+ANAlog\+:\+DAC\+:Volt   &$<$value$>$   &Set DAC output to the value    \\\cline{1-3}
+ANAlog\+:\+DAC\+:Save   &$<$Value$>$   &Save a default value for startup    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+ADC0\+:Volt?   }&Read Voltage at ADC input 0    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+ADC1\+:Volt?   }&Read Voltage at ADC input 1    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+ADC\+:Vsys?   }&Read system voltage from Pico Master    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+ADC\+:Temp?   }&Read Pico Master internal temperature in Celcius    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Volt?   }&Read voltage at load using power monitoring device    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Shunt?   }&Read voltage at the shunt resistor (0.\+1 ohm) using power monitoring device    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Ima?   }&Read current(m\+A) passing in the shunt resistor (calculation I = E/R)    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Pmw?   }&Read power(m\+W) at the load (calculation P = VI)    \\\cline{1-3}
+ANAlog\+:\+PWR\+:Cal   &$<$actual\+Value,expected\+Value$>$   &calibrate current(m\+A) on full range to get more precision    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:\+DEVice\+:VERSion?   }&Return firmware version of Pico for Master, Slave1, Slave2 and Slave3    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:BEEPer   }&Generate beep pulse    \\\cline{1-3}
+SYSTem\+:\+LED\+:ERRor   &\{0$|$1$|$OFF$|$ON\}   &Manual control of the read error led    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:\+LED\+:ERRor?   }&Status of the error led    \\\cline{1-3}
+SYSTem\+:OUTput   &\{0$|$1$|$OFF$|$ON\}   &Turn ON/\+OFF internal 5V available to UUT.    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:OUTput?   }&Read output status 0\+: OFF, 1\+: ON    \\\cline{1-3}
+SYSTem\+:SLAves   &\{0$|$1$|$OFF$|$ON\}   &Turn ON/\+OFF Pico slaves controller (run signals)    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:SLAves?   }&0\+: All Pico Slaves disabled, 1\+: All Pico Slaves enabled    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:\+SLAves\+:STAtus?   }&read Pico device \textquotesingle{}status byte\textquotesingle{} for slaves 1 to 3    \\\cline{1-3}
+SYSTem\+:TESTboard   &\{0-\/5\}   &Selftest execute from menu below ~\newline
+ {\bfseries{0}} Input test number to execute (0 to exit) ~\newline
+ {\bfseries{1}} Selftest using only selftest board, no check of onewire ~\newline
+ {\bfseries{2}} Selftest run only if selftest board is installed, onewire validation ~\newline
+ {\bfseries{3}} Selftest using selftest board and loopback connector ~\newline
+ {\bfseries{4}} Selftest of instruments in manual mode using selftest board ~\newline
+ {\bfseries{5}} Test of SCPI command,selftest board is required    \\\cline{1-3}
+CFG\+:\+Write\+:\+Eeprom\+:STR   &\textquotesingle{}varname string,value string\textquotesingle{}   &valid varname = ~\newline
+ $\ast$$\ast$\textquotesingle{}partnumber\textquotesingle{}$\ast$$\ast$\+: partnumber of the Interconnect\+IO board, default\+: \textquotesingle{}500-\/1000-\/010\textquotesingle{} ~\newline
+ $\ast$$\ast$\textquotesingle{}serialnumber\textquotesingle{}$\ast$$\ast$ \+: serial number of the Interconnect\+IO board, default\+: \textquotesingle{}00001\textquotesingle{} ~\newline
+ $\ast$$\ast$\textquotesingle{}mod\+\_\+option\textquotesingle{}$\ast$$\ast$ \+: optionnal module installed on the Interconnect\+IO board, default\+: \textquotesingle{}DAC,PWR\textquotesingle{}~\newline
+ $\ast$$\ast$\textquotesingle{}com\+\_\+ser\+\_\+speed\textquotesingle{}$\ast$$\ast$ \+: baudrate used by the SCPI command serial port, default\+: \textquotesingle{}115200\textquotesingle{}~\newline
+ $\ast$$\ast$\textquotesingle{}pico\+\_\+slaves\+\_\+run\textquotesingle{}$\ast$$\ast$ \+: flag to control the slaves RUN pin actuation. 0\+: Pico Slaves reset at each boot(disable USB), 1\+: Do not reset slaves at boot, default\+: \textquotesingle{}0\textquotesingle{}~\newline
+ $\ast$$\ast$\textquotesingle{}testboard\+\_\+num\textquotesingle{}$\ast$$\ast$ \+: partnumber of the selftest board written on the onewire device , default\+: \textquotesingle{}500-\/1010-\/020\textquotesingle{}    \\\cline{1-3}
+\multicolumn{2}{|l|}{CFG\+:\+Write\+:\+Eeprom\+:Default   }&Special command to write all default value to eeprom    \\\cline{1-3}
+\multicolumn{2}{|l|}{CFG\+:\+Read\+:\+Eeprom\+:Full?   }&Special command to read all data on eeprom    \\\cline{1-3}
+CFG\+:\+Read\+:\+Eeprom\+:STR?   &\textquotesingle{}varnames string\textquotesingle{}   &Reads string value from the designated parameter   \\\cline{1-3}
+\end{longtabu}
+\hypertarget{md_README_autotoc_md9}{}\doxysection{SCPI command associated to the communication}\label{md_README_autotoc_md9}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ PARAMETER   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ PARAMETER   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-3}
+\endhead
+COM\+:1WIRE\+:CHECK?   &$<$value$>$   &value = Number of expected Onewire devices on a link, normally 1 or 2, Check if devices are detected    \\\cline{1-3}
+COM\+:1WIRE\+:WRITE   &\{String 64 chars maximum starting with 64bits lasered ROM\}   &example\+: 2D4\+CE282200000\+CC, 500-\/1010-\/020, 000001, J1    \\\cline{1-3}
+COM\+:1WIRE\+:READ?   &\mbox{[}Nb of Onewire devices\mbox{]}   &read string of all the 1-\/Wire devices on the link, specify number of onewire to be read    \\\cline{1-3}
+COM\+:\+INITialize\+:ENAble   &\{SPI$|$SERIAL$|$I2C\}   &Configure designated communication port    \\\cline{1-3}
+COM\+:\+INITialize\+:DISable   &\{SPI$|$SERIAL$|$I2C\}   &Configure designated communication port to GPIO    \\\cline{1-3}
+COM\+:\+INITialize\+:STATus?   &\{SPI$|$SERIAL$|$I2C\}   &Read if the designated communication is enable or disable    \\\cline{1-3}
+COM\+:\+SERIAL\+:WRITE   &$<$svalues$>$   &send string, don\textquotesingle{}t wait for answer    \\\cline{1-3}
+COM\+:\+SERIAL\+:READ?   &$<$svalues$>$   &send string, wait for answer    \\\cline{1-3}
+COM\+:\+SERIAL\+:Baud   &$<$value$>$   &set baudrate speed    \\\cline{1-3}
+\multicolumn{2}{|l|}{COM\+:\+SERIAL\+:Baud?   }&read baudrate speed    \\\cline{1-3}
+COM\+:\+SERIAL\+:Protocol   &$<$svalues$>$   &exa\+: \{N81 O72 E61 8N1 etc ..\}. Three character to define prtocol to be use    \\\cline{1-3}
+\multicolumn{2}{|l|}{COM\+:\+SERIAL\+:Protocol?   }&read the used protocol    \\\cline{1-3}
+COM\+:\+SERIAL\+:Handshake   &\{0$|$1$|$OFF$|$ON\}   &set the RTS-\/\+CTS handshake according to the value    \\\cline{1-3}
+\multicolumn{2}{|l|}{COM\+:\+SERIAL\+:Handshake?   }&read value corresponding to the handshake state, 0\+: disabled, 1\+: enabled    \\\cline{1-3}
+COM\+:\+SERIAL\+:Timeout   &$<$values$>$   &Timeout in ms (32bits), default is 1000    \\\cline{1-3}
+\multicolumn{2}{|l|}{COM\+:\+SERIAL\+:Timeout?   }&read value of the timeout    \\\cline{1-3}
+COM\+:\+SPI\+:WRIte   &$<$data$>$   &Spi write data (byte if databit =8 or word if databits = 16)    \\\cline{1-3}
+COM\+:\+SPI\+:\+REAd\+:LENx?   &$<$opt\+:register$>$   &Spi read x bytes    \\\cline{1-3}
+COM\+:\+SPI\+:Baudrate   &$<$value$>$   &Set baudrate speed in Hz    \\\cline{1-3}
+\multicolumn{2}{|l|}{COM\+:\+SPI\+:Baudrate?   }&read SPI speed in Hz    \\\cline{1-3}
+COM\+:\+SPI\+:CS   &$<$gpio$>$   &Set Chipselect gpio,default is 5, valid num = \{0,1,5,6,7,12,13,14,15,16,17\}    \\\cline{1-3}
+\multicolumn{2}{|l|}{COM\+:\+SPI\+:CS?   }&Get Chipselect gpio number    \\\cline{1-3}
+COM\+:\+SPI\+:Databits   &$<$value$>$   &// number of data bits to read or write during SPI communication, normally 8 (byte long) or 16 (word long)    \\\cline{1-3}
+\multicolumn{2}{|l|}{COM\+:\+SPI\+:Databits?   }&read databit value    \\\cline{1-3}
+COM\+:\+SPI\+:Mode   &\{0$|$1$|$2$|$3$|$4$|$5$|$6$|$7\}   &Set SPI mode + Chip\+Select toggle mode (0\+:End of transmit, 1\+: At each byte) ~\newline
+mode 0\+: Cs=0, Cpol=0, CPha=0 ~\newline
+ mode 1\+: Cs=0, Cpol=0, Cpha=1 ~\newline
+ mode 2\+: Cs=0, Cpol=1, Cpha=0 ~\newline
+ mode 3\+: Cs=0, Cpol=1, Cpha=1 ~\newline
+ mode 4\+: Cs=1, Cpol=0, CPha=0 ~\newline
+ mode 5\+: Cs=1, Cpol=0, Cpha=1 ~\newline
+ mode 6\+: Cs=1, Cpol=1, Cpha=0 ~\newline
+ mode 7\+: Cs=1, Cpol=1, Cpha=1 ~\newline
+    \\\cline{1-3}
+\multicolumn{2}{|l|}{COM\+:\+SPI\+:Mode?   }&read mode number used    \\\cline{1-3}
+COM\+:\+I2C\+:WRIte   &$<$data$>$   &Spi write data    \\\cline{1-3}
+COM\+:\+I2\+C\+:\+REAd\+:LENx?   &$<$opt\+:register$>$   &Spi read x bytes from optionnal register    \\\cline{1-3}
+COM\+:\+I2C\+:ADDRress   &$<$Device address$>$   &I2C Address to use to talk to the device    \\\cline{1-3}
+\multicolumn{2}{|l|}{COM\+:\+I2C\+:ADDRress?   }&read address value    \\\cline{1-3}
+\multicolumn{2}{|l|}{COM\+:\+I2C\+:Baudrate?   }&read I2C speed in Hz    \\\cline{1-3}
+COM\+:\+I2C\+:Baudrate   &$<$value$>$   &Set speed in Hz    \\\cline{1-3}
+COM\+:\+I2C\+:Databits   &$<$value$>$   &Number of databits to write or read. Normally 8 (bytes) or 16 (word)    \\\cline{1-3}
+\multicolumn{2}{|l|}{COM\+:\+I2C\+:Databits?   }&read number of databits used on I2C communication   \\\cline{1-3}
+\end{longtabu}
+\hypertarget{md_README_autotoc_md10}{}\doxysection{SCPI Complete Command example\+:}\label{md_README_autotoc_md10}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-2}
+\endhead
+ROUTe\+:CLOSe(@101)   &Close relay 101, Signal on High side    \\\cline{1-2}
+ROUTe\+:\+CLOSe\+:EXC(@102)   &open relay on bank1 (101) and close relay 102    \\\cline{1-2}
+ROUTe\+:CLOSe (@108,115)   &close relay 108 and 115, signal on low side    \\\cline{1-2}
+ROUTe\+:CLOSe (@100\+:104)   &close relay 100,101,102,103, and 104    \\\cline{1-2}
+ROUTe\+:\+OPEN\+:ALL BANK1,BANK2   &open relay on bank1 and bank2    \\\cline{1-2}
+ROUTe\+:\+OPEN\+:ALL ALL   &open relay on all banks    \\\cline{1-2}
+ROUTe\+:\+REV\+:STATe? BANK1   &read which side of diff relay we are connected (0 = H or 1 = L)    \\\cline{1-2}
+ROUTe\+:\+CHAN\+:STATe? (@100)   &read relay state ( 0 = Open or 1 = close)    \\\cline{1-2}
+DIGital\+:\+DIRection\+:PORT0 \#HFF   &set the 8 bit of port0 to output ( 0 = in, 1 = out)    \\\cline{1-2}
+DIGital\+:\+Out\+:PORT1 \#H55   &Write hex value 0x55 to port 1    \\\cline{1-2}
+DIGital\+:\+DIRection\+:PORT1?   &Read direction on port 1 for the 8 bits ( 0 = in, 1 = out)    \\\cline{1-2}
+DIGital\+:\+In\+:PORT0?   &Read the 8 bits on port 0    \\\cline{1-2}
+GPIO\+:\+DIRection\+:\+DEVice0\+:GP22 1   &Set gpio 22 on Device 0 (Master) to direction out (1 = out)    \\\cline{1-2}
+GPIO\+:\+Out\+:\+DEVice1\+:GP8 0   &Set gpio 8 on Device 1 (Slave\+\_\+1) to 0 (0 = low level)    \\\cline{1-2}
+GPIO\+:\+In\+:\+DEVice2\+:GP9?   &Read value of gpio 9 on device 2 (Slave\+\_\+2)    \\\cline{1-2}
+GPIO\+:\+SETPad\+:\+DEVice3\+:GP22   &Set PAD value (8 bits) on gpio 22 on Device 3 (Slave\+\_\+3)    \\\cline{1-2}
+GPIO\+:\+GETPad\+:\+DEVice1\+:GP8?   &Read PAD value (8 bits) on gpio 8 on Device 1 (Slave\+\_\+1)    \\\cline{1-2}
+SYSTem\+:BEEPer   &Turn ON momentary the beeper    \\\cline{1-2}
+SYSTEM\+:\+DEVice\+:VERsion?   &Read version of each Pico devices \mbox{[}0,1,2,3\mbox{]}, return string ~\newline
+ ex\+: 1.\+0, 1.\+0, 1.\+0 1.\+0    \\\cline{1-2}
+COM\+:1WIRE\+:WRITE \char`\"{}2\+D4\+CE282200000\+CC, 500-\/1010-\/020, 000001, J1\char`\"{}   &Lasered ROM + Board\#+ Serial + Location   \\\cline{1-2}
+\end{longtabu}
+\hypertarget{md_README_autotoc_md11}{}\doxysection{Relay numbering scheme}\label{md_README_autotoc_md11}
+\hypertarget{md_README_autotoc_md12}{}\doxysection{Differential relay will be located on lower address.}\label{md_README_autotoc_md12}
+\hypertarget{md_README_autotoc_md13}{}\doxysection{Single ended relay to be connected to high or low side following the address.}\label{md_README_autotoc_md13}
+\begin{DoxyVerb}Relay bank 1   Differential: 10 @ 17    Single: 100 @ 107 (High) 108 @ 115 (Low)    
+Relay bank 2   Differential: 20 @ 27    Single: 200 @ 215 (High) 208 @ 215 (Low) 
+Relay bank 3   Differential: 30 @ 37    Single: 300 @ 315 (High) 308 @ 315 (Low) 
+Relay bank 4   Differential: 40 @ 47    Single: 400 @ 415 (High) 108 @ 415 (Low) 
+\end{DoxyVerb}
+
+\begin{DoxyItemize}
+\item relay @10, @100 and @108 are the same physical relay. ~\newline
+
+\item If relay @10 is closed, the high side of the relay (BK1\+\_\+\+CH0\+\_\+H) will be connected on high side of the commun point (BK1\+\_\+\+COM\+\_\+H). The low side of the relay (BK1\+\_\+\+CH0\+\_\+L) will be connected on the low side of the commun point (BK1\+\_\+\+COM\+\_\+L)
+\item If relay @100 is closed, the high side of the relay (BK1\+\_\+\+CH0\+\_\+H) will be connected on high side of the commun point (BK1\+\_\+\+COM\+\_\+H). The low side of the relay (BK1\+\_\+\+CH0\+\_\+L) will be connected on the low side of the commun point (BK1\+\_\+\+COM\+\_\+L)
+\item If relay @108 is closed, the high side of the relay (BK1\+\_\+\+CH0\+\_\+H) will be connected on low side of the commun point (BK1\+\_\+\+COM\+\_\+L) because the reverse relay will be actuated on the same time of the relay @108. The low side of the relay (BK1\+\_\+\+CH0\+\_\+L) will be connected on the high side of the commun point (BK1\+\_\+\+COM\+\_\+H)
+\item The 4 relay banks are identical and follow the same rules 
+\end{DoxyItemize}

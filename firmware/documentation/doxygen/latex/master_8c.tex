@@ -1,0 +1,228 @@
+\hypertarget{master_8c}{}\doxysection{firmware/src/master.c File Reference}
+\label{master_8c}\index{firmware/src/master.c@{firmware/src/master.c}}
+
+
+Main loop to control the Pico Master Device.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico/binary\+\_\+info.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/uart.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/adc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/i2c.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/fts\+\_\+scpi.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/i2c\+\_\+com.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/master.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/test.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/functadv.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/watchdog.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}userconfig.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}lib/scpi-\/parser/libscpi/src/error.\+c\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+ina219/dev\+\_\+ina219.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+mcp4725/dev\+\_\+mcp4725.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+24lc32/dev\+\_\+24lc32.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+ds2431/dev\+\_\+ds2431.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/sys/include/sys\+\_\+adc.\+h\char`\"{}}\newline
+Include dependency graph for master.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{master_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structMESSAGE}{MESSAGE}}
+\begin{DoxyCompactList}\small\item\em Structure who contains the message to be sent on debug port. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{master_8c_aeca90e1c1c62b70670514ffc18c9dfd4}\label{master_8c_aeca90e1c1c62b70670514ffc18c9dfd4}} 
+\#define \mbox{\hyperlink{master_8c_aeca90e1c1c62b70670514ffc18c9dfd4}{MESSAGE\+\_\+\+SIZE}}~92
+\begin{DoxyCompactList}\small\item\em Maximum size of message to be send on the USB port for debug. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8c_a142810068f1b99cd93d3fc9f0e160e02}\label{master_8c_a142810068f1b99cd93d3fc9f0e160e02}} 
+\#define \mbox{\hyperlink{master_8c_a142810068f1b99cd93d3fc9f0e160e02}{QUEUE\+\_\+\+SIZE}}~12
+\begin{DoxyCompactList}\small\item\em Maximum message received and not processed. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{master_8c_ac889aaa985ae67d7929dedde5c510d9c}{enque}} (\mbox{\hyperlink{structMESSAGE}{MESSAGE}} $\ast$message, char mess\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Adds a message to the queue. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{master_8c_ae733fe874122894bac75e1be37326ceb}{init\+\_\+queue}} ()
+\begin{DoxyCompactList}\small\item\em Initializes the circular queue. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{master_8c_a6d1ccfb6a786c332e10a4f2c8e8765c1}{deque}} (\mbox{\hyperlink{structMESSAGE}{MESSAGE}} $\ast$message, char $\ast$\mbox{\hyperlink{master_8c_aeac59056e9fe0881b3773cb2af260c41}{size}})
+\begin{DoxyCompactList}\small\item\em Removes a message from the front of the queue. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8c_ad7fec5b2b07b712822dc8182d1796c22}\label{master_8c_ad7fec5b2b07b712822dc8182d1796c22}} 
+void \mbox{\hyperlink{master_8c_ad7fec5b2b07b712822dc8182d1796c22}{on\+\_\+uart\+\_\+rx}} ()
+\begin{DoxyCompactList}\small\item\em RX Main communication interrupt handler. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8c_a580986de5963328695cc677384f0454a}\label{master_8c_a580986de5963328695cc677384f0454a}} 
+void \mbox{\hyperlink{master_8c_a580986de5963328695cc677384f0454a}{init\+\_\+main\+\_\+com}} ()
+\begin{DoxyCompactList}\small\item\em Initialisation of the main communication uart (serial port) the SCPI command are received by the serial port. Baud rate is read from the Configuration EEPROM In case of error, default baud rate will be use. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{master_8c_a5f6549f2d2461465f770c1b277910225}{Hardware\+\_\+\+Default\+\_\+\+Setting}} ()
+\begin{DoxyCompactList}\small\item\em Initializes the hardware to default settings. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{master_8c_a840291bc02cba5474a4cb46a9b9566fe}{main}} (void)
+\begin{DoxyCompactList}\small\item\em Firmware for the Master Pico device running on interconnect\+IO board. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+struct \{\\
+\>\mbox{\hyperlink{structMESSAGE}{MESSAGE}} \mbox{\hyperlink{master_8c_a212ceeefc46dd1a9604e02b868db2634}{messages}} \mbox{[}\mbox{\hyperlink{master_8c_a142810068f1b99cd93d3fc9f0e160e02}{QUEUE\_SIZE}}\mbox{]}\\
+\>\>{\em Array of messages stored in the queue. }\\
+\>char \mbox{\hyperlink{master_8c_aeac59056e9fe0881b3773cb2af260c41}{size}} \mbox{[}\mbox{\hyperlink{master_8c_a142810068f1b99cd93d3fc9f0e160e02}{QUEUE\_SIZE}}\mbox{]}\\
+\>\>{\em Array containing sizes of each message in the queue. }\\
+\>int \mbox{\hyperlink{master_8c_a9320720f4d683cc7c76f800be700ac35}{begin}}\\
+\>\>{\em Index of the first message in the queue. }\\
+\>int \mbox{\hyperlink{master_8c_abce9f5dc9c83f2639b72024fdee5d388}{end}}\\
+\>\>{\em Index where the next message will be added. }\\
+\>int \mbox{\hyperlink{master_8c_a4ba74c1822743f8cac000c1eb4542510}{current\_load}}\\
+\>\>{\em Current number of messages in the queue. }\\
+\} \mbox{\hyperlink{master_8c_ab0465a95499aab048b02601cd65e1ad6}{queue}}\\
+
+\end{tabbing}\begin{DoxyCompactList}\small\item\em Global circular queue for storing messages. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{master_8h_a6ee16918c98b75fe7c46964a9b8c34ea}{eep}} \mbox{\hyperlink{master_8c_ac95ed0fd19288b8f4bf0824357dfab26}{ee}}
+\begin{DoxyCompactList}\small\item\em Global variable representing the EEPROM data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Main loop to control the Pico Master Device. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+The Master Pico is the main controller for the Interconnec IO Box. The master accept SCPI command the serial port and execute the command.
+
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{master_8c_a6d1ccfb6a786c332e10a4f2c8e8765c1}\label{master_8c_a6d1ccfb6a786c332e10a4f2c8e8765c1}} 
+\index{master.c@{master.c}!deque@{deque}}
+\index{deque@{deque}!master.c@{master.c}}
+\doxysubsubsection{\texorpdfstring{deque()}{deque()}}
+{\footnotesize\ttfamily bool deque (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMESSAGE}{MESSAGE}} $\ast$}]{message,  }\item[{char $\ast$}]{size }\end{DoxyParamCaption})}
+
+
+
+Removes a message from the front of the queue. 
+
+This function dequeues a message from the circular queue if there is at least one message present. It retrieves the message and its size, resets the corresponding storage, and updates the {\ttfamily begin} index to point to the next message.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & Pointer to the structure where the dequeued message will be stored. \\
+\hline
+{\em size} & Pointer to a variable where the size of the dequeued message will be stored.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the message was successfully removed from the queue; false if the queue is empty. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{master_8c_ac889aaa985ae67d7929dedde5c510d9c}\label{master_8c_ac889aaa985ae67d7929dedde5c510d9c}} 
+\index{master.c@{master.c}!enque@{enque}}
+\index{enque@{enque}!master.c@{master.c}}
+\doxysubsubsection{\texorpdfstring{enque()}{enque()}}
+{\footnotesize\ttfamily bool enque (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMESSAGE}{MESSAGE}} $\ast$}]{message,  }\item[{char}]{mess\+\_\+size }\end{DoxyParamCaption})}
+
+
+
+Adds a message to the queue. 
+
+This function enqueues a message into a circular queue if there is space available. It updates the queue\textquotesingle{}s {\ttfamily end} index and {\ttfamily current\+\_\+load}, managing wrap-\/around when the queue reaches its maximum size.
+
+
+\begin{DoxyParams}{Parameters}
+{\em message} & Pointer to the message to be enqueued. \\
+\hline
+{\em mess\+\_\+size} & Size of the message to be enqueued.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the message was successfully added to the queue. 
+
+false if the queue is full and the message could not be added. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{master_8c_a5f6549f2d2461465f770c1b277910225}\label{master_8c_a5f6549f2d2461465f770c1b277910225}} 
+\index{master.c@{master.c}!Hardware\_Default\_Setting@{Hardware\_Default\_Setting}}
+\index{Hardware\_Default\_Setting@{Hardware\_Default\_Setting}!master.c@{master.c}}
+\doxysubsubsection{\texorpdfstring{Hardware\_Default\_Setting()}{Hardware\_Default\_Setting()}}
+{\footnotesize\ttfamily void Hardware\+\_\+\+Default\+\_\+\+Setting (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initializes the hardware to default settings. 
+
+This function is called by the main program and when the SCPI command $\ast$\+RST is received. It sets up the necessary hardware configurations to ensure that the system starts in a known state.
+
+
+\begin{DoxyParams}{Parameters}
+{\em None} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None 
+\end{DoxyReturn}
+\mbox{\Hypertarget{master_8c_ae733fe874122894bac75e1be37326ceb}\label{master_8c_ae733fe874122894bac75e1be37326ceb}} 
+\index{master.c@{master.c}!init\_queue@{init\_queue}}
+\index{init\_queue@{init\_queue}!master.c@{master.c}}
+\doxysubsubsection{\texorpdfstring{init\_queue()}{init\_queue()}}
+{\footnotesize\ttfamily void init\+\_\+queue (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initializes the circular queue. 
+
+This function sets the {\ttfamily begin}, {\ttfamily end}, and {\ttfamily current\+\_\+load} indices of the queue to zero, indicating that the queue is empty. It also clears the message storage by setting all entries to zero. \mbox{\Hypertarget{master_8c_a840291bc02cba5474a4cb46a9b9566fe}\label{master_8c_a840291bc02cba5474a4cb46a9b9566fe}} 
+\index{master.c@{master.c}!main@{main}}
+\index{main@{main}!master.c@{master.c}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Firmware for the Master Pico device running on interconnect\+IO board. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+refresh watchdog
+
+counter for the heartbeat led
+
+Flashing led
+
+Heartbeat message on debug port
+
+Never pass by here
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{master_8c_ac95ed0fd19288b8f4bf0824357dfab26}\label{master_8c_ac95ed0fd19288b8f4bf0824357dfab26}} 
+\index{master.c@{master.c}!ee@{ee}}
+\index{ee@{ee}!master.c@{master.c}}
+\doxysubsubsection{\texorpdfstring{ee}{ee}}
+{\footnotesize\ttfamily \mbox{\hyperlink{master_8h_a6ee16918c98b75fe7c46964a9b8c34ea}{eep}} ee}
+
+
+
+Global variable representing the EEPROM data. 
+
+Instance of the EEPROM configuration union. \mbox{\Hypertarget{master_8c_ab0465a95499aab048b02601cd65e1ad6}\label{master_8c_ab0465a95499aab048b02601cd65e1ad6}} 
+\index{master.c@{master.c}!queue@{queue}}
+\index{queue@{queue}!master.c@{master.c}}
+\doxysubsubsection{\texorpdfstring{}{}}
+{\footnotesize\ttfamily struct \{ ... \}  queue}
+
+
+
+Global circular queue for storing messages. 
+
+This variable manages a circular queue that holds messages and tracks their sizes. It uses indices to mark the beginning and end of the queue, and keeps track of the current number of messages (load). 

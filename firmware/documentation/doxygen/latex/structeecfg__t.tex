@@ -1,0 +1,83 @@
+\hypertarget{structeecfg__t}{}\doxysection{eecfg\+\_\+t Struct Reference}
+\label{structeecfg__t}\index{eecfg\_t@{eecfg\_t}}
+
+
+EEPROM configuration structure.  
+
+
+
+
+{\ttfamily \#include $<$master.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+char \mbox{\hyperlink{structeecfg__t_a39242af8bca8a24f99aadedb809d11cc}{check}} \mbox{[}1\mbox{]}
+\item 
+char \mbox{\hyperlink{structeecfg__t_ab5541ae43dbe7deae8dace7016efd4b9}{partnumber}} \mbox{[}13\mbox{]}
+\item 
+char \mbox{\hyperlink{structeecfg__t_aa450f29c310d62f88481f1ab744248be}{serialnumber}} \mbox{[}6\mbox{]}
+\item 
+char \mbox{\hyperlink{structeecfg__t_ab202fd8330c199d5acde705e9652be59}{mod\+\_\+option}} \mbox{[}15\mbox{]}
+\item 
+char \mbox{\hyperlink{structeecfg__t_ac92941ffc66884c525bec223de13a2f0}{com\+\_\+ser\+\_\+speed}} \mbox{[}7\mbox{]}
+\item 
+char \mbox{\hyperlink{structeecfg__t_a1a561d25bfb780fb584c2b3c1776c6cf}{slave\+\_\+force\+\_\+run}} \mbox{[}2\mbox{]}
+\item 
+char \mbox{\hyperlink{structeecfg__t_a7906b6f906f0784a6eb7b1b4c2caecb4}{testboard\+\_\+num}} \mbox{[}13\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+EEPROM configuration structure. 
+
+This structure contains the default values and settings that are stored in EEPROM. New parameters should be added with proper size allocation, and always include a null terminator ({\ttfamily +1}) for strings. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structeecfg__t_a39242af8bca8a24f99aadedb809d11cc}\label{structeecfg__t_a39242af8bca8a24f99aadedb809d11cc}} 
+\index{eecfg\_t@{eecfg\_t}!check@{check}}
+\index{check@{check}!eecfg\_t@{eecfg\_t}}
+\doxysubsubsection{\texorpdfstring{check}{check}}
+{\footnotesize\ttfamily char eecfg\+\_\+t\+::check\mbox{[}1\mbox{]}}
+
+Proof character to validate EEPROM read. \mbox{\Hypertarget{structeecfg__t_ac92941ffc66884c525bec223de13a2f0}\label{structeecfg__t_ac92941ffc66884c525bec223de13a2f0}} 
+\index{eecfg\_t@{eecfg\_t}!com\_ser\_speed@{com\_ser\_speed}}
+\index{com\_ser\_speed@{com\_ser\_speed}!eecfg\_t@{eecfg\_t}}
+\doxysubsubsection{\texorpdfstring{com\_ser\_speed}{com\_ser\_speed}}
+{\footnotesize\ttfamily char eecfg\+\_\+t\+::com\+\_\+ser\+\_\+speed\mbox{[}7\mbox{]}}
+
+Communication serial speed. \mbox{\Hypertarget{structeecfg__t_ab202fd8330c199d5acde705e9652be59}\label{structeecfg__t_ab202fd8330c199d5acde705e9652be59}} 
+\index{eecfg\_t@{eecfg\_t}!mod\_option@{mod\_option}}
+\index{mod\_option@{mod\_option}!eecfg\_t@{eecfg\_t}}
+\doxysubsubsection{\texorpdfstring{mod\_option}{mod\_option}}
+{\footnotesize\ttfamily char eecfg\+\_\+t\+::mod\+\_\+option\mbox{[}15\mbox{]}}
+
+Module options stored in EEPROM. \mbox{\Hypertarget{structeecfg__t_ab5541ae43dbe7deae8dace7016efd4b9}\label{structeecfg__t_ab5541ae43dbe7deae8dace7016efd4b9}} 
+\index{eecfg\_t@{eecfg\_t}!partnumber@{partnumber}}
+\index{partnumber@{partnumber}!eecfg\_t@{eecfg\_t}}
+\doxysubsubsection{\texorpdfstring{partnumber}{partnumber}}
+{\footnotesize\ttfamily char eecfg\+\_\+t\+::partnumber\mbox{[}13\mbox{]}}
+
+Part number stored in EEPROM. \mbox{\Hypertarget{structeecfg__t_aa450f29c310d62f88481f1ab744248be}\label{structeecfg__t_aa450f29c310d62f88481f1ab744248be}} 
+\index{eecfg\_t@{eecfg\_t}!serialnumber@{serialnumber}}
+\index{serialnumber@{serialnumber}!eecfg\_t@{eecfg\_t}}
+\doxysubsubsection{\texorpdfstring{serialnumber}{serialnumber}}
+{\footnotesize\ttfamily char eecfg\+\_\+t\+::serialnumber\mbox{[}6\mbox{]}}
+
+Serial number stored in EEPROM. \mbox{\Hypertarget{structeecfg__t_a1a561d25bfb780fb584c2b3c1776c6cf}\label{structeecfg__t_a1a561d25bfb780fb584c2b3c1776c6cf}} 
+\index{eecfg\_t@{eecfg\_t}!slave\_force\_run@{slave\_force\_run}}
+\index{slave\_force\_run@{slave\_force\_run}!eecfg\_t@{eecfg\_t}}
+\doxysubsubsection{\texorpdfstring{slave\_force\_run}{slave\_force\_run}}
+{\footnotesize\ttfamily char eecfg\+\_\+t\+::slave\+\_\+force\+\_\+run\mbox{[}2\mbox{]}}
+
+Force master RUN\+\_\+\+EN = 1, useful for debugging slave Pico devices. \mbox{\Hypertarget{structeecfg__t_a7906b6f906f0784a6eb7b1b4c2caecb4}\label{structeecfg__t_a7906b6f906f0784a6eb7b1b4c2caecb4}} 
+\index{eecfg\_t@{eecfg\_t}!testboard\_num@{testboard\_num}}
+\index{testboard\_num@{testboard\_num}!eecfg\_t@{eecfg\_t}}
+\doxysubsubsection{\texorpdfstring{testboard\_num}{testboard\_num}}
+{\footnotesize\ttfamily char eecfg\+\_\+t\+::testboard\+\_\+num\mbox{[}13\mbox{]}}
+
+Part number of the self-\/test board. 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+firmware/src/include/\mbox{\hyperlink{master_8h}{master.\+h}}\end{DoxyCompactItemize}

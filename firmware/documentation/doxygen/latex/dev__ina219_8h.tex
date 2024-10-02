@@ -1,0 +1,472 @@
+\hypertarget{dev__ina219_8h}{}\doxysection{firmware/src/pico\+\_\+lib2/src/dev/dev\+\_\+ina219/dev\+\_\+ina219.h File Reference}
+\label{dev__ina219_8h}\index{firmware/src/pico\_lib2/src/dev/dev\_ina219/dev\_ina219.h@{firmware/src/pico\_lib2/src/dev/dev\_ina219/dev\_ina219.h}}
+{\ttfamily \#include \char`\"{}../../sys/include/sys\+\_\+i2c.\+h\char`\"{}}\newline
+Include dependency graph for dev\+\_\+ina219.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=321pt]{dev__ina219_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dev__ina219_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a01099281ea98bb6c1aab825f05d9818c}{INA219\+\_\+\+ADDRESS}}~(0x40)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_acf1557fd16ff50351f795b87a9d4cddf}{INA219\+\_\+\+READ}}~(0x01)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_aab641248471a0f356b9ff6329bcd8084}{INA219\+\_\+\+REG\+\_\+\+CONFIG}}~(0x00)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a2f369100185ff9e3855dcab0eee318ad}{INA219\+\_\+\+CONFIG\+\_\+\+RESET}}~(0x8000)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a9cee115fade153b8c7ffd6e26c18ecd7}{INA219\+\_\+\+CONFIG\+\_\+\+BVOLTAGERANGE\+\_\+\+MASK}}~(0x4000)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a7e1c180000f96904a5ff34a644bdd95c}{INA219\+\_\+\+CONFIG\+\_\+\+BVOLTAGERANGE\+\_\+16V}}~(0x0000)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_ad32b39f4f24dc2db8dd288e94a534556}{INA219\+\_\+\+CONFIG\+\_\+\+BVOLTAGERANGE\+\_\+32V}}~(0x4000)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a5bf05963e83908f3345438959694a0ba}{INA219\+\_\+\+CONFIG\+\_\+\+GAIN\+\_\+\+MASK}}~(0x1800)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a482b33e14683520440d9d5d7d8a60f5b}{INA219\+\_\+\+CONFIG\+\_\+\+GAIN\+\_\+1\+\_\+40\+MV}}~(0x0000)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_ae69050bf9d50064cd07c1d45eb19b573}{INA219\+\_\+\+CONFIG\+\_\+\+GAIN\+\_\+2\+\_\+80\+MV}}~(0x0800)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a2e9187cd26bc92a34d80323c34034eb1}{INA219\+\_\+\+CONFIG\+\_\+\+GAIN\+\_\+4\+\_\+160\+MV}}~(0x1000)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a086319bc54174428df94c299e9a50327}{INA219\+\_\+\+CONFIG\+\_\+\+GAIN\+\_\+8\+\_\+320\+MV}}~(0x1800)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_ad4b5799502981d36922ce087aa5b96c9}{INA219\+\_\+\+CONFIG\+\_\+\+BADCRES\+\_\+\+MASK}}~(0x0780)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a1ae7ce7a162dc4863e752db15b35dfe2}{INA219\+\_\+\+CONFIG\+\_\+\+BADCRES\+\_\+9\+BIT}}~(0x0080)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a3584f3094bde83197ac048ba30cb098a}{INA219\+\_\+\+CONFIG\+\_\+\+BADCRES\+\_\+10\+BIT}}~(0x0100)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_ae3db11dbb70a050d2a2874e0046388dd}{INA219\+\_\+\+CONFIG\+\_\+\+BADCRES\+\_\+11\+BIT}}~(0x0200)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_abf7a96ea74821b566674fc6fff9145e7}{INA219\+\_\+\+CONFIG\+\_\+\+BADCRES\+\_\+12\+BIT}}~(0x0400)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_ad66384c679c835a2ab915fc50db2ed78}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+\+MASK}}~(0x0078)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a145f24ba90d5312247ab0971bc6c3414}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+9\+BIT\+\_\+1\+S\+\_\+84\+US}}~(0x0000)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a76cd8ee0d01e5cbb23fbe8ea3414552a}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+10\+BIT\+\_\+1\+S\+\_\+148\+US}}~(0x0008)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_acdb3b9e1ccf36005c86580edfcce8c18}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+11\+BIT\+\_\+1\+S\+\_\+276\+US}}~(0x0010)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_ae72b14ab7b7905b3886ddc65e1302ab0}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+1\+S\+\_\+532\+US}}~(0x0018)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a7e8f3e15eb342e4017ce8b40d9e45df4}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+2\+S\+\_\+1060\+US}}~(0x0048)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_ae79de658afe40b001599b427ad0e422e}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+4\+S\+\_\+2130\+US}}~(0x0050)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a7428c7addebaa5b9aaa6e31a0496f985}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+8\+S\+\_\+4260\+US}}~(0x0058)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a7f10bc4a3568d9bfba99b06366912c25}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+16\+S\+\_\+8510\+US}}~(0x0060)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_ad8db635b9b74fd35770f2e9f358e5d3c}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+32\+S\+\_\+17\+MS}}~(0x0068)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_aa33b672941052c6da97899497500bc98}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+64\+S\+\_\+34\+MS}}~(0x0070)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a1af179aacc95e04c481a21e802760a96}{INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+128\+S\+\_\+69\+MS}}
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a4639c3e728dcc082e243c31cf2b9469f}{INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+POWERDOWN}}~(0x0000)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a5c4a1c599233f852502ad2f7ee3ae2b0}{INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+SVOLT\+\_\+\+TRIGGERED}}~(0x0001)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_af9433b42b282b3f5d935a321e412a2a2}{INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+BVOLT\+\_\+\+TRIGGERED}}~(0x0002)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a725bb885908b7f56cfc77643ecd6a7f4}{INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+SANDBVOLT\+\_\+\+TRIGGERED}}~(0x0003)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a6991875e5439b39e38d0498aab34012b}{INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+ADCOFF}}~(0x0004)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a55e50dbd5c75ea8bd3b12edd2890f49e}{INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+SVOLT\+\_\+\+CONTINUOUS}}~(0x0005)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_aebd74683b8cd423c6b297ff8c354d1fa}{INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+BVOLT\+\_\+\+CONTINUOUS}}~(0x0006)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_ae59958649943c6838bf41c47ec551152}{INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+SANDBVOLT\+\_\+\+CONTINUOUS}}~(0x0007)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a99de9caaed1cbc48b2ecfe4b6c5ef59d}{INA219\+\_\+\+REG\+\_\+\+SHUNTVOLTAGE}}~(0x01)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a06987d28f8a8885f7d1f6a10d0ec6b3b}{INA219\+\_\+\+REG\+\_\+\+BUSVOLTAGE}}~(0x02)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_add277c6e0a9783de517e8a2ee2cdad86}{INA219\+\_\+\+REG\+\_\+\+POWER}}~(0x03)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_aee975d7ad192f4eadf01b6d96c1a7c50}{INA219\+\_\+\+REG\+\_\+\+CURRENT}}~(0x04)
+\item 
+\#define \mbox{\hyperlink{dev__ina219_8h_a7ec015caf45bb013e8858a6e53e47e3c}{INA219\+\_\+\+REG\+\_\+\+CALIBRATION}}~(0x05)
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{dev__ina219_8h_ad1082efd7eef489c5ed57c7884eac570}\label{dev__ina219_8h_ad1082efd7eef489c5ed57c7884eac570}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_ad1082efd7eef489c5ed57c7884eac570}{ina219\+Init}} (void)
+\begin{DoxyCompactList}\small\item\em Initialises the I2C block. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8h_a9dd812ec2d9030c7edaa1ea397d2c53e}\label{dev__ina219_8h_a9dd812ec2d9030c7edaa1ea397d2c53e}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a9dd812ec2d9030c7edaa1ea397d2c53e}{ina219\+Get\+Shunt\+Voltage}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the shunt voltage (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8h_a439f8a8e2a42bbe0ca5b2b48da9a1e80}\label{dev__ina219_8h_a439f8a8e2a42bbe0ca5b2b48da9a1e80}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a439f8a8e2a42bbe0ca5b2b48da9a1e80}{ina219\+Get\+Bus\+Voltage}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the Bus voltage (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8h_a1cc61b66b7d48f392e3f71196df47d16}\label{dev__ina219_8h_a1cc61b66b7d48f392e3f71196df47d16}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a1cc61b66b7d48f392e3f71196df47d16}{ina219\+Get\+Power}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the raw power value (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8h_a9cecf583ae9c089a9e251c60c2ead1cd}\label{dev__ina219_8h_a9cecf583ae9c089a9e251c60c2ead1cd}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a9cecf583ae9c089a9e251c60c2ead1cd}{ina219\+Get\+Power\+\_\+mW}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the power value in mW, taking into account the config settings and power LSB. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8h_a6817c5f0df62fbc15d365d4278e9fedc}\label{dev__ina219_8h_a6817c5f0df62fbc15d365d4278e9fedc}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a6817c5f0df62fbc15d365d4278e9fedc}{ina219\+Get\+Current}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the raw current value (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8h_a8878cb36e1b8abff9203dfe682f3a067}\label{dev__ina219_8h_a8878cb36e1b8abff9203dfe682f3a067}} 
+int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a8878cb36e1b8abff9203dfe682f3a067}{ina219\+Get\+Current\+\_\+mA}} (void)
+\begin{DoxyCompactList}\small\item\em Gets the current value in mA, taking into account the config settings and current LSB. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ina219_8h_a0106e7103c25bb310f1e2ec005bbad4e}\label{dev__ina219_8h_a0106e7103c25bb310f1e2ec005bbad4e}} 
+bool \mbox{\hyperlink{dev__ina219_8h_a0106e7103c25bb310f1e2ec005bbad4e}{ina219\+Calibrate\+Current\+\_\+mA}} (float, float)
+\begin{DoxyCompactList}\small\item\em Compute the Corrected Full scale calibration based on measurement made by external Ampmeter. The new calibration value will be written the calibration register. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{dev__ina219_8h_af689fd46743cbb4d4453ff8a27141c4a}{ina219\+Set\+Calibration\+\_\+32\+V\+\_\+2A}} (void)
+\begin{DoxyCompactList}\small\item\em Configures to INA219 to be able to measure up to 32V and 2A of current. Each unit of current corresponds to 100uA, and each unit of power corresponds to 2mW. Counter overflow occurs at 3.\+2A. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{dev__ina219_8h_a13e153c23838f8402313939b9e090349}{ina219\+Set\+Calibration\+\_\+32\+V\+\_\+1A}} (void)
+\begin{DoxyCompactList}\small\item\em Configures to INA219 to be able to measure up to 32V and 1A of current. Each unit of current corresponds to 40uA, and each unit of power corresponds to 800{\ucr}W. Counter overflow occurs at 1.\+3A. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{dev__ina219_8h_a0f3082d3ff4d3b02eeacde87f6508601}{ina219\+Set\+Calibration\+\_\+16\+V\+\_\+500mA}} (void)
+\begin{DoxyCompactList}\small\item\em Configures to INA219 to be able to measure up to 16V and 500mA of current. Each unit of current corresponds to 25uA, and each unit of power corresponds to 500{\ucr}W. Counter overflow occurs at 800mA. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{dev__ina219_8h_a0555986238248c917cdd71076aa56417}{ina219\+Set\+Calibration\+\_\+16\+V\+\_\+200mA}} (void)
+\begin{DoxyCompactList}\small\item\em Configures to INA219 to be able to measure up to 16V and 200mA of current. Each unit of current corresponds to 10uA, and each unit of power corresponds to 200{\ucr}W. Counter overflow occurs at 327mA. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+K. Townsend (micro\+Builder.\+eu)
+\end{DoxyAuthor}
+Software License Agreement (BSD License)
+
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2012 Kevin Townsend All rights reserved.
+\end{DoxyCopyright}
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met\+:
+\begin{DoxyEnumerate}
+\item Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+\item Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+\item Neither the name of the copyright holders nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+\end{DoxyEnumerate}
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS \textquotesingle{}\textquotesingle{}AS IS\textquotesingle{}\textquotesingle{} AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{dev__ina219_8h_a01099281ea98bb6c1aab825f05d9818c}\label{dev__ina219_8h_a01099281ea98bb6c1aab825f05d9818c}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_ADDRESS@{INA219\_ADDRESS}}
+\index{INA219\_ADDRESS@{INA219\_ADDRESS}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_ADDRESS}{INA219\_ADDRESS}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+ADDRESS~(0x40)}
+
+I2C address for the INA219 (1000000x, A0+\+A1=GND) \mbox{\Hypertarget{dev__ina219_8h_a3584f3094bde83197ac048ba30cb098a}\label{dev__ina219_8h_a3584f3094bde83197ac048ba30cb098a}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_BADCRES\_10BIT@{INA219\_CONFIG\_BADCRES\_10BIT}}
+\index{INA219\_CONFIG\_BADCRES\_10BIT@{INA219\_CONFIG\_BADCRES\_10BIT}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_BADCRES\_10BIT}{INA219\_CONFIG\_BADCRES\_10BIT}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+BADCRES\+\_\+10\+BIT~(0x0100)}
+
+10-\/bit bus resolution (0..1023) \mbox{\Hypertarget{dev__ina219_8h_ae3db11dbb70a050d2a2874e0046388dd}\label{dev__ina219_8h_ae3db11dbb70a050d2a2874e0046388dd}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_BADCRES\_11BIT@{INA219\_CONFIG\_BADCRES\_11BIT}}
+\index{INA219\_CONFIG\_BADCRES\_11BIT@{INA219\_CONFIG\_BADCRES\_11BIT}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_BADCRES\_11BIT}{INA219\_CONFIG\_BADCRES\_11BIT}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+BADCRES\+\_\+11\+BIT~(0x0200)}
+
+11-\/bit bus resolution (0..2047) \mbox{\Hypertarget{dev__ina219_8h_abf7a96ea74821b566674fc6fff9145e7}\label{dev__ina219_8h_abf7a96ea74821b566674fc6fff9145e7}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_BADCRES\_12BIT@{INA219\_CONFIG\_BADCRES\_12BIT}}
+\index{INA219\_CONFIG\_BADCRES\_12BIT@{INA219\_CONFIG\_BADCRES\_12BIT}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_BADCRES\_12BIT}{INA219\_CONFIG\_BADCRES\_12BIT}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+BADCRES\+\_\+12\+BIT~(0x0400)}
+
+12-\/bit bus resolution (0..4097) \mbox{\Hypertarget{dev__ina219_8h_a1ae7ce7a162dc4863e752db15b35dfe2}\label{dev__ina219_8h_a1ae7ce7a162dc4863e752db15b35dfe2}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_BADCRES\_9BIT@{INA219\_CONFIG\_BADCRES\_9BIT}}
+\index{INA219\_CONFIG\_BADCRES\_9BIT@{INA219\_CONFIG\_BADCRES\_9BIT}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_BADCRES\_9BIT}{INA219\_CONFIG\_BADCRES\_9BIT}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+BADCRES\+\_\+9\+BIT~(0x0080)}
+
+9-\/bit bus resolution (0..511) \mbox{\Hypertarget{dev__ina219_8h_ad4b5799502981d36922ce087aa5b96c9}\label{dev__ina219_8h_ad4b5799502981d36922ce087aa5b96c9}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_BADCRES\_MASK@{INA219\_CONFIG\_BADCRES\_MASK}}
+\index{INA219\_CONFIG\_BADCRES\_MASK@{INA219\_CONFIG\_BADCRES\_MASK}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_BADCRES\_MASK}{INA219\_CONFIG\_BADCRES\_MASK}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+BADCRES\+\_\+\+MASK~(0x0780)}
+
+Bus ADC Resolution Mask \mbox{\Hypertarget{dev__ina219_8h_a7e1c180000f96904a5ff34a644bdd95c}\label{dev__ina219_8h_a7e1c180000f96904a5ff34a644bdd95c}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_BVOLTAGERANGE\_16V@{INA219\_CONFIG\_BVOLTAGERANGE\_16V}}
+\index{INA219\_CONFIG\_BVOLTAGERANGE\_16V@{INA219\_CONFIG\_BVOLTAGERANGE\_16V}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_BVOLTAGERANGE\_16V}{INA219\_CONFIG\_BVOLTAGERANGE\_16V}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+BVOLTAGERANGE\+\_\+16V~(0x0000)}
+
+0-\/16V Range \mbox{\Hypertarget{dev__ina219_8h_ad32b39f4f24dc2db8dd288e94a534556}\label{dev__ina219_8h_ad32b39f4f24dc2db8dd288e94a534556}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_BVOLTAGERANGE\_32V@{INA219\_CONFIG\_BVOLTAGERANGE\_32V}}
+\index{INA219\_CONFIG\_BVOLTAGERANGE\_32V@{INA219\_CONFIG\_BVOLTAGERANGE\_32V}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_BVOLTAGERANGE\_32V}{INA219\_CONFIG\_BVOLTAGERANGE\_32V}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+BVOLTAGERANGE\+\_\+32V~(0x4000)}
+
+0-\/32V Range \mbox{\Hypertarget{dev__ina219_8h_a9cee115fade153b8c7ffd6e26c18ecd7}\label{dev__ina219_8h_a9cee115fade153b8c7ffd6e26c18ecd7}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_BVOLTAGERANGE\_MASK@{INA219\_CONFIG\_BVOLTAGERANGE\_MASK}}
+\index{INA219\_CONFIG\_BVOLTAGERANGE\_MASK@{INA219\_CONFIG\_BVOLTAGERANGE\_MASK}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_BVOLTAGERANGE\_MASK}{INA219\_CONFIG\_BVOLTAGERANGE\_MASK}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+BVOLTAGERANGE\+\_\+\+MASK~(0x4000)}
+
+Bus Voltage Range Mask \mbox{\Hypertarget{dev__ina219_8h_a482b33e14683520440d9d5d7d8a60f5b}\label{dev__ina219_8h_a482b33e14683520440d9d5d7d8a60f5b}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_GAIN\_1\_40MV@{INA219\_CONFIG\_GAIN\_1\_40MV}}
+\index{INA219\_CONFIG\_GAIN\_1\_40MV@{INA219\_CONFIG\_GAIN\_1\_40MV}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_GAIN\_1\_40MV}{INA219\_CONFIG\_GAIN\_1\_40MV}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+GAIN\+\_\+1\+\_\+40\+MV~(0x0000)}
+
+Gain 1, 40mV Range \mbox{\Hypertarget{dev__ina219_8h_ae69050bf9d50064cd07c1d45eb19b573}\label{dev__ina219_8h_ae69050bf9d50064cd07c1d45eb19b573}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_GAIN\_2\_80MV@{INA219\_CONFIG\_GAIN\_2\_80MV}}
+\index{INA219\_CONFIG\_GAIN\_2\_80MV@{INA219\_CONFIG\_GAIN\_2\_80MV}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_GAIN\_2\_80MV}{INA219\_CONFIG\_GAIN\_2\_80MV}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+GAIN\+\_\+2\+\_\+80\+MV~(0x0800)}
+
+Gain 2, 80mV Range \mbox{\Hypertarget{dev__ina219_8h_a2e9187cd26bc92a34d80323c34034eb1}\label{dev__ina219_8h_a2e9187cd26bc92a34d80323c34034eb1}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_GAIN\_4\_160MV@{INA219\_CONFIG\_GAIN\_4\_160MV}}
+\index{INA219\_CONFIG\_GAIN\_4\_160MV@{INA219\_CONFIG\_GAIN\_4\_160MV}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_GAIN\_4\_160MV}{INA219\_CONFIG\_GAIN\_4\_160MV}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+GAIN\+\_\+4\+\_\+160\+MV~(0x1000)}
+
+Gain 4, 160mV Range \mbox{\Hypertarget{dev__ina219_8h_a086319bc54174428df94c299e9a50327}\label{dev__ina219_8h_a086319bc54174428df94c299e9a50327}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_GAIN\_8\_320MV@{INA219\_CONFIG\_GAIN\_8\_320MV}}
+\index{INA219\_CONFIG\_GAIN\_8\_320MV@{INA219\_CONFIG\_GAIN\_8\_320MV}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_GAIN\_8\_320MV}{INA219\_CONFIG\_GAIN\_8\_320MV}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+GAIN\+\_\+8\+\_\+320\+MV~(0x1800)}
+
+Gain 8, 320mV Range \mbox{\Hypertarget{dev__ina219_8h_a5bf05963e83908f3345438959694a0ba}\label{dev__ina219_8h_a5bf05963e83908f3345438959694a0ba}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_GAIN\_MASK@{INA219\_CONFIG\_GAIN\_MASK}}
+\index{INA219\_CONFIG\_GAIN\_MASK@{INA219\_CONFIG\_GAIN\_MASK}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_GAIN\_MASK}{INA219\_CONFIG\_GAIN\_MASK}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+GAIN\+\_\+\+MASK~(0x1800)}
+
+Gain Mask \mbox{\Hypertarget{dev__ina219_8h_a6991875e5439b39e38d0498aab34012b}\label{dev__ina219_8h_a6991875e5439b39e38d0498aab34012b}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_MODE\_ADCOFF@{INA219\_CONFIG\_MODE\_ADCOFF}}
+\index{INA219\_CONFIG\_MODE\_ADCOFF@{INA219\_CONFIG\_MODE\_ADCOFF}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_MODE\_ADCOFF}{INA219\_CONFIG\_MODE\_ADCOFF}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+ADCOFF~(0x0004)}
+
+ADC off mode \mbox{\Hypertarget{dev__ina219_8h_aebd74683b8cd423c6b297ff8c354d1fa}\label{dev__ina219_8h_aebd74683b8cd423c6b297ff8c354d1fa}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_MODE\_BVOLT\_CONTINUOUS@{INA219\_CONFIG\_MODE\_BVOLT\_CONTINUOUS}}
+\index{INA219\_CONFIG\_MODE\_BVOLT\_CONTINUOUS@{INA219\_CONFIG\_MODE\_BVOLT\_CONTINUOUS}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_MODE\_BVOLT\_CONTINUOUS}{INA219\_CONFIG\_MODE\_BVOLT\_CONTINUOUS}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+BVOLT\+\_\+\+CONTINUOUS~(0x0006)}
+
+Continuous bus voltage mode \mbox{\Hypertarget{dev__ina219_8h_af9433b42b282b3f5d935a321e412a2a2}\label{dev__ina219_8h_af9433b42b282b3f5d935a321e412a2a2}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_MODE\_BVOLT\_TRIGGERED@{INA219\_CONFIG\_MODE\_BVOLT\_TRIGGERED}}
+\index{INA219\_CONFIG\_MODE\_BVOLT\_TRIGGERED@{INA219\_CONFIG\_MODE\_BVOLT\_TRIGGERED}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_MODE\_BVOLT\_TRIGGERED}{INA219\_CONFIG\_MODE\_BVOLT\_TRIGGERED}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+BVOLT\+\_\+\+TRIGGERED~(0x0002)}
+
+Bus voltage triggered mode \mbox{\Hypertarget{dev__ina219_8h_a4639c3e728dcc082e243c31cf2b9469f}\label{dev__ina219_8h_a4639c3e728dcc082e243c31cf2b9469f}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_MODE\_POWERDOWN@{INA219\_CONFIG\_MODE\_POWERDOWN}}
+\index{INA219\_CONFIG\_MODE\_POWERDOWN@{INA219\_CONFIG\_MODE\_POWERDOWN}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_MODE\_POWERDOWN}{INA219\_CONFIG\_MODE\_POWERDOWN}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+POWERDOWN~(0x0000)}
+
+Power down mode \mbox{\Hypertarget{dev__ina219_8h_ae59958649943c6838bf41c47ec551152}\label{dev__ina219_8h_ae59958649943c6838bf41c47ec551152}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_MODE\_SANDBVOLT\_CONTINUOUS@{INA219\_CONFIG\_MODE\_SANDBVOLT\_CONTINUOUS}}
+\index{INA219\_CONFIG\_MODE\_SANDBVOLT\_CONTINUOUS@{INA219\_CONFIG\_MODE\_SANDBVOLT\_CONTINUOUS}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_MODE\_SANDBVOLT\_CONTINUOUS}{INA219\_CONFIG\_MODE\_SANDBVOLT\_CONTINUOUS}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+SANDBVOLT\+\_\+\+CONTINUOUS~(0x0007)}
+
+Continuous sandshunt and bus voltage mode \mbox{\Hypertarget{dev__ina219_8h_a725bb885908b7f56cfc77643ecd6a7f4}\label{dev__ina219_8h_a725bb885908b7f56cfc77643ecd6a7f4}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_MODE\_SANDBVOLT\_TRIGGERED@{INA219\_CONFIG\_MODE\_SANDBVOLT\_TRIGGERED}}
+\index{INA219\_CONFIG\_MODE\_SANDBVOLT\_TRIGGERED@{INA219\_CONFIG\_MODE\_SANDBVOLT\_TRIGGERED}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_MODE\_SANDBVOLT\_TRIGGERED}{INA219\_CONFIG\_MODE\_SANDBVOLT\_TRIGGERED}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+SANDBVOLT\+\_\+\+TRIGGERED~(0x0003)}
+
+Sandshunt and bus voltage triggered mode \mbox{\Hypertarget{dev__ina219_8h_a55e50dbd5c75ea8bd3b12edd2890f49e}\label{dev__ina219_8h_a55e50dbd5c75ea8bd3b12edd2890f49e}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_MODE\_SVOLT\_CONTINUOUS@{INA219\_CONFIG\_MODE\_SVOLT\_CONTINUOUS}}
+\index{INA219\_CONFIG\_MODE\_SVOLT\_CONTINUOUS@{INA219\_CONFIG\_MODE\_SVOLT\_CONTINUOUS}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_MODE\_SVOLT\_CONTINUOUS}{INA219\_CONFIG\_MODE\_SVOLT\_CONTINUOUS}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+SVOLT\+\_\+\+CONTINUOUS~(0x0005)}
+
+Continuous shunt voltage mode \mbox{\Hypertarget{dev__ina219_8h_a5c4a1c599233f852502ad2f7ee3ae2b0}\label{dev__ina219_8h_a5c4a1c599233f852502ad2f7ee3ae2b0}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_MODE\_SVOLT\_TRIGGERED@{INA219\_CONFIG\_MODE\_SVOLT\_TRIGGERED}}
+\index{INA219\_CONFIG\_MODE\_SVOLT\_TRIGGERED@{INA219\_CONFIG\_MODE\_SVOLT\_TRIGGERED}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_MODE\_SVOLT\_TRIGGERED}{INA219\_CONFIG\_MODE\_SVOLT\_TRIGGERED}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+MODE\+\_\+\+SVOLT\+\_\+\+TRIGGERED~(0x0001)}
+
+Shunt voltage triggered mode \mbox{\Hypertarget{dev__ina219_8h_a2f369100185ff9e3855dcab0eee318ad}\label{dev__ina219_8h_a2f369100185ff9e3855dcab0eee318ad}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_RESET@{INA219\_CONFIG\_RESET}}
+\index{INA219\_CONFIG\_RESET@{INA219\_CONFIG\_RESET}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_RESET}{INA219\_CONFIG\_RESET}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+RESET~(0x8000)}
+
+Reset bit for the configuration register \mbox{\Hypertarget{dev__ina219_8h_a76cd8ee0d01e5cbb23fbe8ea3414552a}\label{dev__ina219_8h_a76cd8ee0d01e5cbb23fbe8ea3414552a}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_10BIT\_1S\_148US@{INA219\_CONFIG\_SADCRES\_10BIT\_1S\_148US}}
+\index{INA219\_CONFIG\_SADCRES\_10BIT\_1S\_148US@{INA219\_CONFIG\_SADCRES\_10BIT\_1S\_148US}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_10BIT\_1S\_148US}{INA219\_CONFIG\_SADCRES\_10BIT\_1S\_148US}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+10\+BIT\+\_\+1\+S\+\_\+148\+US~(0x0008)}
+
+1 x 10-\/bit shunt sample \mbox{\Hypertarget{dev__ina219_8h_acdb3b9e1ccf36005c86580edfcce8c18}\label{dev__ina219_8h_acdb3b9e1ccf36005c86580edfcce8c18}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_11BIT\_1S\_276US@{INA219\_CONFIG\_SADCRES\_11BIT\_1S\_276US}}
+\index{INA219\_CONFIG\_SADCRES\_11BIT\_1S\_276US@{INA219\_CONFIG\_SADCRES\_11BIT\_1S\_276US}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_11BIT\_1S\_276US}{INA219\_CONFIG\_SADCRES\_11BIT\_1S\_276US}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+11\+BIT\+\_\+1\+S\+\_\+276\+US~(0x0010)}
+
+1 x 11-\/bit shunt sample \mbox{\Hypertarget{dev__ina219_8h_a1af179aacc95e04c481a21e802760a96}\label{dev__ina219_8h_a1af179aacc95e04c481a21e802760a96}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_12BIT\_128S\_69MS@{INA219\_CONFIG\_SADCRES\_12BIT\_128S\_69MS}}
+\index{INA219\_CONFIG\_SADCRES\_12BIT\_128S\_69MS@{INA219\_CONFIG\_SADCRES\_12BIT\_128S\_69MS}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_12BIT\_128S\_69MS}{INA219\_CONFIG\_SADCRES\_12BIT\_128S\_69MS}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+128\+S\+\_\+69\+MS}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{(0x0078)  }
+
+\end{DoxyCode}
+Operating Mode Mask \mbox{\Hypertarget{dev__ina219_8h_a7f10bc4a3568d9bfba99b06366912c25}\label{dev__ina219_8h_a7f10bc4a3568d9bfba99b06366912c25}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_12BIT\_16S\_8510US@{INA219\_CONFIG\_SADCRES\_12BIT\_16S\_8510US}}
+\index{INA219\_CONFIG\_SADCRES\_12BIT\_16S\_8510US@{INA219\_CONFIG\_SADCRES\_12BIT\_16S\_8510US}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_12BIT\_16S\_8510US}{INA219\_CONFIG\_SADCRES\_12BIT\_16S\_8510US}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+16\+S\+\_\+8510\+US~(0x0060)}
+
+16 x 12-\/bit shunt samples averaged together \mbox{\Hypertarget{dev__ina219_8h_ae72b14ab7b7905b3886ddc65e1302ab0}\label{dev__ina219_8h_ae72b14ab7b7905b3886ddc65e1302ab0}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_12BIT\_1S\_532US@{INA219\_CONFIG\_SADCRES\_12BIT\_1S\_532US}}
+\index{INA219\_CONFIG\_SADCRES\_12BIT\_1S\_532US@{INA219\_CONFIG\_SADCRES\_12BIT\_1S\_532US}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_12BIT\_1S\_532US}{INA219\_CONFIG\_SADCRES\_12BIT\_1S\_532US}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+1\+S\+\_\+532\+US~(0x0018)}
+
+1 x 12-\/bit shunt sample \mbox{\Hypertarget{dev__ina219_8h_a7e8f3e15eb342e4017ce8b40d9e45df4}\label{dev__ina219_8h_a7e8f3e15eb342e4017ce8b40d9e45df4}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_12BIT\_2S\_1060US@{INA219\_CONFIG\_SADCRES\_12BIT\_2S\_1060US}}
+\index{INA219\_CONFIG\_SADCRES\_12BIT\_2S\_1060US@{INA219\_CONFIG\_SADCRES\_12BIT\_2S\_1060US}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_12BIT\_2S\_1060US}{INA219\_CONFIG\_SADCRES\_12BIT\_2S\_1060US}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+2\+S\+\_\+1060\+US~(0x0048)}
+
+2 x 12-\/bit shunt samples averaged together \mbox{\Hypertarget{dev__ina219_8h_ad8db635b9b74fd35770f2e9f358e5d3c}\label{dev__ina219_8h_ad8db635b9b74fd35770f2e9f358e5d3c}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_12BIT\_32S\_17MS@{INA219\_CONFIG\_SADCRES\_12BIT\_32S\_17MS}}
+\index{INA219\_CONFIG\_SADCRES\_12BIT\_32S\_17MS@{INA219\_CONFIG\_SADCRES\_12BIT\_32S\_17MS}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_12BIT\_32S\_17MS}{INA219\_CONFIG\_SADCRES\_12BIT\_32S\_17MS}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+32\+S\+\_\+17\+MS~(0x0068)}
+
+32 x 12-\/bit shunt samples averaged together \mbox{\Hypertarget{dev__ina219_8h_ae79de658afe40b001599b427ad0e422e}\label{dev__ina219_8h_ae79de658afe40b001599b427ad0e422e}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_12BIT\_4S\_2130US@{INA219\_CONFIG\_SADCRES\_12BIT\_4S\_2130US}}
+\index{INA219\_CONFIG\_SADCRES\_12BIT\_4S\_2130US@{INA219\_CONFIG\_SADCRES\_12BIT\_4S\_2130US}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_12BIT\_4S\_2130US}{INA219\_CONFIG\_SADCRES\_12BIT\_4S\_2130US}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+4\+S\+\_\+2130\+US~(0x0050)}
+
+4 x 12-\/bit shunt samples averaged together \mbox{\Hypertarget{dev__ina219_8h_aa33b672941052c6da97899497500bc98}\label{dev__ina219_8h_aa33b672941052c6da97899497500bc98}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_12BIT\_64S\_34MS@{INA219\_CONFIG\_SADCRES\_12BIT\_64S\_34MS}}
+\index{INA219\_CONFIG\_SADCRES\_12BIT\_64S\_34MS@{INA219\_CONFIG\_SADCRES\_12BIT\_64S\_34MS}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_12BIT\_64S\_34MS}{INA219\_CONFIG\_SADCRES\_12BIT\_64S\_34MS}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+64\+S\+\_\+34\+MS~(0x0070)}
+
+64 x 12-\/bit shunt samples averaged together \mbox{\Hypertarget{dev__ina219_8h_a7428c7addebaa5b9aaa6e31a0496f985}\label{dev__ina219_8h_a7428c7addebaa5b9aaa6e31a0496f985}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_12BIT\_8S\_4260US@{INA219\_CONFIG\_SADCRES\_12BIT\_8S\_4260US}}
+\index{INA219\_CONFIG\_SADCRES\_12BIT\_8S\_4260US@{INA219\_CONFIG\_SADCRES\_12BIT\_8S\_4260US}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_12BIT\_8S\_4260US}{INA219\_CONFIG\_SADCRES\_12BIT\_8S\_4260US}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+12\+BIT\+\_\+8\+S\+\_\+4260\+US~(0x0058)}
+
+8 x 12-\/bit shunt samples averaged together \mbox{\Hypertarget{dev__ina219_8h_a145f24ba90d5312247ab0971bc6c3414}\label{dev__ina219_8h_a145f24ba90d5312247ab0971bc6c3414}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_9BIT\_1S\_84US@{INA219\_CONFIG\_SADCRES\_9BIT\_1S\_84US}}
+\index{INA219\_CONFIG\_SADCRES\_9BIT\_1S\_84US@{INA219\_CONFIG\_SADCRES\_9BIT\_1S\_84US}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_9BIT\_1S\_84US}{INA219\_CONFIG\_SADCRES\_9BIT\_1S\_84US}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+9\+BIT\+\_\+1\+S\+\_\+84\+US~(0x0000)}
+
+1 x 9-\/bit shunt sample \mbox{\Hypertarget{dev__ina219_8h_ad66384c679c835a2ab915fc50db2ed78}\label{dev__ina219_8h_ad66384c679c835a2ab915fc50db2ed78}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_CONFIG\_SADCRES\_MASK@{INA219\_CONFIG\_SADCRES\_MASK}}
+\index{INA219\_CONFIG\_SADCRES\_MASK@{INA219\_CONFIG\_SADCRES\_MASK}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_CONFIG\_SADCRES\_MASK}{INA219\_CONFIG\_SADCRES\_MASK}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+CONFIG\+\_\+\+SADCRES\+\_\+\+MASK~(0x0078)}
+
+Shunt ADC Resolution and Averaging Mask \mbox{\Hypertarget{dev__ina219_8h_acf1557fd16ff50351f795b87a9d4cddf}\label{dev__ina219_8h_acf1557fd16ff50351f795b87a9d4cddf}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_READ@{INA219\_READ}}
+\index{INA219\_READ@{INA219\_READ}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_READ}{INA219\_READ}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+READ~(0x01)}
+
+Read command for the INA219 \mbox{\Hypertarget{dev__ina219_8h_a06987d28f8a8885f7d1f6a10d0ec6b3b}\label{dev__ina219_8h_a06987d28f8a8885f7d1f6a10d0ec6b3b}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_REG\_BUSVOLTAGE@{INA219\_REG\_BUSVOLTAGE}}
+\index{INA219\_REG\_BUSVOLTAGE@{INA219\_REG\_BUSVOLTAGE}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_REG\_BUSVOLTAGE}{INA219\_REG\_BUSVOLTAGE}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+REG\+\_\+\+BUSVOLTAGE~(0x02)}
+
+Bus Voltage Register (Read-\/only) \mbox{\Hypertarget{dev__ina219_8h_a7ec015caf45bb013e8858a6e53e47e3c}\label{dev__ina219_8h_a7ec015caf45bb013e8858a6e53e47e3c}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_REG\_CALIBRATION@{INA219\_REG\_CALIBRATION}}
+\index{INA219\_REG\_CALIBRATION@{INA219\_REG\_CALIBRATION}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_REG\_CALIBRATION}{INA219\_REG\_CALIBRATION}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+REG\+\_\+\+CALIBRATION~(0x05)}
+
+Calibration Register (Read/\+Write) \mbox{\Hypertarget{dev__ina219_8h_aab641248471a0f356b9ff6329bcd8084}\label{dev__ina219_8h_aab641248471a0f356b9ff6329bcd8084}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_REG\_CONFIG@{INA219\_REG\_CONFIG}}
+\index{INA219\_REG\_CONFIG@{INA219\_REG\_CONFIG}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_REG\_CONFIG}{INA219\_REG\_CONFIG}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+REG\+\_\+\+CONFIG~(0x00)}
+
+Configuration register address for INA219 \mbox{\Hypertarget{dev__ina219_8h_aee975d7ad192f4eadf01b6d96c1a7c50}\label{dev__ina219_8h_aee975d7ad192f4eadf01b6d96c1a7c50}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_REG\_CURRENT@{INA219\_REG\_CURRENT}}
+\index{INA219\_REG\_CURRENT@{INA219\_REG\_CURRENT}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_REG\_CURRENT}{INA219\_REG\_CURRENT}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+REG\+\_\+\+CURRENT~(0x04)}
+
+Current Register (Read-\/only) \mbox{\Hypertarget{dev__ina219_8h_add277c6e0a9783de517e8a2ee2cdad86}\label{dev__ina219_8h_add277c6e0a9783de517e8a2ee2cdad86}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_REG\_POWER@{INA219\_REG\_POWER}}
+\index{INA219\_REG\_POWER@{INA219\_REG\_POWER}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_REG\_POWER}{INA219\_REG\_POWER}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+REG\+\_\+\+POWER~(0x03)}
+
+Power Register (Read-\/only) \mbox{\Hypertarget{dev__ina219_8h_a99de9caaed1cbc48b2ecfe4b6c5ef59d}\label{dev__ina219_8h_a99de9caaed1cbc48b2ecfe4b6c5ef59d}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!INA219\_REG\_SHUNTVOLTAGE@{INA219\_REG\_SHUNTVOLTAGE}}
+\index{INA219\_REG\_SHUNTVOLTAGE@{INA219\_REG\_SHUNTVOLTAGE}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{INA219\_REG\_SHUNTVOLTAGE}{INA219\_REG\_SHUNTVOLTAGE}}
+{\footnotesize\ttfamily \#define INA219\+\_\+\+REG\+\_\+\+SHUNTVOLTAGE~(0x01)}
+
+Shunt Voltage Register (Read-\/only) 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{dev__ina219_8h_a0555986238248c917cdd71076aa56417}\label{dev__ina219_8h_a0555986238248c917cdd71076aa56417}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!ina219SetCalibration\_16V\_200mA@{ina219SetCalibration\_16V\_200mA}}
+\index{ina219SetCalibration\_16V\_200mA@{ina219SetCalibration\_16V\_200mA}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{ina219SetCalibration\_16V\_200mA()}{ina219SetCalibration\_16V\_200mA()}}
+{\footnotesize\ttfamily void ina219\+Set\+Calibration\+\_\+16\+V\+\_\+200mA (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Configures to INA219 to be able to measure up to 16V and 200mA of current. Each unit of current corresponds to 10uA, and each unit of power corresponds to 200{\ucr}W. Counter overflow occurs at 327mA. 
+
+\begin{DoxyNote}{Note}
+These calculations assume a 0.\+1 ohm resistor is present 
+\end{DoxyNote}
+\mbox{\Hypertarget{dev__ina219_8h_a0f3082d3ff4d3b02eeacde87f6508601}\label{dev__ina219_8h_a0f3082d3ff4d3b02eeacde87f6508601}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!ina219SetCalibration\_16V\_500mA@{ina219SetCalibration\_16V\_500mA}}
+\index{ina219SetCalibration\_16V\_500mA@{ina219SetCalibration\_16V\_500mA}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{ina219SetCalibration\_16V\_500mA()}{ina219SetCalibration\_16V\_500mA()}}
+{\footnotesize\ttfamily void ina219\+Set\+Calibration\+\_\+16\+V\+\_\+500mA (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Configures to INA219 to be able to measure up to 16V and 500mA of current. Each unit of current corresponds to 25uA, and each unit of power corresponds to 500{\ucr}W. Counter overflow occurs at 800mA. 
+
+\begin{DoxyNote}{Note}
+These calculations assume a 0.\+1 ohm resistor is present 
+\end{DoxyNote}
+\mbox{\Hypertarget{dev__ina219_8h_a13e153c23838f8402313939b9e090349}\label{dev__ina219_8h_a13e153c23838f8402313939b9e090349}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!ina219SetCalibration\_32V\_1A@{ina219SetCalibration\_32V\_1A}}
+\index{ina219SetCalibration\_32V\_1A@{ina219SetCalibration\_32V\_1A}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{ina219SetCalibration\_32V\_1A()}{ina219SetCalibration\_32V\_1A()}}
+{\footnotesize\ttfamily void ina219\+Set\+Calibration\+\_\+32\+V\+\_\+1A (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Configures to INA219 to be able to measure up to 32V and 1A of current. Each unit of current corresponds to 40uA, and each unit of power corresponds to 800{\ucr}W. Counter overflow occurs at 1.\+3A. 
+
+\begin{DoxyNote}{Note}
+These calculations assume a 0.\+1 ohm resistor is present 
+\end{DoxyNote}
+\mbox{\Hypertarget{dev__ina219_8h_af689fd46743cbb4d4453ff8a27141c4a}\label{dev__ina219_8h_af689fd46743cbb4d4453ff8a27141c4a}} 
+\index{dev\_ina219.h@{dev\_ina219.h}!ina219SetCalibration\_32V\_2A@{ina219SetCalibration\_32V\_2A}}
+\index{ina219SetCalibration\_32V\_2A@{ina219SetCalibration\_32V\_2A}!dev\_ina219.h@{dev\_ina219.h}}
+\doxysubsubsection{\texorpdfstring{ina219SetCalibration\_32V\_2A()}{ina219SetCalibration\_32V\_2A()}}
+{\footnotesize\ttfamily void ina219\+Set\+Calibration\+\_\+32\+V\+\_\+2A (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Configures to INA219 to be able to measure up to 32V and 2A of current. Each unit of current corresponds to 100uA, and each unit of power corresponds to 2mW. Counter overflow occurs at 3.\+2A. 
+
+\begin{DoxyNote}{Note}
+These calculations assume a 0.\+1 ohm resistor is present 
+\end{DoxyNote}

@@ -1,0 +1,324 @@
+\hypertarget{fts__scpi_8c}{}\doxysection{firmware/src/fts\+\_\+scpi.c File Reference}
+\label{fts__scpi_8c}\index{firmware/src/fts\_scpi.c@{firmware/src/fts\_scpi.c}}
+
+
+Software code used to interpret the SCPI command reveived from external.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico/binary\+\_\+info.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+ds2431/dev\+\_\+ds2431.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/scpi\+\_\+user\+\_\+config.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/test.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/scpi\+\_\+uart.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/scpi\+\_\+spi.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/scpi\+\_\+i2c.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/fts\+\_\+scpi.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/i2c\+\_\+com.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/master.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/resets.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/functadv.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}userconfig.\+h\char`\"{}}\newline
+Include dependency graph for fts\+\_\+scpi.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{fts__scpi_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{fts__scpi_8c_a9a7c1484c5b4ba87be856a7f2e035e9c}{AIRCR\+\_\+\+Register}}~($\ast$((volatile uint32\+\_\+t$\ast$)(PPB\+\_\+\+BASE + 0x0\+ED0C)))
+\begin{DoxyCompactList}\small\item\em AIRCR Register for triggering a system reset. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{fts__scpi_8c_a3645008c6823af2701d99f6ed8dbe745}{SCPI\+\_\+write}} (scpi\+\_\+t $\ast$context, const char $\ast$data, size\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em The function write the SCPI answer to the main serial port. The answer is also saved on global variable to be analyzed on odule \mbox{\hyperlink{test_8c}{test.\+c}}. \end{DoxyCompactList}\item 
+scpi\+\_\+result\+\_\+t \mbox{\hyperlink{fts__scpi_8c_a227bd87e4d70c678726de2bc952fce8e}{SCPI\+\_\+\+Reset}} (scpi\+\_\+t $\ast$context)
+\begin{DoxyCompactList}\small\item\em function to execute the reset of the interconnect IO board following the SCPI command. Only master Pico is resetted because the Pico slaves are resetted during boot-\/up \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8c_a2ed9955bb22ad94c13ec34edc9221443}\label{fts__scpi_8c_a2ed9955bb22ad94c13ec34edc9221443}} 
+void \mbox{\hyperlink{fts__scpi_8c_a2ed9955bb22ad94c13ec34edc9221443}{SCPI\+\_\+\+Beep}} ()
+\begin{DoxyCompactList}\small\item\em Send a beep tone following a SCPI command or internal function. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fts__scpi_8c_a8f1450d6537fd16a2aee2464e2c1389d}{Error\+Beep}} (uint8\+\_\+t nbeep)
+\begin{DoxyCompactList}\small\item\em Send a burst of beep code to alert for boot error. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{fts__scpi_8c_a9ef6f5ccdda155e42c384b2d26059ead}{SCPI\+\_\+\+Error}} (scpi\+\_\+t $\ast$context, int\+\_\+fast16\+\_\+t err)
+\begin{DoxyCompactList}\small\item\em function called by SCPI when error is found. The function will perform a short beep and turn on the error led. If error =0, the error led will be turn off. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{fts__scpi_8c_af42bc85669ec90cef60c7e9ff2559982}{Reg\+Bit\+Hdwr\+Err}} (\mbox{\hyperlink{fts__scpi_8h_a85982a9f4f3912bfe0ba4286cd813ff2}{reg\+\_\+info\+\_\+index\+\_\+t}} index, bool scbit)
+\begin{DoxyCompactList}\small\item\em Set Bit on SCPI register Questionnable and Operation Send Bust of Beep to signal to operator the problem Send Error to Error Queue. \end{DoxyCompactList}\item 
+scpi\+\_\+result\+\_\+t \mbox{\hyperlink{fts__scpi_8c_acf3067fd6de75a9dbecc0d7a9d2520a2}{Relay\+\_\+\+Chanlst}} (scpi\+\_\+t $\ast$context, uint16\+\_\+t $\ast$array)
+\begin{DoxyCompactList}\small\item\em Parses a list of channel numbers and stores them in a 1-\/dimensional array. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8c_ae1d030d34d5920300f08fbe69d1ee7f7}\label{fts__scpi_8c_ae1d030d34d5920300f08fbe69d1ee7f7}} 
+void \mbox{\hyperlink{fts__scpi_8c_ae1d030d34d5920300f08fbe69d1ee7f7}{init\+\_\+scpi}} ()
+\begin{DoxyCompactList}\small\item\em initialization of the SCPI library \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+scpi\+\_\+t \mbox{\hyperlink{fts__scpi_8c_ac6f639c26fd1c7e210c2da424cfe628d}{scpi\+\_\+context}}
+\begin{DoxyCompactList}\small\item\em SCPI instance for managing SCPI command processing. \end{DoxyCompactList}\item 
+char \mbox{\hyperlink{fts__scpi_8c_a113f546829cbd826daf9590e55e1574d}{scpi\+\_\+input\+\_\+buffer}} \mbox{[}\mbox{\hyperlink{fts__scpi_8h_a442c3ab34e2b6b9a5d575e512035f687}{SCPI\+\_\+\+INPUT\+\_\+\+BUFFER\+\_\+\+SIZE}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Input buffer for reading SCPI commands. \end{DoxyCompactList}\item 
+scpi\+\_\+error\+\_\+t \mbox{\hyperlink{fts__scpi_8c_a6a23cb17e025c6f2e91f4dc6aba808cc}{scpi\+\_\+error\+\_\+queue}} \mbox{[}\mbox{\hyperlink{fts__scpi_8h_ae75d934bc66feba83b6ba36afd102038}{SCPI\+\_\+\+ERROR\+\_\+\+QUEUE\+\_\+\+SIZE}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Error queue required by the SCPI library. \end{DoxyCompactList}\item 
+scpi\+\_\+reg\+\_\+val\+\_\+t \mbox{\hyperlink{fts__scpi_8c_abe83b30d07c3ac33b304e0be004ac7f1}{srq\+\_\+val}} = 0
+\begin{DoxyCompactList}\small\item\em Global variable to reset the Service Request Register (SRQ). \end{DoxyCompactList}\item 
+scpi\+\_\+interface\+\_\+t \mbox{\hyperlink{fts__scpi_8c_a1169c4a1863fd98b478b89366c840f5d}{scpi\+\_\+interface}}
+\begin{DoxyCompactList}\small\item\em Additional callbacks to be used by the SCPI library. \end{DoxyCompactList}\item 
+const scpi\+\_\+choice\+\_\+def\+\_\+t \mbox{\hyperlink{fts__scpi_8c_a37caa61a74fce476d4d72c7d3ed9a889}{scpi\+\_\+special\+\_\+all\+\_\+numbers\+\_\+def}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em List of special string not already defined on SCPI parser. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{fts__scpi_8c_a5e7d16395b247e2e2a10d526b97b76cb}\label{fts__scpi_8c_a5e7d16395b247e2e2a10d526b97b76cb}} 
+scpi\+\_\+command\+\_\+t \mbox{\hyperlink{fts__scpi_8c_a5e7d16395b247e2e2a10d526b97b76cb}{scpi\+\_\+commands}} \mbox{[}$\,$\mbox{]}
+\begin{DoxyCompactList}\small\item\em The SCPI commands supported by the pico master and the callbacks they use. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Software code used to interpret the SCPI command reveived from external. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+This module contains all software functions related to SCPI command. THe SCPI command are defined on this module and the callback are executed on this module.
+
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2021, Jan Breuer. Simpled BSD license. Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{fts__scpi_8c_a9a7c1484c5b4ba87be856a7f2e035e9c}\label{fts__scpi_8c_a9a7c1484c5b4ba87be856a7f2e035e9c}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!AIRCR\_Register@{AIRCR\_Register}}
+\index{AIRCR\_Register@{AIRCR\_Register}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{AIRCR\_Register}{AIRCR\_Register}}
+{\footnotesize\ttfamily \#define AIRCR\+\_\+\+Register~($\ast$((volatile uint32\+\_\+t$\ast$)(PPB\+\_\+\+BASE + 0x0\+ED0C)))}
+
+
+
+AIRCR Register for triggering a system reset. 
+
+This macro allows access to the Application Interrupt and Reset Control Register (AIRCR) used for performing a system reset on the master Pico. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{fts__scpi_8c_a8f1450d6537fd16a2aee2464e2c1389d}\label{fts__scpi_8c_a8f1450d6537fd16a2aee2464e2c1389d}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!ErrorBeep@{ErrorBeep}}
+\index{ErrorBeep@{ErrorBeep}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{ErrorBeep()}{ErrorBeep()}}
+{\footnotesize\ttfamily void Error\+Beep (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{nbeep }\end{DoxyParamCaption})}
+
+
+
+Send a burst of beep code to alert for boot error. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em nbeep} & Number of beep on the burst \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fts__scpi_8c_af42bc85669ec90cef60c7e9ff2559982}\label{fts__scpi_8c_af42bc85669ec90cef60c7e9ff2559982}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!RegBitHdwrErr@{RegBitHdwrErr}}
+\index{RegBitHdwrErr@{RegBitHdwrErr}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{RegBitHdwrErr()}{RegBitHdwrErr()}}
+{\footnotesize\ttfamily void Reg\+Bit\+Hdwr\+Err (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{fts__scpi_8h_a85982a9f4f3912bfe0ba4286cd813ff2}{reg\+\_\+info\+\_\+index\+\_\+t}}}]{index,  }\item[{bool}]{scbit }\end{DoxyParamCaption})}
+
+
+
+Set Bit on SCPI register Questionnable and Operation Send Bust of Beep to signal to operator the problem Send Error to Error Queue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & Index to use on the Reginfo \\
+\hline
+{\em scbit} & Set or Clear particular bit on register \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{fts__scpi_8c_acf3067fd6de75a9dbecc0d7a9d2520a2}\label{fts__scpi_8c_acf3067fd6de75a9dbecc0d7a9d2520a2}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!Relay\_Chanlst@{Relay\_Chanlst}}
+\index{Relay\_Chanlst@{Relay\_Chanlst}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{Relay\_Chanlst()}{Relay\_Chanlst()}}
+{\footnotesize\ttfamily scpi\+\_\+result\+\_\+t Relay\+\_\+\+Chanlst (\begin{DoxyParamCaption}\item[{scpi\+\_\+t $\ast$}]{context,  }\item[{uint16\+\_\+t $\ast$}]{array }\end{DoxyParamCaption})}
+
+
+
+Parses a list of channel numbers and stores them in a 1-\/dimensional array. 
+
+This function is based on the SCPI parser for parsing lists of numbers, specifically channel numbers greater than 0. It has been modified to support only 1-\/dimensional arrays, as opposed to the original 2-\/dimensional support.
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & SCPI context structure used for parsing SCPI commands. \\
+\hline
+{\em array} & Pointer to an array where the parsed channel numbers will be stored.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+scpi\+\_\+result\+\_\+t Result of the SCPI parsing operation (e.\+g., success or failure).
+\end{DoxyReturn}
+\begin{DoxyNote}{Note}
+Compare this implementation to SCPI-\/99 Vol 1, Ch. 8.\+3.\+2 for details on channel parsing. 
+\end{DoxyNote}
+\mbox{\Hypertarget{fts__scpi_8c_a9ef6f5ccdda155e42c384b2d26059ead}\label{fts__scpi_8c_a9ef6f5ccdda155e42c384b2d26059ead}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!SCPI\_Error@{SCPI\_Error}}
+\index{SCPI\_Error@{SCPI\_Error}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{SCPI\_Error()}{SCPI\_Error()}}
+{\footnotesize\ttfamily int SCPI\+\_\+\+Error (\begin{DoxyParamCaption}\item[{scpi\+\_\+t $\ast$}]{context,  }\item[{int\+\_\+fast16\+\_\+t}]{err }\end{DoxyParamCaption})}
+
+
+
+function called by SCPI when error is found. The function will perform a short beep and turn on the error led. If error =0, the error led will be turn off. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & SCPI instance \\
+\hline
+{\em err} & Error number \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int True if function performed with success 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fts__scpi_8c_a227bd87e4d70c678726de2bc952fce8e}\label{fts__scpi_8c_a227bd87e4d70c678726de2bc952fce8e}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!SCPI\_Reset@{SCPI\_Reset}}
+\index{SCPI\_Reset@{SCPI\_Reset}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{SCPI\_Reset()}{SCPI\_Reset()}}
+{\footnotesize\ttfamily scpi\+\_\+result\+\_\+t SCPI\+\_\+\+Reset (\begin{DoxyParamCaption}\item[{scpi\+\_\+t $\ast$}]{context }\end{DoxyParamCaption})}
+
+
+
+function to execute the reset of the interconnect IO board following the SCPI command. Only master Pico is resetted because the Pico slaves are resetted during boot-\/up 
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & SCPI instance \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+scpi\+\_\+result\+\_\+t True if reset performed with success 
+\end{DoxyReturn}
+\mbox{\Hypertarget{fts__scpi_8c_a3645008c6823af2701d99f6ed8dbe745}\label{fts__scpi_8c_a3645008c6823af2701d99f6ed8dbe745}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!SCPI\_write@{SCPI\_write}}
+\index{SCPI\_write@{SCPI\_write}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{SCPI\_write()}{SCPI\_write()}}
+{\footnotesize\ttfamily size\+\_\+t SCPI\+\_\+write (\begin{DoxyParamCaption}\item[{scpi\+\_\+t $\ast$}]{context,  }\item[{const char $\ast$}]{data,  }\item[{size\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+The function write the SCPI answer to the main serial port. The answer is also saved on global variable to be analyzed on odule \mbox{\hyperlink{test_8c}{test.\+c}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & SCPI instance pointer \\
+\hline
+{\em data} & Pointer to the string of data \\
+\hline
+{\em len} & Length of the string \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+size\+\_\+t True if string written with success 
+\end{DoxyReturn}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{fts__scpi_8c_ac6f639c26fd1c7e210c2da424cfe628d}\label{fts__scpi_8c_ac6f639c26fd1c7e210c2da424cfe628d}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!scpi\_context@{scpi\_context}}
+\index{scpi\_context@{scpi\_context}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_context}{scpi\_context}}
+{\footnotesize\ttfamily scpi\+\_\+t scpi\+\_\+context}
+
+
+
+SCPI instance for managing SCPI command processing. 
+
+Holds the SCPI context instance for command execution. \mbox{\Hypertarget{fts__scpi_8c_a6a23cb17e025c6f2e91f4dc6aba808cc}\label{fts__scpi_8c_a6a23cb17e025c6f2e91f4dc6aba808cc}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!scpi\_error\_queue@{scpi\_error\_queue}}
+\index{scpi\_error\_queue@{scpi\_error\_queue}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_error\_queue}{scpi\_error\_queue}}
+{\footnotesize\ttfamily scpi\+\_\+error\+\_\+t scpi\+\_\+error\+\_\+queue\mbox{[}\mbox{\hyperlink{fts__scpi_8h_ae75d934bc66feba83b6ba36afd102038}{SCPI\+\_\+\+ERROR\+\_\+\+QUEUE\+\_\+\+SIZE}}\mbox{]}}
+
+
+
+Error queue required by the SCPI library. 
+
+This array is used to hold error messages and statuses encountered during SCPI command processing. The size is determined based on the library documentation. Queue for SCPI error reporting. \mbox{\Hypertarget{fts__scpi_8c_a113f546829cbd826daf9590e55e1574d}\label{fts__scpi_8c_a113f546829cbd826daf9590e55e1574d}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!scpi\_input\_buffer@{scpi\_input\_buffer}}
+\index{scpi\_input\_buffer@{scpi\_input\_buffer}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_input\_buffer}{scpi\_input\_buffer}}
+{\footnotesize\ttfamily char scpi\+\_\+input\+\_\+buffer\mbox{[}\mbox{\hyperlink{fts__scpi_8h_a442c3ab34e2b6b9a5d575e512035f687}{SCPI\+\_\+\+INPUT\+\_\+\+BUFFER\+\_\+\+SIZE}}\mbox{]}}
+
+
+
+Input buffer for reading SCPI commands. 
+
+This buffer is used to store incoming SCPI commands read from the external source before they are processed. Buffer to hold SCPI command strings. \mbox{\Hypertarget{fts__scpi_8c_a1169c4a1863fd98b478b89366c840f5d}\label{fts__scpi_8c_a1169c4a1863fd98b478b89366c840f5d}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!scpi\_interface@{scpi\_interface}}
+\index{scpi\_interface@{scpi\_interface}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_interface}{scpi\_interface}}
+{\footnotesize\ttfamily scpi\+\_\+interface\+\_\+t scpi\+\_\+interface}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{    .write = \mbox{\hyperlink{fts__scpi_8c_a3645008c6823af2701d99f6ed8dbe745}{SCPI\_write}},}
+\DoxyCodeLine{    .error = \mbox{\hyperlink{fts__scpi_8c_a9ef6f5ccdda155e42c384b2d26059ead}{SCPI\_Error}},}
+\DoxyCodeLine{    .control = SCPI\_Control,}
+\DoxyCodeLine{    .flush = SCPI\_Flush, }
+\DoxyCodeLine{    .reset = \mbox{\hyperlink{fts__scpi_8c_a227bd87e4d70c678726de2bc952fce8e}{SCPI\_Reset}},}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Additional callbacks to be used by the SCPI library. 
+
+\mbox{\Hypertarget{fts__scpi_8c_a37caa61a74fce476d4d72c7d3ed9a889}\label{fts__scpi_8c_a37caa61a74fce476d4d72c7d3ed9a889}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!scpi\_special\_all\_numbers\_def@{scpi\_special\_all\_numbers\_def}}
+\index{scpi\_special\_all\_numbers\_def@{scpi\_special\_all\_numbers\_def}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_special\_all\_numbers\_def}{scpi\_special\_all\_numbers\_def}}
+{\footnotesize\ttfamily const scpi\+\_\+choice\+\_\+def\+\_\+t scpi\+\_\+special\+\_\+all\+\_\+numbers\+\_\+def\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}ALL"{}},  \mbox{\hyperlink{fts__scpi_8h_a7ea383096d73661616554fce92f6236e}{SCPI\_BANK\_ALL}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}BANK1"{}},  \mbox{\hyperlink{fts__scpi_8h_a6031337a8cd4d4675bb22e00ffae67cf}{SCPI\_BANK1}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}BANK2"{}},  \mbox{\hyperlink{fts__scpi_8h_a7e9a53011346bf2ca86a69745de35e38}{SCPI\_BANK2}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}BANK3"{}},  \mbox{\hyperlink{fts__scpi_8h_ab05cdb891441427cac1aa2f84b4d2cb2}{SCPI\_BANK3}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}BANK4"{}},  \mbox{\hyperlink{fts__scpi_8h_a0e3d88ceee098bc6cbbd3864d15a062c}{SCPI\_BANK4}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}LPR1"{}},  \mbox{\hyperlink{fts__scpi_8h_a27fdd8d53548fae89e39ba04c2708025}{SCPI\_LPR1}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}LPR2"{}},  \mbox{\hyperlink{fts__scpi_8h_a696dcaf639b34f3568e3b6dd9dec7bca}{SCPI\_LPR2}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}HPR1"{}},  \mbox{\hyperlink{fts__scpi_8h_a33c2cbb0189c7fb337d388046dcfac2b}{SCPI\_HPR1}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}SSR1"{}},  \mbox{\hyperlink{fts__scpi_8h_a398a5182ce2817de14dc1e156e5e9a44}{SCPI\_SSR1}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}OC1"{}},  \mbox{\hyperlink{fts__scpi_8h_a801d1f948e3502082fdf78d631374239}{SCPI\_OC1}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}OC2"{}},  \mbox{\hyperlink{fts__scpi_8h_a893b08bb0d507f718b4e21b09ee535fe}{SCPI\_OC2}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}OC3"{}},  \mbox{\hyperlink{fts__scpi_8h_a827384d14aa02c532effea0b3d4bf10e}{SCPI\_OC3}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}ON"{}},  1\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}OFF"{}},  0\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}SPI"{}},  \mbox{\hyperlink{fts__scpi_8h_ab67e39d260d99c6c6cd8353e6d98d97b}{SCPI\_SPI}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}SERIAL"{}},  \mbox{\hyperlink{fts__scpi_8h_a37f051c653ab41ce9f0299696244bb82}{SCPI\_SERIAL}}\},}
+\DoxyCodeLine{    \{ \textcolor{stringliteral}{"{}I2C"{}},  \mbox{\hyperlink{fts__scpi_8h_afdeb8fca6ceb7250201e85bd6c1ddea8}{SCPI\_I2C}}\},}
+\DoxyCodeLine{}
+\DoxyCodeLine{    SCPI\_CHOICE\_LIST\_END,}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+List of special string not already defined on SCPI parser. 
+
+\mbox{\Hypertarget{fts__scpi_8c_abe83b30d07c3ac33b304e0be004ac7f1}\label{fts__scpi_8c_abe83b30d07c3ac33b304e0be004ac7f1}} 
+\index{fts\_scpi.c@{fts\_scpi.c}!srq\_val@{srq\_val}}
+\index{srq\_val@{srq\_val}!fts\_scpi.c@{fts\_scpi.c}}
+\doxysubsubsection{\texorpdfstring{srq\_val}{srq\_val}}
+{\footnotesize\ttfamily scpi\+\_\+reg\+\_\+val\+\_\+t srq\+\_\+val = 0}
+
+
+
+Global variable to reset the Service Request Register (SRQ). 
+
+This variable holds the current value of the Service Request Register (SRQ). It is initialized to {\ttfamily 0} and used in the SCPI (Standard Commands for Programmable Instruments) context. 

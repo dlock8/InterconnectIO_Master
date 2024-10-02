@@ -1,0 +1,7 @@
+if (NOT TARGET dev_ina219)
+    add_library(dev_ina219 INTERFACE)
+    MESSAGE(STATUS "sources = ina219 ${CMAKE_CURRENT_LIST_DIR}")
+    target_include_directories(dev_ina219 INTERFACE ${CMAKE_CURRENT_LIST_DIR})
+    target_sources(dev_ina219 INTERFACE ${CMAKE_CURRENT_LIST_DIR}/dev_ina219.c)
+    target_link_libraries(dev_ina219 INTERFACE lib2_sys)
+endif()

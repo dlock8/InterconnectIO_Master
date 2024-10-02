@@ -1,0 +1,452 @@
+\hypertarget{i2c__com_8h}{}\doxysection{firmware/src/include/i2c\+\_\+com.h File Reference}
+\label{i2c__com_8h}\index{firmware/src/include/i2c\_com.h@{firmware/src/include/i2c\_com.h}}
+
+
+Header file defining constants and macros for internal i2c bus.  
+
+
+{\ttfamily \#include \char`\"{}hardware/i2c.\+h\char`\"{}}\newline
+Include dependency graph for i2c\+\_\+com.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{i2c__com_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{i2c__com_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_a63d6d9131789fc4dae83812b05644d61}{PICO\+\_\+\+MASTER\+\_\+\+ADDRESS}}~0x00
+\begin{DoxyCompactList}\small\item\em I2C addresses and configuration for Pico devices. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{i2c__com_8h_aca5737cdcceb494625a6f5e710ba784d}{PICO\+\_\+\+PORT\+\_\+\+ADDRESS}}~0x21
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_a124a1e2b7f26772b4b857cbdb9dcf30f}{PICO\+\_\+\+RELAY1\+\_\+\+ADDRESS}}~0x22
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_a1d0548d375517c164c3c5da807b04032}{PICO\+\_\+\+RELAY2\+\_\+\+ADDRESS}}~0x23
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_a86781ac4a929c4e5aa12e362fafa09a5}{PICO\+\_\+\+SELFTEST\+\_\+\+ADDRESS}}~0x20
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_a2306dddc82e5e58f23bd44c1086a5b6f}{REG\+\_\+\+STATUS}}~100
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_a31568ea8caf00a3ec699c01652c771d0}{I2\+C\+\_\+\+BAUDRATE}}~100000
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_a3adc009cb4006d7c62030e1dcac50ae0}{I2\+C\+\_\+\+MASTER\+\_\+\+SDA\+\_\+\+PIN}}~20
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_a366a1fa7a2c467efa50d2ac5c7630d77}{I2\+C\+\_\+\+MASTER\+\_\+\+SCL\+\_\+\+PIN}}~21
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_a0607138f5019ed355b8eef0d8fad3ddf}{RBK}}
+\begin{DoxyCompactList}\small\item\em GPIO configuration for relay actuation and digital ports. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{i2c__com_8h_ad7453096468d3a694c2504c219e4c410}{DIGP}}
+\begin{DoxyCompactList}\small\item\em Array of digital bit indices assigned to Pico GPx for Port0 and Port1. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{i2c__com_8h_aeee1fd1c1a4d53067a27888f3aa109ec}{MJR\+\_\+\+VERSION}}~01
+\begin{DoxyCompactList}\small\item\em Major version of the protocol. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_abcd45341369f87e7ad5dfefee97c6811}\label{i2c__com_8h_abcd45341369f87e7ad5dfefee97c6811}} 
+\#define \mbox{\hyperlink{i2c__com_8h_abcd45341369f87e7ad5dfefee97c6811}{MIN\+\_\+\+VERSION}}~02
+\begin{DoxyCompactList}\small\item\em Minor version of the protocol. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_ab299bf4053c6f010fa49f5868e042f8f}\label{i2c__com_8h_ab299bf4053c6f010fa49f5868e042f8f}} 
+\#define \mbox{\hyperlink{i2c__com_8h_ab299bf4053c6f010fa49f5868e042f8f}{OPEN\+\_\+\+RELAY}}~10
+\begin{DoxyCompactList}\small\item\em Command to open a relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_ad0c1d69ed7b8e338ccc3fa3d2bf33a0f}\label{i2c__com_8h_ad0c1d69ed7b8e338ccc3fa3d2bf33a0f}} 
+\#define \mbox{\hyperlink{i2c__com_8h_ad0c1d69ed7b8e338ccc3fa3d2bf33a0f}{CLOSE\+\_\+\+RELAY}}~11
+\begin{DoxyCompactList}\small\item\em Command to close a relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a12a325ef5d0749497223829873f3db9e}\label{i2c__com_8h_a12a325ef5d0749497223829873f3db9e}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a12a325ef5d0749497223829873f3db9e}{OPEN\+\_\+\+RELAY\+\_\+\+BANK}}~12
+\begin{DoxyCompactList}\small\item\em Command to open a specific relay bank. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_aa36df15a89f69c0a67a42c2031a2cb40}\label{i2c__com_8h_aa36df15a89f69c0a67a42c2031a2cb40}} 
+\#define \mbox{\hyperlink{i2c__com_8h_aa36df15a89f69c0a67a42c2031a2cb40}{STATE\+\_\+\+RELAY}}~15
+\begin{DoxyCompactList}\small\item\em Command to get the state of a relay. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a202945ee08d725fa846599270268d154}\label{i2c__com_8h_a202945ee08d725fa846599270268d154}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a202945ee08d725fa846599270268d154}{STATE\+\_\+\+BANK}}~13
+\begin{DoxyCompactList}\small\item\em Command to get the state of a relay bank. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a4e02aa8cc3590d67cdaf59c32bccce0e}\label{i2c__com_8h_a4e02aa8cc3590d67cdaf59c32bccce0e}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a4e02aa8cc3590d67cdaf59c32bccce0e}{DIG\+\_\+\+DIR\+\_\+\+MASK}}~80
+\begin{DoxyCompactList}\small\item\em Digital direction mask command. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a47cbe6aa8bb29c522f77e3377aa1130f}\label{i2c__com_8h_a47cbe6aa8bb29c522f77e3377aa1130f}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a47cbe6aa8bb29c522f77e3377aa1130f}{DIG\+\_\+\+OUT}}~81
+\begin{DoxyCompactList}\small\item\em Command to set digital output. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a2962c4e8456efd8622a5c52588ec8f3e}\label{i2c__com_8h_a2962c4e8456efd8622a5c52588ec8f3e}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a2962c4e8456efd8622a5c52588ec8f3e}{DIG\+\_\+\+IN}}~85
+\begin{DoxyCompactList}\small\item\em Command to read digital input. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_aa0b872892d78badc67de044ef10588b3}\label{i2c__com_8h_aa0b872892d78badc67de044ef10588b3}} 
+\#define \mbox{\hyperlink{i2c__com_8h_aa0b872892d78badc67de044ef10588b3}{DIR\+\_\+\+GP\+\_\+\+OUT}}~20
+\begin{DoxyCompactList}\small\item\em Command to set GPIO direction to output. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a9b44f4f4ebf46c0721d2925bf281045c}\label{i2c__com_8h_a9b44f4f4ebf46c0721d2925bf281045c}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a9b44f4f4ebf46c0721d2925bf281045c}{DIR\+\_\+\+GP\+\_\+\+IN}}~21
+\begin{DoxyCompactList}\small\item\em Command to set GPIO direction to input. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a2f97e36dfc89594e965aaaf8204a06b6}\label{i2c__com_8h_a2f97e36dfc89594e965aaaf8204a06b6}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a2f97e36dfc89594e965aaaf8204a06b6}{DIR\+\_\+\+GP\+\_\+\+READ}}~25
+\begin{DoxyCompactList}\small\item\em Command to read GPIO direction. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a1ead97d17801522a1480bda1fc32ee5d}\label{i2c__com_8h_a1ead97d17801522a1480bda1fc32ee5d}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a1ead97d17801522a1480bda1fc32ee5d}{DIG\+\_\+\+GP\+\_\+\+OUT\+\_\+\+CLEAR}}~10
+\begin{DoxyCompactList}\small\item\em Command to clear digital GPIO output. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_ae1e575e1712c1339402511f3630fccb8}\label{i2c__com_8h_ae1e575e1712c1339402511f3630fccb8}} 
+\#define \mbox{\hyperlink{i2c__com_8h_ae1e575e1712c1339402511f3630fccb8}{DIG\+\_\+\+GP\+\_\+\+OUT\+\_\+\+SET}}~11
+\begin{DoxyCompactList}\small\item\em Command to set digital GPIO output. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a3977185f7982ab30b399e11aa59d0ea2}\label{i2c__com_8h_a3977185f7982ab30b399e11aa59d0ea2}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a3977185f7982ab30b399e11aa59d0ea2}{DIG\+\_\+\+GP\+\_\+\+IN}}~15
+\begin{DoxyCompactList}\small\item\em Command to read digital GPIO input. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_aa3ca6f0ba40e669a42d0a8c584d208d1}\label{i2c__com_8h_aa3ca6f0ba40e669a42d0a8c584d208d1}} 
+\#define \mbox{\hyperlink{i2c__com_8h_aa3ca6f0ba40e669a42d0a8c584d208d1}{GP\+\_\+\+PAD\+\_\+\+VALUE}}~60
+\begin{DoxyCompactList}\small\item\em Command to get GPIO pad value. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a9028970c06af818976fa3254b561ad65}\label{i2c__com_8h_a9028970c06af818976fa3254b561ad65}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a9028970c06af818976fa3254b561ad65}{GP\+\_\+\+PAD\+\_\+\+SET}}~61
+\begin{DoxyCompactList}\small\item\em Command to set GPIO pad configuration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_ac00b7a6baf8be105e152d544add23a73}\label{i2c__com_8h_ac00b7a6baf8be105e152d544add23a73}} 
+\#define \mbox{\hyperlink{i2c__com_8h_ac00b7a6baf8be105e152d544add23a73}{GP\+\_\+\+PAD\+\_\+\+READ}}~65
+\begin{DoxyCompactList}\small\item\em Command to read GPIO pad configuration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_ac8563fd09b4ab43698a8336a2e9882d3}\label{i2c__com_8h_ac8563fd09b4ab43698a8336a2e9882d3}} 
+\#define \mbox{\hyperlink{i2c__com_8h_ac8563fd09b4ab43698a8336a2e9882d3}{GP\+\_\+\+FUNCTION}}~75
+\begin{DoxyCompactList}\small\item\em Command to set or get GPIO function. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a6a5265b4c9a5a3ce117398b96d0b7afe}\label{i2c__com_8h_a6a5265b4c9a5a3ce117398b96d0b7afe}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a6a5265b4c9a5a3ce117398b96d0b7afe}{SL\+\_\+\+DEV\+\_\+\+STATUS}}~100
+\begin{DoxyCompactList}\small\item\em Command to get the status of the slave device. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a23b054428daffe721add842778fc9343}\label{i2c__com_8h_a23b054428daffe721add842778fc9343}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a23b054428daffe721add842778fc9343}{ENABLE\+\_\+\+UART}}~101
+\begin{DoxyCompactList}\small\item\em Command to enable UART communication. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_aa7b4cea9e382d6e42801cb5e49c33737}\label{i2c__com_8h_aa7b4cea9e382d6e42801cb5e49c33737}} 
+\#define \mbox{\hyperlink{i2c__com_8h_aa7b4cea9e382d6e42801cb5e49c33737}{DISABLE\+\_\+\+UART}}~102
+\begin{DoxyCompactList}\small\item\em Command to disable UART communication. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_af4ff12925b53847b6551d876446e81c6}\label{i2c__com_8h_af4ff12925b53847b6551d876446e81c6}} 
+\#define \mbox{\hyperlink{i2c__com_8h_af4ff12925b53847b6551d876446e81c6}{SET\+\_\+\+UART\+\_\+\+PROT}}~103
+\begin{DoxyCompactList}\small\item\em Command to set UART protocol configuration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_ab54bb853db038d92fdbc0c625fc381a8}\label{i2c__com_8h_ab54bb853db038d92fdbc0c625fc381a8}} 
+\#define \mbox{\hyperlink{i2c__com_8h_ab54bb853db038d92fdbc0c625fc381a8}{GET\+\_\+\+UART\+\_\+\+CFG}}~105
+\begin{DoxyCompactList}\small\item\em Command to get UART configuration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_acc86cce8be4659d83da538b3ac82d3f7}\label{i2c__com_8h_acc86cce8be4659d83da538b3ac82d3f7}} 
+\#define \mbox{\hyperlink{i2c__com_8h_acc86cce8be4659d83da538b3ac82d3f7}{ENABLE\+\_\+\+SPI}}~111
+\begin{DoxyCompactList}\small\item\em Command to enable SPI communication. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_aaaa9972f541016fb5c92f0c67e4c135b}\label{i2c__com_8h_aaaa9972f541016fb5c92f0c67e4c135b}} 
+\#define \mbox{\hyperlink{i2c__com_8h_aaaa9972f541016fb5c92f0c67e4c135b}{DISABLE\+\_\+\+SPI}}~112
+\begin{DoxyCompactList}\small\item\em Command to disable SPI communication. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_afb8c995ba30a32e8b278dd2edd335d2c}\label{i2c__com_8h_afb8c995ba30a32e8b278dd2edd335d2c}} 
+\#define \mbox{\hyperlink{i2c__com_8h_afb8c995ba30a32e8b278dd2edd335d2c}{SET\+\_\+\+SPI\+\_\+\+CFG}}~113
+\begin{DoxyCompactList}\small\item\em Command to set SPI configuration. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{i2c__com_8h_a15204e08a34b2b4525da4140b1af1d3b}\label{i2c__com_8h_a15204e08a34b2b4525da4140b1af1d3b}} 
+\#define \mbox{\hyperlink{i2c__com_8h_a15204e08a34b2b4525da4140b1af1d3b}{GET\+\_\+\+SPI\+\_\+\+CFG}}~115
+\begin{DoxyCompactList}\small\item\em Command to get SPI configuration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{Indent}\textbf{ Single-\/ended Relay GPIOs}\par
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_a5851bcdc98143524932a84929ea1b973}{SE\+\_\+\+BK1}}~19
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_aecddee9d879d98a417c44646c7a0e0c0}{SE\+\_\+\+BK2}}~18
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_ab71dc955e08a5db9faab0ea0e5c21559}{SE\+\_\+\+BK3}}~19
+\item 
+\#define \mbox{\hyperlink{i2c__com_8h_a1582144c003eb26e9ebc5925c1b8b539}{SE\+\_\+\+BK4}}~18
+\end{DoxyCompactItemize}
+\end{Indent}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{i2c__com_8h_a1e7d8ca7c172d2950dee50f279d07ec9}\label{i2c__com_8h_a1e7d8ca7c172d2950dee50f279d07ec9}} 
+void \mbox{\hyperlink{i2c__com_8h_a1e7d8ca7c172d2950dee50f279d07ec9}{setup\+\_\+master}} ()
+\begin{DoxyCompactList}\small\item\em Configuration of the internal I2C port. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{i2c__com_8h_a3f9110484e69200a1424e98797a5e12e}{send\+\_\+master}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t i2c\+\_\+add, uint8\+\_\+t cmd, uint16\+\_\+t wdata, uint16\+\_\+t $\ast$rback)
+\begin{DoxyCompactList}\small\item\em The function of the code is to read and write data on internal I2C port. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{i2c__com_8h_a6ab31ae372e2f5df7d1d2791fc42491a}{relay\+\_\+execute}} (uint16\+\_\+t $\ast$list, uint8\+\_\+t action, uint16\+\_\+t $\ast$answer)
+\begin{DoxyCompactList}\small\item\em From a list of relay (list) and the action to perform the sub will perform the action (close, open or read) for each relay on the list. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{i2c__com_8h_a2dc087f9c9da6f696935dc364f9003e2}{digital\+\_\+execute}} (uint8\+\_\+t action, uint8\+\_\+t port, uint8\+\_\+t bit, uint8\+\_\+t value, uint16\+\_\+t $\ast$answer)
+\begin{DoxyCompactList}\small\item\em Function to execute the digital command to perform action on GPIO port located on pico slave1. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{i2c__com_8h_ab088f05e0e9346b5a3a4fa3a06a6c33b}{gpio\+\_\+execute}} (uint8\+\_\+t action, uint8\+\_\+t device, uint8\+\_\+t gpio, uint8\+\_\+t value, uint16\+\_\+t $\ast$answer)
+\begin{DoxyCompactList}\small\item\em Function to execute action on GPIO bit. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{i2c__com_8h_a96f4bb6ce057649e766460dfecebc542}{system\+\_\+execute}} (uint8\+\_\+t action, uint16\+\_\+t $\ast$answer)
+\begin{DoxyCompactList}\small\item\em function to execute system command on Pico devices. The action is executed on all the Pico devices (1 Master and 3 slaves) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header file defining constants and macros for internal i2c bus. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{i2c__com_8h_ad7453096468d3a694c2504c219e4c410}\label{i2c__com_8h_ad7453096468d3a694c2504c219e4c410}} 
+\index{i2c\_com.h@{i2c\_com.h}!DIGP@{DIGP}}
+\index{DIGP@{DIGP}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{DIGP}{DIGP}}
+{\footnotesize\ttfamily \#define DIGP}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\{0,1,2,3,4,5,6,7\}, \(\backslash\)}
+\DoxyCodeLine{\{10,11,12,13,14,15,16,17\}\}}
+
+\end{DoxyCode}
+
+
+Array of digital bit indices assigned to Pico GPx for Port0 and Port1. 
+
+\mbox{\Hypertarget{i2c__com_8h_a31568ea8caf00a3ec699c01652c771d0}\label{i2c__com_8h_a31568ea8caf00a3ec699c01652c771d0}} 
+\index{i2c\_com.h@{i2c\_com.h}!I2C\_BAUDRATE@{I2C\_BAUDRATE}}
+\index{I2C\_BAUDRATE@{I2C\_BAUDRATE}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{I2C\_BAUDRATE}{I2C\_BAUDRATE}}
+{\footnotesize\ttfamily \#define I2\+C\+\_\+\+BAUDRATE~100000}
+
+I2C baud rate (100 k\+Hz). \mbox{\Hypertarget{i2c__com_8h_a366a1fa7a2c467efa50d2ac5c7630d77}\label{i2c__com_8h_a366a1fa7a2c467efa50d2ac5c7630d77}} 
+\index{i2c\_com.h@{i2c\_com.h}!I2C\_MASTER\_SCL\_PIN@{I2C\_MASTER\_SCL\_PIN}}
+\index{I2C\_MASTER\_SCL\_PIN@{I2C\_MASTER\_SCL\_PIN}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{I2C\_MASTER\_SCL\_PIN}{I2C\_MASTER\_SCL\_PIN}}
+{\footnotesize\ttfamily \#define I2\+C\+\_\+\+MASTER\+\_\+\+SCL\+\_\+\+PIN~21}
+
+GPIO used for I2C SCL. \mbox{\Hypertarget{i2c__com_8h_a3adc009cb4006d7c62030e1dcac50ae0}\label{i2c__com_8h_a3adc009cb4006d7c62030e1dcac50ae0}} 
+\index{i2c\_com.h@{i2c\_com.h}!I2C\_MASTER\_SDA\_PIN@{I2C\_MASTER\_SDA\_PIN}}
+\index{I2C\_MASTER\_SDA\_PIN@{I2C\_MASTER\_SDA\_PIN}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{I2C\_MASTER\_SDA\_PIN}{I2C\_MASTER\_SDA\_PIN}}
+{\footnotesize\ttfamily \#define I2\+C\+\_\+\+MASTER\+\_\+\+SDA\+\_\+\+PIN~20}
+
+GPIO used for I2C SDA. \mbox{\Hypertarget{i2c__com_8h_aeee1fd1c1a4d53067a27888f3aa109ec}\label{i2c__com_8h_aeee1fd1c1a4d53067a27888f3aa109ec}} 
+\index{i2c\_com.h@{i2c\_com.h}!MJR\_VERSION@{MJR\_VERSION}}
+\index{MJR\_VERSION@{MJR\_VERSION}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{MJR\_VERSION}{MJR\_VERSION}}
+{\footnotesize\ttfamily \#define MJR\+\_\+\+VERSION~01}
+
+
+
+Major version of the protocol. 
+
+I2C Command Codes for executing actions. \mbox{\Hypertarget{i2c__com_8h_a63d6d9131789fc4dae83812b05644d61}\label{i2c__com_8h_a63d6d9131789fc4dae83812b05644d61}} 
+\index{i2c\_com.h@{i2c\_com.h}!PICO\_MASTER\_ADDRESS@{PICO\_MASTER\_ADDRESS}}
+\index{PICO\_MASTER\_ADDRESS@{PICO\_MASTER\_ADDRESS}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{PICO\_MASTER\_ADDRESS}{PICO\_MASTER\_ADDRESS}}
+{\footnotesize\ttfamily \#define PICO\+\_\+\+MASTER\+\_\+\+ADDRESS~0x00}
+
+
+
+I2C addresses and configuration for Pico devices. 
+
+I2C address for Pico Master. \mbox{\Hypertarget{i2c__com_8h_aca5737cdcceb494625a6f5e710ba784d}\label{i2c__com_8h_aca5737cdcceb494625a6f5e710ba784d}} 
+\index{i2c\_com.h@{i2c\_com.h}!PICO\_PORT\_ADDRESS@{PICO\_PORT\_ADDRESS}}
+\index{PICO\_PORT\_ADDRESS@{PICO\_PORT\_ADDRESS}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{PICO\_PORT\_ADDRESS}{PICO\_PORT\_ADDRESS}}
+{\footnotesize\ttfamily \#define PICO\+\_\+\+PORT\+\_\+\+ADDRESS~0x21}
+
+I2C address for Pico Slave \#1. \mbox{\Hypertarget{i2c__com_8h_a124a1e2b7f26772b4b857cbdb9dcf30f}\label{i2c__com_8h_a124a1e2b7f26772b4b857cbdb9dcf30f}} 
+\index{i2c\_com.h@{i2c\_com.h}!PICO\_RELAY1\_ADDRESS@{PICO\_RELAY1\_ADDRESS}}
+\index{PICO\_RELAY1\_ADDRESS@{PICO\_RELAY1\_ADDRESS}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{PICO\_RELAY1\_ADDRESS}{PICO\_RELAY1\_ADDRESS}}
+{\footnotesize\ttfamily \#define PICO\+\_\+\+RELAY1\+\_\+\+ADDRESS~0x22}
+
+I2C address for Pico Slave \#2. \mbox{\Hypertarget{i2c__com_8h_a1d0548d375517c164c3c5da807b04032}\label{i2c__com_8h_a1d0548d375517c164c3c5da807b04032}} 
+\index{i2c\_com.h@{i2c\_com.h}!PICO\_RELAY2\_ADDRESS@{PICO\_RELAY2\_ADDRESS}}
+\index{PICO\_RELAY2\_ADDRESS@{PICO\_RELAY2\_ADDRESS}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{PICO\_RELAY2\_ADDRESS}{PICO\_RELAY2\_ADDRESS}}
+{\footnotesize\ttfamily \#define PICO\+\_\+\+RELAY2\+\_\+\+ADDRESS~0x23}
+
+I2C address for Pico Slave \#3. \mbox{\Hypertarget{i2c__com_8h_a86781ac4a929c4e5aa12e362fafa09a5}\label{i2c__com_8h_a86781ac4a929c4e5aa12e362fafa09a5}} 
+\index{i2c\_com.h@{i2c\_com.h}!PICO\_SELFTEST\_ADDRESS@{PICO\_SELFTEST\_ADDRESS}}
+\index{PICO\_SELFTEST\_ADDRESS@{PICO\_SELFTEST\_ADDRESS}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{PICO\_SELFTEST\_ADDRESS}{PICO\_SELFTEST\_ADDRESS}}
+{\footnotesize\ttfamily \#define PICO\+\_\+\+SELFTEST\+\_\+\+ADDRESS~0x20}
+
+I2C address for Pico Selftest. \mbox{\Hypertarget{i2c__com_8h_a0607138f5019ed355b8eef0d8fad3ddf}\label{i2c__com_8h_a0607138f5019ed355b8eef0d8fad3ddf}} 
+\index{i2c\_com.h@{i2c\_com.h}!RBK@{RBK}}
+\index{RBK@{RBK}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{RBK}{RBK}}
+{\footnotesize\ttfamily \#define RBK}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{\{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7\},\(\backslash\)}
+\DoxyCodeLine{\{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7\}, \(\backslash\)}
+\DoxyCodeLine{\{10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17\}, \(\backslash\)}
+\DoxyCodeLine{\{10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17\}, \}}
+
+\end{DoxyCode}
+
+
+GPIO configuration for relay actuation and digital ports. 
+
+Array of relay indices assigned to Pico GPIOs for relay actuation.
+
+Each sub-\/array corresponds to a bank of relays with assigned GPIO pins. \mbox{\Hypertarget{i2c__com_8h_a2306dddc82e5e58f23bd44c1086a5b6f}\label{i2c__com_8h_a2306dddc82e5e58f23bd44c1086a5b6f}} 
+\index{i2c\_com.h@{i2c\_com.h}!REG\_STATUS@{REG\_STATUS}}
+\index{REG\_STATUS@{REG\_STATUS}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{REG\_STATUS}{REG\_STATUS}}
+{\footnotesize\ttfamily \#define REG\+\_\+\+STATUS~100}
+
+Register used to report status. \mbox{\Hypertarget{i2c__com_8h_a5851bcdc98143524932a84929ea1b973}\label{i2c__com_8h_a5851bcdc98143524932a84929ea1b973}} 
+\index{i2c\_com.h@{i2c\_com.h}!SE\_BK1@{SE\_BK1}}
+\index{SE\_BK1@{SE\_BK1}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{SE\_BK1}{SE\_BK1}}
+{\footnotesize\ttfamily \#define SE\+\_\+\+BK1~19}
+
+GPIO for single-\/ended relay of bank 1. \mbox{\Hypertarget{i2c__com_8h_aecddee9d879d98a417c44646c7a0e0c0}\label{i2c__com_8h_aecddee9d879d98a417c44646c7a0e0c0}} 
+\index{i2c\_com.h@{i2c\_com.h}!SE\_BK2@{SE\_BK2}}
+\index{SE\_BK2@{SE\_BK2}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{SE\_BK2}{SE\_BK2}}
+{\footnotesize\ttfamily \#define SE\+\_\+\+BK2~18}
+
+GPIO for single-\/ended relay of bank 2. \mbox{\Hypertarget{i2c__com_8h_ab71dc955e08a5db9faab0ea0e5c21559}\label{i2c__com_8h_ab71dc955e08a5db9faab0ea0e5c21559}} 
+\index{i2c\_com.h@{i2c\_com.h}!SE\_BK3@{SE\_BK3}}
+\index{SE\_BK3@{SE\_BK3}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{SE\_BK3}{SE\_BK3}}
+{\footnotesize\ttfamily \#define SE\+\_\+\+BK3~19}
+
+GPIO for single-\/ended relay of bank 3. \mbox{\Hypertarget{i2c__com_8h_a1582144c003eb26e9ebc5925c1b8b539}\label{i2c__com_8h_a1582144c003eb26e9ebc5925c1b8b539}} 
+\index{i2c\_com.h@{i2c\_com.h}!SE\_BK4@{SE\_BK4}}
+\index{SE\_BK4@{SE\_BK4}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{SE\_BK4}{SE\_BK4}}
+{\footnotesize\ttfamily \#define SE\+\_\+\+BK4~18}
+
+GPIO for single-\/ended relay of bank 4. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{i2c__com_8h_a2dc087f9c9da6f696935dc364f9003e2}\label{i2c__com_8h_a2dc087f9c9da6f696935dc364f9003e2}} 
+\index{i2c\_com.h@{i2c\_com.h}!digital\_execute@{digital\_execute}}
+\index{digital\_execute@{digital\_execute}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{digital\_execute()}{digital\_execute()}}
+{\footnotesize\ttfamily bool digital\+\_\+execute (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{action,  }\item[{uint8\+\_\+t}]{port,  }\item[{uint8\+\_\+t}]{bit,  }\item[{uint8\+\_\+t}]{value,  }\item[{uint16\+\_\+t $\ast$}]{answer }\end{DoxyParamCaption})}
+
+
+
+Function to execute the digital command to perform action on GPIO port located on pico slave1. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em action} & Keyword number to define the action to execute \\
+\hline
+{\em port} & The port number to perform the action (port 0 or port 1) \\
+\hline
+{\em bit} & The port number to perform action \\
+\hline
+{\em value} & The value to write on defined port \\
+\hline
+{\em answer} & The answer returned by the action \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Action executed with success 
+
+false Action stopped with error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{i2c__com_8h_ab088f05e0e9346b5a3a4fa3a06a6c33b}\label{i2c__com_8h_ab088f05e0e9346b5a3a4fa3a06a6c33b}} 
+\index{i2c\_com.h@{i2c\_com.h}!gpio\_execute@{gpio\_execute}}
+\index{gpio\_execute@{gpio\_execute}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{gpio\_execute()}{gpio\_execute()}}
+{\footnotesize\ttfamily bool gpio\+\_\+execute (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{action,  }\item[{uint8\+\_\+t}]{device,  }\item[{uint8\+\_\+t}]{gpio,  }\item[{uint8\+\_\+t}]{value,  }\item[{uint16\+\_\+t $\ast$}]{answer }\end{DoxyParamCaption})}
+
+
+
+Function to execute action on GPIO bit. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em action} & Keyword number to define the action to execute \\
+\hline
+{\em device} & The device number to perform action \\
+\hline
+{\em gpio} & The GPIO bit to execute the action \\
+\hline
+{\em value} & The value to write on GPIO \\
+\hline
+{\em answer} & The value read on GPIO \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Action completed with success 
+
+false Action stopped due to error 
+\end{DoxyReturn}
+Set I2C address
+
+Set I2C address
+
+Set I2C address
+
+Set I2C address
+
+Set I2C address
+
+Set I2C address\mbox{\Hypertarget{i2c__com_8h_a6ab31ae372e2f5df7d1d2791fc42491a}\label{i2c__com_8h_a6ab31ae372e2f5df7d1d2791fc42491a}} 
+\index{i2c\_com.h@{i2c\_com.h}!relay\_execute@{relay\_execute}}
+\index{relay\_execute@{relay\_execute}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{relay\_execute()}{relay\_execute()}}
+{\footnotesize\ttfamily bool relay\+\_\+execute (\begin{DoxyParamCaption}\item[{uint16\+\_\+t $\ast$}]{list,  }\item[{uint8\+\_\+t}]{action,  }\item[{uint16\+\_\+t $\ast$}]{answer }\end{DoxyParamCaption})}
+
+
+
+From a list of relay (list) and the action to perform the sub will perform the action (close, open or read) for each relay on the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & Pointer to list of relay to perform action on. \\
+\hline
+{\em action} & Action to perform\+: close, open or read \\
+\hline
+{\em answer} & Response from the device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Action completed with success 
+
+false Action stopped with error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{i2c__com_8h_a3f9110484e69200a1424e98797a5e12e}\label{i2c__com_8h_a3f9110484e69200a1424e98797a5e12e}} 
+\index{i2c\_com.h@{i2c\_com.h}!send\_master@{send\_master}}
+\index{send\_master@{send\_master}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{send\_master()}{send\_master()}}
+{\footnotesize\ttfamily bool send\+\_\+master (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{i2c\+\_\+add,  }\item[{uint8\+\_\+t}]{cmd,  }\item[{uint16\+\_\+t}]{wdata,  }\item[{uint16\+\_\+t $\ast$}]{rback }\end{DoxyParamCaption})}
+
+
+
+The function of the code is to read and write data on internal I2C port. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & The I2C port used by internal communication \\
+\hline
+{\em i2c\+\_\+add} & The address of the device to communicate with \\
+\hline
+{\em cmd} & The byte command number to send to device \\
+\hline
+{\em wdata} & The byte data to send to device \\
+\hline
+{\em rback} & The readback data from the device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true I2C communication completed without error 
+
+false I2C communication has error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{i2c__com_8h_a96f4bb6ce057649e766460dfecebc542}\label{i2c__com_8h_a96f4bb6ce057649e766460dfecebc542}} 
+\index{i2c\_com.h@{i2c\_com.h}!system\_execute@{system\_execute}}
+\index{system\_execute@{system\_execute}!i2c\_com.h@{i2c\_com.h}}
+\doxysubsubsection{\texorpdfstring{system\_execute()}{system\_execute()}}
+{\footnotesize\ttfamily bool system\+\_\+execute (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{action,  }\item[{uint16\+\_\+t $\ast$}]{answer }\end{DoxyParamCaption})}
+
+
+
+function to execute system command on Pico devices. The action is executed on all the Pico devices (1 Master and 3 slaves) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em action} & Keyword number to define the action to execute \\
+\hline
+{\em answer} & Response from device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Action executed with success 
+
+false Action stopped due to error 
+\end{DoxyReturn}
+Set I2C address
+
+Set I2C address

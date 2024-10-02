@@ -1,0 +1,429 @@
+\hypertarget{scpi__spi_8h}{}\doxysection{firmware/src/include/scpi\+\_\+spi.h File Reference}
+\label{scpi__spi_8h}\index{firmware/src/include/scpi\_spi.h@{firmware/src/include/scpi\_spi.h}}
+
+
+Header file defining constants and macros for the SPI communication.  
+
+
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{scpi__spi_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{scpi__spi_8h_a964c5bd6d87bd5458da9ce58f5f50f52}{USER\+\_\+\+SPI\+\_\+\+SCK\+\_\+\+PIN}}~2
+\begin{DoxyCompactList}\small\item\em User-\/defined SPI pin configurations. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{scpi__spi_8h_acdeb6319a3a93084b9b24abc2f1a466d}{USER\+\_\+\+SPI\+\_\+\+TX\+\_\+\+PIN}}~3
+\item 
+\#define \mbox{\hyperlink{scpi__spi_8h_ab8dce92fbd8a53ab79f31763d42583d7}{USER\+\_\+\+SPI\+\_\+\+RX\+\_\+\+PIN}}~4
+\item 
+\#define \mbox{\hyperlink{scpi__spi_8h_a8ad5216c3fe7996daaba0a8c35b81b8a}{USER\+\_\+\+SPI\+\_\+\+CSN\+\_\+\+PIN}}~5
+\item 
+\#define \mbox{\hyperlink{scpi__spi_8h_af6114b93983f7064129f83f1bd452dd1}{SPI\+\_\+\+BUF\+\_\+\+LEN}}~8
+\begin{DoxyCompactList}\small\item\em Buffer length for SPI transactions. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_ad92e1ad5fdc2ccbfa94c9a97e9731801}\label{scpi__spi_8h_ad92e1ad5fdc2ccbfa94c9a97e9731801}} 
+\#define \mbox{\hyperlink{scpi__spi_8h_ad92e1ad5fdc2ccbfa94c9a97e9731801}{DEF\+\_\+\+SPI\+\_\+\+USER}}~spi0
+\begin{DoxyCompactList}\small\item\em spi0 is the user communication channel to external \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_a5f89522e9b8c162a81770c882e871c8b}\label{scpi__spi_8h_a5f89522e9b8c162a81770c882e871c8b}} 
+\#define \mbox{\hyperlink{scpi__spi_8h_a5f89522e9b8c162a81770c882e871c8b}{DEF\+\_\+\+SPI\+\_\+\+BAUD}}~1E5
+\begin{DoxyCompactList}\small\item\em spi baudrate is set at 100Khz by default \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_a28035e900f29737f2852f2039a51d39a}\label{scpi__spi_8h_a28035e900f29737f2852f2039a51d39a}} 
+\#define \mbox{\hyperlink{scpi__spi_8h_a28035e900f29737f2852f2039a51d39a}{DEF\+\_\+\+SPI\+\_\+\+DATABITS}}~8
+\begin{DoxyCompactList}\small\item\em spi number of bits used for comunication \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_a4217b55d3e322f9327e0fbda933ea696}\label{scpi__spi_8h_a4217b55d3e322f9327e0fbda933ea696}} 
+\#define \mbox{\hyperlink{scpi__spi_8h_a4217b55d3e322f9327e0fbda933ea696}{DEF\+\_\+\+SPI\+\_\+\+CS}}~5
+\begin{DoxyCompactList}\small\item\em spi gpio used to perform chipselect \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_aef40ff40f2561db8ae3f5242d9b82bf9}\label{scpi__spi_8h_aef40ff40f2561db8ae3f5242d9b82bf9}} 
+\#define \mbox{\hyperlink{scpi__spi_8h_aef40ff40f2561db8ae3f5242d9b82bf9}{DEF\+\_\+\+SPI\+\_\+\+MODE}}~0
+\begin{DoxyCompactList}\small\item\em define mode parameters\+: cs,cpol,cpha and MSB \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_a447f512aa83392f754224e14ebde3fd8}\label{scpi__spi_8h_a447f512aa83392f754224e14ebde3fd8}} 
+\#define \mbox{\hyperlink{scpi__spi_8h_a447f512aa83392f754224e14ebde3fd8}{DEF\+\_\+\+SPI\+\_\+\+STATUS}}~0
+\begin{DoxyCompactList}\small\item\em spi is disable by default \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_a014265b57f2ec6b2e7267dfb0a04628d}\label{scpi__spi_8h_a014265b57f2ec6b2e7267dfb0a04628d}} 
+\#define \mbox{\hyperlink{scpi__spi_8h_a014265b57f2ec6b2e7267dfb0a04628d}{ALARM\+\_\+\+TIMEOUT}}~1000000
+\begin{DoxyCompactList}\small\item\em Timeout value. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_a465f49896615a31b203d3ccd5aadf5b5}\label{scpi__spi_8h_a465f49896615a31b203d3ccd5aadf5b5}} 
+\#define \mbox{\hyperlink{scpi__spi_8h_a465f49896615a31b203d3ccd5aadf5b5}{SPI\+\_\+\+DEFAULT\+\_\+\+VALUE}}~0
+\begin{DoxyCompactList}\small\item\em spi data to write when we perform read \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_a2a1ce8d247b47342127c875c5fbc20a3}\label{scpi__spi_8h_a2a1ce8d247b47342127c875c5fbc20a3}} 
+\#define \mbox{\hyperlink{scpi__spi_8h_a2a1ce8d247b47342127c875c5fbc20a3}{SPIW}}~0
+\begin{DoxyCompactList}\small\item\em mode = SPI write \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_ab097885a149602b98b9fbb59358b8633}\label{scpi__spi_8h_ab097885a149602b98b9fbb59358b8633}} 
+\#define \mbox{\hyperlink{scpi__spi_8h_ab097885a149602b98b9fbb59358b8633}{SPIWR}}~1
+\begin{DoxyCompactList}\small\item\em mode = SPI write-\/read \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_a2dc8eac339f34592ac68da5348c33398}\label{scpi__spi_8h_a2dc8eac339f34592ac68da5348c33398}} 
+\#define \mbox{\hyperlink{scpi__spi_8h_a2dc8eac339f34592ac68da5348c33398}{SPIR}}~2
+\begin{DoxyCompactList}\small\item\em mode = SPI read \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{scpi__spi_8h_a64e439002936d3ec7cf456f30b96d8e3}{NOERR}}~0
+\begin{DoxyCompactList}\small\item\em Error code definitions for SPI communication and other errors. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{scpi__spi_8h_abed5e31989e1319527f46a5396b6ec9b}{SPI\+\_\+\+MODE\+\_\+\+NUM\+\_\+\+NOTVALID}}~40
+\item 
+\#define \mbox{\hyperlink{scpi__spi_8h_a4208c8ca7b58c9fb043eaeff25e62b5e}{SPI\+\_\+\+CS\+\_\+\+NUM\+\_\+\+ERROR}}~41
+\item 
+\#define \mbox{\hyperlink{scpi__spi_8h_ad40b91803c47fee65e39b1d8ffdc7cc6}{MALLOC\+\_\+\+FAILURE}}~42
+\item 
+\#define \mbox{\hyperlink{scpi__spi_8h_a0131f2774f4e3dd71567400683b60405}{SPI\+\_\+\+TIMEOUT}}~43
+\item 
+\#define \mbox{\hyperlink{scpi__spi_8h_a0b958c3adbebd31ee0011fb7766853f6}{SPI\+\_\+\+NOT\+\_\+\+ENABLED}}~44
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{scpi__spi_8h_a24815bf5b28d21276807fba8f90f87d7}{scpi\+\_\+spi\+\_\+enable}} (void)
+\begin{DoxyCompactList}\small\item\em function to configure the parameters of the user spi based on the data set on the spi structure \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__spi_8h_a87a9d7efcfd0a6dec445ae7f5cb91b4b}\label{scpi__spi_8h_a87a9d7efcfd0a6dec445ae7f5cb91b4b}} 
+void \mbox{\hyperlink{scpi__spi_8h_a87a9d7efcfd0a6dec445ae7f5cb91b4b}{scpi\+\_\+spi\+\_\+disable}} (void)
+\begin{DoxyCompactList}\small\item\em function to disable the user spi and configure pins reserved by SPI to normal GPIO, set as input. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{scpi__spi_8h_abb49aac0a18319207dd01018dfa624b8}{scpi\+\_\+spi\+\_\+status}} (void)
+\begin{DoxyCompactList}\small\item\em Function who return if the user spi is enabled or not. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{scpi__spi_8h_a659466f5c52b4fd694f38c989d294af8}{scpi\+\_\+spi\+\_\+set\+\_\+baudrate}} (uint32\+\_\+t speed)
+\begin{DoxyCompactList}\small\item\em Function to update the baudrate speed on the structure, Baudrate will be updated with function spi enable. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{scpi__spi_8h_ac73a1cb9cae277bb108384491787ddb1}{scpi\+\_\+spi\+\_\+get\+\_\+baudrate}} (void)
+\begin{DoxyCompactList}\small\item\em function to return the baudrate \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8h_aa0920b1ae2abba44bee0a9b320cca227}{scpi\+\_\+spi\+\_\+set\+\_\+chipselect}} (uint32\+\_\+t num)
+\begin{DoxyCompactList}\small\item\em Function to update the SPI chipselect to be used. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{scpi__spi_8h_a2ab810d571c3e46585bfd0476b387fc5}{scpi\+\_\+spi\+\_\+get\+\_\+chipselect}} (void)
+\begin{DoxyCompactList}\small\item\em function to return the chipselect gpio used \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8h_a2cb5079bd0fb6a96093c5f37f4572fd8}{scpi\+\_\+spi\+\_\+set\+\_\+databits}} (uint32\+\_\+t num)
+\begin{DoxyCompactList}\small\item\em Function to update the value of databits to be used. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{scpi__spi_8h_a7b0a11dbbe57da81b4a87d5fe67c9ec5}{scpi\+\_\+spi\+\_\+get\+\_\+databits}} (void)
+\begin{DoxyCompactList}\small\item\em function to return the databits value saved on structure \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8h_ac54dd17786f3ac8a65578d6cd470c1fe}{scpi\+\_\+spi\+\_\+set\+\_\+mode}} (uint8\+\_\+t mode)
+\begin{DoxyCompactList}\small\item\em function to set the mode to use for spi communication \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8h_a97ad53b9407629a2e2a9ec971ce569a1}{scpi\+\_\+spi\+\_\+get\+\_\+mode}} (void)
+\begin{DoxyCompactList}\small\item\em function who return the spi mode used in communication. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8h_afdc3b187e4cf666ab0e6ebb4d6b17460}{scpi\+\_\+spi\+\_\+wri\+\_\+read\+\_\+data}} (uint8\+\_\+t $\ast$wdata, uint8\+\_\+t wlen, uint8\+\_\+t $\ast$rdata, uint8\+\_\+t rlen, bool $\ast$wflag)
+\begin{DoxyCompactList}\small\item\em main function called by SCPI command to send or receive data on SPI port \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{scpi__spi_8h_a23385f64b89a24238ba50379892ed47a}{spi\+\_\+bytes\+\_\+to\+\_\+words}} (uint8\+\_\+t $\ast$byte\+\_\+array, uint16\+\_\+t $\ast$word\+\_\+array, size\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em function who transform an array of bytes to an array of words. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{scpi__spi_8h_a1a49534552d094cd1e724ab8940c035a}{spi\+\_\+words\+\_\+to\+\_\+bytes}} (uint16\+\_\+t $\ast$word\+\_\+array, uint8\+\_\+t $\ast$byte\+\_\+array, size\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em function who transform an array of word to an array of byte \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header file defining constants and macros for the SPI communication. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{scpi__spi_8h_ad40b91803c47fee65e39b1d8ffdc7cc6}\label{scpi__spi_8h_ad40b91803c47fee65e39b1d8ffdc7cc6}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!MALLOC\_FAILURE@{MALLOC\_FAILURE}}
+\index{MALLOC\_FAILURE@{MALLOC\_FAILURE}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{MALLOC\_FAILURE}{MALLOC\_FAILURE}}
+{\footnotesize\ttfamily \#define MALLOC\+\_\+\+FAILURE~42}
+
+Memory allocation failure. \mbox{\Hypertarget{scpi__spi_8h_a64e439002936d3ec7cf456f30b96d8e3}\label{scpi__spi_8h_a64e439002936d3ec7cf456f30b96d8e3}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!NOERR@{NOERR}}
+\index{NOERR@{NOERR}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{NOERR}{NOERR}}
+{\footnotesize\ttfamily \#define NOERR~0}
+
+
+
+Error code definitions for SPI communication and other errors. 
+
+No error. \mbox{\Hypertarget{scpi__spi_8h_af6114b93983f7064129f83f1bd452dd1}\label{scpi__spi_8h_af6114b93983f7064129f83f1bd452dd1}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!SPI\_BUF\_LEN@{SPI\_BUF\_LEN}}
+\index{SPI\_BUF\_LEN@{SPI\_BUF\_LEN}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_BUF\_LEN}{SPI\_BUF\_LEN}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+BUF\+\_\+\+LEN~8}
+
+
+
+Buffer length for SPI transactions. 
+
+Length of the SPI buffer in bytes. \mbox{\Hypertarget{scpi__spi_8h_a4208c8ca7b58c9fb043eaeff25e62b5e}\label{scpi__spi_8h_a4208c8ca7b58c9fb043eaeff25e62b5e}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!SPI\_CS\_NUM\_ERROR@{SPI\_CS\_NUM\_ERROR}}
+\index{SPI\_CS\_NUM\_ERROR@{SPI\_CS\_NUM\_ERROR}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_CS\_NUM\_ERROR}{SPI\_CS\_NUM\_ERROR}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+CS\+\_\+\+NUM\+\_\+\+ERROR~41}
+
+Invalid Chip Select (CS) number for SPI. \mbox{\Hypertarget{scpi__spi_8h_abed5e31989e1319527f46a5396b6ec9b}\label{scpi__spi_8h_abed5e31989e1319527f46a5396b6ec9b}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!SPI\_MODE\_NUM\_NOTVALID@{SPI\_MODE\_NUM\_NOTVALID}}
+\index{SPI\_MODE\_NUM\_NOTVALID@{SPI\_MODE\_NUM\_NOTVALID}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_MODE\_NUM\_NOTVALID}{SPI\_MODE\_NUM\_NOTVALID}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+MODE\+\_\+\+NUM\+\_\+\+NOTVALID~40}
+
+Invalid SPI mode number. \mbox{\Hypertarget{scpi__spi_8h_a0b958c3adbebd31ee0011fb7766853f6}\label{scpi__spi_8h_a0b958c3adbebd31ee0011fb7766853f6}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!SPI\_NOT\_ENABLED@{SPI\_NOT\_ENABLED}}
+\index{SPI\_NOT\_ENABLED@{SPI\_NOT\_ENABLED}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_NOT\_ENABLED}{SPI\_NOT\_ENABLED}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+NOT\+\_\+\+ENABLED~44}
+
+SPI not enabled error. \mbox{\Hypertarget{scpi__spi_8h_a0131f2774f4e3dd71567400683b60405}\label{scpi__spi_8h_a0131f2774f4e3dd71567400683b60405}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!SPI\_TIMEOUT@{SPI\_TIMEOUT}}
+\index{SPI\_TIMEOUT@{SPI\_TIMEOUT}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{SPI\_TIMEOUT}{SPI\_TIMEOUT}}
+{\footnotesize\ttfamily \#define SPI\+\_\+\+TIMEOUT~43}
+
+SPI communication timeout. \mbox{\Hypertarget{scpi__spi_8h_a8ad5216c3fe7996daaba0a8c35b81b8a}\label{scpi__spi_8h_a8ad5216c3fe7996daaba0a8c35b81b8a}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!USER\_SPI\_CSN\_PIN@{USER\_SPI\_CSN\_PIN}}
+\index{USER\_SPI\_CSN\_PIN@{USER\_SPI\_CSN\_PIN}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{USER\_SPI\_CSN\_PIN}{USER\_SPI\_CSN\_PIN}}
+{\footnotesize\ttfamily \#define USER\+\_\+\+SPI\+\_\+\+CSN\+\_\+\+PIN~5}
+
+SPI Chip Select Pin. \mbox{\Hypertarget{scpi__spi_8h_ab8dce92fbd8a53ab79f31763d42583d7}\label{scpi__spi_8h_ab8dce92fbd8a53ab79f31763d42583d7}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!USER\_SPI\_RX\_PIN@{USER\_SPI\_RX\_PIN}}
+\index{USER\_SPI\_RX\_PIN@{USER\_SPI\_RX\_PIN}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{USER\_SPI\_RX\_PIN}{USER\_SPI\_RX\_PIN}}
+{\footnotesize\ttfamily \#define USER\+\_\+\+SPI\+\_\+\+RX\+\_\+\+PIN~4}
+
+SPI Receive Pin (MISO). \mbox{\Hypertarget{scpi__spi_8h_a964c5bd6d87bd5458da9ce58f5f50f52}\label{scpi__spi_8h_a964c5bd6d87bd5458da9ce58f5f50f52}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!USER\_SPI\_SCK\_PIN@{USER\_SPI\_SCK\_PIN}}
+\index{USER\_SPI\_SCK\_PIN@{USER\_SPI\_SCK\_PIN}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{USER\_SPI\_SCK\_PIN}{USER\_SPI\_SCK\_PIN}}
+{\footnotesize\ttfamily \#define USER\+\_\+\+SPI\+\_\+\+SCK\+\_\+\+PIN~2}
+
+
+
+User-\/defined SPI pin configurations. 
+
+SPI Clock Pin. \mbox{\Hypertarget{scpi__spi_8h_acdeb6319a3a93084b9b24abc2f1a466d}\label{scpi__spi_8h_acdeb6319a3a93084b9b24abc2f1a466d}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!USER\_SPI\_TX\_PIN@{USER\_SPI\_TX\_PIN}}
+\index{USER\_SPI\_TX\_PIN@{USER\_SPI\_TX\_PIN}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{USER\_SPI\_TX\_PIN}{USER\_SPI\_TX\_PIN}}
+{\footnotesize\ttfamily \#define USER\+\_\+\+SPI\+\_\+\+TX\+\_\+\+PIN~3}
+
+SPI Transmit Pin (MOSI). 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{scpi__spi_8h_a24815bf5b28d21276807fba8f90f87d7}\label{scpi__spi_8h_a24815bf5b28d21276807fba8f90f87d7}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!scpi\_spi\_enable@{scpi\_spi\_enable}}
+\index{scpi\_spi\_enable@{scpi\_spi\_enable}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_spi\_enable()}{scpi\_spi\_enable()}}
+{\footnotesize\ttfamily void scpi\+\_\+spi\+\_\+enable (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+function to configure the parameters of the user spi based on the data set on the spi structure 
+
+$<$ Configure the gpio who will be used as chipselect
+
+$<$ set to high by default\mbox{\Hypertarget{scpi__spi_8h_ac73a1cb9cae277bb108384491787ddb1}\label{scpi__spi_8h_ac73a1cb9cae277bb108384491787ddb1}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!scpi\_spi\_get\_baudrate@{scpi\_spi\_get\_baudrate}}
+\index{scpi\_spi\_get\_baudrate@{scpi\_spi\_get\_baudrate}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_spi\_get\_baudrate()}{scpi\_spi\_get\_baudrate()}}
+{\footnotesize\ttfamily uint32\+\_\+t scpi\+\_\+spi\+\_\+get\+\_\+baudrate (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+function to return the baudrate 
+
+\begin{DoxyReturn}{Returns}
+uint32\+\_\+t baudrate 
+\end{DoxyReturn}
+\mbox{\Hypertarget{scpi__spi_8h_a2ab810d571c3e46585bfd0476b387fc5}\label{scpi__spi_8h_a2ab810d571c3e46585bfd0476b387fc5}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!scpi\_spi\_get\_chipselect@{scpi\_spi\_get\_chipselect}}
+\index{scpi\_spi\_get\_chipselect@{scpi\_spi\_get\_chipselect}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_spi\_get\_chipselect()}{scpi\_spi\_get\_chipselect()}}
+{\footnotesize\ttfamily uint32\+\_\+t scpi\+\_\+spi\+\_\+get\+\_\+chipselect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+function to return the chipselect gpio used 
+
+\begin{DoxyReturn}{Returns}
+uint32\+\_\+t gpio 
+\end{DoxyReturn}
+\mbox{\Hypertarget{scpi__spi_8h_a7b0a11dbbe57da81b4a87d5fe67c9ec5}\label{scpi__spi_8h_a7b0a11dbbe57da81b4a87d5fe67c9ec5}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!scpi\_spi\_get\_databits@{scpi\_spi\_get\_databits}}
+\index{scpi\_spi\_get\_databits@{scpi\_spi\_get\_databits}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_spi\_get\_databits()}{scpi\_spi\_get\_databits()}}
+{\footnotesize\ttfamily uint32\+\_\+t scpi\+\_\+spi\+\_\+get\+\_\+databits (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+function to return the databits value saved on structure 
+
+\begin{DoxyReturn}{Returns}
+uint32\+\_\+t databits 
+\end{DoxyReturn}
+\mbox{\Hypertarget{scpi__spi_8h_a97ad53b9407629a2e2a9ec971ce569a1}\label{scpi__spi_8h_a97ad53b9407629a2e2a9ec971ce569a1}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!scpi\_spi\_get\_mode@{scpi\_spi\_get\_mode}}
+\index{scpi\_spi\_get\_mode@{scpi\_spi\_get\_mode}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_spi\_get\_mode()}{scpi\_spi\_get\_mode()}}
+{\footnotesize\ttfamily uint8\+\_\+t scpi\+\_\+spi\+\_\+get\+\_\+mode (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+function who return the spi mode used in communication. 
+
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t mode value 
+\end{DoxyReturn}
+$<$ return value saved in structure\mbox{\Hypertarget{scpi__spi_8h_a659466f5c52b4fd694f38c989d294af8}\label{scpi__spi_8h_a659466f5c52b4fd694f38c989d294af8}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!scpi\_spi\_set\_baudrate@{scpi\_spi\_set\_baudrate}}
+\index{scpi\_spi\_set\_baudrate@{scpi\_spi\_set\_baudrate}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_spi\_set\_baudrate()}{scpi\_spi\_set\_baudrate()}}
+{\footnotesize\ttfamily void scpi\+\_\+spi\+\_\+set\+\_\+baudrate (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{speed }\end{DoxyParamCaption})}
+
+
+
+Function to update the baudrate speed on the structure, Baudrate will be updated with function spi enable. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speed} & Baudrate to save on structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{scpi__spi_8h_aa0920b1ae2abba44bee0a9b320cca227}\label{scpi__spi_8h_aa0920b1ae2abba44bee0a9b320cca227}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!scpi\_spi\_set\_chipselect@{scpi\_spi\_set\_chipselect}}
+\index{scpi\_spi\_set\_chipselect@{scpi\_spi\_set\_chipselect}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_spi\_set\_chipselect()}{scpi\_spi\_set\_chipselect()}}
+{\footnotesize\ttfamily uint8\+\_\+t scpi\+\_\+spi\+\_\+set\+\_\+chipselect (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{num }\end{DoxyParamCaption})}
+
+
+
+Function to update the SPI chipselect to be used. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num} & gpio to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t error if number is not validbaudrate 
+\end{DoxyReturn}
+$<$ Loop to determine if the gpio required for become new Chip\+Select is valid
+
+$<$ save in structure the new gpio
+
+$<$ Configure the gpio who will be used as chipselect
+
+$<$ set to high by default\mbox{\Hypertarget{scpi__spi_8h_a2cb5079bd0fb6a96093c5f37f4572fd8}\label{scpi__spi_8h_a2cb5079bd0fb6a96093c5f37f4572fd8}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!scpi\_spi\_set\_databits@{scpi\_spi\_set\_databits}}
+\index{scpi\_spi\_set\_databits@{scpi\_spi\_set\_databits}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_spi\_set\_databits()}{scpi\_spi\_set\_databits()}}
+{\footnotesize\ttfamily uint8\+\_\+t scpi\+\_\+spi\+\_\+set\+\_\+databits (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{num }\end{DoxyParamCaption})}
+
+
+
+Function to update the value of databits to be used. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num} & Databits to write \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{scpi__spi_8h_ac54dd17786f3ac8a65578d6cd470c1fe}\label{scpi__spi_8h_ac54dd17786f3ac8a65578d6cd470c1fe}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!scpi\_spi\_set\_mode@{scpi\_spi\_set\_mode}}
+\index{scpi\_spi\_set\_mode@{scpi\_spi\_set\_mode}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_spi\_set\_mode()}{scpi\_spi\_set\_mode()}}
+{\footnotesize\ttfamily uint8\+\_\+t scpi\+\_\+spi\+\_\+set\+\_\+mode (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{mode }\end{DoxyParamCaption})}
+
+
+
+function to set the mode to use for spi communication 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode} & value of mode to use \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t error number 
+\end{DoxyReturn}
+$<$ save mode used in structure
+
+$<$ set format\mbox{\Hypertarget{scpi__spi_8h_abb49aac0a18319207dd01018dfa624b8}\label{scpi__spi_8h_abb49aac0a18319207dd01018dfa624b8}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!scpi\_spi\_status@{scpi\_spi\_status}}
+\index{scpi\_spi\_status@{scpi\_spi\_status}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_spi\_status()}{scpi\_spi\_status()}}
+{\footnotesize\ttfamily bool scpi\+\_\+spi\+\_\+status (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Function who return if the user spi is enabled or not. 
+
+\begin{DoxyReturn}{Returns}
+True if spi is enabled 
+\end{DoxyReturn}
+\mbox{\Hypertarget{scpi__spi_8h_afdc3b187e4cf666ab0e6ebb4d6b17460}\label{scpi__spi_8h_afdc3b187e4cf666ab0e6ebb4d6b17460}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!scpi\_spi\_wri\_read\_data@{scpi\_spi\_wri\_read\_data}}
+\index{scpi\_spi\_wri\_read\_data@{scpi\_spi\_wri\_read\_data}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{scpi\_spi\_wri\_read\_data()}{scpi\_spi\_wri\_read\_data()}}
+{\footnotesize\ttfamily uint8\+\_\+t scpi\+\_\+spi\+\_\+wri\+\_\+read\+\_\+data (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{wdata,  }\item[{uint8\+\_\+t}]{wlen,  }\item[{uint8\+\_\+t $\ast$}]{rdata,  }\item[{uint8\+\_\+t}]{rlen,  }\item[{bool $\ast$}]{wflag }\end{DoxyParamCaption})}
+
+
+
+main function called by SCPI command to send or receive data on SPI port 
+
+
+\begin{DoxyParams}{Parameters}
+{\em wdata} & Pointer to an array of data to write \\
+\hline
+{\em wlen} & contain length of the write array \\
+\hline
+{\em rdata} & Pointer who will contains the data read \\
+\hline
+{\em rlen} & contain length of the read array \\
+\hline
+{\em wflag} & Flag to define if we process bytes size or word size \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t error code 
+\end{DoxyReturn}
+$<$ bytes command
+
+$<$ word command
+
+$<$ bytes command
+
+$<$ word command
+
+$<$ bytes command
+
+$<$ word command
+
+$<$ set flag to determine size of data read\mbox{\Hypertarget{scpi__spi_8h_a23385f64b89a24238ba50379892ed47a}\label{scpi__spi_8h_a23385f64b89a24238ba50379892ed47a}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!spi\_bytes\_to\_words@{spi\_bytes\_to\_words}}
+\index{spi\_bytes\_to\_words@{spi\_bytes\_to\_words}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{spi\_bytes\_to\_words()}{spi\_bytes\_to\_words()}}
+{\footnotesize\ttfamily void spi\+\_\+bytes\+\_\+to\+\_\+words (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{byte\+\_\+array,  }\item[{uint16\+\_\+t $\ast$}]{word\+\_\+array,  }\item[{size\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+function who transform an array of bytes to an array of words. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em byte\+\_\+array} & pointer to the array of bytes to transform \\
+\hline
+{\em word\+\_\+array} & pointer to the array of the resulting word \\
+\hline
+{\em length} & length of the byte array \\
+\hline
+\end{DoxyParams}
+$<$ transform 2 bytes in 1 word\mbox{\Hypertarget{scpi__spi_8h_a1a49534552d094cd1e724ab8940c035a}\label{scpi__spi_8h_a1a49534552d094cd1e724ab8940c035a}} 
+\index{scpi\_spi.h@{scpi\_spi.h}!spi\_words\_to\_bytes@{spi\_words\_to\_bytes}}
+\index{spi\_words\_to\_bytes@{spi\_words\_to\_bytes}!scpi\_spi.h@{scpi\_spi.h}}
+\doxysubsubsection{\texorpdfstring{spi\_words\_to\_bytes()}{spi\_words\_to\_bytes()}}
+{\footnotesize\ttfamily void spi\+\_\+words\+\_\+to\+\_\+bytes (\begin{DoxyParamCaption}\item[{uint16\+\_\+t $\ast$}]{word\+\_\+array,  }\item[{uint8\+\_\+t $\ast$}]{byte\+\_\+array,  }\item[{size\+\_\+t}]{length }\end{DoxyParamCaption})}
+
+
+
+function who transform an array of word to an array of byte 
+
+
+\begin{DoxyParams}{Parameters}
+{\em word\+\_\+array} & pointer to the array of words to transform \\
+\hline
+{\em byte\+\_\+array} & pointer to the array of the resulting bytes \\
+\hline
+{\em length} & length of the word array \\
+\hline
+\end{DoxyParams}

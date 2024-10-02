@@ -1,0 +1,12 @@
+<map id="firmware/src/scpi_i2c.c" name="firmware/src/scpi_i2c.c">
+<area shape="rect" id="node1" title="Complete software code library to communicate to the user I2C port using SCPI command." alt="" coords="218,5,389,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="172,169,243,196"/>
+<area shape="rect" id="node3" title=" " alt="" coords="27,87,94,114"/>
+<area shape="rect" id="node4" title=" " alt="" coords="119,87,189,114"/>
+<area shape="rect" id="node5" title=" " alt="" coords="213,87,284,114"/>
+<area shape="rect" id="node6" title=" " alt="" coords="309,87,410,114"/>
+<area shape="rect" id="node7" title=" " alt="" coords="592,169,711,196"/>
+<area shape="rect" id="node8" href="$sys__i2c_8h.html" title="I2C Functions Module." alt="" coords="435,80,615,121"/>
+<area shape="rect" id="node10" href="$scpi__i2c_8h.html" title="Header file defining constants and macros for the I2C communication." alt="" coords="691,87,777,114"/>
+<area shape="rect" id="node9" title=" " alt="" coords="483,169,566,196"/>
+</map>

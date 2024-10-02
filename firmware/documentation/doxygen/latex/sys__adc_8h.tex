@@ -1,0 +1,292 @@
+\hypertarget{sys__adc_8h}{}\doxysection{firmware/src/pico\+\_\+lib2/src/sys/include/sys\+\_\+adc.h File Reference}
+\label{sys__adc_8h}\index{firmware/src/pico\_lib2/src/sys/include/sys\_adc.h@{firmware/src/pico\_lib2/src/sys/include/sys\_adc.h}}
+
+
+Analog to Digital Converter Functions.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+Include dependency graph for sys\+\_\+adc.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{sys__adc_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=328pt]{sys__adc_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{sys__adc_8h_a55952ff4d93bc6dbf4a9a7f7be6975a4}{ADC\+\_\+\+CH\+\_\+0}}~0
+\item 
+\#define \mbox{\hyperlink{sys__adc_8h_acd8f28be344f9d95af35ebbceb5beeb9}{ADC\+\_\+\+CH\+\_\+1}}~1
+\item 
+\#define \mbox{\hyperlink{sys__adc_8h_a4e0976dde1aa3857ed258bf7628e50da}{ADC\+\_\+\+CH\+\_\+2}}~2
+\item 
+\#define \mbox{\hyperlink{sys__adc_8h_a68c2c088209b4fa85969b0887afa7701}{ADC\+\_\+\+CH\+\_\+V}}~3
+\item 
+\#define \mbox{\hyperlink{sys__adc_8h_a93e95f843c6e8a979e087d877a57297e}{ADC\+\_\+\+CH\+\_\+T}}~4
+\item 
+\#define \mbox{\hyperlink{sys__adc_8h_a5a03d0b939a8dda552c9fe3319a82485}{ADC\+\_\+\+VREF}}~3.\+3
+\begin{DoxyCompactList}\small\item\em ADC Reference Voltage. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sys__adc_8h_a3c9fa0f0f7dc8129e1ecc10a2d4c197c}{sys\+\_\+adc\+\_\+init}} (uint8\+\_\+t \mbox{\hyperlink{master_8c_acbcf5f8de7895ca456bb39fbcccde1d1}{ch}})
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Init ADC channel 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{sys__adc_8h_a113cef47f82e7519c1fe0b636f2f47f3}{sys\+\_\+adc\+\_\+raw}} (uint8\+\_\+t \mbox{\hyperlink{master_8c_acbcf5f8de7895ca456bb39fbcccde1d1}{ch}})
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Read ADC raw value 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+double \mbox{\hyperlink{sys__adc_8h_a913f7303dc289c86f64c8dd2f6c9cb59}{sys\+\_\+adc\+\_\+scale}} (uint8\+\_\+t \mbox{\hyperlink{master_8c_acbcf5f8de7895ca456bb39fbcccde1d1}{ch}}, double low, double high)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Read ADC and scale raw value to low..high 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+double \mbox{\hyperlink{sys__adc_8h_a8f0b07a928f2e92cfc8493cdf09cc176}{sys\+\_\+adc\+\_\+volt}} (uint8\+\_\+t \mbox{\hyperlink{master_8c_acbcf5f8de7895ca456bb39fbcccde1d1}{ch}})
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Read ADC voltage value 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+double \mbox{\hyperlink{sys__adc_8h_ad7ca531532689111e44dfb8336ecf95d}{sys\+\_\+adc\+\_\+vsys}} ()
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Read ADC VSYS voltage 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+double \mbox{\hyperlink{sys__adc_8h_a9ab4088b9e613433252de6f33df7b3f9}{sys\+\_\+adc\+\_\+temp\+\_\+c}} ()
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Read ADC internal temp. sensor in celsius 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+double \mbox{\hyperlink{sys__adc_8h_a922093bba93b09545c6f7ef59ad876f1}{sys\+\_\+adc\+\_\+temp\+\_\+f}} ()
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Read ADC internal temp. sensor in fahrenheit 
+\end{DoxyItemize}\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Analog to Digital Converter Functions. 
+
+Modifications on file.
+
+\begin{DoxyCopyright}{Copyright}
+Copyright 2021 Ocean (\href{mailto:iiot2k@gmail.com}{\texttt{ iiot2k@gmail.\+com}}) All rights reserved Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details.
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+\hypertarget{sys__adc_8h_ADC}{}\doxysubsection{MODIFICATIONS}\label{sys__adc_8h_ADC}
+
+\begin{DoxyItemize}
+\item fix documentation errors found by Doxygen 
+\end{DoxyItemize}
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{sys__adc_8h_a55952ff4d93bc6dbf4a9a7f7be6975a4}\label{sys__adc_8h_a55952ff4d93bc6dbf4a9a7f7be6975a4}} 
+\index{sys\_adc.h@{sys\_adc.h}!ADC\_CH\_0@{ADC\_CH\_0}}
+\index{ADC\_CH\_0@{ADC\_CH\_0}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{ADC\_CH\_0}{ADC\_CH\_0}}
+{\footnotesize\ttfamily \#define ADC\+\_\+\+CH\+\_\+0~0}
+
+\$\#\# {\bfseries{Constants\+:}} \&ndash;
+
+ADC0 channel identifier. \mbox{\Hypertarget{sys__adc_8h_acd8f28be344f9d95af35ebbceb5beeb9}\label{sys__adc_8h_acd8f28be344f9d95af35ebbceb5beeb9}} 
+\index{sys\_adc.h@{sys\_adc.h}!ADC\_CH\_1@{ADC\_CH\_1}}
+\index{ADC\_CH\_1@{ADC\_CH\_1}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{ADC\_CH\_1}{ADC\_CH\_1}}
+{\footnotesize\ttfamily \#define ADC\+\_\+\+CH\+\_\+1~1}
+
+ADC1 channel identifier. \mbox{\Hypertarget{sys__adc_8h_a4e0976dde1aa3857ed258bf7628e50da}\label{sys__adc_8h_a4e0976dde1aa3857ed258bf7628e50da}} 
+\index{sys\_adc.h@{sys\_adc.h}!ADC\_CH\_2@{ADC\_CH\_2}}
+\index{ADC\_CH\_2@{ADC\_CH\_2}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{ADC\_CH\_2}{ADC\_CH\_2}}
+{\footnotesize\ttfamily \#define ADC\+\_\+\+CH\+\_\+2~2}
+
+ADC2 channel identifier. \mbox{\Hypertarget{sys__adc_8h_a93e95f843c6e8a979e087d877a57297e}\label{sys__adc_8h_a93e95f843c6e8a979e087d877a57297e}} 
+\index{sys\_adc.h@{sys\_adc.h}!ADC\_CH\_T@{ADC\_CH\_T}}
+\index{ADC\_CH\_T@{ADC\_CH\_T}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{ADC\_CH\_T}{ADC\_CH\_T}}
+{\footnotesize\ttfamily \#define ADC\+\_\+\+CH\+\_\+T~4}
+
+Internal Temperature Sensor channel identifier.
+
+\begin{DoxyNote}{Note}
+The ADC channels are defined as follows\+:
+\begin{DoxyItemize}
+\item ADC\+\_\+\+CH\+\_\+0\+: ADC0
+\item ADC\+\_\+\+CH\+\_\+1\+: ADC1
+\item ADC\+\_\+\+CH\+\_\+2\+: ADC2
+\item ADC\+\_\+\+CH\+\_\+V\+: VSYS Voltage
+\item ADC\+\_\+\+CH\+\_\+T\+: Internal Temp. Sensor 
+\end{DoxyItemize}
+\end{DoxyNote}
+\mbox{\Hypertarget{sys__adc_8h_a68c2c088209b4fa85969b0887afa7701}\label{sys__adc_8h_a68c2c088209b4fa85969b0887afa7701}} 
+\index{sys\_adc.h@{sys\_adc.h}!ADC\_CH\_V@{ADC\_CH\_V}}
+\index{ADC\_CH\_V@{ADC\_CH\_V}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{ADC\_CH\_V}{ADC\_CH\_V}}
+{\footnotesize\ttfamily \#define ADC\+\_\+\+CH\+\_\+V~3}
+
+VSYS Voltage channel identifier. \mbox{\Hypertarget{sys__adc_8h_a5a03d0b939a8dda552c9fe3319a82485}\label{sys__adc_8h_a5a03d0b939a8dda552c9fe3319a82485}} 
+\index{sys\_adc.h@{sys\_adc.h}!ADC\_VREF@{ADC\_VREF}}
+\index{ADC\_VREF@{ADC\_VREF}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{ADC\_VREF}{ADC\_VREF}}
+{\footnotesize\ttfamily \#define ADC\+\_\+\+VREF~3.\+3}
+
+
+
+ADC Reference Voltage. 
+
+The reference voltage for the ADC is set to 3.\+3V. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sys__adc_8h_a3c9fa0f0f7dc8129e1ecc10a2d4c197c}\label{sys__adc_8h_a3c9fa0f0f7dc8129e1ecc10a2d4c197c}} 
+\index{sys\_adc.h@{sys\_adc.h}!sys\_adc\_init@{sys\_adc\_init}}
+\index{sys\_adc\_init@{sys\_adc\_init}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{sys\_adc\_init()}{sys\_adc\_init()}}
+{\footnotesize\ttfamily void sys\+\_\+adc\+\_\+init (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{ch }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Init ADC channel 
+\end{DoxyItemize}
+
+\$\#\# {\bfseries{Functions\+:}} \&ndash;
+
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & ADC channel \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sys__adc_8h_a113cef47f82e7519c1fe0b636f2f47f3}\label{sys__adc_8h_a113cef47f82e7519c1fe0b636f2f47f3}} 
+\index{sys\_adc.h@{sys\_adc.h}!sys\_adc\_raw@{sys\_adc\_raw}}
+\index{sys\_adc\_raw@{sys\_adc\_raw}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{sys\_adc\_raw()}{sys\_adc\_raw()}}
+{\footnotesize\ttfamily uint16\+\_\+t sys\+\_\+adc\+\_\+raw (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{ch }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Read ADC raw value 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & ADC channel \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ADC raw value 0..4095 (0..VREF) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__adc_8h_a913f7303dc289c86f64c8dd2f6c9cb59}\label{sys__adc_8h_a913f7303dc289c86f64c8dd2f6c9cb59}} 
+\index{sys\_adc.h@{sys\_adc.h}!sys\_adc\_scale@{sys\_adc\_scale}}
+\index{sys\_adc\_scale@{sys\_adc\_scale}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{sys\_adc\_scale()}{sys\_adc\_scale()}}
+{\footnotesize\ttfamily double sys\+\_\+adc\+\_\+scale (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{ch,  }\item[{double}]{low,  }\item[{double}]{high }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Read ADC and scale raw value to low..high 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & ADC channel \\
+\hline
+{\em low} & Low value for 0 \\
+\hline
+{\em high} & High value for 4095 (3.\+3V or VREF) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Value between low and high 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__adc_8h_a9ab4088b9e613433252de6f33df7b3f9}\label{sys__adc_8h_a9ab4088b9e613433252de6f33df7b3f9}} 
+\index{sys\_adc.h@{sys\_adc.h}!sys\_adc\_temp\_c@{sys\_adc\_temp\_c}}
+\index{sys\_adc\_temp\_c@{sys\_adc\_temp\_c}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{sys\_adc\_temp\_c()}{sys\_adc\_temp\_c()}}
+{\footnotesize\ttfamily double sys\+\_\+adc\+\_\+temp\+\_\+c (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Read ADC internal temp. sensor in celsius 
+\end{DoxyItemize}
+
+\begin{DoxyReturn}{Returns}
+Temp. value in celsius 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__adc_8h_a922093bba93b09545c6f7ef59ad876f1}\label{sys__adc_8h_a922093bba93b09545c6f7ef59ad876f1}} 
+\index{sys\_adc.h@{sys\_adc.h}!sys\_adc\_temp\_f@{sys\_adc\_temp\_f}}
+\index{sys\_adc\_temp\_f@{sys\_adc\_temp\_f}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{sys\_adc\_temp\_f()}{sys\_adc\_temp\_f()}}
+{\footnotesize\ttfamily double sys\+\_\+adc\+\_\+temp\+\_\+f (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Read ADC internal temp. sensor in fahrenheit 
+\end{DoxyItemize}
+
+\begin{DoxyReturn}{Returns}
+Temp. value in fahrenheit 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__adc_8h_a8f0b07a928f2e92cfc8493cdf09cc176}\label{sys__adc_8h_a8f0b07a928f2e92cfc8493cdf09cc176}} 
+\index{sys\_adc.h@{sys\_adc.h}!sys\_adc\_volt@{sys\_adc\_volt}}
+\index{sys\_adc\_volt@{sys\_adc\_volt}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{sys\_adc\_volt()}{sys\_adc\_volt()}}
+{\footnotesize\ttfamily double sys\+\_\+adc\+\_\+volt (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{ch }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Read ADC voltage value 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em ch} & ADC channel \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ADC voltage value 0..3.\+3V (VREF) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__adc_8h_ad7ca531532689111e44dfb8336ecf95d}\label{sys__adc_8h_ad7ca531532689111e44dfb8336ecf95d}} 
+\index{sys\_adc.h@{sys\_adc.h}!sys\_adc\_vsys@{sys\_adc\_vsys}}
+\index{sys\_adc\_vsys@{sys\_adc\_vsys}!sys\_adc.h@{sys\_adc.h}}
+\doxysubsubsection{\texorpdfstring{sys\_adc\_vsys()}{sys\_adc\_vsys()}}
+{\footnotesize\ttfamily double sys\+\_\+adc\+\_\+vsys (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Read ADC VSYS voltage 
+\end{DoxyItemize}
+
+\begin{DoxyReturn}{Returns}
+VSYS voltage value $\sim$5V 
+\end{DoxyReturn}

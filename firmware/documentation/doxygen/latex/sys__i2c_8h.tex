@@ -1,0 +1,587 @@
+\hypertarget{sys__i2c_8h}{}\doxysection{firmware/src/pico\+\_\+lib2/src/sys/include/sys\+\_\+i2c.h File Reference}
+\label{sys__i2c_8h}\index{firmware/src/pico\_lib2/src/sys/include/sys\_i2c.h@{firmware/src/pico\_lib2/src/sys/include/sys\_i2c.h}}
+
+
+I2C Functions Module.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}hardware/i2c.\+h\char`\"{}}\newline
+Include dependency graph for sys\+\_\+i2c.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=321pt]{sys__i2c_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sys__i2c_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{sys__i2c_8h_afcdfdbf5e1d0ae4de126372e31d3ad33}{I2\+C\+\_\+\+TIMEOUT\+\_\+\+CHAR}}~500
+\begin{DoxyCompactList}\small\item\em I2C timeout per character. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{sys__i2c_8h_abb8661081d87f1da62f101fe8a0c533b}{SYS\+\_\+\+SDA0}}~8
+\begin{DoxyCompactList}\small\item\em Default I2\+C0 SDA pin. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{sys__i2c_8h_a2938e965d50b59deec5ca6afbb82173f}{SYS\+\_\+\+SCL0}}~9
+\begin{DoxyCompactList}\small\item\em Default I2\+C0 SCL pin. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{sys__i2c_8h_ac1df5f78fd5b016f49c2540818176bd6}{SYS\+\_\+\+SDA1}}~6
+\begin{DoxyCompactList}\small\item\em Default I2\+C1 SDA pin. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{sys__i2c_8h_a7af723a80de73c1b6cad2d822f93adcb}{SYS\+\_\+\+SCL1}}~7
+\begin{DoxyCompactList}\small\item\em Default I2\+C1 SCL pin. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{sys__i2c_8h_aedc183cad1f8e9940822213efe256114}{sys\+\_\+i2c\+\_\+setbaudrate}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint32\+\_\+t baudrate)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Set i2c baudrate 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sys__i2c_8h_aa4c5aeb76145bf94e5a455722c43a568}{sys\+\_\+i2c\+\_\+init}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint32\+\_\+t sda, uint32\+\_\+t scl, uint32\+\_\+t baudrate, bool pullup)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Init i2c with user assignment pins 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+void \mbox{\hyperlink{sys__i2c_8h_a468f8927ef2be2ea04f63fed9a48c6bc}{sys\+\_\+i2c\+\_\+init\+\_\+def}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint32\+\_\+t baudrate, bool pullup)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Init default i2c 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{sys__i2c_8h_a05496cc0c2d8e4ffd67289652d19b0f0}{sys\+\_\+i2c\+\_\+rbyte}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, uint8\+\_\+t $\ast$rb)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Read i2c byte 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{sys__i2c_8h_a363dd1c2de483d04a7287a4ae00cff80}{sys\+\_\+i2c\+\_\+wbyte}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, uint8\+\_\+t wb)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Write i2c byte 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{sys__i2c_8h_ad5a80921a99e8ea446051073a7d3e7ce}{sys\+\_\+i2c\+\_\+rbyte\+\_\+reg}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, uint8\+\_\+t reg, uint8\+\_\+t $\ast$rb)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Read i2c byte register 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{sys__i2c_8h_a0bce52d6743e05463bccd60ecfca5051}{sys\+\_\+i2c\+\_\+wbyte\+\_\+reg}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, uint8\+\_\+t reg, uint8\+\_\+t wb)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Write i2c byte register 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{sys__i2c_8h_a2810577779f498a4feb4ac77ca881b9f}{sys\+\_\+i2c\+\_\+rbuf}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, uint8\+\_\+t $\ast$p\+Buf, uint32\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Read i2c buffer by byte 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{sys__i2c_8h_a59f00ac8fb021f155d9390fe61d955a8}{sys\+\_\+i2c\+\_\+wbuf}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, const uint8\+\_\+t $\ast$p\+Buf, uint32\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Write i2c buffer 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{sys__i2c_8h_a2b06ea2845fa47ece9fc4298a36fec8f}{sys\+\_\+i2c\+\_\+rbuf\+\_\+reg}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, uint8\+\_\+t reg, uint8\+\_\+t $\ast$p\+Buf, uint32\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Read i2c buffer register using byte 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{sys__i2c_8h_a45b3ffba04dc633b9b332d1ccb68a53d}{sys\+\_\+i2c\+\_\+wbuf\+\_\+reg}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, uint8\+\_\+t reg, uint8\+\_\+t $\ast$p\+Buf, uint32\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Write i2c buffer register and byte data 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{sys__i2c_8h_abde7dcba2bebdde2b8fe0371b5d8230c}{sys\+\_\+i2c\+\_\+wbuf\+\_\+rbuf}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, uint8\+\_\+t $\ast$w\+Buf, uint32\+\_\+t wlen, uint8\+\_\+t $\ast$r\+Buf, uint32\+\_\+t rlen)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Write i2c buffer and read byte data 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+int32\+\_\+t \mbox{\hyperlink{sys__i2c_8h_a49400456e17c02908105ed9eac09e228}{sys\+\_\+i2c\+\_\+rbyte\+\_\+eeprom}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, uint8\+\_\+t $\ast$ee\+\_\+address, uint8\+\_\+t $\ast$p\+Buf, uint32\+\_\+t len)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Read i2c byte on eeprom at word address 
+\end{DoxyItemize}\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+I2C Functions Module. 
+
+Modifications on file.
+
+This module provides functions for I2C communication, including\+:
+\begin{DoxyItemize}
+\item Initialization.
+\item Reading data from I2C devices.
+\item Writing data to I2C devices.
+\end{DoxyItemize}
+
+\begin{DoxyCopyright}{Copyright}
+Copyright 2021 Ocean (\href{mailto:iiot2k@gmail.com}{\texttt{ iiot2k@gmail.\+com}}) All rights reserved Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details.
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+\hypertarget{sys__i2c_8h_I2C}{}\doxysubsection{MODIFICATIONS}\label{sys__i2c_8h_I2C}
+
+\begin{DoxyItemize}
+\item fix documentation errors found by Doxygen 
+\end{DoxyItemize}
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{sys__i2c_8h_afcdfdbf5e1d0ae4de126372e31d3ad33}\label{sys__i2c_8h_afcdfdbf5e1d0ae4de126372e31d3ad33}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!I2C\_TIMEOUT\_CHAR@{I2C\_TIMEOUT\_CHAR}}
+\index{I2C\_TIMEOUT\_CHAR@{I2C\_TIMEOUT\_CHAR}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{I2C\_TIMEOUT\_CHAR}{I2C\_TIMEOUT\_CHAR}}
+{\footnotesize\ttfamily \#define I2\+C\+\_\+\+TIMEOUT\+\_\+\+CHAR~500}
+
+
+
+I2C timeout per character. 
+
+\$\#\# {\bfseries{Constants\+:}} \&ndash;
+
+This defines the timeout duration for I2C operations per character in microseconds. ~\newline
+\mbox{\Hypertarget{sys__i2c_8h_a2938e965d50b59deec5ca6afbb82173f}\label{sys__i2c_8h_a2938e965d50b59deec5ca6afbb82173f}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!SYS\_SCL0@{SYS\_SCL0}}
+\index{SYS\_SCL0@{SYS\_SCL0}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{SYS\_SCL0}{SYS\_SCL0}}
+{\footnotesize\ttfamily \#define SYS\+\_\+\+SCL0~9}
+
+
+
+Default I2\+C0 SCL pin. 
+
+This defines the SCL pin used for I2\+C0 communication. ~\newline
+\mbox{\Hypertarget{sys__i2c_8h_a7af723a80de73c1b6cad2d822f93adcb}\label{sys__i2c_8h_a7af723a80de73c1b6cad2d822f93adcb}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!SYS\_SCL1@{SYS\_SCL1}}
+\index{SYS\_SCL1@{SYS\_SCL1}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{SYS\_SCL1}{SYS\_SCL1}}
+{\footnotesize\ttfamily \#define SYS\+\_\+\+SCL1~7}
+
+
+
+Default I2\+C1 SCL pin. 
+
+This defines the SCL pin used for I2\+C1 communication. ~\newline
+\mbox{\Hypertarget{sys__i2c_8h_abb8661081d87f1da62f101fe8a0c533b}\label{sys__i2c_8h_abb8661081d87f1da62f101fe8a0c533b}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!SYS\_SDA0@{SYS\_SDA0}}
+\index{SYS\_SDA0@{SYS\_SDA0}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{SYS\_SDA0}{SYS\_SDA0}}
+{\footnotesize\ttfamily \#define SYS\+\_\+\+SDA0~8}
+
+
+
+Default I2\+C0 SDA pin. 
+
+This defines the SDA pin used for I2\+C0 communication. ~\newline
+\mbox{\Hypertarget{sys__i2c_8h_ac1df5f78fd5b016f49c2540818176bd6}\label{sys__i2c_8h_ac1df5f78fd5b016f49c2540818176bd6}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!SYS\_SDA1@{SYS\_SDA1}}
+\index{SYS\_SDA1@{SYS\_SDA1}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{SYS\_SDA1}{SYS\_SDA1}}
+{\footnotesize\ttfamily \#define SYS\+\_\+\+SDA1~6}
+
+
+
+Default I2\+C1 SDA pin. 
+
+This defines the SDA pin used for I2\+C1 communication. ~\newline
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{sys__i2c_8h_aa4c5aeb76145bf94e5a455722c43a568}\label{sys__i2c_8h_aa4c5aeb76145bf94e5a455722c43a568}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_init@{sys\_i2c\_init}}
+\index{sys\_i2c\_init@{sys\_i2c\_init}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_init()}{sys\_i2c\_init()}}
+{\footnotesize\ttfamily void sys\+\_\+i2c\+\_\+init (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint32\+\_\+t}]{sda,  }\item[{uint32\+\_\+t}]{scl,  }\item[{uint32\+\_\+t}]{baudrate,  }\item[{bool}]{pullup }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Init i2c with user assignment pins 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em sda} & Pin number for sda \\
+\hline
+{\em scl} & Pin number for scl \\
+\hline
+{\em baudrate} & Baudrate in Hz \\
+\hline
+{\em pullup} & If true connect internal pullup resistor \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sys__i2c_8h_a468f8927ef2be2ea04f63fed9a48c6bc}\label{sys__i2c_8h_a468f8927ef2be2ea04f63fed9a48c6bc}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_init\_def@{sys\_i2c\_init\_def}}
+\index{sys\_i2c\_init\_def@{sys\_i2c\_init\_def}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_init\_def()}{sys\_i2c\_init\_def()}}
+{\footnotesize\ttfamily void sys\+\_\+i2c\+\_\+init\+\_\+def (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint32\+\_\+t}]{baudrate,  }\item[{bool}]{pullup }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Init default i2c 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em baudrate} & Baudrate in Hz \\
+\hline
+{\em pullup} & If true connect internal pullup resistor \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sys__i2c_8h_a2810577779f498a4feb4ac77ca881b9f}\label{sys__i2c_8h_a2810577779f498a4feb4ac77ca881b9f}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_rbuf@{sys\_i2c\_rbuf}}
+\index{sys\_i2c\_rbuf@{sys\_i2c\_rbuf}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_rbuf()}{sys\_i2c\_rbuf()}}
+{\footnotesize\ttfamily int32\+\_\+t sys\+\_\+i2c\+\_\+rbuf (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint8\+\_\+t $\ast$}]{p\+Buf,  }\item[{uint32\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Read i2c buffer by byte 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address \\
+\hline
+{\em p\+Buf} & Buffer to read \\
+\hline
+{\em len} & Length to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Bytes read 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+GENERIC On error 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+TIMEOUT On timeout 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__i2c_8h_a2b06ea2845fa47ece9fc4298a36fec8f}\label{sys__i2c_8h_a2b06ea2845fa47ece9fc4298a36fec8f}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_rbuf\_reg@{sys\_i2c\_rbuf\_reg}}
+\index{sys\_i2c\_rbuf\_reg@{sys\_i2c\_rbuf\_reg}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_rbuf\_reg()}{sys\_i2c\_rbuf\_reg()}}
+{\footnotesize\ttfamily int32\+\_\+t sys\+\_\+i2c\+\_\+rbuf\+\_\+reg (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint8\+\_\+t}]{reg,  }\item[{uint8\+\_\+t $\ast$}]{p\+Buf,  }\item[{uint32\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Read i2c buffer register using byte 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address \\
+\hline
+{\em reg} & Register address \\
+\hline
+{\em p\+Buf} & Buffer to read \\
+\hline
+{\em len} & Length to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Bytes read 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+GENERIC On error 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+TIMEOUT On timeout 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__i2c_8h_a05496cc0c2d8e4ffd67289652d19b0f0}\label{sys__i2c_8h_a05496cc0c2d8e4ffd67289652d19b0f0}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_rbyte@{sys\_i2c\_rbyte}}
+\index{sys\_i2c\_rbyte@{sys\_i2c\_rbyte}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_rbyte()}{sys\_i2c\_rbyte()}}
+{\footnotesize\ttfamily int32\+\_\+t sys\+\_\+i2c\+\_\+rbyte (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint8\+\_\+t $\ast$}]{rb }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Read i2c byte 
+\end{DoxyItemize}
+
+\$\#\# {\bfseries{Byte functions\+:}} \&ndash; ~\newline
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address \\
+\hline
+{\em rb} & Byte to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Bytes read 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+GENERIC On error 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+TIMEOUT On timeout 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__i2c_8h_a49400456e17c02908105ed9eac09e228}\label{sys__i2c_8h_a49400456e17c02908105ed9eac09e228}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_rbyte\_eeprom@{sys\_i2c\_rbyte\_eeprom}}
+\index{sys\_i2c\_rbyte\_eeprom@{sys\_i2c\_rbyte\_eeprom}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_rbyte\_eeprom()}{sys\_i2c\_rbyte\_eeprom()}}
+{\footnotesize\ttfamily int32\+\_\+t sys\+\_\+i2c\+\_\+rbyte\+\_\+eeprom (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint8\+\_\+t $\ast$}]{ee\+\_\+address,  }\item[{uint8\+\_\+t $\ast$}]{p\+Buf,  }\item[{uint32\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Read i2c byte on eeprom at word address 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address \\
+\hline
+{\em ee\+\_\+address} & Word address in array \\
+\hline
+{\em p\+Buf} & Buffer to write \\
+\hline
+{\em len} & Length to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Bytes read 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+GENERIC On error 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+TIMEOUT On timeout 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__i2c_8h_ad5a80921a99e8ea446051073a7d3e7ce}\label{sys__i2c_8h_ad5a80921a99e8ea446051073a7d3e7ce}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_rbyte\_reg@{sys\_i2c\_rbyte\_reg}}
+\index{sys\_i2c\_rbyte\_reg@{sys\_i2c\_rbyte\_reg}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_rbyte\_reg()}{sys\_i2c\_rbyte\_reg()}}
+{\footnotesize\ttfamily int32\+\_\+t sys\+\_\+i2c\+\_\+rbyte\+\_\+reg (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint8\+\_\+t}]{reg,  }\item[{uint8\+\_\+t $\ast$}]{rb }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Read i2c byte register 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address \\
+\hline
+{\em reg} & Register address \\
+\hline
+{\em rb} & Byte to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Bytes read 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+GENERIC On error 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+TIMEOUT On timeout 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__i2c_8h_aedc183cad1f8e9940822213efe256114}\label{sys__i2c_8h_aedc183cad1f8e9940822213efe256114}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_setbaudrate@{sys\_i2c\_setbaudrate}}
+\index{sys\_i2c\_setbaudrate@{sys\_i2c\_setbaudrate}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_setbaudrate()}{sys\_i2c\_setbaudrate()}}
+{\footnotesize\ttfamily void sys\+\_\+i2c\+\_\+setbaudrate (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint32\+\_\+t}]{baudrate }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Set i2c baudrate 
+\end{DoxyItemize}
+
+\$\#\# {\bfseries{I2C Setup\+:}} \&ndash; ~\newline
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em baudrate} & Baudrate in Hz \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{sys__i2c_8h_a59f00ac8fb021f155d9390fe61d955a8}\label{sys__i2c_8h_a59f00ac8fb021f155d9390fe61d955a8}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_wbuf@{sys\_i2c\_wbuf}}
+\index{sys\_i2c\_wbuf@{sys\_i2c\_wbuf}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_wbuf()}{sys\_i2c\_wbuf()}}
+{\footnotesize\ttfamily int32\+\_\+t sys\+\_\+i2c\+\_\+wbuf (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{const uint8\+\_\+t $\ast$}]{p\+Buf,  }\item[{uint32\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Write i2c buffer 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address \\
+\hline
+{\em p\+Buf} & Buffer to write \\
+\hline
+{\em len} & Length to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Bytes written 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+GENERIC On error 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+TIMEOUT On timeout 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__i2c_8h_abde7dcba2bebdde2b8fe0371b5d8230c}\label{sys__i2c_8h_abde7dcba2bebdde2b8fe0371b5d8230c}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_wbuf\_rbuf@{sys\_i2c\_wbuf\_rbuf}}
+\index{sys\_i2c\_wbuf\_rbuf@{sys\_i2c\_wbuf\_rbuf}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_wbuf\_rbuf()}{sys\_i2c\_wbuf\_rbuf()}}
+{\footnotesize\ttfamily int32\+\_\+t sys\+\_\+i2c\+\_\+wbuf\+\_\+rbuf (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint8\+\_\+t $\ast$}]{w\+Buf,  }\item[{uint32\+\_\+t}]{wlen,  }\item[{uint8\+\_\+t $\ast$}]{r\+Buf,  }\item[{uint32\+\_\+t}]{rlen }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Write i2c buffer and read byte data 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address \\
+\hline
+{\em w\+Buf} & Write Buffer \\
+\hline
+{\em wlen} & Length to write \\
+\hline
+{\em r\+Buf} & Buffer to read \\
+\hline
+{\em rlen} & Length to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Bytes read 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+GENERIC On error 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+TIMEOUT On timeout 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__i2c_8h_a45b3ffba04dc633b9b332d1ccb68a53d}\label{sys__i2c_8h_a45b3ffba04dc633b9b332d1ccb68a53d}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_wbuf\_reg@{sys\_i2c\_wbuf\_reg}}
+\index{sys\_i2c\_wbuf\_reg@{sys\_i2c\_wbuf\_reg}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_wbuf\_reg()}{sys\_i2c\_wbuf\_reg()}}
+{\footnotesize\ttfamily int32\+\_\+t sys\+\_\+i2c\+\_\+wbuf\+\_\+reg (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint8\+\_\+t}]{reg,  }\item[{uint8\+\_\+t $\ast$}]{p\+Buf,  }\item[{uint32\+\_\+t}]{len }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Write i2c buffer register and byte data 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address \\
+\hline
+{\em reg} & Register address \\
+\hline
+{\em p\+Buf} & Buffer to read \\
+\hline
+{\em len} & Length to read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Bytes written 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+GENERIC On error 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+TIMEOUT On timeout 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__i2c_8h_a363dd1c2de483d04a7287a4ae00cff80}\label{sys__i2c_8h_a363dd1c2de483d04a7287a4ae00cff80}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_wbyte@{sys\_i2c\_wbyte}}
+\index{sys\_i2c\_wbyte@{sys\_i2c\_wbyte}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_wbyte()}{sys\_i2c\_wbyte()}}
+{\footnotesize\ttfamily int32\+\_\+t sys\+\_\+i2c\+\_\+wbyte (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint8\+\_\+t}]{wb }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Write i2c byte 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address \\
+\hline
+{\em wb} & Byte to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Bytes written 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+GENERIC On error 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+TIMEOUT On timeout 
+\end{DoxyReturn}
+\mbox{\Hypertarget{sys__i2c_8h_a0bce52d6743e05463bccd60ecfca5051}\label{sys__i2c_8h_a0bce52d6743e05463bccd60ecfca5051}} 
+\index{sys\_i2c.h@{sys\_i2c.h}!sys\_i2c\_wbyte\_reg@{sys\_i2c\_wbyte\_reg}}
+\index{sys\_i2c\_wbyte\_reg@{sys\_i2c\_wbyte\_reg}!sys\_i2c.h@{sys\_i2c.h}}
+\doxysubsubsection{\texorpdfstring{sys\_i2c\_wbyte\_reg()}{sys\_i2c\_wbyte\_reg()}}
+{\footnotesize\ttfamily int32\+\_\+t sys\+\_\+i2c\+\_\+wbyte\+\_\+reg (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint8\+\_\+t}]{reg,  }\item[{uint8\+\_\+t}]{wb }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Write i2c byte register 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address \\
+\hline
+{\em reg} & Register address \\
+\hline
+{\em wb} & Byte to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Bytes written 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+GENERIC On error 
+
+\mbox{[}error\mbox{]} PICO\+\_\+\+ERROR\+\_\+\+TIMEOUT On timeout 
+\end{DoxyReturn}

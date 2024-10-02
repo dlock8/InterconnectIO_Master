@@ -1,0 +1,50 @@
+\hypertarget{unioneef}{}\doxysection{eef Union Reference}
+\label{unioneef}\index{eef@{eef}}
+
+
+Union that combines the EEPROM configuration structure with a raw data array.  
+
+
+
+
+{\ttfamily \#include $<$master.\+h$>$}
+
+
+
+Collaboration diagram for eef\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=133pt]{unioneef__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structeecfg__t}{eecfg\+\_\+t}} \mbox{\hyperlink{unioneef_aaaec6f0358036fa7d2eeb417747784f1}{cfg}}
+\item 
+char \mbox{\hyperlink{unioneef_a8598cdb884d1dc3d0df9c6c04893db8b}{data}} \mbox{[}sizeof(\mbox{\hyperlink{master_8h_aff604f626fb9ec96578d8e620974f9f7}{cfg}})\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Union that combines the EEPROM configuration structure with a raw data array. 
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{unioneef_aaaec6f0358036fa7d2eeb417747784f1}\label{unioneef_aaaec6f0358036fa7d2eeb417747784f1}} 
+\index{eef@{eef}!cfg@{cfg}}
+\index{cfg@{cfg}!eef@{eef}}
+\doxysubsubsection{\texorpdfstring{cfg}{cfg}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structeecfg__t}{eecfg\+\_\+t}} eef\+::cfg}
+
+EEPROM configuration structure. \mbox{\Hypertarget{unioneef_a8598cdb884d1dc3d0df9c6c04893db8b}\label{unioneef_a8598cdb884d1dc3d0df9c6c04893db8b}} 
+\index{eef@{eef}!data@{data}}
+\index{data@{data}!eef@{eef}}
+\doxysubsubsection{\texorpdfstring{data}{data}}
+{\footnotesize\ttfamily char eef\+::data\mbox{[}sizeof(\mbox{\hyperlink{master_8h_aff604f626fb9ec96578d8e620974f9f7}{cfg}})\mbox{]}}
+
+Raw data representation of the configuration. 
+
+The documentation for this union was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+firmware/src/include/\mbox{\hyperlink{master_8h}{master.\+h}}\end{DoxyCompactItemize}

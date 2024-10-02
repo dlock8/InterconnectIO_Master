@@ -1,0 +1,259 @@
+\hypertarget{dev__mcp4725_8h}{}\doxysection{firmware/src/pico\+\_\+lib2/src/dev/dev\+\_\+mcp4725/dev\+\_\+mcp4725.h File Reference}
+\label{dev__mcp4725_8h}\index{firmware/src/pico\_lib2/src/dev/dev\_mcp4725/dev\_mcp4725.h@{firmware/src/pico\_lib2/src/dev/dev\_mcp4725/dev\_mcp4725.h}}
+
+
+MCP4725 One Channel 12-\/bit ADC.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}../../sys/include/sys\+\_\+i2c.\+h\char`\"{}}\newline
+Include dependency graph for dev\+\_\+mcp4725.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{dev__mcp4725_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dev__mcp4725_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{dev__mcp4725_8h_aca282936bcfbb85c24a95855c0dffd6f}\label{dev__mcp4725_8h_aca282936bcfbb85c24a95855c0dffd6f}} 
+\#define \mbox{\hyperlink{dev__mcp4725_8h_aca282936bcfbb85c24a95855c0dffd6f}{VDD}}~3.\+3
+\begin{DoxyCompactList}\small\item\em Source Voltage. This value can be calibrated during self-\/test and saved in EEPROM. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \mbox{\hyperlink{dev__mcp4725_8h_a99fb83031ce9923c84392b4e92f956b5aea40557730e6ac7a6cc7a9391f07562e}{MCP4725\+\_\+\+ADDR0}} = 0x60
+, \mbox{\hyperlink{dev__mcp4725_8h_a99fb83031ce9923c84392b4e92f956b5ae3fad3d40b4167b89d800fab9e2af6ff}{MCP4725\+\_\+\+ADDR1}} = 0x61
+ \}
+\begin{DoxyCompactList}\small\item\em I2C addresses for the MCP4725. \end{DoxyCompactList}\item 
+enum \{ \mbox{\hyperlink{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04a3c197be061ed660757c6bbf81b6940b3}{MCP4725\+\_\+\+PD\+\_\+\+OFF}} = 0
+, \mbox{\hyperlink{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04ac2e8f709fb12aa0c37843b039bb4dd4a}{MCP4725\+\_\+\+PD\+\_\+1}}
+, \mbox{\hyperlink{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04ac9a5eba5fe20609d2dfe8be67a34eb08}{MCP4725\+\_\+\+PD\+\_\+100}}
+, \mbox{\hyperlink{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04abef291a5cf600adf1ff254df64ffc0a3}{MCP4725\+\_\+\+PD\+\_\+500}}
+ \}
+\begin{DoxyCompactList}\small\item\em Power down modes for the MCP4725. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{dev__mcp4725_8h_acbc0fe8bfa2d1ab7669b85942365ec7f}{dev\+\_\+mcp4725\+\_\+pd}} (uint8\+\_\+t pd)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Sets power down for channel (active on set or save to dac) 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{dev__mcp4725_8h_ae05d478c9e88a7ae7911f804e197cc6a}{dev\+\_\+mcp4725\+\_\+set\+\_\+raw}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, uint16\+\_\+t value)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Sets adc output 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{dev__mcp4725_8h_a18c7b83ea36a97f6f74bf70f6d359ed0}{dev\+\_\+mcp4725\+\_\+set}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, float volt)
+\begin{DoxyCompactList}\small\item\em Sets the ADC output for the MCP4725. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{dev__mcp4725_8h_a9a90c2af6bc2745bc5525014652e32e1}{dev\+\_\+mcp4725\+\_\+get}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Sets adc output 
+\end{DoxyItemize}\end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{dev__mcp4725_8h_af2f59127345c400e06ab51bc5ede3578}{dev\+\_\+mcp4725\+\_\+save}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t addr, float volt)
+\begin{DoxyCompactList}\small\item\em 
+\begin{DoxyItemize}
+\item Sets adc output and save settings to EEPROM (50ms) 
+\end{DoxyItemize}\end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+MCP4725 One Channel 12-\/bit ADC. 
+
+The MCP4725 is a 12-\/bit digital to analog converter with one output. The chip can connected direct to Pico with supply voltage 3.\+3V. Maximum output voltage is VDD (3.\+3V).
+
+\begin{DoxyCopyright}{Copyright}
+Copyright 2021 Ocean (\href{mailto:iiot2k@gmail.com}{\texttt{ iiot2k@gmail.\+com}}) All rights reserved Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{dev__mcp4725_8h_a99fb83031ce9923c84392b4e92f956b5}\label{dev__mcp4725_8h_a99fb83031ce9923c84392b4e92f956b5}} 
+\doxysubsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+
+
+I2C addresses for the MCP4725. 
+
+The MCP4725 can have two different I2C addresses based on the connection of the A0 pin\+:
+\begin{DoxyItemize}
+\item MCP4725\+\_\+\+ADDR0\+: I2C address (0x60) when A0 is connected to GND or left open.
+\item MCP4725\+\_\+\+ADDR1\+: I2C address (0x61) when A0 is connected to VDD. 
+\end{DoxyItemize}\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MCP4725\_ADDR0@{MCP4725\_ADDR0}!dev\_mcp4725.h@{dev\_mcp4725.h}}\index{dev\_mcp4725.h@{dev\_mcp4725.h}!MCP4725\_ADDR0@{MCP4725\_ADDR0}}}\mbox{\Hypertarget{dev__mcp4725_8h_a99fb83031ce9923c84392b4e92f956b5aea40557730e6ac7a6cc7a9391f07562e}\label{dev__mcp4725_8h_a99fb83031ce9923c84392b4e92f956b5aea40557730e6ac7a6cc7a9391f07562e}} 
+MCP4725\+\_\+\+ADDR0&I2C address for MCP4725 when A0 is connected to GND or open. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MCP4725\_ADDR1@{MCP4725\_ADDR1}!dev\_mcp4725.h@{dev\_mcp4725.h}}\index{dev\_mcp4725.h@{dev\_mcp4725.h}!MCP4725\_ADDR1@{MCP4725\_ADDR1}}}\mbox{\Hypertarget{dev__mcp4725_8h_a99fb83031ce9923c84392b4e92f956b5ae3fad3d40b4167b89d800fab9e2af6ff}\label{dev__mcp4725_8h_a99fb83031ce9923c84392b4e92f956b5ae3fad3d40b4167b89d800fab9e2af6ff}} 
+MCP4725\+\_\+\+ADDR1&I2C address for MCP4725 when A0 is connected to VDD. \\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04}\label{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04}} 
+\doxysubsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+
+
+Power down modes for the MCP4725. 
+
+The MCP4725 can operate in different power down modes\+:
+\begin{DoxyItemize}
+\item MCP4725\+\_\+\+PD\+\_\+\+OFF\+: Power down mode is off (device is fully operational).
+\item MCP4725\+\_\+\+PD\+\_\+1\+: Power down mode with a 1k ohm resistor.
+\item MCP4725\+\_\+\+PD\+\_\+100\+: Power down mode with a 100k ohm resistor.
+\item MCP4725\+\_\+\+PD\+\_\+500\+: Power down mode with a 500k ohm resistor. 
+\end{DoxyItemize}\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MCP4725\_PD\_OFF@{MCP4725\_PD\_OFF}!dev\_mcp4725.h@{dev\_mcp4725.h}}\index{dev\_mcp4725.h@{dev\_mcp4725.h}!MCP4725\_PD\_OFF@{MCP4725\_PD\_OFF}}}\mbox{\Hypertarget{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04a3c197be061ed660757c6bbf81b6940b3}\label{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04a3c197be061ed660757c6bbf81b6940b3}} 
+MCP4725\+\_\+\+PD\+\_\+\+OFF&Power down mode is off (device operational). \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MCP4725\_PD\_1@{MCP4725\_PD\_1}!dev\_mcp4725.h@{dev\_mcp4725.h}}\index{dev\_mcp4725.h@{dev\_mcp4725.h}!MCP4725\_PD\_1@{MCP4725\_PD\_1}}}\mbox{\Hypertarget{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04ac2e8f709fb12aa0c37843b039bb4dd4a}\label{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04ac2e8f709fb12aa0c37843b039bb4dd4a}} 
+MCP4725\+\_\+\+PD\+\_\+1&Power down with a 1k ohm resistor. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MCP4725\_PD\_100@{MCP4725\_PD\_100}!dev\_mcp4725.h@{dev\_mcp4725.h}}\index{dev\_mcp4725.h@{dev\_mcp4725.h}!MCP4725\_PD\_100@{MCP4725\_PD\_100}}}\mbox{\Hypertarget{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04ac9a5eba5fe20609d2dfe8be67a34eb08}\label{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04ac9a5eba5fe20609d2dfe8be67a34eb08}} 
+MCP4725\+\_\+\+PD\+\_\+100&Power down with a 100k ohm resistor. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{MCP4725\_PD\_500@{MCP4725\_PD\_500}!dev\_mcp4725.h@{dev\_mcp4725.h}}\index{dev\_mcp4725.h@{dev\_mcp4725.h}!MCP4725\_PD\_500@{MCP4725\_PD\_500}}}\mbox{\Hypertarget{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04abef291a5cf600adf1ff254df64ffc0a3}\label{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04abef291a5cf600adf1ff254df64ffc0a3}} 
+MCP4725\+\_\+\+PD\+\_\+500&Power down with a 500k ohm resistor. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{dev__mcp4725_8h_a9a90c2af6bc2745bc5525014652e32e1}\label{dev__mcp4725_8h_a9a90c2af6bc2745bc5525014652e32e1}} 
+\index{dev\_mcp4725.h@{dev\_mcp4725.h}!dev\_mcp4725\_get@{dev\_mcp4725\_get}}
+\index{dev\_mcp4725\_get@{dev\_mcp4725\_get}!dev\_mcp4725.h@{dev\_mcp4725.h}}
+\doxysubsubsection{\texorpdfstring{dev\_mcp4725\_get()}{dev\_mcp4725\_get()}}
+{\footnotesize\ttfamily float dev\+\_\+mcp4725\+\_\+get (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Sets adc output 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address MCP4725\+\_\+\+ADDRn \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+voltage value read 
+\end{DoxyReturn}
+\mbox{\Hypertarget{dev__mcp4725_8h_acbc0fe8bfa2d1ab7669b85942365ec7f}\label{dev__mcp4725_8h_acbc0fe8bfa2d1ab7669b85942365ec7f}} 
+\index{dev\_mcp4725.h@{dev\_mcp4725.h}!dev\_mcp4725\_pd@{dev\_mcp4725\_pd}}
+\index{dev\_mcp4725\_pd@{dev\_mcp4725\_pd}!dev\_mcp4725.h@{dev\_mcp4725.h}}
+\doxysubsubsection{\texorpdfstring{dev\_mcp4725\_pd()}{dev\_mcp4725\_pd()}}
+{\footnotesize\ttfamily void dev\+\_\+mcp4725\+\_\+pd (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{pd }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Sets power down for channel (active on set or save to dac) 
+\end{DoxyItemize}
+
+\$\#\# {\bfseries{Functions\+:}} \&ndash;
+
+Default power down is MCP4725\+\_\+\+PD\+\_\+\+OFF 
+\begin{DoxyParams}{Parameters}
+{\em pd} & Power down settings MCP4725\+\_\+\+PD\+\_\+xxx \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{dev__mcp4725_8h_af2f59127345c400e06ab51bc5ede3578}\label{dev__mcp4725_8h_af2f59127345c400e06ab51bc5ede3578}} 
+\index{dev\_mcp4725.h@{dev\_mcp4725.h}!dev\_mcp4725\_save@{dev\_mcp4725\_save}}
+\index{dev\_mcp4725\_save@{dev\_mcp4725\_save}!dev\_mcp4725.h@{dev\_mcp4725.h}}
+\doxysubsubsection{\texorpdfstring{dev\_mcp4725\_save()}{dev\_mcp4725\_save()}}
+{\footnotesize\ttfamily bool dev\+\_\+mcp4725\+\_\+save (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{float}]{volt }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Sets adc output and save settings to EEPROM (50ms) 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address MCP4725\+\_\+\+ADDRn \\
+\hline
+{\em volt} & Output value for for channnel (0..4095) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+\mbox{[}error\mbox{]} false 
+\end{DoxyReturn}
+\mbox{\Hypertarget{dev__mcp4725_8h_a18c7b83ea36a97f6f74bf70f6d359ed0}\label{dev__mcp4725_8h_a18c7b83ea36a97f6f74bf70f6d359ed0}} 
+\index{dev\_mcp4725.h@{dev\_mcp4725.h}!dev\_mcp4725\_set@{dev\_mcp4725\_set}}
+\index{dev\_mcp4725\_set@{dev\_mcp4725\_set}!dev\_mcp4725.h@{dev\_mcp4725.h}}
+\doxysubsubsection{\texorpdfstring{dev\_mcp4725\_set()}{dev\_mcp4725\_set()}}
+{\footnotesize\ttfamily bool dev\+\_\+mcp4725\+\_\+set (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{float}]{volt }\end{DoxyParamCaption})}
+
+
+
+Sets the ADC output for the MCP4725. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & Pointer to the I2C instance (i2c0 or i2c1). \\
+\hline
+{\em addr} & I2C address of the MCP4725 (use MCP4725\+\_\+\+ADDRn). \\
+\hline
+{\em volt} & Voltage output value for the channel (range\+: 0 -\/ VDD).\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if the operation was successful. 
+
+false if there was an error. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{dev__mcp4725_8h_ae05d478c9e88a7ae7911f804e197cc6a}\label{dev__mcp4725_8h_ae05d478c9e88a7ae7911f804e197cc6a}} 
+\index{dev\_mcp4725.h@{dev\_mcp4725.h}!dev\_mcp4725\_set\_raw@{dev\_mcp4725\_set\_raw}}
+\index{dev\_mcp4725\_set\_raw@{dev\_mcp4725\_set\_raw}!dev\_mcp4725.h@{dev\_mcp4725.h}}
+\doxysubsubsection{\texorpdfstring{dev\_mcp4725\_set\_raw()}{dev\_mcp4725\_set\_raw()}}
+{\footnotesize\ttfamily bool dev\+\_\+mcp4725\+\_\+set\+\_\+raw (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{addr,  }\item[{uint16\+\_\+t}]{value }\end{DoxyParamCaption})}
+
+
+
+
+\begin{DoxyItemize}
+\item Sets adc output 
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & I2C channel i2c0 or i2c1 \\
+\hline
+{\em addr} & I2C address MCP4725\+\_\+\+ADDRn \\
+\hline
+{\em value} & Output value for channnel (0..4095) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+\mbox{[}error\mbox{]} false 
+\end{DoxyReturn}

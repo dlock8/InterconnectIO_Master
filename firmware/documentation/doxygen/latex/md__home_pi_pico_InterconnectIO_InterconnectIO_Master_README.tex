@@ -1,0 +1,152 @@
+The complete FTS project is documented on a github website\+: \href{https://dlock8.github.io/FTS_Website/}{\texttt{ https\+://dlock8.\+github.\+io/\+FTS\+\_\+\+Website/}}
+
+On this deposit, we have the firmware used to create the Master Pico load to control the interconnect\+IO board.
+
+The hardware support for the firmware is on github location\+: \href{https://github.com/dlock8/InterconnectIO_Board}{\texttt{ https\+://github.\+com/dlock8/\+Interconnect\+IO\+\_\+\+Board}}
+
+The Master Pico software is the earth of interconnect\+IO board. The software receive SCPI command from the serial port, execute the action requested by the command and return answer to the user.\hypertarget{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md1}{}\doxysection{License}\label{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md1}
+This project is licensed under the BSD 3-\/Clause License. See the \href{./LICENSE}{\texttt{ LICENSE}} file for more details.\hypertarget{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md2}{}\doxysection{Project setup}\label{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md2}
+This project has been developped on raspberry pi 4 following installation instruction from this pdf \href{./getting-started-with-pico_C.pdf}{\texttt{ getting-\/started-\/with-\/pico\+\_\+\+C.\+pdf}}, a copy of the pdf is located on the main folder. Visual studio has been used for developpment and rasberry pi 4 for Pico debug. ~\newline
+
+
+Initially based on \href{https://github.com/cronologic-de/webusb}{\texttt{ https\+://github.\+com/cronologic-\/de/webusb}}, the project has elvoved to be a complete SCPI instrument without frontend interface (next phase).
+
+The compilation is performed using Visual Studio and the extension installed are\+:
+
+
+\begin{DoxyItemize}
+\item Cmake v0.\+0.\+17
+\item Cmake Tools v1.\+20.\+10
+\item Cortex-\/\+Debug v1.\+12.\+1
+\item debug-\/tracker-\/vscode v0.\+0.\+15
+\item Doxygen Documentation Generator v1.\+4.\+0
+\item Doxygen runner v1.\+8.\+0
+\item Github Pull Request v0.\+96.\+0
+\item Hex Editor v1.\+10.\+0
+\item Memory\+View v0.\+0.\+25
+\item Periheral Viewer v1.\+4.\+6
+\item RTOS view v0.\+0.\+7
+\item C/\+C++ v1.\+21.\+6
+\end{DoxyItemize}
+
+I not sure if all extensions are required but is the one installed presently.\hypertarget{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md3}{}\doxysection{Building}\label{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md3}
+Build of this cmake project is performed with Visual Studio\hypertarget{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md4}{}\doxysection{Development}\label{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md4}
+
+\begin{DoxyItemize}
+\item \href{master.c}{\texttt{ {\ttfamily master.\+c}}} is the main source file for the firmware.
+\item \href{CMakeLists.txt}{\texttt{ {\ttfamily CMake\+Lists.\+txt}}} contains build instructions for CMake, including how to build the SCPI library.
+\item \href{pico_sdk_import.cmake}{\texttt{ {\ttfamily pico\+\_\+sdk\+\_\+import.\+cmake}}} was (as usual) copied verbatim from the Pico SDK and allows CMake to interact with the SDK’s functionality.
+\end{DoxyItemize}\hypertarget{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md5}{}\doxysection{Installation}\label{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md5}
+
+\begin{DoxyItemize}
+\item The Files Master.\+uf2 contains the firmware to be loaded on the Pico RP2040 board using USB cable and boot button.
+\item When software loaded, the Pico board should be installed on the location marked MASTER on interconnect\+IO Board.
+\item On board Pico Led will flash slowly (heartbeat) on power ON.
+\end{DoxyItemize}\hypertarget{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md6}{}\doxysection{SCPI command supported by the Interconnect IO Board}\label{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md6}
+\hypertarget{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md7}{}\doxysection{Required SCPI commands}\label{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md7}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-2}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-2}
+\endhead
+$\ast$\+IDN?   &Identification string    \\\cline{1-2}
+$\ast$\+RST   &Reset Command    \\\cline{1-2}
+$\ast$\+CLS   &Clear Status    \\\cline{1-2}
+$\ast$\+ESE   &Standard Event Status Enable Register    \\\cline{1-2}
+$\ast$\+ESR   &Standard Event Status Register    \\\cline{1-2}
+$\ast$\+OPC   &Operation Complete    \\\cline{1-2}
+$\ast$\+SRE   &Service Request Enable    \\\cline{1-2}
+$\ast$\+STB   &Read Status Byte    \\\cline{1-2}
+$\ast$\+TST   &Internal Self\+Test    \\\cline{1-2}
+$\ast$\+WAI   &Wait-\/to-\/\+Continue (Do nothing on this parser)    \\\cline{1-2}
+SYSTem\+:ERRor\mbox{[}\+:NEXT\mbox{]}?   &Read actual error on the error FIFO    \\\cline{1-2}
+SYSTem\+:\+ERRor\+:COUNt?   &read number of errors in the FIFO    \\\cline{1-2}
+SYSTem\+:VERSion?   &read SCPI version used    \\\cline{1-2}
+STATus\+:QUEStionable\mbox{[}\+:EVENt\mbox{]}?   &queries the event register (QUES) for the Questionable Data register    \\\cline{1-2}
+STATus\+:\+QUEStionable\+:CONDition?   &queries the condition register (QUESC) for the Questionable Data register    \\\cline{1-2}
+STATus\+:\+QUEStionable\+:ENABle   &set the status enable register (QUESE) for the Questionable Data register    \\\cline{1-2}
+STATus\+:\+QUEStionable\+:ENABle?   &queries the status enable register (QUESE) for the Questionable Data register    \\\cline{1-2}
+STATus\+:OPERation\mbox{[}\+:EVENt\mbox{]}?   &queries the event register (OPER) for the operation Data register    \\\cline{1-2}
+STATus\+:\+OPERation\+:CONDition?   &queries the condition register (OPERC) for the operation Data register    \\\cline{1-2}
+STATus\+:\+OPERation\+:ENABle   &set the status enable register (OPERE) for the operation Data register    \\\cline{1-2}
+STATus\+:\+OPERation\+:ENABle?   &queries the status enable register (OPERE) for the operation Data register   \\\cline{1-2}
+\end{longtabu}
+\hypertarget{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md8}{}\doxysection{SCPI command associated to the Interconnect IO Board}\label{md__home_pi_pico_InterconnectIO_InterconnectIO_Master_README_autotoc_md8}
+\tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ PARAMETER   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-3}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ PARAMETER   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-3}
+\endhead
+ROUTe\+:CLOSe   &($<$ch\+\_\+list$>$)   &Close relay based on number    \\\cline{1-3}
+ROUTe\+:\+CLOSe\+:EXCLusive   &($<$ch\+\_\+list$>$)   &open relay already closed on the bank and close relay listed    \\\cline{1-3}
+ROUTe\+:\+CLOSe\+:Rev   &\{BANK1-\/\+BANK4\}   &Close reverse relay to move the contact from HIGH side to LOW side of differential relay    \\\cline{1-3}
+ROUTe\+:OPEN   &($<$ch\+\_\+list$>$)   &Open relay from the channel list    \\\cline{1-3}
+ROUTe\+:\+OPEN\+:Rev   &\{BANK1-\/\+BANK4\}   &Open reverse relay to move the contact to HIGH side of differential relay    \\\cline{1-3}
+ROUTe\+:\+OPEN\+:ALL   &\{BANK1-\/\+BANK4$|$ALL\}   &Open all relays from a particular Bank or all relays from all banks    \\\cline{1-3}
+ROUTe\+:\+CHANnel\+:STATe?   &($<$ch\+\_\+list$>$)   &Return state of the relay in the channel list, 0\+: open relay, 1\+: Close relay    \\\cline{1-3}
+ROUTe\+:\+BANK\+:STATe?   &\{BANK1-\/\+BANK4\}   &Read decimal value of relays state on the particular bank. Each bank is a byte long    \\\cline{1-3}
+ROUTe\+:\+REV\+:STATe?   &\{BANK1-\/\+BANK4\}   &Read contact side of reverse relay, LOW Side = 0, HIGH side = 1    \\\cline{1-3}
+ROUTe\+:\+CLOSe\+:PWR   &\{LPR1$|$HPR1$|$HPR2$|$SSR1\}   &Close the designated power relay    \\\cline{1-3}
+ROUTe\+:\+OPEN\+:PWR   &\{LPR1$|$HPR1$|$HPR2$|$SSR1\}   &Open the designated power relay    \\\cline{1-3}
+ROUTe\+:\+STATe\+:PWR?   &\{LPR1$|$HPR1$|$HPR2$|$SSR1\}   &Read state of the power relay, 0\+: Open, 1\+:Closed    \\\cline{1-3}
+ROUTE\+:\+CLOSe\+:OC   &\{OC1$|$OC2$|$OC3\}   &Close or activate the designated open collector transistor    \\\cline{1-3}
+ROUTE\+:\+OPEN\+:OC   &\{OC1$|$OC2$|$OC3\}   &Open or desactivate the designated open collector transistor    \\\cline{1-3}
+ROUTE\+:\+STATe\+:OC?   &\{OC1$|$OC2$|$OC3\}   &Read state of the the designated open collector transistor, 0\+: Open, 1\+:Closed    \\\cline{1-3}
+DIGital\+:\+In\+:PORTn?   &\{0-\/1\}   &Read Decimal value of the designated digital port (port0\+: 8 bits, port1\+: 8 bits)    \\\cline{1-3}
+DIGital\+:\+In\+:\+PORTn\+:BITn?   &\{0-\/1\}   &Read value of the bit position at the designated port    \\\cline{1-3}
+DIGital\+:\+Out\+:PORTn   &\{0-\/1\}\{$<$value$>$\}   &At the designated digital port, set the output to the value (byte)    \\\cline{1-3}
+DIGital\+:\+Out\+:\+PORTn\+:BItn   &\{0-\/1\} \{0-\/7\} \{$<$value$>$\}   &At the designated digital port and the designated bit, set the output to the value    \\\cline{1-3}
+DIGital\+:\+DIRection\+:PORTn   &\{0-\/1\}\{$|$value$|$\}   &Set the direction of the designated port to the value (byte), 0\+: input, 1\+: output    \\\cline{1-3}
+DIGital\+:\+DIRection\+:\+PORTn\+:BITn   &\{0-\/1\} \{0-\/7\} \{$<$value$>$\}   &At the designated digital port and the designated bit, set the direction to the value    \\\cline{1-3}
+DIGital\+:\+DIRection\+:PORTn?   &\{0-\/1\}   &Read the direction value for the designated port    \\\cline{1-3}
+DIGital\+:\+DIRection\+:\+PORTn\+:BITn?   &\{0-\/1\} \{0-\/7\}   &Read the direction value for the designated port and the designated bit position    \\\cline{1-3}
+GPIO\+:\+DIRection\+:DEVice\#\+:GP\#   &\{0-\/3\} \{0-\/28\} \{0-\/1\}   &At the designated device and defined gpio number, set the direction to input (0) or output (1). ~\newline
+DEVice0\+: Master\+\_\+\+Pico (SCPI interpreter) ~\newline
+ DEVice1\+: Slave1\+\_\+\+Pico (Digital Port 0 \& 1) ~\newline
+ DEVice2\+: Slave2\+\_\+\+Pico (relay bank 1 \& 3) ~\newline
+ DEVice3\+: Slave3\+\_\+\+Pico (relay bank 2 \& 4)    \\\cline{1-3}
+GPIO\+:\+Out\+:DEVice\#\+:GP\#   &\{0-\/3\} \{0-\/28\} \{0-\/1\}   &At the designated device and defined gpio number, set the output to the value.    \\\cline{1-3}
+GPIO\+:\+In\+:DEVice\#\+:GP\#?   &\{0-\/3\} \{0-\/28\}   &At the designated device and defined gpio number, read the value of the GPIO.    \\\cline{1-3}
+GPIO\+:\+SETPad\+:DEVice\#\+:GP\#   &\{0-\/3\} \{0-\/28\} \{$<$Value$>$\}   &At the designated device and defined gpio number, set the pad value.    \\\cline{1-3}
+GPIO\+:\+GETPad\+:DEVice\#\+:GP\#?   &\{0-\/3\} \{0-\/28\}   &At the designated device and defined gpio number,read the pad value. ~\newline
+ {\bfseries{PAD REGISTER DEFINITION}} ~\newline
+ Bit 7\+: \enskip{} OD Output disable ~\newline
+ Bit 6\+: \enskip{} IE Input enable ~\newline
+ Bit 5\+:4 \enskip{}DRIVE Strength 0x0\+: 2mA, 0x1\+: 4mA, 0x2\+: 8mA, 0x3\+: 12mA~\newline
+ Bit 3\+:\enskip{} PUE Pull up enable ~\newline
+Bit 2\+:\enskip{} PDE Pull down enable~\newline
+Bit 1\+:\enskip{} SCHT Enable schnitt trigger~\newline
+Bit 0\+:\enskip{} SLF Slew rate control 1=fast 0 = slow ~\newline
+    \\\cline{1-3}
+ANAlog\+:\+DAC\+:Volt   &$<$value$>$   &Set DAC output to the value    \\\cline{1-3}
+ANAlog\+:\+DAC\+:Save   &$<$Value$>$   &Save a default value for startup    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+ADC0\+:Volt?   }&Read Voltage at ADC input 0    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+ADC1\+:Volt?   }&Read Voltage at ADC input 1    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+ADC\+:Vsys?   }&Read system voltage from Pico Master    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+ADC\+:Temp?   }&Read Pico Master internal temperature in Celcius    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Volt?   }&Read voltage at load using power monitoring device    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Shunt?   }&Read voltage at the shunt resistor (0.\+1 ohm) using power monitoring device    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Ima?   }&Read current(m\+A) passing in the shunt resistor (calculation I = E/R)    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Pmw?   }&Read power(m\+W) at the load (calculation P = VI)    \\\cline{1-3}
+ANAlog\+:\+PWR\+:Cal   &$<$actual\+Value,expected\+Value$>$   &calibrate current(m\+A) on full range to get more precision    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:\+DEVice\+:VERSion?   }&Return firmware version of Pico for Master, Slave1, Slave2 and Slave3    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:BEEPer   }&Generate beep pulse    \\\cline{1-3}
+SYSTem\+:\+LED\+:ERRor   &\{0$|$1$|$OFF$|$ON\}   &Manual control of the read error led    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:\+LED\+:ERRor?   }&Status of the error led    \\\cline{1-3}
+SYSTem\+:OUTput   &\{0$|$1$|$OFF$|$ON\}   &Turn ON/\+OFF internal 5V available to UUT.    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:OUTput?   }&Read output status 0\+: OFF, 1\+: ON    \\\cline{1-3}
+SYSTem\+:SLAves   &\{0$|$1$|$OFF$|$ON\}   &Turn ON/\+OFF Pico slaves controller (run signals)    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:SLAves?   }&0\+: All Pico Slaves disabled, 1\+: All Pico Slaves enabled    \\\cline{1-3}
+\multicolumn{2}{|l|}{SYSTem\+:\+SLAves\+:STAtus?   }&read Pico device \textquotesingle{}status byte\textquotesingle{} for slaves 1 to 3    \\\cline{1-3}
+SYSTem\+:TESTboard   &0-\/5 \\\cline{1-3}
+\end{longtabu}

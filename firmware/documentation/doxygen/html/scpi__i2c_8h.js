@@ -1,0 +1,28 @@
+var scpi__i2c_8h =
+[
+    [ "DEF_I2C_ADDR", "scpi__i2c_8h.html#ab7bf14e0711319dead16797ab6770cd6", null ],
+    [ "DEF_I2C_BAUD", "scpi__i2c_8h.html#aa624f7fec4cea656f43a3a1e8564ed8e", null ],
+    [ "DEF_I2C_DATABITS", "scpi__i2c_8h.html#af09c840cb71e0590be7bf8b935e4fb7e", null ],
+    [ "DEF_I2C_STATUS", "scpi__i2c_8h.html#a3a7f86cdc0f64be0ea3ab2ee4b8b845b", null ],
+    [ "DEF_I2C_USER", "scpi__i2c_8h.html#aaec56e626f45401fa1b84e5973c74fc5", null ],
+    [ "I2C_ADDRESS_NACK", "scpi__i2c_8h.html#aec898b798f9c54feaede8aca4f9692a5", null ],
+    [ "I2C_BUS_ERR", "scpi__i2c_8h.html#ae1a7222e3b927f8ba5c1342b98753121", null ],
+    [ "I2C_DATA_NACK", "scpi__i2c_8h.html#aa3fc910095d1b423ba5d6d25c4c3568f", null ],
+    [ "I2C_GENERIC_ERR", "scpi__i2c_8h.html#ade094dbd5c3b344ae06affa6486b7d38", null ],
+    [ "I2C_MALLOC_FAILURE", "scpi__i2c_8h.html#ab4ed9ef6064d1a95307c7f2ad9e618a7", null ],
+    [ "I2C_NOT_ENABLED", "scpi__i2c_8h.html#a6f252dac0f714f2dd94ee639f11a7e8d", null ],
+    [ "I2C_TIMEOUT_ERR", "scpi__i2c_8h.html#ae9dcda223f2ad1406434ac56d9e20249", null ],
+    [ "NOERR", "scpi__i2c_8h.html#a64e439002936d3ec7cf456f30b96d8e3", null ],
+    [ "USER_I2C_SCL_PIN", "scpi__i2c_8h.html#a4caa86ff4d2aa41bead54eeec8dc93b2", null ],
+    [ "USER_I2C_SDA_PIN", "scpi__i2c_8h.html#a909969901b432aa351897c87c869b45a", null ],
+    [ "scpi_i2c_disable", "scpi__i2c_8h.html#a1b2a1d8a0227b38df2c042ce8d5b8b67", null ],
+    [ "scpi_i2c_enable", "scpi__i2c_8h.html#a639fdc51a3e50b4772d42b7793368cbc", null ],
+    [ "scpi_i2c_get_address", "scpi__i2c_8h.html#aa549b022300c94e6862d3d94ac107538", null ],
+    [ "scpi_i2c_get_baudrate", "scpi__i2c_8h.html#a59a71878176cd7914a60d2bbd05a87ea", null ],
+    [ "scpi_i2c_get_databits", "scpi__i2c_8h.html#ad71bdb9d77d707f25de3a2f3ca6bbadf", null ],
+    [ "scpi_i2c_set_address", "scpi__i2c_8h.html#a293c8d65eec0813d0d63223540e42b18", null ],
+    [ "scpi_i2c_set_baudrate", "scpi__i2c_8h.html#a52fdbb304f278c99db17f76b9ce5a0b4", null ],
+    [ "scpi_i2c_set_databits", "scpi__i2c_8h.html#a5c1e152a4a59d650aefc3534e9e603fd", null ],
+    [ "scpi_i2c_status", "scpi__i2c_8h.html#af98e6fa769302f1e02f417cebba1ef6e", null ],
+    [ "scpi_i2c_wri_read_data", "scpi__i2c_8h.html#a76df3108d1a2c822fb1d43090b4274ca", null ]
+];

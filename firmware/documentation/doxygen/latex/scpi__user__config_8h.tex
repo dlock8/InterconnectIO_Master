@@ -1,0 +1,74 @@
+\hypertarget{scpi__user__config_8h}{}\doxysection{firmware/src/include/scpi\+\_\+user\+\_\+config.h File Reference}
+\label{scpi__user__config_8h}\index{firmware/src/include/scpi\_user\_config.h@{firmware/src/include/scpi\_user\_config.h}}
+
+
+User responsible device dependent SCPI Configuration.  
+
+
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{scpi__user__config_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{scpi__user__config_8h_a24c9aadee47c3a74a553a2b6a4662812}\label{scpi__user__config_8h_a24c9aadee47c3a74a553a2b6a4662812}} 
+\#define \mbox{\hyperlink{scpi__user__config_8h_a24c9aadee47c3a74a553a2b6a4662812}{USE\+\_\+\+FULL\+\_\+\+ERROR\+\_\+\+LIST}}~1
+\begin{DoxyCompactList}\small\item\em Enables the full list of error codes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__user__config_8h_a1404a6d80761706ba6a326a5914b6526}\label{scpi__user__config_8h_a1404a6d80761706ba6a326a5914b6526}} 
+\#define \mbox{\hyperlink{scpi__user__config_8h_a1404a6d80761706ba6a326a5914b6526}{USE\+\_\+\+USER\+\_\+\+ERROR\+\_\+\+LIST}}~1
+\begin{DoxyCompactList}\small\item\em Enables the user list of error codes. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{scpi__user__config_8h_a8d7556fd3d540218c905780cfd520fd4}{LIST\+\_\+\+OF\+\_\+\+USER\+\_\+\+ERRORS}}
+\begin{DoxyCompactList}\small\item\em Macro to define user error codes. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__user__config_8h_a95e21e7fbd1eb13dc0647816a6aaa599}\label{scpi__user__config_8h_a95e21e7fbd1eb13dc0647816a6aaa599}} 
+\#define \mbox{\hyperlink{scpi__user__config_8h_a95e21e7fbd1eb13dc0647816a6aaa599}{OPER\+\_\+\+BOOT\+\_\+\+FAIL}}~0
+\begin{DoxyCompactList}\small\item\em Bit 0\+: Indicates a boot failure. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__user__config_8h_a855db259e2a24d285a4b89a9a51b93a0}\label{scpi__user__config_8h_a855db259e2a24d285a4b89a9a51b93a0}} 
+\#define \mbox{\hyperlink{scpi__user__config_8h_a855db259e2a24d285a4b89a9a51b93a0}{OPER\+\_\+\+SELFTEST\+\_\+\+FAIL}}~1
+\begin{DoxyCompactList}\small\item\em Bit 1\+: Indicates a self-\/test failure. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__user__config_8h_a141abf02ccc3aab16ed709a3e2c0a1d3}\label{scpi__user__config_8h_a141abf02ccc3aab16ed709a3e2c0a1d3}} 
+\#define \mbox{\hyperlink{scpi__user__config_8h_a141abf02ccc3aab16ed709a3e2c0a1d3}{QCR\+\_\+\+EEP\+\_\+\+READ\+\_\+\+ERROR}}~0
+\begin{DoxyCompactList}\small\item\em Bit 0\+: Indicates an EEPROM read error. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__user__config_8h_a144b382acbc2686093129c62caabaf1e}\label{scpi__user__config_8h_a144b382acbc2686093129c62caabaf1e}} 
+\#define \mbox{\hyperlink{scpi__user__config_8h_a144b382acbc2686093129c62caabaf1e}{QCR\+\_\+\+I2\+C\+\_\+\+COM}}~1
+\begin{DoxyCompactList}\small\item\em Bit 1\+: Indicates an I2C communication error. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__user__config_8h_ad6988b7ce55fe58e54e431d1e43bbef7}\label{scpi__user__config_8h_ad6988b7ce55fe58e54e431d1e43bbef7}} 
+\#define \mbox{\hyperlink{scpi__user__config_8h_ad6988b7ce55fe58e54e431d1e43bbef7}{QCR\+\_\+\+MTEMP\+\_\+\+HIGH}}~2
+\begin{DoxyCompactList}\small\item\em Bit 2\+: Indicates high temperature condition. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__user__config_8h_a60f28aa6438d5d06cba5464ac13a8caa}\label{scpi__user__config_8h_a60f28aa6438d5d06cba5464ac13a8caa}} 
+\#define \mbox{\hyperlink{scpi__user__config_8h_a60f28aa6438d5d06cba5464ac13a8caa}{QCR\+\_\+\+VSYS\+\_\+\+OUTLIMIT}}~3
+\begin{DoxyCompactList}\small\item\em Bit 3\+: Indicates voltage supply is out of limits. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__user__config_8h_a1124868cbaf1cf2a583901bd7b6bb072}\label{scpi__user__config_8h_a1124868cbaf1cf2a583901bd7b6bb072}} 
+\#define \mbox{\hyperlink{scpi__user__config_8h_a1124868cbaf1cf2a583901bd7b6bb072}{QCR\+\_\+\+WATCHDOG}}~4
+\begin{DoxyCompactList}\small\item\em Bit 4\+: Indicates watchdog timer event. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+User responsible device dependent SCPI Configuration. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2012-\/2013 Lutz Hoerl, Thorlabs GmbH Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{scpi__user__config_8h_a8d7556fd3d540218c905780cfd520fd4}\label{scpi__user__config_8h_a8d7556fd3d540218c905780cfd520fd4}} 
+\index{scpi\_user\_config.h@{scpi\_user\_config.h}!LIST\_OF\_USER\_ERRORS@{LIST\_OF\_USER\_ERRORS}}
+\index{LIST\_OF\_USER\_ERRORS@{LIST\_OF\_USER\_ERRORS}!scpi\_user\_config.h@{scpi\_user\_config.h}}
+\doxysubsubsection{\texorpdfstring{LIST\_OF\_USER\_ERRORS}{LIST\_OF\_USER\_ERRORS}}
+{\footnotesize\ttfamily \#define LIST\+\_\+\+OF\+\_\+\+USER\+\_\+\+ERRORS}
+
+
+
+Macro to define user error codes. 
+
+Each error code consists of an error identifier, an associated error number, and a descriptive message. 

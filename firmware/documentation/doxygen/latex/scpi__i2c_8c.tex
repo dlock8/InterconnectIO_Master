@@ -1,0 +1,226 @@
+\hypertarget{scpi__i2c_8c}{}\doxysection{firmware/src/scpi\+\_\+i2c.c File Reference}
+\label{scpi__i2c_8c}\index{firmware/src/scpi\_i2c.c@{firmware/src/scpi\_i2c.c}}
+
+
+Complete software code library to communicate to the user I2C port using SCPI command.  
+
+
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/i2c.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/sys/include/sys\+\_\+i2c.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}scpi\+\_\+i2c.\+h\char`\"{}}\newline
+Include dependency graph for scpi\+\_\+i2c.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{scpi__i2c_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structuser__i2c}{user\+\_\+i2c}}
+\begin{DoxyCompactList}\small\item\em Structure to contain the parameters of the user I2C configuration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{scpi__i2c_8c_ac08acb90760acdc4d068aa21f62cf81a}\label{scpi__i2c_8c_ac08acb90760acdc4d068aa21f62cf81a}} 
+void \mbox{\hyperlink{scpi__i2c_8c_ac08acb90760acdc4d068aa21f62cf81a}{scpi\+\_\+i2c\+\_\+enable}} ()
+\begin{DoxyCompactList}\small\item\em function to configure the parameters of the user I2C based on the data set on the I2C structure \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{scpi__i2c_8c_a6d1b23a57be569e291c65c0258b5fc44}\label{scpi__i2c_8c_a6d1b23a57be569e291c65c0258b5fc44}} 
+void \mbox{\hyperlink{scpi__i2c_8c_a6d1b23a57be569e291c65c0258b5fc44}{scpi\+\_\+i2c\+\_\+disable}} ()
+\begin{DoxyCompactList}\small\item\em function to disable the user spi and configure pins reserved by SPI to normal GPIO, set as input. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{scpi__i2c_8c_af0ae935f112602bcfff696bccc5e6c94}{scpi\+\_\+i2c\+\_\+status}} ()
+\begin{DoxyCompactList}\small\item\em Function who return if the user I2C is enabled or not. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{scpi__i2c_8c_a293c8d65eec0813d0d63223540e42b18}{scpi\+\_\+i2c\+\_\+set\+\_\+address}} (uint32\+\_\+t num)
+\begin{DoxyCompactList}\small\item\em Function to update the device address to be used. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{scpi__i2c_8c_ab62cfc65e0d3ba3f7af0494d268ab5f2}{scpi\+\_\+i2c\+\_\+get\+\_\+address}} ()
+\begin{DoxyCompactList}\small\item\em function to return the device address value saved on structure \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{scpi__i2c_8c_a52fdbb304f278c99db17f76b9ce5a0b4}{scpi\+\_\+i2c\+\_\+set\+\_\+baudrate}} (uint32\+\_\+t speed)
+\begin{DoxyCompactList}\small\item\em Function to update the baudrate speed on the structure, Baudrate will be updated with function spi enable. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{scpi__i2c_8c_a961e228dd1ccedc2d961f8f2c93faca5}{scpi\+\_\+i2c\+\_\+get\+\_\+baudrate}} ()
+\begin{DoxyCompactList}\small\item\em function to return the actual baudrate \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{scpi__i2c_8c_a5c1e152a4a59d650aefc3534e9e603fd}{scpi\+\_\+i2c\+\_\+set\+\_\+databits}} (uint32\+\_\+t num)
+\begin{DoxyCompactList}\small\item\em Function to update the number of databits to be used. Necessary to determine if we doing communication using byte or word. \end{DoxyCompactList}\item 
+uint32\+\_\+t \mbox{\hyperlink{scpi__i2c_8c_af8cb6a9903ab2abbf00b5693315aa355}{scpi\+\_\+i2c\+\_\+get\+\_\+databits}} ()
+\begin{DoxyCompactList}\small\item\em function to return the databits value saved on structure \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{scpi__i2c_8c_a76df3108d1a2c822fb1d43090b4274ca}{scpi\+\_\+i2c\+\_\+wri\+\_\+read\+\_\+data}} (uint8\+\_\+t $\ast$wdata, uint8\+\_\+t wlen, uint8\+\_\+t $\ast$rdata, uint8\+\_\+t rlen, bool $\ast$wflag)
+\begin{DoxyCompactList}\small\item\em Main function called by SCPI command to send or receive data on I2C port. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structuser__i2c}{user\+\_\+i2c}} \mbox{\hyperlink{scpi__i2c_8c_a5d113da08beab5ac1358d31c4ae9ab8d}{uiic}}
+\begin{DoxyCompactList}\small\item\em Global variable to hold the user I2C configuration. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Complete software code library to communicate to the user I2C port using SCPI command. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+This software setup and control the communication of the user I2C port. Each SCPI command related to I2C port is handled by this software.
+
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{scpi__i2c_8c_ab62cfc65e0d3ba3f7af0494d268ab5f2}\label{scpi__i2c_8c_ab62cfc65e0d3ba3f7af0494d268ab5f2}} 
+\index{scpi\_i2c.c@{scpi\_i2c.c}!scpi\_i2c\_get\_address@{scpi\_i2c\_get\_address}}
+\index{scpi\_i2c\_get\_address@{scpi\_i2c\_get\_address}!scpi\_i2c.c@{scpi\_i2c.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_i2c\_get\_address()}{scpi\_i2c\_get\_address()}}
+{\footnotesize\ttfamily uint32\+\_\+t scpi\+\_\+i2c\+\_\+get\+\_\+address (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+function to return the device address value saved on structure 
+
+\begin{DoxyReturn}{Returns}
+uint32\+\_\+t Device address 
+\end{DoxyReturn}
+\mbox{\Hypertarget{scpi__i2c_8c_a961e228dd1ccedc2d961f8f2c93faca5}\label{scpi__i2c_8c_a961e228dd1ccedc2d961f8f2c93faca5}} 
+\index{scpi\_i2c.c@{scpi\_i2c.c}!scpi\_i2c\_get\_baudrate@{scpi\_i2c\_get\_baudrate}}
+\index{scpi\_i2c\_get\_baudrate@{scpi\_i2c\_get\_baudrate}!scpi\_i2c.c@{scpi\_i2c.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_i2c\_get\_baudrate()}{scpi\_i2c\_get\_baudrate()}}
+{\footnotesize\ttfamily uint32\+\_\+t scpi\+\_\+i2c\+\_\+get\+\_\+baudrate (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+function to return the actual baudrate 
+
+\begin{DoxyReturn}{Returns}
+uint32\+\_\+t baudrate 
+\end{DoxyReturn}
+\mbox{\Hypertarget{scpi__i2c_8c_af8cb6a9903ab2abbf00b5693315aa355}\label{scpi__i2c_8c_af8cb6a9903ab2abbf00b5693315aa355}} 
+\index{scpi\_i2c.c@{scpi\_i2c.c}!scpi\_i2c\_get\_databits@{scpi\_i2c\_get\_databits}}
+\index{scpi\_i2c\_get\_databits@{scpi\_i2c\_get\_databits}!scpi\_i2c.c@{scpi\_i2c.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_i2c\_get\_databits()}{scpi\_i2c\_get\_databits()}}
+{\footnotesize\ttfamily uint32\+\_\+t scpi\+\_\+i2c\+\_\+get\+\_\+databits (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+function to return the databits value saved on structure 
+
+\begin{DoxyReturn}{Returns}
+uint32\+\_\+t databits 
+\end{DoxyReturn}
+\mbox{\Hypertarget{scpi__i2c_8c_a293c8d65eec0813d0d63223540e42b18}\label{scpi__i2c_8c_a293c8d65eec0813d0d63223540e42b18}} 
+\index{scpi\_i2c.c@{scpi\_i2c.c}!scpi\_i2c\_set\_address@{scpi\_i2c\_set\_address}}
+\index{scpi\_i2c\_set\_address@{scpi\_i2c\_set\_address}!scpi\_i2c.c@{scpi\_i2c.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_i2c\_set\_address()}{scpi\_i2c\_set\_address()}}
+{\footnotesize\ttfamily uint8\+\_\+t scpi\+\_\+i2c\+\_\+set\+\_\+address (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{num }\end{DoxyParamCaption})}
+
+
+
+Function to update the device address to be used. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num} & Device Address \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{scpi__i2c_8c_a52fdbb304f278c99db17f76b9ce5a0b4}\label{scpi__i2c_8c_a52fdbb304f278c99db17f76b9ce5a0b4}} 
+\index{scpi\_i2c.c@{scpi\_i2c.c}!scpi\_i2c\_set\_baudrate@{scpi\_i2c\_set\_baudrate}}
+\index{scpi\_i2c\_set\_baudrate@{scpi\_i2c\_set\_baudrate}!scpi\_i2c.c@{scpi\_i2c.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_i2c\_set\_baudrate()}{scpi\_i2c\_set\_baudrate()}}
+{\footnotesize\ttfamily void scpi\+\_\+i2c\+\_\+set\+\_\+baudrate (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{speed }\end{DoxyParamCaption})}
+
+
+
+Function to update the baudrate speed on the structure, Baudrate will be updated with function spi enable. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em speed} & Baudrate to save on structure \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{scpi__i2c_8c_a5c1e152a4a59d650aefc3534e9e603fd}\label{scpi__i2c_8c_a5c1e152a4a59d650aefc3534e9e603fd}} 
+\index{scpi\_i2c.c@{scpi\_i2c.c}!scpi\_i2c\_set\_databits@{scpi\_i2c\_set\_databits}}
+\index{scpi\_i2c\_set\_databits@{scpi\_i2c\_set\_databits}!scpi\_i2c.c@{scpi\_i2c.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_i2c\_set\_databits()}{scpi\_i2c\_set\_databits()}}
+{\footnotesize\ttfamily uint8\+\_\+t scpi\+\_\+i2c\+\_\+set\+\_\+databits (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{num }\end{DoxyParamCaption})}
+
+
+
+Function to update the number of databits to be used. Necessary to determine if we doing communication using byte or word. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num} & Databits to write \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{scpi__i2c_8c_af0ae935f112602bcfff696bccc5e6c94}\label{scpi__i2c_8c_af0ae935f112602bcfff696bccc5e6c94}} 
+\index{scpi\_i2c.c@{scpi\_i2c.c}!scpi\_i2c\_status@{scpi\_i2c\_status}}
+\index{scpi\_i2c\_status@{scpi\_i2c\_status}!scpi\_i2c.c@{scpi\_i2c.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_i2c\_status()}{scpi\_i2c\_status()}}
+{\footnotesize\ttfamily bool scpi\+\_\+i2c\+\_\+status (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Function who return if the user I2C is enabled or not. 
+
+\begin{DoxyReturn}{Returns}
+True if I2C is enabled 
+\end{DoxyReturn}
+\mbox{\Hypertarget{scpi__i2c_8c_a76df3108d1a2c822fb1d43090b4274ca}\label{scpi__i2c_8c_a76df3108d1a2c822fb1d43090b4274ca}} 
+\index{scpi\_i2c.c@{scpi\_i2c.c}!scpi\_i2c\_wri\_read\_data@{scpi\_i2c\_wri\_read\_data}}
+\index{scpi\_i2c\_wri\_read\_data@{scpi\_i2c\_wri\_read\_data}!scpi\_i2c.c@{scpi\_i2c.c}}
+\doxysubsubsection{\texorpdfstring{scpi\_i2c\_wri\_read\_data()}{scpi\_i2c\_wri\_read\_data()}}
+{\footnotesize\ttfamily int8\+\_\+t scpi\+\_\+i2c\+\_\+wri\+\_\+read\+\_\+data (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{wdata,  }\item[{uint8\+\_\+t}]{wlen,  }\item[{uint8\+\_\+t $\ast$}]{rdata,  }\item[{uint8\+\_\+t}]{rlen,  }\item[{bool $\ast$}]{wflag }\end{DoxyParamCaption})}
+
+
+
+Main function called by SCPI command to send or receive data on I2C port. 
+
+This function handles I2C communication by writing data to the I2C bus and reading the response back. It supports both byte and word transfers depending on the flag.
+
+
+\begin{DoxyParams}{Parameters}
+{\em wdata} & Pointer to the data array to be written to the I2C device. \\
+\hline
+{\em wlen} & Length of the write array (number of bytes/words to write). \\
+\hline
+{\em rdata} & Pointer to the array where the received data will be stored. \\
+\hline
+{\em rlen} & Length of the read array (number of bytes/words expected to read). \\
+\hline
+{\em wflag} & Flag to specify data size\+: {\ttfamily true} for word transfers, {\ttfamily false} for byte transfers.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int8\+\_\+t Error code. Returns a negative value if an error occurs. 
+\end{DoxyReturn}
+$<$ set flag to return the size of data (byte or word)
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{scpi__i2c_8c_a5d113da08beab5ac1358d31c4ae9ab8d}\label{scpi__i2c_8c_a5d113da08beab5ac1358d31c4ae9ab8d}} 
+\index{scpi\_i2c.c@{scpi\_i2c.c}!uiic@{uiic}}
+\index{uiic@{uiic}!scpi\_i2c.c@{scpi\_i2c.c}}
+\doxysubsubsection{\texorpdfstring{uiic}{uiic}}
+{\footnotesize\ttfamily uiic}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{= \{}
+\DoxyCodeLine{    \mbox{\hyperlink{scpi__i2c_8h_aaec56e626f45401fa1b84e5973c74fc5}{DEF\_I2C\_USER}},      }
+\DoxyCodeLine{    \mbox{\hyperlink{scpi__i2c_8h_ab7bf14e0711319dead16797ab6770cd6}{DEF\_I2C\_ADDR}},      }
+\DoxyCodeLine{    \mbox{\hyperlink{scpi__i2c_8h_aa624f7fec4cea656f43a3a1e8564ed8e}{DEF\_I2C\_BAUD}},      }
+\DoxyCodeLine{    \mbox{\hyperlink{scpi__i2c_8h_af09c840cb71e0590be7bf8b935e4fb7e}{DEF\_I2C\_DATABITS}},  }
+\DoxyCodeLine{    \mbox{\hyperlink{scpi__i2c_8h_a3a7f86cdc0f64be0ea3ab2ee4b8b845b}{DEF\_I2C\_STATUS}}     }
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Global variable to hold the user I2C configuration. 
+
+This variable is initialized with default settings for the I2C interface, including the I2C instance, device address, baud rate, data bits, and status. 

@@ -1,0 +1,358 @@
+\hypertarget{master_8h}{}\doxysection{firmware/src/include/master.h File Reference}
+\label{master_8h}\index{firmware/src/include/master.h@{firmware/src/include/master.h}}
+
+
+Header file defining constants and macros used on the main file.  
+
+
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{master_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structeecfg__t}{eecfg\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em EEPROM configuration structure. \end{DoxyCompactList}\item 
+union \mbox{\hyperlink{unioneef}{eef}}
+\begin{DoxyCompactList}\small\item\em Union that combines the EEPROM configuration structure with a raw data array. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{master_8h_a1de69c73f829a03f46f5e7690da7e79a}{UART\+\_\+\+ID}}~uart1
+\begin{DoxyCompactList}\small\item\em UART configuration and default settings. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{master_8h_ad4455691936f92fdd6c37566fc58ba1f}{BAUD\+\_\+\+RATE}}~115200
+\item 
+\#define \mbox{\hyperlink{master_8h_a418ddb806712895ba784cfdcaa92b715}{DATA\+\_\+\+BITS}}~8
+\item 
+\#define \mbox{\hyperlink{master_8h_abd1123d1a3a1f52c36d99b27e993e282}{STOP\+\_\+\+BITS}}~1
+\item 
+\#define \mbox{\hyperlink{master_8h_af6996d12e71a534569c41a25de7d6d52}{PARITY}}~UART\+\_\+\+PARITY\+\_\+\+NONE
+\item 
+\#define \mbox{\hyperlink{master_8h_a6c82a6844388a551e8f06d249598989e}{UART\+\_\+\+TX\+\_\+\+PIN}}~8
+\begin{DoxyCompactList}\small\item\em UART GPIO pin configuration. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{master_8h_aa37eca6fe61f6938d925975dff27c8fd}{UART\+\_\+\+RX\+\_\+\+PIN}}~9
+\item 
+\#define \mbox{\hyperlink{master_8h_a14ba1da2ef162698e5fc3fe54896103e}{PICO\+\_\+\+DEFAULT\+\_\+\+UART\+\_\+\+RX\+\_\+\+PIN}}~9
+\begin{DoxyCompactList}\small\item\em Redefine default UART pin configuration for PICO. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{master_8h_a596b6d76c33b68f0cab100a6360a0784}{PICO\+\_\+\+DEFAULT\+\_\+\+UART\+\_\+\+TX\+\_\+\+PIN}}~8
+\item 
+\#define \mbox{\hyperlink{master_8h_a9d632e2b9ebe40f979efa3ca340aaddc}{PICO\+\_\+\+DEFAULT\+\_\+\+UART\+\_\+\+BAUD\+\_\+\+RATE}}~115200
+\item 
+\#define \mbox{\hyperlink{master_8h_a4ccc9878008def89d325d0bb7efdbd6b}{CHECK}}~\char`\"{}CHECK\char`\"{}
+\begin{DoxyCompactList}\small\item\em EEPROM parameters supported by SCPI commands. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{master_8h_ae648f3babca5818791b391f120b1c741}{PARTNUMBER}}~\char`\"{}PARTNUMBER\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_a08c68f63285ded6ede8a7b79fd831bad}{SERIALNUMBER}}~\char`\"{}SERIALNUMBER\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_a595ac00d713ef14a6c89069216df7754}{MOD\+\_\+\+OPTION}}~\char`\"{}MOD\+\_\+\+OPTION\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_a9bf6878c496371814521fcec4de2bd9d}{COM\+\_\+\+SER\+\_\+\+SPEED}}~\char`\"{}COM\+\_\+\+SER\+\_\+\+SPEED\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_a346d06697805f5e12bf31d75160384fe}{PSLAVE\+\_\+\+RUN}}~\char`\"{}PICO\+\_\+\+SLAVES\+\_\+\+RUN\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_a88cbeaa93ffda90a065bcf55988095b1}{TESTBOARD\+\_\+\+NUM}}~\char`\"{}TESTBOARD\+\_\+\+NUM\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_aca7ea8703be4ab2e809f5df2643c413c}{EE\+\_\+\+CHECK\+\_\+\+CHAR}}~\textquotesingle{}\#\textquotesingle{}
+\begin{DoxyCompactList}\small\item\em Default value for EEPROM structure. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{master_8h_af5f89fadc953626c841f532aea4f5727}{EE\+\_\+\+PARTNUMBER}}~\char`\"{}500-\/1000-\/010\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_a24a52ac1611438d27538725047b3c60c}{EE\+\_\+\+SERIALNUMBER}}~\char`\"{}00001\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_a0f93c49d2fd2c05af1964188929de7bd}{EE\+\_\+\+MOD\+\_\+\+OPTION}}~\char`\"{}DAC,PWR\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_a203871091e122fdead14f6891cf9122c}{EE\+\_\+\+CSER\+\_\+\+SPEED}}~\char`\"{}115200\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_ab7e6b9b426f3f24800ed0e9085675138}{EE\+\_\+\+SLAVE\+\_\+\+RUN}}~\char`\"{}0\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_aa8e998e0a83764e72707047b4fd42918}{EE\+\_\+\+TESTBOARD\+\_\+\+NUM}}~\char`\"{}500-\/1010-\/020\char`\"{}
+\item 
+\#define \mbox{\hyperlink{master_8h_aec0ccc9a5a885b633db093704aeb6391}{DEF\+\_\+\+EEPROM}}
+\begin{DoxyCompactList}\small\item\em Default values for the EEPROM structure. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8h_a9ecda4f1d9ad2fc8648115a838a88339}\label{master_8h_a9ecda4f1d9ad2fc8648115a838a88339}} 
+\#define \mbox{\hyperlink{master_8h_a9ecda4f1d9ad2fc8648115a838a88339}{BEEP\+\_\+\+I2\+C\+\_\+\+FAIL}}~2
+\begin{DoxyCompactList}\small\item\em Define burst of Beep. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8h_acea1b1ce0e9fdbf0490a886c516c1048}\label{master_8h_acea1b1ce0e9fdbf0490a886c516c1048}} 
+\#define \mbox{\hyperlink{master_8h_acea1b1ce0e9fdbf0490a886c516c1048}{BEEP\+\_\+\+EEP\+\_\+\+FAIL}}~3
+\begin{DoxyCompactList}\small\item\em Define burst of Beep. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8h_acba0b7467dfc04c01e39baffd6773f7d}\label{master_8h_acba0b7467dfc04c01e39baffd6773f7d}} 
+\#define \mbox{\hyperlink{master_8h_acba0b7467dfc04c01e39baffd6773f7d}{BEEP\+\_\+\+VSYS\+\_\+\+OUT}}~4
+\begin{DoxyCompactList}\small\item\em Define burst of Beep. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8h_afcf992e55ac36e7ee54ef3dd15ee6383}\label{master_8h_afcf992e55ac36e7ee54ef3dd15ee6383}} 
+\#define \mbox{\hyperlink{master_8h_afcf992e55ac36e7ee54ef3dd15ee6383}{BEEP\+\_\+\+TEMP\+\_\+\+HIGH}}~5
+\begin{DoxyCompactList}\small\item\em Define burst of Beep. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8h_ae6a25a9e43d693c323f49eb4361d9ade}\label{master_8h_ae6a25a9e43d693c323f49eb4361d9ade}} 
+\#define \mbox{\hyperlink{master_8h_ae6a25a9e43d693c323f49eb4361d9ade}{BEEP\+\_\+\+WATCHDOG}}~6
+\begin{DoxyCompactList}\small\item\em Define burst of Beep. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8h_a9f270472d1b98c1f8b07966db54794a3}\label{master_8h_a9f270472d1b98c1f8b07966db54794a3}} 
+\#define \mbox{\hyperlink{master_8h_a9f270472d1b98c1f8b07966db54794a3}{MAX\+\_\+\+PICO\+\_\+\+TEMP}}~60
+\begin{DoxyCompactList}\small\item\em Maximum temperature acceptable for pico. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8h_af57f58563c6e2e43676052c64a286596}\label{master_8h_af57f58563c6e2e43676052c64a286596}} 
+\#define \mbox{\hyperlink{master_8h_af57f58563c6e2e43676052c64a286596}{MAX\+\_\+\+VSYS\+\_\+\+VOLT}}~6
+\begin{DoxyCompactList}\small\item\em Maximum voltage to Pico Master Vsys. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8h_a2294f70d4a22328768919bd864886fd0}\label{master_8h_a2294f70d4a22328768919bd864886fd0}} 
+\#define \mbox{\hyperlink{master_8h_a2294f70d4a22328768919bd864886fd0}{MIN\+\_\+\+VSYS\+\_\+\+VOLT}}~4
+\begin{DoxyCompactList}\small\item\em Minimum voltage to Pico Master Vsys. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{master_8h_ac8fb8234de52eeadc30342ce7eea2956}\label{master_8h_ac8fb8234de52eeadc30342ce7eea2956}} 
+\#define \mbox{\hyperlink{master_8h_ac8fb8234de52eeadc30342ce7eea2956}{DEFAULT\+\_\+\+PWR\+\_\+\+VAL}}~0xc1f
+\begin{DoxyCompactList}\small\item\em Value of configuration register after ina219\+\_\+init. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \mbox{\hyperlink{structeecfg__t}{eecfg\+\_\+t}} \mbox{\hyperlink{master_8h_aff604f626fb9ec96578d8e620974f9f7}{cfg}}
+\begin{DoxyCompactList}\small\item\em EEPROM configuration structure. \end{DoxyCompactList}\item 
+typedef union \mbox{\hyperlink{unioneef}{eef}} \mbox{\hyperlink{master_8h_a6ee16918c98b75fe7c46964a9b8c34ea}{eep}}
+\begin{DoxyCompactList}\small\item\em Union that combines the EEPROM configuration structure with a raw data array. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{master_8h_a6ee16918c98b75fe7c46964a9b8c34ea}{eep}} \mbox{\hyperlink{master_8h_a670da91be64127c92faac35c8300e814}{ee}}
+\begin{DoxyCompactList}\small\item\em Instance of the EEPROM configuration union. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header file defining constants and macros used on the main file. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{master_8h_ad4455691936f92fdd6c37566fc58ba1f}\label{master_8h_ad4455691936f92fdd6c37566fc58ba1f}} 
+\index{master.h@{master.h}!BAUD\_RATE@{BAUD\_RATE}}
+\index{BAUD\_RATE@{BAUD\_RATE}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{BAUD\_RATE}{BAUD\_RATE}}
+{\footnotesize\ttfamily \#define BAUD\+\_\+\+RATE~115200}
+
+Baud rate for UART communication. \mbox{\Hypertarget{master_8h_a4ccc9878008def89d325d0bb7efdbd6b}\label{master_8h_a4ccc9878008def89d325d0bb7efdbd6b}} 
+\index{master.h@{master.h}!CHECK@{CHECK}}
+\index{CHECK@{CHECK}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{CHECK}{CHECK}}
+{\footnotesize\ttfamily \#define CHECK~\char`\"{}CHECK\char`\"{}}
+
+
+
+EEPROM parameters supported by SCPI commands. 
+
+These parameters can be accessed and modified via SCPI commands. EEPROM Check character. \mbox{\Hypertarget{master_8h_a9bf6878c496371814521fcec4de2bd9d}\label{master_8h_a9bf6878c496371814521fcec4de2bd9d}} 
+\index{master.h@{master.h}!COM\_SER\_SPEED@{COM\_SER\_SPEED}}
+\index{COM\_SER\_SPEED@{COM\_SER\_SPEED}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{COM\_SER\_SPEED}{COM\_SER\_SPEED}}
+{\footnotesize\ttfamily \#define COM\+\_\+\+SER\+\_\+\+SPEED~\char`\"{}COM\+\_\+\+SER\+\_\+\+SPEED\char`\"{}}
+
+EEPROM Communication serial speed. \mbox{\Hypertarget{master_8h_a418ddb806712895ba784cfdcaa92b715}\label{master_8h_a418ddb806712895ba784cfdcaa92b715}} 
+\index{master.h@{master.h}!DATA\_BITS@{DATA\_BITS}}
+\index{DATA\_BITS@{DATA\_BITS}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{DATA\_BITS}{DATA\_BITS}}
+{\footnotesize\ttfamily \#define DATA\+\_\+\+BITS~8}
+
+Number of data bits. \mbox{\Hypertarget{master_8h_aec0ccc9a5a885b633db093704aeb6391}\label{master_8h_aec0ccc9a5a885b633db093704aeb6391}} 
+\index{master.h@{master.h}!DEF\_EEPROM@{DEF\_EEPROM}}
+\index{DEF\_EEPROM@{DEF\_EEPROM}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{DEF\_EEPROM}{DEF\_EEPROM}}
+{\footnotesize\ttfamily \#define DEF\+\_\+\+EEPROM}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{    \{ \(\backslash\)}
+\DoxyCodeLine{    EE\_CHECK\_CHAR,     \(\backslash\)}
+\DoxyCodeLine{    EE\_PARTNUMBER,     \(\backslash\)}
+\DoxyCodeLine{    EE\_SERIALNUMBER,   \(\backslash\)}
+\DoxyCodeLine{    EE\_MOD\_OPTION,     \(\backslash\)}
+\DoxyCodeLine{    EE\_CSER\_SPEED,     \(\backslash\)}
+\DoxyCodeLine{    EE\_SLAVE\_RUN,      \(\backslash\)}
+\DoxyCodeLine{    EE\_TESTBOARD\_NUM   \(\backslash\)}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Default values for the EEPROM structure. 
+
+This macro assigns default values to the EEPROM structure. New parameters can be added at the end of the list as needed. Add parameter on struct Param\+Info file \mbox{\hyperlink{fts__scpi_8c}{fts\+\_\+scpi.\+c}} around line 990 \mbox{\Hypertarget{master_8h_aca7ea8703be4ab2e809f5df2643c413c}\label{master_8h_aca7ea8703be4ab2e809f5df2643c413c}} 
+\index{master.h@{master.h}!EE\_CHECK\_CHAR@{EE\_CHECK\_CHAR}}
+\index{EE\_CHECK\_CHAR@{EE\_CHECK\_CHAR}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{EE\_CHECK\_CHAR}{EE\_CHECK\_CHAR}}
+{\footnotesize\ttfamily \#define EE\+\_\+\+CHECK\+\_\+\+CHAR~\textquotesingle{}\#\textquotesingle{}}
+
+
+
+Default value for EEPROM structure. 
+
+This section defines the default values assigned to the EEPROM structure. Each parameter has a specific role in the system configuration. EEPROM check character \mbox{\Hypertarget{master_8h_a203871091e122fdead14f6891cf9122c}\label{master_8h_a203871091e122fdead14f6891cf9122c}} 
+\index{master.h@{master.h}!EE\_CSER\_SPEED@{EE\_CSER\_SPEED}}
+\index{EE\_CSER\_SPEED@{EE\_CSER\_SPEED}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{EE\_CSER\_SPEED}{EE\_CSER\_SPEED}}
+{\footnotesize\ttfamily \#define EE\+\_\+\+CSER\+\_\+\+SPEED~\char`\"{}115200\char`\"{}}
+
+Communication serial speed (e.\+g., baud rate) \mbox{\Hypertarget{master_8h_a0f93c49d2fd2c05af1964188929de7bd}\label{master_8h_a0f93c49d2fd2c05af1964188929de7bd}} 
+\index{master.h@{master.h}!EE\_MOD\_OPTION@{EE\_MOD\_OPTION}}
+\index{EE\_MOD\_OPTION@{EE\_MOD\_OPTION}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{EE\_MOD\_OPTION}{EE\_MOD\_OPTION}}
+{\footnotesize\ttfamily \#define EE\+\_\+\+MOD\+\_\+\+OPTION~\char`\"{}DAC,PWR\char`\"{}}
+
+Module options (e.\+g., DAC, Power) \mbox{\Hypertarget{master_8h_af5f89fadc953626c841f532aea4f5727}\label{master_8h_af5f89fadc953626c841f532aea4f5727}} 
+\index{master.h@{master.h}!EE\_PARTNUMBER@{EE\_PARTNUMBER}}
+\index{EE\_PARTNUMBER@{EE\_PARTNUMBER}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{EE\_PARTNUMBER}{EE\_PARTNUMBER}}
+{\footnotesize\ttfamily \#define EE\+\_\+\+PARTNUMBER~\char`\"{}500-\/1000-\/010\char`\"{}}
+
+Part number of the device \mbox{\Hypertarget{master_8h_a24a52ac1611438d27538725047b3c60c}\label{master_8h_a24a52ac1611438d27538725047b3c60c}} 
+\index{master.h@{master.h}!EE\_SERIALNUMBER@{EE\_SERIALNUMBER}}
+\index{EE\_SERIALNUMBER@{EE\_SERIALNUMBER}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{EE\_SERIALNUMBER}{EE\_SERIALNUMBER}}
+{\footnotesize\ttfamily \#define EE\+\_\+\+SERIALNUMBER~\char`\"{}00001\char`\"{}}
+
+Serial number of the device \mbox{\Hypertarget{master_8h_ab7e6b9b426f3f24800ed0e9085675138}\label{master_8h_ab7e6b9b426f3f24800ed0e9085675138}} 
+\index{master.h@{master.h}!EE\_SLAVE\_RUN@{EE\_SLAVE\_RUN}}
+\index{EE\_SLAVE\_RUN@{EE\_SLAVE\_RUN}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{EE\_SLAVE\_RUN}{EE\_SLAVE\_RUN}}
+{\footnotesize\ttfamily \#define EE\+\_\+\+SLAVE\+\_\+\+RUN~\char`\"{}0\char`\"{}}
+
+Slave run status (0 = Disable, 1 = Enable) \mbox{\Hypertarget{master_8h_aa8e998e0a83764e72707047b4fd42918}\label{master_8h_aa8e998e0a83764e72707047b4fd42918}} 
+\index{master.h@{master.h}!EE\_TESTBOARD\_NUM@{EE\_TESTBOARD\_NUM}}
+\index{EE\_TESTBOARD\_NUM@{EE\_TESTBOARD\_NUM}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{EE\_TESTBOARD\_NUM}{EE\_TESTBOARD\_NUM}}
+{\footnotesize\ttfamily \#define EE\+\_\+\+TESTBOARD\+\_\+\+NUM~\char`\"{}500-\/1010-\/020\char`\"{}}
+
+Part number of the self-\/test board \mbox{\Hypertarget{master_8h_a595ac00d713ef14a6c89069216df7754}\label{master_8h_a595ac00d713ef14a6c89069216df7754}} 
+\index{master.h@{master.h}!MOD\_OPTION@{MOD\_OPTION}}
+\index{MOD\_OPTION@{MOD\_OPTION}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{MOD\_OPTION}{MOD\_OPTION}}
+{\footnotesize\ttfamily \#define MOD\+\_\+\+OPTION~\char`\"{}MOD\+\_\+\+OPTION\char`\"{}}
+
+EEPROM Module options. \mbox{\Hypertarget{master_8h_af6996d12e71a534569c41a25de7d6d52}\label{master_8h_af6996d12e71a534569c41a25de7d6d52}} 
+\index{master.h@{master.h}!PARITY@{PARITY}}
+\index{PARITY@{PARITY}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{PARITY}{PARITY}}
+{\footnotesize\ttfamily \#define PARITY~UART\+\_\+\+PARITY\+\_\+\+NONE}
+
+Parity setting (None). \mbox{\Hypertarget{master_8h_ae648f3babca5818791b391f120b1c741}\label{master_8h_ae648f3babca5818791b391f120b1c741}} 
+\index{master.h@{master.h}!PARTNUMBER@{PARTNUMBER}}
+\index{PARTNUMBER@{PARTNUMBER}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{PARTNUMBER}{PARTNUMBER}}
+{\footnotesize\ttfamily \#define PARTNUMBER~\char`\"{}PARTNUMBER\char`\"{}}
+
+EEPROM Part number. \mbox{\Hypertarget{master_8h_a9d632e2b9ebe40f979efa3ca340aaddc}\label{master_8h_a9d632e2b9ebe40f979efa3ca340aaddc}} 
+\index{master.h@{master.h}!PICO\_DEFAULT\_UART\_BAUD\_RATE@{PICO\_DEFAULT\_UART\_BAUD\_RATE}}
+\index{PICO\_DEFAULT\_UART\_BAUD\_RATE@{PICO\_DEFAULT\_UART\_BAUD\_RATE}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{PICO\_DEFAULT\_UART\_BAUD\_RATE}{PICO\_DEFAULT\_UART\_BAUD\_RATE}}
+{\footnotesize\ttfamily \#define PICO\+\_\+\+DEFAULT\+\_\+\+UART\+\_\+\+BAUD\+\_\+\+RATE~115200}
+
+Default baud rate for UART on PICO. \mbox{\Hypertarget{master_8h_a14ba1da2ef162698e5fc3fe54896103e}\label{master_8h_a14ba1da2ef162698e5fc3fe54896103e}} 
+\index{master.h@{master.h}!PICO\_DEFAULT\_UART\_RX\_PIN@{PICO\_DEFAULT\_UART\_RX\_PIN}}
+\index{PICO\_DEFAULT\_UART\_RX\_PIN@{PICO\_DEFAULT\_UART\_RX\_PIN}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{PICO\_DEFAULT\_UART\_RX\_PIN}{PICO\_DEFAULT\_UART\_RX\_PIN}}
+{\footnotesize\ttfamily \#define PICO\+\_\+\+DEFAULT\+\_\+\+UART\+\_\+\+RX\+\_\+\+PIN~9}
+
+
+
+Redefine default UART pin configuration for PICO. 
+
+During development, printf output is sent to both USB and serial port. In normal operation, the serial port is used for SCPI communication only. Default RX pin for UART on PICO. \mbox{\Hypertarget{master_8h_a596b6d76c33b68f0cab100a6360a0784}\label{master_8h_a596b6d76c33b68f0cab100a6360a0784}} 
+\index{master.h@{master.h}!PICO\_DEFAULT\_UART\_TX\_PIN@{PICO\_DEFAULT\_UART\_TX\_PIN}}
+\index{PICO\_DEFAULT\_UART\_TX\_PIN@{PICO\_DEFAULT\_UART\_TX\_PIN}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{PICO\_DEFAULT\_UART\_TX\_PIN}{PICO\_DEFAULT\_UART\_TX\_PIN}}
+{\footnotesize\ttfamily \#define PICO\+\_\+\+DEFAULT\+\_\+\+UART\+\_\+\+TX\+\_\+\+PIN~8}
+
+Default TX pin for UART on PICO. \mbox{\Hypertarget{master_8h_a346d06697805f5e12bf31d75160384fe}\label{master_8h_a346d06697805f5e12bf31d75160384fe}} 
+\index{master.h@{master.h}!PSLAVE\_RUN@{PSLAVE\_RUN}}
+\index{PSLAVE\_RUN@{PSLAVE\_RUN}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{PSLAVE\_RUN}{PSLAVE\_RUN}}
+{\footnotesize\ttfamily \#define PSLAVE\+\_\+\+RUN~\char`\"{}PICO\+\_\+\+SLAVES\+\_\+\+RUN\char`\"{}}
+
+EEPROM Pico slaves run status. \mbox{\Hypertarget{master_8h_a08c68f63285ded6ede8a7b79fd831bad}\label{master_8h_a08c68f63285ded6ede8a7b79fd831bad}} 
+\index{master.h@{master.h}!SERIALNUMBER@{SERIALNUMBER}}
+\index{SERIALNUMBER@{SERIALNUMBER}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{SERIALNUMBER}{SERIALNUMBER}}
+{\footnotesize\ttfamily \#define SERIALNUMBER~\char`\"{}SERIALNUMBER\char`\"{}}
+
+EEPROM Serial number. \mbox{\Hypertarget{master_8h_abd1123d1a3a1f52c36d99b27e993e282}\label{master_8h_abd1123d1a3a1f52c36d99b27e993e282}} 
+\index{master.h@{master.h}!STOP\_BITS@{STOP\_BITS}}
+\index{STOP\_BITS@{STOP\_BITS}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{STOP\_BITS}{STOP\_BITS}}
+{\footnotesize\ttfamily \#define STOP\+\_\+\+BITS~1}
+
+Number of stop bits. \mbox{\Hypertarget{master_8h_a88cbeaa93ffda90a065bcf55988095b1}\label{master_8h_a88cbeaa93ffda90a065bcf55988095b1}} 
+\index{master.h@{master.h}!TESTBOARD\_NUM@{TESTBOARD\_NUM}}
+\index{TESTBOARD\_NUM@{TESTBOARD\_NUM}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{TESTBOARD\_NUM}{TESTBOARD\_NUM}}
+{\footnotesize\ttfamily \#define TESTBOARD\+\_\+\+NUM~\char`\"{}TESTBOARD\+\_\+\+NUM\char`\"{}}
+
+EEPROM Test board part number. \mbox{\Hypertarget{master_8h_a1de69c73f829a03f46f5e7690da7e79a}\label{master_8h_a1de69c73f829a03f46f5e7690da7e79a}} 
+\index{master.h@{master.h}!UART\_ID@{UART\_ID}}
+\index{UART\_ID@{UART\_ID}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{UART\_ID}{UART\_ID}}
+{\footnotesize\ttfamily \#define UART\+\_\+\+ID~uart1}
+
+
+
+UART configuration and default settings. 
+
+This group contains default values and pin assignments for UART configuration. UART instance used. \mbox{\Hypertarget{master_8h_aa37eca6fe61f6938d925975dff27c8fd}\label{master_8h_aa37eca6fe61f6938d925975dff27c8fd}} 
+\index{master.h@{master.h}!UART\_RX\_PIN@{UART\_RX\_PIN}}
+\index{UART\_RX\_PIN@{UART\_RX\_PIN}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{UART\_RX\_PIN}{UART\_RX\_PIN}}
+{\footnotesize\ttfamily \#define UART\+\_\+\+RX\+\_\+\+PIN~9}
+
+GPIO pin for UART RX (Receive). \mbox{\Hypertarget{master_8h_a6c82a6844388a551e8f06d249598989e}\label{master_8h_a6c82a6844388a551e8f06d249598989e}} 
+\index{master.h@{master.h}!UART\_TX\_PIN@{UART\_TX\_PIN}}
+\index{UART\_TX\_PIN@{UART\_TX\_PIN}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{UART\_TX\_PIN}{UART\_TX\_PIN}}
+{\footnotesize\ttfamily \#define UART\+\_\+\+TX\+\_\+\+PIN~8}
+
+
+
+UART GPIO pin configuration. 
+
+We are using GPIO pins 0 and 1 for UART transmission and reception, but other pins can be used as described in the datasheet. GPIO pin for UART TX (Transmit). 
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{master_8h_aff604f626fb9ec96578d8e620974f9f7}\label{master_8h_aff604f626fb9ec96578d8e620974f9f7}} 
+\index{master.h@{master.h}!cfg@{cfg}}
+\index{cfg@{cfg}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{cfg}{cfg}}
+{\footnotesize\ttfamily typedef struct \mbox{\hyperlink{structeecfg__t}{eecfg\+\_\+t}} \mbox{\hyperlink{master_8h_aff604f626fb9ec96578d8e620974f9f7}{cfg}}}
+
+
+
+EEPROM configuration structure. 
+
+This structure contains the default values and settings that are stored in EEPROM. New parameters should be added with proper size allocation, and always include a null terminator ({\ttfamily +1}) for strings. \mbox{\Hypertarget{master_8h_a6ee16918c98b75fe7c46964a9b8c34ea}\label{master_8h_a6ee16918c98b75fe7c46964a9b8c34ea}} 
+\index{master.h@{master.h}!eep@{eep}}
+\index{eep@{eep}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{eep}{eep}}
+{\footnotesize\ttfamily typedef union \mbox{\hyperlink{unioneef}{eef}} \mbox{\hyperlink{master_8h_a6ee16918c98b75fe7c46964a9b8c34ea}{eep}}}
+
+
+
+Union that combines the EEPROM configuration structure with a raw data array. 
+
+Instance of the eef union used for EEPROM operations. 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{master_8h_a670da91be64127c92faac35c8300e814}\label{master_8h_a670da91be64127c92faac35c8300e814}} 
+\index{master.h@{master.h}!ee@{ee}}
+\index{ee@{ee}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{ee}{ee}}
+{\footnotesize\ttfamily ee\hspace{0.3cm}{\ttfamily [extern]}}
+
+
+
+Instance of the EEPROM configuration union. 
+
+External declaration of EEPROM union for global use.
+
+This is a global instance of the {\ttfamily eep} union, providing access to the EEPROM configuration. It can be used to read or write EEPROM data either by individual fields (via {\ttfamily cfg}) or as a raw byte array (via {\ttfamily data\mbox{[}\mbox{]}}).
+
+Instance of the EEPROM configuration union. 

@@ -1,0 +1,451 @@
+\hypertarget{dev__ds2431_8h}{}\doxysection{firmware/src/pico\+\_\+lib2/src/dev/dev\+\_\+ds2431/dev\+\_\+ds2431.h File Reference}
+\label{dev__ds2431_8h}\index{firmware/src/pico\_lib2/src/dev/dev\_ds2431/dev\_ds2431.h@{firmware/src/pico\_lib2/src/dev/dev\_ds2431/dev\_ds2431.h}}
+
+
+Header to perform communication with One\+Wire device.  
+
+
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dev__ds2431_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structmodel__type}{model\+\_\+type}}
+\begin{DoxyCompactList}\small\item\em Structure to define chip model attributes. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structrom}{rom}}
+\begin{DoxyCompactList}\small\item\em Structure used to contain information about each One\+Wire device found on the link. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{dev__ds2431_8h_ad5e649aa028bd3be75964322c1cc6ed0}\label{dev__ds2431_8h_ad5e649aa028bd3be75964322c1cc6ed0}} 
+\#define \mbox{\hyperlink{dev__ds2431_8h_ad5e649aa028bd3be75964322c1cc6ed0}{ONEWIRE\+\_\+\+PIN}}~10
+\begin{DoxyCompactList}\small\item\em GPIO pin connected to the One-\/\+Wire bus. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ds2431_8h_ada85ace4c581616bc14462510ac45308}\label{dev__ds2431_8h_ada85ace4c581616bc14462510ac45308}} 
+\#define \mbox{\hyperlink{dev__ds2431_8h_ada85ace4c581616bc14462510ac45308}{ADDR\+\_\+\+INFO}}~0
+\begin{DoxyCompactList}\small\item\em Start address of the information string on EEPROM. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ds2431_8h_ac94f934c3a1db5b1405d62f7663f8442}\label{dev__ds2431_8h_ac94f934c3a1db5b1405d62f7663f8442}} 
+\#define \mbox{\hyperlink{dev__ds2431_8h_ac94f934c3a1db5b1405d62f7663f8442}{NB\+\_\+\+INFO}}~48
+\begin{DoxyCompactList}\small\item\em Maximum characters allowed in the info field. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ds2431_8h_a8eb5531593f8b0ed7d1ead416f38aee6}\label{dev__ds2431_8h_a8eb5531593f8b0ed7d1ead416f38aee6}} 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a8eb5531593f8b0ed7d1ead416f38aee6}{ADDR\+\_\+\+TEST}}~0x60
+\begin{DoxyCompactList}\small\item\em Test address available to check read/write during testing. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ds2431_8h_a288cad066970ffc8ea1407a0decabde9}\label{dev__ds2431_8h_a288cad066970ffc8ea1407a0decabde9}} 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a288cad066970ffc8ea1407a0decabde9}{NB\+\_\+\+TEST}}~32
+\begin{DoxyCompactList}\small\item\em Size of the self-\/test field. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}\label{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}} 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}{MAX\+\_\+\+ONEWIRE}}~2
+\begin{DoxyCompactList}\small\item\em Maximum number of devices on the 1-\/Wire bus at the same time. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_ab205d2e85504c5af57e74849cfb53eef}{WRITEMEMORY}}~0x0F
+\begin{DoxyCompactList}\small\item\em Format EEprom mandatory (reserved 48 Bytes) \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a73bca8a9a4a773829639bc83422f687a}{READ\+\_\+\+MEMORY}}~0x\+F0
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_af8162a9da284eb45c7f53f4a37c749f5}{READ\+\_\+\+SCRATCHPAD}}~0x\+AA
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a27466737f1e485403d87846b0b4fab91}{WRITE\+\_\+\+SCRATCHPAD}}~0x0F
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a6f02502f76c88160d363cad5ea5f86c8}{COPY\+\_\+\+SCRATCHPAD}}~0x55
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a3807341ad7ad493cca489a1bd2dfb73d}{MATCHROM}}~0x55
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_aee7977a3f446f5829070729f5ac28221}{COPYLOCK}}~0x5A
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a5bcdbd203d91ec4f5bf1edbdeae989d8}{READSTATUSREG}}~0x66
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a704396c029751c471c73570c1efebd24}{WRITEAPPREG}}~0x99
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a403de023a596c0d25711ad44a8cf40ba}{VERIFYRESUME}}~0x\+A5
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_afa189e3612f5b0a5a1025314890a867c}{READSTATUS}}~0x\+AA
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_acf9f180fe54b184b2c0bbef040dbe2d3}{READMEMORYCRC}}~0x\+C3
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a8db3c6b56b8458875f44f3af01f1b80a}{READROM}}~0x33
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_ae22115770cfd724213b05d36afcb7d8e}{SEARCH\+\_\+\+ROM}}~0x\+F0
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a16ad242f444508c47fe745c67669b699}{READ\+\_\+\+ROM}}~0x33
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_ae5773d5b673b0c12c6615958dd2efb22}{SKIP\+\_\+\+ROM}}~0x\+CC
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_aae67cf0ff9c81729cc8a906430009232}{ALARM\+\_\+\+SEARCH}}~0x\+EC
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_ace3035b4a736c06e2f390699414000d0}{CRC\+\_\+\+MISMATCH}}~1
+\begin{DoxyCompactList}\small\item\em Error codes for One\+Wire devices. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a3c288eb66f2e35c181f744b6642b92e2}{INVALID\+\_\+\+PAGE}}~2
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_ae527027a169a478cedc852539c39dc05}{PAGE\+\_\+\+LOCKED}}~3
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a42155feb3c3a3580bc9d34ff1a0de3d9}{BAD\+\_\+\+INTEGRITY}}~4
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a4da4b31a7a397764e73b4dfac383cd96}{COPY\+\_\+\+FAILURE}}~5
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a78c40a461c33507376f3f1f22046a8d8}{APP\+\_\+\+REG\+\_\+\+LOCKED}}~6
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a30a7a104584fe296a98d335e5821050d}{NO\+\_\+\+ONEWIRE}}~7
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a787ccf62500ca719ef1b1c924783c8d8}{UNSUPPORTED\+\_\+\+OPP}}~8
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_aea20c001543a37efc137796f42a2a259}{UNSUPPORTED\+\_\+\+DEVICE}}~9
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_afff096a77bba38e6d2752bd317de76e2}{DEVICE\+\_\+\+DISCONNECTED}}~10
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a1231b6d7ae370e926170500341915dd6}{OW\+\_\+\+STR\+\_\+\+NOT\+\_\+\+IDENTICAL}}~15
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_aae44648d44396a84efef2897496d693b}{OW\+\_\+\+READ\+\_\+\+WRITE\+\_\+\+FAIL}}~16
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_acc1bbe64343fd38c89d4e0f44ff3b5e8}{OW\+\_\+\+WRITE\+\_\+\+FAIL}}~17
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_ad89c4ebb4c6ab45c7d79d1b5242a0a73}{OW\+\_\+\+READ\+\_\+\+FAIL}}~18
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_af5d85f2563e8010f3828c8571f0c6478}{OW\+\_\+\+NB\+\_\+\+ONEWIRE}}~19
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_a6ab265e01dc5cb314682a7f8b0f45cc3}{OW\+\_\+\+NO\+\_\+\+ONEWIRE}}~20
+\item 
+\#define \mbox{\hyperlink{dev__ds2431_8h_ab1229ed0a95505adb2631b9ab7add156}{OW\+\_\+\+NO\+\_\+\+VALIDID}}~21
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+uint8\+\_\+t \mbox{\hyperlink{dev__ds2431_8h_a133748d4159e147c2dd9ffb85a5929a1}{onewire\+\_\+write\+\_\+info}} (const char $\ast$info, int start\+\_\+address)
+\begin{DoxyCompactList}\small\item\em Write string information to the One-\/\+Wire Device The string is write on one\+Wire device following this device\+\_\+id. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{dev__ds2431_8h_a9842d8b3b4047b13c98cc8543af98012}{onewire\+\_\+read\+\_\+info}} (char $\ast$$\ast$rinfo, int start\+\_\+address, int length, size\+\_\+t nbid)
+\begin{DoxyCompactList}\small\item\em Main function to perform a read of all eeprom on 1-\/wire link. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{dev__ds2431_8h_ae5e1dd77a5682f84b9c06b58ed6da849}{onewire\+\_\+check\+\_\+devices}} (char $\ast$$\ast$owdata, size\+\_\+t nbid)
+\begin{DoxyCompactList}\small\item\em Check presence of one\+Wire and check Read Write capacity. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header to perform communication with One\+Wire device. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+One\+Wire driver to read / write on the EEprom of the Onewire Device. Plan to be used to detect what\textquotesingle{}s is connected to Interconnect IO Board before turning the main power.
+
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{dev__ds2431_8h_aae67cf0ff9c81729cc8a906430009232}\label{dev__ds2431_8h_aae67cf0ff9c81729cc8a906430009232}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!ALARM\_SEARCH@{ALARM\_SEARCH}}
+\index{ALARM\_SEARCH@{ALARM\_SEARCH}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{ALARM\_SEARCH}{ALARM\_SEARCH}}
+{\footnotesize\ttfamily \#define ALARM\+\_\+\+SEARCH~0x\+EC}
+
+Command to perform an alarm search. \mbox{\Hypertarget{dev__ds2431_8h_a78c40a461c33507376f3f1f22046a8d8}\label{dev__ds2431_8h_a78c40a461c33507376f3f1f22046a8d8}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!APP\_REG\_LOCKED@{APP\_REG\_LOCKED}}
+\index{APP\_REG\_LOCKED@{APP\_REG\_LOCKED}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{APP\_REG\_LOCKED}{APP\_REG\_LOCKED}}
+{\footnotesize\ttfamily \#define APP\+\_\+\+REG\+\_\+\+LOCKED~6}
+
+Error code for locked application register. \mbox{\Hypertarget{dev__ds2431_8h_a42155feb3c3a3580bc9d34ff1a0de3d9}\label{dev__ds2431_8h_a42155feb3c3a3580bc9d34ff1a0de3d9}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!BAD\_INTEGRITY@{BAD\_INTEGRITY}}
+\index{BAD\_INTEGRITY@{BAD\_INTEGRITY}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{BAD\_INTEGRITY}{BAD\_INTEGRITY}}
+{\footnotesize\ttfamily \#define BAD\+\_\+\+INTEGRITY~4}
+
+Error code for bad integrity check. \mbox{\Hypertarget{dev__ds2431_8h_a4da4b31a7a397764e73b4dfac383cd96}\label{dev__ds2431_8h_a4da4b31a7a397764e73b4dfac383cd96}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!COPY\_FAILURE@{COPY\_FAILURE}}
+\index{COPY\_FAILURE@{COPY\_FAILURE}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{COPY\_FAILURE}{COPY\_FAILURE}}
+{\footnotesize\ttfamily \#define COPY\+\_\+\+FAILURE~5}
+
+Error code for copy failure. \mbox{\Hypertarget{dev__ds2431_8h_a6f02502f76c88160d363cad5ea5f86c8}\label{dev__ds2431_8h_a6f02502f76c88160d363cad5ea5f86c8}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!COPY\_SCRATCHPAD@{COPY\_SCRATCHPAD}}
+\index{COPY\_SCRATCHPAD@{COPY\_SCRATCHPAD}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{COPY\_SCRATCHPAD}{COPY\_SCRATCHPAD}}
+{\footnotesize\ttfamily \#define COPY\+\_\+\+SCRATCHPAD~0x55}
+
+Command to copy scratchpad to memory. \mbox{\Hypertarget{dev__ds2431_8h_aee7977a3f446f5829070729f5ac28221}\label{dev__ds2431_8h_aee7977a3f446f5829070729f5ac28221}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!COPYLOCK@{COPYLOCK}}
+\index{COPYLOCK@{COPYLOCK}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{COPYLOCK}{COPYLOCK}}
+{\footnotesize\ttfamily \#define COPYLOCK~0x5A}
+
+Command to copy lock. \mbox{\Hypertarget{dev__ds2431_8h_ace3035b4a736c06e2f390699414000d0}\label{dev__ds2431_8h_ace3035b4a736c06e2f390699414000d0}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!CRC\_MISMATCH@{CRC\_MISMATCH}}
+\index{CRC\_MISMATCH@{CRC\_MISMATCH}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{CRC\_MISMATCH}{CRC\_MISMATCH}}
+{\footnotesize\ttfamily \#define CRC\+\_\+\+MISMATCH~1}
+
+
+
+Error codes for One\+Wire devices. 
+
+Error code for CRC mismatch. \mbox{\Hypertarget{dev__ds2431_8h_afff096a77bba38e6d2752bd317de76e2}\label{dev__ds2431_8h_afff096a77bba38e6d2752bd317de76e2}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!DEVICE\_DISCONNECTED@{DEVICE\_DISCONNECTED}}
+\index{DEVICE\_DISCONNECTED@{DEVICE\_DISCONNECTED}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{DEVICE\_DISCONNECTED}{DEVICE\_DISCONNECTED}}
+{\footnotesize\ttfamily \#define DEVICE\+\_\+\+DISCONNECTED~10}
+
+Error code for disconnected device. \mbox{\Hypertarget{dev__ds2431_8h_a3c288eb66f2e35c181f744b6642b92e2}\label{dev__ds2431_8h_a3c288eb66f2e35c181f744b6642b92e2}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!INVALID\_PAGE@{INVALID\_PAGE}}
+\index{INVALID\_PAGE@{INVALID\_PAGE}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{INVALID\_PAGE}{INVALID\_PAGE}}
+{\footnotesize\ttfamily \#define INVALID\+\_\+\+PAGE~2}
+
+Error code for invalid page. \mbox{\Hypertarget{dev__ds2431_8h_a3807341ad7ad493cca489a1bd2dfb73d}\label{dev__ds2431_8h_a3807341ad7ad493cca489a1bd2dfb73d}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!MATCHROM@{MATCHROM}}
+\index{MATCHROM@{MATCHROM}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{MATCHROM}{MATCHROM}}
+{\footnotesize\ttfamily \#define MATCHROM~0x55}
+
+Command to match ROM. \mbox{\Hypertarget{dev__ds2431_8h_a30a7a104584fe296a98d335e5821050d}\label{dev__ds2431_8h_a30a7a104584fe296a98d335e5821050d}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!NO\_ONEWIRE@{NO\_ONEWIRE}}
+\index{NO\_ONEWIRE@{NO\_ONEWIRE}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{NO\_ONEWIRE}{NO\_ONEWIRE}}
+{\footnotesize\ttfamily \#define NO\+\_\+\+ONEWIRE~7}
+
+Error code when no One\+Wire device is found. \mbox{\Hypertarget{dev__ds2431_8h_af5d85f2563e8010f3828c8571f0c6478}\label{dev__ds2431_8h_af5d85f2563e8010f3828c8571f0c6478}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!OW\_NB\_ONEWIRE@{OW\_NB\_ONEWIRE}}
+\index{OW\_NB\_ONEWIRE@{OW\_NB\_ONEWIRE}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{OW\_NB\_ONEWIRE}{OW\_NB\_ONEWIRE}}
+{\footnotesize\ttfamily \#define OW\+\_\+\+NB\+\_\+\+ONEWIRE~19}
+
+Error code for number of One\+Wire devices found. \mbox{\Hypertarget{dev__ds2431_8h_a6ab265e01dc5cb314682a7f8b0f45cc3}\label{dev__ds2431_8h_a6ab265e01dc5cb314682a7f8b0f45cc3}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!OW\_NO\_ONEWIRE@{OW\_NO\_ONEWIRE}}
+\index{OW\_NO\_ONEWIRE@{OW\_NO\_ONEWIRE}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{OW\_NO\_ONEWIRE}{OW\_NO\_ONEWIRE}}
+{\footnotesize\ttfamily \#define OW\+\_\+\+NO\+\_\+\+ONEWIRE~20}
+
+Error code for no One\+Wire devices found. \mbox{\Hypertarget{dev__ds2431_8h_ab1229ed0a95505adb2631b9ab7add156}\label{dev__ds2431_8h_ab1229ed0a95505adb2631b9ab7add156}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!OW\_NO\_VALIDID@{OW\_NO\_VALIDID}}
+\index{OW\_NO\_VALIDID@{OW\_NO\_VALIDID}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{OW\_NO\_VALIDID}{OW\_NO\_VALIDID}}
+{\footnotesize\ttfamily \#define OW\+\_\+\+NO\+\_\+\+VALIDID~21}
+
+Error code for no valid ID found on One\+Wire. \mbox{\Hypertarget{dev__ds2431_8h_ad89c4ebb4c6ab45c7d79d1b5242a0a73}\label{dev__ds2431_8h_ad89c4ebb4c6ab45c7d79d1b5242a0a73}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!OW\_READ\_FAIL@{OW\_READ\_FAIL}}
+\index{OW\_READ\_FAIL@{OW\_READ\_FAIL}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{OW\_READ\_FAIL}{OW\_READ\_FAIL}}
+{\footnotesize\ttfamily \#define OW\+\_\+\+READ\+\_\+\+FAIL~18}
+
+Error code for read failure on One\+Wire. \mbox{\Hypertarget{dev__ds2431_8h_aae44648d44396a84efef2897496d693b}\label{dev__ds2431_8h_aae44648d44396a84efef2897496d693b}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!OW\_READ\_WRITE\_FAIL@{OW\_READ\_WRITE\_FAIL}}
+\index{OW\_READ\_WRITE\_FAIL@{OW\_READ\_WRITE\_FAIL}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{OW\_READ\_WRITE\_FAIL}{OW\_READ\_WRITE\_FAIL}}
+{\footnotesize\ttfamily \#define OW\+\_\+\+READ\+\_\+\+WRITE\+\_\+\+FAIL~16}
+
+Error code for read/write failure on One\+Wire. \mbox{\Hypertarget{dev__ds2431_8h_a1231b6d7ae370e926170500341915dd6}\label{dev__ds2431_8h_a1231b6d7ae370e926170500341915dd6}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!OW\_STR\_NOT\_IDENTICAL@{OW\_STR\_NOT\_IDENTICAL}}
+\index{OW\_STR\_NOT\_IDENTICAL@{OW\_STR\_NOT\_IDENTICAL}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{OW\_STR\_NOT\_IDENTICAL}{OW\_STR\_NOT\_IDENTICAL}}
+{\footnotesize\ttfamily \#define OW\+\_\+\+STR\+\_\+\+NOT\+\_\+\+IDENTICAL~15}
+
+Error code for One\+Wire string not identical. \mbox{\Hypertarget{dev__ds2431_8h_acc1bbe64343fd38c89d4e0f44ff3b5e8}\label{dev__ds2431_8h_acc1bbe64343fd38c89d4e0f44ff3b5e8}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!OW\_WRITE\_FAIL@{OW\_WRITE\_FAIL}}
+\index{OW\_WRITE\_FAIL@{OW\_WRITE\_FAIL}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{OW\_WRITE\_FAIL}{OW\_WRITE\_FAIL}}
+{\footnotesize\ttfamily \#define OW\+\_\+\+WRITE\+\_\+\+FAIL~17}
+
+Error code for write failure on One\+Wire. \mbox{\Hypertarget{dev__ds2431_8h_ae527027a169a478cedc852539c39dc05}\label{dev__ds2431_8h_ae527027a169a478cedc852539c39dc05}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!PAGE\_LOCKED@{PAGE\_LOCKED}}
+\index{PAGE\_LOCKED@{PAGE\_LOCKED}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{PAGE\_LOCKED}{PAGE\_LOCKED}}
+{\footnotesize\ttfamily \#define PAGE\+\_\+\+LOCKED~3}
+
+Error code for locked page. \mbox{\Hypertarget{dev__ds2431_8h_a73bca8a9a4a773829639bc83422f687a}\label{dev__ds2431_8h_a73bca8a9a4a773829639bc83422f687a}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!READ\_MEMORY@{READ\_MEMORY}}
+\index{READ\_MEMORY@{READ\_MEMORY}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{READ\_MEMORY}{READ\_MEMORY}}
+{\footnotesize\ttfamily \#define READ\+\_\+\+MEMORY~0x\+F0}
+
+Command to read memory. \mbox{\Hypertarget{dev__ds2431_8h_a16ad242f444508c47fe745c67669b699}\label{dev__ds2431_8h_a16ad242f444508c47fe745c67669b699}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!READ\_ROM@{READ\_ROM}}
+\index{READ\_ROM@{READ\_ROM}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{READ\_ROM}{READ\_ROM}}
+{\footnotesize\ttfamily \#define READ\+\_\+\+ROM~0x33}
+
+Command to read ROM (duplicate). \mbox{\Hypertarget{dev__ds2431_8h_af8162a9da284eb45c7f53f4a37c749f5}\label{dev__ds2431_8h_af8162a9da284eb45c7f53f4a37c749f5}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!READ\_SCRATCHPAD@{READ\_SCRATCHPAD}}
+\index{READ\_SCRATCHPAD@{READ\_SCRATCHPAD}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{READ\_SCRATCHPAD}{READ\_SCRATCHPAD}}
+{\footnotesize\ttfamily \#define READ\+\_\+\+SCRATCHPAD~0x\+AA}
+
+Command to read scratchpad. \mbox{\Hypertarget{dev__ds2431_8h_acf9f180fe54b184b2c0bbef040dbe2d3}\label{dev__ds2431_8h_acf9f180fe54b184b2c0bbef040dbe2d3}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!READMEMORYCRC@{READMEMORYCRC}}
+\index{READMEMORYCRC@{READMEMORYCRC}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{READMEMORYCRC}{READMEMORYCRC}}
+{\footnotesize\ttfamily \#define READMEMORYCRC~0x\+C3}
+
+Command to read memory CRC. \mbox{\Hypertarget{dev__ds2431_8h_a8db3c6b56b8458875f44f3af01f1b80a}\label{dev__ds2431_8h_a8db3c6b56b8458875f44f3af01f1b80a}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!READROM@{READROM}}
+\index{READROM@{READROM}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{READROM}{READROM}}
+{\footnotesize\ttfamily \#define READROM~0x33}
+
+Command to read ROM. \mbox{\Hypertarget{dev__ds2431_8h_afa189e3612f5b0a5a1025314890a867c}\label{dev__ds2431_8h_afa189e3612f5b0a5a1025314890a867c}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!READSTATUS@{READSTATUS}}
+\index{READSTATUS@{READSTATUS}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{READSTATUS}{READSTATUS}}
+{\footnotesize\ttfamily \#define READSTATUS~0x\+AA}
+
+Command to read status. \mbox{\Hypertarget{dev__ds2431_8h_a5bcdbd203d91ec4f5bf1edbdeae989d8}\label{dev__ds2431_8h_a5bcdbd203d91ec4f5bf1edbdeae989d8}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!READSTATUSREG@{READSTATUSREG}}
+\index{READSTATUSREG@{READSTATUSREG}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{READSTATUSREG}{READSTATUSREG}}
+{\footnotesize\ttfamily \#define READSTATUSREG~0x66}
+
+Command to read status register. \mbox{\Hypertarget{dev__ds2431_8h_ae22115770cfd724213b05d36afcb7d8e}\label{dev__ds2431_8h_ae22115770cfd724213b05d36afcb7d8e}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!SEARCH\_ROM@{SEARCH\_ROM}}
+\index{SEARCH\_ROM@{SEARCH\_ROM}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{SEARCH\_ROM}{SEARCH\_ROM}}
+{\footnotesize\ttfamily \#define SEARCH\+\_\+\+ROM~0x\+F0}
+
+Command to search ROM. \mbox{\Hypertarget{dev__ds2431_8h_ae5773d5b673b0c12c6615958dd2efb22}\label{dev__ds2431_8h_ae5773d5b673b0c12c6615958dd2efb22}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!SKIP\_ROM@{SKIP\_ROM}}
+\index{SKIP\_ROM@{SKIP\_ROM}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{SKIP\_ROM}{SKIP\_ROM}}
+{\footnotesize\ttfamily \#define SKIP\+\_\+\+ROM~0x\+CC}
+
+Command to skip ROM. \mbox{\Hypertarget{dev__ds2431_8h_aea20c001543a37efc137796f42a2a259}\label{dev__ds2431_8h_aea20c001543a37efc137796f42a2a259}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!UNSUPPORTED\_DEVICE@{UNSUPPORTED\_DEVICE}}
+\index{UNSUPPORTED\_DEVICE@{UNSUPPORTED\_DEVICE}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{UNSUPPORTED\_DEVICE}{UNSUPPORTED\_DEVICE}}
+{\footnotesize\ttfamily \#define UNSUPPORTED\+\_\+\+DEVICE~9}
+
+Error code for unsupported device type. \mbox{\Hypertarget{dev__ds2431_8h_a787ccf62500ca719ef1b1c924783c8d8}\label{dev__ds2431_8h_a787ccf62500ca719ef1b1c924783c8d8}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!UNSUPPORTED\_OPP@{UNSUPPORTED\_OPP}}
+\index{UNSUPPORTED\_OPP@{UNSUPPORTED\_OPP}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{UNSUPPORTED\_OPP}{UNSUPPORTED\_OPP}}
+{\footnotesize\ttfamily \#define UNSUPPORTED\+\_\+\+OPP~8}
+
+Error code for unsupported operation. \mbox{\Hypertarget{dev__ds2431_8h_a403de023a596c0d25711ad44a8cf40ba}\label{dev__ds2431_8h_a403de023a596c0d25711ad44a8cf40ba}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!VERIFYRESUME@{VERIFYRESUME}}
+\index{VERIFYRESUME@{VERIFYRESUME}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{VERIFYRESUME}{VERIFYRESUME}}
+{\footnotesize\ttfamily \#define VERIFYRESUME~0x\+A5}
+
+Command to verify resume. \mbox{\Hypertarget{dev__ds2431_8h_a27466737f1e485403d87846b0b4fab91}\label{dev__ds2431_8h_a27466737f1e485403d87846b0b4fab91}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!WRITE\_SCRATCHPAD@{WRITE\_SCRATCHPAD}}
+\index{WRITE\_SCRATCHPAD@{WRITE\_SCRATCHPAD}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{WRITE\_SCRATCHPAD}{WRITE\_SCRATCHPAD}}
+{\footnotesize\ttfamily \#define WRITE\+\_\+\+SCRATCHPAD~0x0F}
+
+Command to write scratchpad. \mbox{\Hypertarget{dev__ds2431_8h_a704396c029751c471c73570c1efebd24}\label{dev__ds2431_8h_a704396c029751c471c73570c1efebd24}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!WRITEAPPREG@{WRITEAPPREG}}
+\index{WRITEAPPREG@{WRITEAPPREG}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{WRITEAPPREG}{WRITEAPPREG}}
+{\footnotesize\ttfamily \#define WRITEAPPREG~0x99}
+
+Command to write application register. \mbox{\Hypertarget{dev__ds2431_8h_ab205d2e85504c5af57e74849cfb53eef}\label{dev__ds2431_8h_ab205d2e85504c5af57e74849cfb53eef}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!WRITEMEMORY@{WRITEMEMORY}}
+\index{WRITEMEMORY@{WRITEMEMORY}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{WRITEMEMORY}{WRITEMEMORY}}
+{\footnotesize\ttfamily \#define WRITEMEMORY~0x0F}
+
+
+
+Format EEprom mandatory (reserved 48 Bytes) 
+
+\begin{DoxyVerb} Address:  0 
+ Device_id, Board_part_number, Bd_serial_number, location (J1 or J2)
+     16   2   12            2      6           2    2
+\end{DoxyVerb}
+
+
+List of commands available for One\+Wire device DS2431. Command to write memory. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{dev__ds2431_8h_ae5e1dd77a5682f84b9c06b58ed6da849}\label{dev__ds2431_8h_ae5e1dd77a5682f84b9c06b58ed6da849}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!onewire\_check\_devices@{onewire\_check\_devices}}
+\index{onewire\_check\_devices@{onewire\_check\_devices}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{onewire\_check\_devices()}{onewire\_check\_devices()}}
+{\footnotesize\ttfamily uint8\+\_\+t onewire\+\_\+check\+\_\+devices (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{owdata,  }\item[{size\+\_\+t}]{nbid }\end{DoxyParamCaption})}
+
+
+
+Check presence of one\+Wire and check Read Write capacity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em owdata} & Pointer who will contains the result string to return. Util to know device\+\_\+id available on the Onewire link \\
+\hline
+{\em nbid} & number of devices expected on one\+Wire link \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t Error number raised during operation 
+\end{DoxyReturn}
+$<$ to get error from the function
+
+$<$ flag to indicate of at least one One\+Wire device has been found
+
+$<$ Contains test string to write on device
+
+$<$ Contains string read from device
+
+$<$ Structure who contains result of the search devices\mbox{\Hypertarget{dev__ds2431_8h_a9842d8b3b4047b13c98cc8543af98012}\label{dev__ds2431_8h_a9842d8b3b4047b13c98cc8543af98012}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!onewire\_read\_info@{onewire\_read\_info}}
+\index{onewire\_read\_info@{onewire\_read\_info}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{onewire\_read\_info()}{onewire\_read\_info()}}
+{\footnotesize\ttfamily uint8\+\_\+t onewire\+\_\+read\+\_\+info (\begin{DoxyParamCaption}\item[{char $\ast$$\ast$}]{rinfo,  }\item[{int}]{start\+\_\+address,  }\item[{int}]{length,  }\item[{size\+\_\+t}]{nbid }\end{DoxyParamCaption})}
+
+
+
+Main function to perform a read of all eeprom on 1-\/wire link. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rinfo} & Pointer who will contains the string read on Devices \\
+\hline
+{\em start\+\_\+address} & Start Address on EEprom memory to start to read \\
+\hline
+{\em length} & Number of characters to read \\
+\hline
+{\em nbid} & Number of expected device on the One\+Wire link Used on read loop to be sure we have read all expected devices ~\newline
+ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t 
+\end{DoxyReturn}
+$<$ to get error from the function
+
+$<$ string to contents the result of the One\+Wire read
+
+$<$ Structure of device id\mbox{\Hypertarget{dev__ds2431_8h_a133748d4159e147c2dd9ffb85a5929a1}\label{dev__ds2431_8h_a133748d4159e147c2dd9ffb85a5929a1}} 
+\index{dev\_ds2431.h@{dev\_ds2431.h}!onewire\_write\_info@{onewire\_write\_info}}
+\index{onewire\_write\_info@{onewire\_write\_info}!dev\_ds2431.h@{dev\_ds2431.h}}
+\doxysubsubsection{\texorpdfstring{onewire\_write\_info()}{onewire\_write\_info()}}
+{\footnotesize\ttfamily uint8\+\_\+t onewire\+\_\+write\+\_\+info (\begin{DoxyParamCaption}\item[{const char $\ast$}]{info,  }\item[{int}]{start\+\_\+address }\end{DoxyParamCaption})}
+
+
+
+Write string information to the One-\/\+Wire Device The string is write on one\+Wire device following this device\+\_\+id. 
+
+\begin{quote}
+List of function visible by other program \end{quote}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em info} & String to write on One\+Wire \\
+\hline
+{\em start\+\_\+address} & The beginning address of the data to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+uint8\+\_\+t Return error number (0 = No Error) 
+\end{DoxyReturn}
+$<$ Number of character in string
+
+$<$ contain substring to write on Onewire
+
+$<$ Array of 8 bytes of the Device\+\_\+id
+
+$<$ Used to contains address to write on One\+Wire
+
+$<$ Used in for-\/loop for extract device id from the string
+
+$<$ Counter to number of bytes received

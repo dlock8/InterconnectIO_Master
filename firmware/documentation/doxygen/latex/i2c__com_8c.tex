@@ -1,0 +1,200 @@
+\hypertarget{i2c__com_8c}{}\doxysection{firmware/src/i2c\+\_\+com.c File Reference}
+\label{i2c__com_8c}\index{firmware/src/i2c\_com.c@{firmware/src/i2c\_com.c}}
+
+
+Software code used to perform action on Pico devices.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico/binary\+\_\+info.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/scpi\+\_\+user\+\_\+config.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/i2c.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/i2c\+\_\+com.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/fts\+\_\+scpi.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}userconfig.\+h\char`\"{}}\newline
+Include dependency graph for i2c\+\_\+com.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{i2c__com_8c__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{i2c__com_8c_a1e7d8ca7c172d2950dee50f279d07ec9}\label{i2c__com_8c_a1e7d8ca7c172d2950dee50f279d07ec9}} 
+void \mbox{\hyperlink{i2c__com_8c_a1e7d8ca7c172d2950dee50f279d07ec9}{setup\+\_\+master}} ()
+\begin{DoxyCompactList}\small\item\em Configuration of the internal I2C port. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{i2c__com_8c_a3f9110484e69200a1424e98797a5e12e}{send\+\_\+master}} (i2c\+\_\+inst\+\_\+t $\ast$i2c, uint8\+\_\+t i2c\+\_\+add, uint8\+\_\+t cmd, uint16\+\_\+t wdata, uint16\+\_\+t $\ast$rback)
+\begin{DoxyCompactList}\small\item\em The function of the code is to read and write data on internal I2C port. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{i2c__com_8c_a6ab31ae372e2f5df7d1d2791fc42491a}{relay\+\_\+execute}} (uint16\+\_\+t $\ast$list, uint8\+\_\+t action, uint16\+\_\+t $\ast$answer)
+\begin{DoxyCompactList}\small\item\em From a list of relay (list) and the action to perform the sub will perform the action (close, open or read) for each relay on the list. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{i2c__com_8c_a2dc087f9c9da6f696935dc364f9003e2}{digital\+\_\+execute}} (uint8\+\_\+t action, uint8\+\_\+t port, uint8\+\_\+t bit, uint8\+\_\+t value, uint16\+\_\+t $\ast$answer)
+\begin{DoxyCompactList}\small\item\em Function to execute the digital command to perform action on GPIO port located on pico slave1. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{i2c__com_8c_ab088f05e0e9346b5a3a4fa3a06a6c33b}{gpio\+\_\+execute}} (uint8\+\_\+t action, uint8\+\_\+t device, uint8\+\_\+t gpio, uint8\+\_\+t value, uint16\+\_\+t $\ast$answer)
+\begin{DoxyCompactList}\small\item\em Function to execute action on GPIO bit. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{i2c__com_8c_a96f4bb6ce057649e766460dfecebc542}{system\+\_\+execute}} (uint8\+\_\+t action, uint16\+\_\+t $\ast$answer)
+\begin{DoxyCompactList}\small\item\em function to execute system command on Pico devices. The action is executed on all the Pico devices (1 Master and 3 slaves) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Software code used to perform action on Pico devices. 
+
+\begin{DoxyAuthor}{Author}
+Daniel Lockhead 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+2024
+\end{DoxyDate}
+This module contains all software functions to execute low level action based on command received. Mainly developed to perform I2C communication between the master pico device and these 3 Pico slaves
+
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024, D.\+Lockhead. All rights reserved.
+\end{DoxyCopyright}
+This software is licensed under the BSD 3-\/Clause License. See the LICENSE file for more details. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{i2c__com_8c_a2dc087f9c9da6f696935dc364f9003e2}\label{i2c__com_8c_a2dc087f9c9da6f696935dc364f9003e2}} 
+\index{i2c\_com.c@{i2c\_com.c}!digital\_execute@{digital\_execute}}
+\index{digital\_execute@{digital\_execute}!i2c\_com.c@{i2c\_com.c}}
+\doxysubsubsection{\texorpdfstring{digital\_execute()}{digital\_execute()}}
+{\footnotesize\ttfamily bool digital\+\_\+execute (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{action,  }\item[{uint8\+\_\+t}]{port,  }\item[{uint8\+\_\+t}]{bit,  }\item[{uint8\+\_\+t}]{value,  }\item[{uint16\+\_\+t $\ast$}]{answer }\end{DoxyParamCaption})}
+
+
+
+Function to execute the digital command to perform action on GPIO port located on pico slave1. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em action} & Keyword number to define the action to execute \\
+\hline
+{\em port} & The port number to perform the action (port 0 or port 1) \\
+\hline
+{\em bit} & The port number to perform action \\
+\hline
+{\em value} & The value to write on defined port \\
+\hline
+{\em answer} & The answer returned by the action \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Action executed with success 
+
+false Action stopped with error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{i2c__com_8c_ab088f05e0e9346b5a3a4fa3a06a6c33b}\label{i2c__com_8c_ab088f05e0e9346b5a3a4fa3a06a6c33b}} 
+\index{i2c\_com.c@{i2c\_com.c}!gpio\_execute@{gpio\_execute}}
+\index{gpio\_execute@{gpio\_execute}!i2c\_com.c@{i2c\_com.c}}
+\doxysubsubsection{\texorpdfstring{gpio\_execute()}{gpio\_execute()}}
+{\footnotesize\ttfamily bool gpio\+\_\+execute (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{action,  }\item[{uint8\+\_\+t}]{device,  }\item[{uint8\+\_\+t}]{gpio,  }\item[{uint8\+\_\+t}]{value,  }\item[{uint16\+\_\+t $\ast$}]{answer }\end{DoxyParamCaption})}
+
+
+
+Function to execute action on GPIO bit. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em action} & Keyword number to define the action to execute \\
+\hline
+{\em device} & The device number to perform action \\
+\hline
+{\em gpio} & The GPIO bit to execute the action \\
+\hline
+{\em value} & The value to write on GPIO \\
+\hline
+{\em answer} & The value read on GPIO \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Action completed with success 
+
+false Action stopped due to error 
+\end{DoxyReturn}
+Set I2C address
+
+Set I2C address
+
+Set I2C address
+
+Set I2C address
+
+Set I2C address
+
+Set I2C address\mbox{\Hypertarget{i2c__com_8c_a6ab31ae372e2f5df7d1d2791fc42491a}\label{i2c__com_8c_a6ab31ae372e2f5df7d1d2791fc42491a}} 
+\index{i2c\_com.c@{i2c\_com.c}!relay\_execute@{relay\_execute}}
+\index{relay\_execute@{relay\_execute}!i2c\_com.c@{i2c\_com.c}}
+\doxysubsubsection{\texorpdfstring{relay\_execute()}{relay\_execute()}}
+{\footnotesize\ttfamily bool relay\+\_\+execute (\begin{DoxyParamCaption}\item[{uint16\+\_\+t $\ast$}]{list,  }\item[{uint8\+\_\+t}]{action,  }\item[{uint16\+\_\+t $\ast$}]{answer }\end{DoxyParamCaption})}
+
+
+
+From a list of relay (list) and the action to perform the sub will perform the action (close, open or read) for each relay on the list. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em list} & Pointer to list of relay to perform action on. \\
+\hline
+{\em action} & Action to perform\+: close, open or read \\
+\hline
+{\em answer} & Response from the device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Action completed with success 
+
+false Action stopped with error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{i2c__com_8c_a3f9110484e69200a1424e98797a5e12e}\label{i2c__com_8c_a3f9110484e69200a1424e98797a5e12e}} 
+\index{i2c\_com.c@{i2c\_com.c}!send\_master@{send\_master}}
+\index{send\_master@{send\_master}!i2c\_com.c@{i2c\_com.c}}
+\doxysubsubsection{\texorpdfstring{send\_master()}{send\_master()}}
+{\footnotesize\ttfamily bool send\+\_\+master (\begin{DoxyParamCaption}\item[{i2c\+\_\+inst\+\_\+t $\ast$}]{i2c,  }\item[{uint8\+\_\+t}]{i2c\+\_\+add,  }\item[{uint8\+\_\+t}]{cmd,  }\item[{uint16\+\_\+t}]{wdata,  }\item[{uint16\+\_\+t $\ast$}]{rback }\end{DoxyParamCaption})}
+
+
+
+The function of the code is to read and write data on internal I2C port. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i2c} & The I2C port used by internal communication \\
+\hline
+{\em i2c\+\_\+add} & The address of the device to communicate with \\
+\hline
+{\em cmd} & The byte command number to send to device \\
+\hline
+{\em wdata} & The byte data to send to device \\
+\hline
+{\em rback} & The readback data from the device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true I2C communication completed without error 
+
+false I2C communication has error 
+\end{DoxyReturn}
+\mbox{\Hypertarget{i2c__com_8c_a96f4bb6ce057649e766460dfecebc542}\label{i2c__com_8c_a96f4bb6ce057649e766460dfecebc542}} 
+\index{i2c\_com.c@{i2c\_com.c}!system\_execute@{system\_execute}}
+\index{system\_execute@{system\_execute}!i2c\_com.c@{i2c\_com.c}}
+\doxysubsubsection{\texorpdfstring{system\_execute()}{system\_execute()}}
+{\footnotesize\ttfamily bool system\+\_\+execute (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{action,  }\item[{uint16\+\_\+t $\ast$}]{answer }\end{DoxyParamCaption})}
+
+
+
+function to execute system command on Pico devices. The action is executed on all the Pico devices (1 Master and 3 slaves) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em action} & Keyword number to define the action to execute \\
+\hline
+{\em answer} & Response from device \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true Action executed with success 
+
+false Action stopped due to error 
+\end{DoxyReturn}
+Set I2C address
+
+Set I2C address
