@@ -131,7 +131,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi
 <tr class="separator:a231b0bd8955930c242a0da8eb078fee6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e6d59e0e19737f121dfcccfe269a90f"><td class="memItemLeft" align="right" valign="top"><a id="a9e6d59e0e19737f121dfcccfe269a90f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi__uart_8c.html#a9e6d59e0e19737f121dfcccfe269a90f">scpi_uart_disable</a> ()</td></tr>
-<tr class="memdesc:a9e6d59e0e19737f121dfcccfe269a90f"><td class="mdescLeft">&#160;</td><td class="mdescRight">function to disable the user uart and configure pins reserved by UART to normal GPIO, set as input. <br /></td></tr>
+<tr class="memdesc:a9e6d59e0e19737f121dfcccfe269a90f"><td class="mdescLeft">&#160;</td><td class="mdescRight">function to disable the user uart and configure developed pins reserved by UART to normal GPIO, set as input. <br /></td></tr>
 <tr class="separator:a9e6d59e0e19737f121dfcccfe269a90f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a172f8fb84727d90afc2ca40faea62d0f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi__uart_8c.html#a172f8fb84727d90afc2ca40faea62d0f">scpi_uart_status</a> ()</td></tr>
 <tr class="memdesc:a172f8fb84727d90afc2ca40faea62d0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function who return if the user uart is enabled or not.  <a href="scpi__uart_8c.html#a172f8fb84727d90afc2ca40faea62d0f">More...</a><br /></td></tr>
@@ -152,7 +152,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi
 <tr class="memdesc:abf113dcc339af90ccc3d4a63018e900e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to set or reset the uart handshake RTS-CTS. When disable the pins reserved the handshake are set for GPIO.  <a href="scpi__uart_8c.html#abf113dcc339af90ccc3d4a63018e900e">More...</a><br /></td></tr>
 <tr class="separator:abf113dcc339af90ccc3d4a63018e900e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6900c9ec067e00b9432ab92d47bea943"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi__uart_8c.html#a6900c9ec067e00b9432ab92d47bea943">scpi_uart_get_handshake</a> ()</td></tr>
-<tr class="memdesc:a6900c9ec067e00b9432ab92d47bea943"><td class="mdescLeft">&#160;</td><td class="mdescRight">function to return the value of hanshake save on uart structure  <a href="scpi__uart_8c.html#a6900c9ec067e00b9432ab92d47bea943">More...</a><br /></td></tr>
+<tr class="memdesc:a6900c9ec067e00b9432ab92d47bea943"><td class="mdescLeft">&#160;</td><td class="mdescRight">function to return the value of handshake save on uart structure  <a href="scpi__uart_8c.html#a6900c9ec067e00b9432ab92d47bea943">More...</a><br /></td></tr>
 <tr class="separator:a6900c9ec067e00b9432ab92d47bea943"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7532b79fc626aa1915547c4ec7246e17"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi__uart_8c.html#a7532b79fc626aa1915547c4ec7246e17">scpi_uart_set_protocol</a> (char *str)</td></tr>
 <tr class="memdesc:a7532b79fc626aa1915547c4ec7246e17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to set the uart protocol according to parameter. The order of each parameter is not important.  <a href="scpi__uart_8c.html#a7532b79fc626aa1915547c4ec7246e17">More...</a><br /></td></tr>
@@ -160,18 +160,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi
 <tr class="memitem:a660614784a2c00bf750b2b78b3fae1f4"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi__uart_8c.html#a660614784a2c00bf750b2b78b3fae1f4">scpi_uart_get_protocol</a> ()</td></tr>
 <tr class="memdesc:a660614784a2c00bf750b2b78b3fae1f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">function who return the uart protocol used in communication. The string format is Data, parity, stop  <a href="scpi__uart_8c.html#a660614784a2c00bf750b2b78b3fae1f4">More...</a><br /></td></tr>
 <tr class="separator:a660614784a2c00bf750b2b78b3fae1f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64d2478f69302269dd2157554ccdd1eb"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi__uart_8c.html#a64d2478f69302269dd2157554ccdd1eb">scpi_uart_write_data</a> (char *dwrt)</td></tr>
-<tr class="memdesc:a64d2478f69302269dd2157554ccdd1eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">function to send data to uart without checking to receive data. The last charcater is saved for later.  <a href="scpi__uart_8c.html#a64d2478f69302269dd2157554ccdd1eb">More...</a><br /></td></tr>
-<tr class="separator:a64d2478f69302269dd2157554ccdd1eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabf80ce27bfee69f06fb7d0d48d71279"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi__uart_8c.html#aabf80ce27bfee69f06fb7d0d48d71279">scpi_uart_write_read_data</a> (char *dwrt, char *dread, size_t rsize)</td></tr>
-<tr class="memdesc:aabf80ce27bfee69f06fb7d0d48d71279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to perform UART write and read operations.  <a href="scpi__uart_8c.html#aabf80ce27bfee69f06fb7d0d48d71279">More...</a><br /></td></tr>
-<tr class="separator:aabf80ce27bfee69f06fb7d0d48d71279"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c0e8e486d1af8b5bb549542d72af62f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi__uart_8c.html#a6c0e8e486d1af8b5bb549542d72af62f">scpi_uart_write_data</a> (char *dwt)</td></tr>
+<tr class="memdesc:a6c0e8e486d1af8b5bb549542d72af62f"><td class="mdescLeft">&#160;</td><td class="mdescRight">function to send data to uart without checking to receive data. The last character is saved for later.  <a href="scpi__uart_8c.html#a6c0e8e486d1af8b5bb549542d72af62f">More...</a><br /></td></tr>
+<tr class="separator:a6c0e8e486d1af8b5bb549542d72af62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad61fab939a7a5d722c42de5fc8176b58"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi__uart_8c.html#ad61fab939a7a5d722c42de5fc8176b58">scpi_uart_write_read_data</a> (char *dwt, char *dread, size_t rsize)</td></tr>
+<tr class="memdesc:ad61fab939a7a5d722c42de5fc8176b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to perform UART write and read operations.  <a href="scpi__uart_8c.html#ad61fab939a7a5d722c42de5fc8176b58">More...</a><br /></td></tr>
+<tr class="separator:ad61fab939a7a5d722c42de5fc8176b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ab5345a6829daaaaf13a7eafc26244b3a"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structuser__com.html">user_com</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi__uart_8c.html#ab5345a6829daaaaf13a7eafc26244b3a">ucom</a></td></tr>
-<tr class="memdesc:ab5345a6829daaaaf13a7eafc26244b3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global structure to hold user UART communication parameters.  <a href="scpi__uart_8c.html#ab5345a6829daaaaf13a7eafc26244b3a">More...</a><br /></td></tr>
-<tr class="separator:ab5345a6829daaaaf13a7eafc26244b3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1b15193290cef867a4448ab35cd3f82"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="structuser__com.html">user_com</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scpi__uart_8c.html#af1b15193290cef867a4448ab35cd3f82">u_com</a></td></tr>
+<tr class="memdesc:af1b15193290cef867a4448ab35cd3f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global structure to hold user UART communication parameters.  <a href="scpi__uart_8c.html#af1b15193290cef867a4448ab35cd3f82">More...</a><br /></td></tr>
+<tr class="separator:af1b15193290cef867a4448ab35cd3f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Complete software code library to communicate to the user serial port using SCPI command. </p>
@@ -218,7 +218,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>function to return the value of hanshake save on uart structure </p>
+<p>function to return the value of handshake save on uart structure </p>
 <dl class="section return"><dt>Returns</dt><dd>bool return if handshake is enabled or disabled </dd></dl>
 
 </div>
@@ -241,7 +241,7 @@ Variables</h2></td></tr>
 
 <p>function who return the uart protocol used in communication. The string format is Data, parity, stop </p>
 <dl class="section return"><dt>Returns</dt><dd>const char* protocol string </dd></dl>
-<p>&lt; return prtpcol string</p>
+<p>&lt; return protocol string</p>
 
 </div>
 </div>
@@ -262,7 +262,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>function to return the value of Timeout saved on user uart structure. </p>
-<dl class="section return"><dt>Returns</dt><dd>uint32_t timeout vslue in ms </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>uint32_t timeout value in ms </dd></dl>
 
 </div>
 </div>
@@ -344,13 +344,13 @@ Variables</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>uint8_t return error if one of parameter is not in expected limit. </dd></dl>
 <p>&lt; variable to contains error number. set to 0 (no error)</p>
 <p>&lt; variable to contents the uppercase of letter</p>
-<p>&lt; variable who content the numeric value of chracter number</p>
+<p>&lt; variable who content the numeric value of character number</p>
 <p>&lt; variable who content the validated value of parity, stop and data bits</p>
 <p>&lt; flag to indicate of parity has been received</p>
 <p>&lt; flag to indicate of stop bits has been received</p>
 <p>&lt; flag to indicate of data bits has been received</p>
 <p>&lt; loop to pass over each character of the string to extract the parity, stop bits and data bits.</p>
-<p>&lt; if no error raized on 3 characters received</p>
+<p>&lt; if no error or 3 characters received</p>
 <p>&lt; save parity value on structure</p>
 <p>&lt; save data bits value on structure</p>
 <p>&lt; save stops bits value on structure</p>
@@ -406,8 +406,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a64d2478f69302269dd2157554ccdd1eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64d2478f69302269dd2157554ccdd1eb">&#9670;&nbsp;</a></span>scpi_uart_write_data()</h2>
+<a id="a6c0e8e486d1af8b5bb549542d72af62f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c0e8e486d1af8b5bb549542d72af62f">&#9670;&nbsp;</a></span>scpi_uart_write_data()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -416,16 +416,16 @@ Variables</h2></td></tr>
           <td class="memname">uint8_t scpi_uart_write_data </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>dwrt</em></td><td>)</td>
+          <td class="paramname"><em>dwt</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>function to send data to uart without checking to receive data. The last charcater is saved for later. </p>
+<p>function to send data to uart without checking to receive data. The last character is saved for later. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dwrt</td><td>string to write on the uart </td></tr>
+    <tr><td class="paramname">dwt</td><td>string to write on the uart </td></tr>
   </table>
   </dd>
 </dl>
@@ -433,8 +433,8 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="aabf80ce27bfee69f06fb7d0d48d71279"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aabf80ce27bfee69f06fb7d0d48d71279">&#9670;&nbsp;</a></span>scpi_uart_write_read_data()</h2>
+<a id="ad61fab939a7a5d722c42de5fc8176b58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad61fab939a7a5d722c42de5fc8176b58">&#9670;&nbsp;</a></span>scpi_uart_write_read_data()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -443,7 +443,7 @@ Variables</h2></td></tr>
           <td class="memname">uint8_t scpi_uart_write_read_data </td>
           <td>(</td>
           <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>dwrt</em>, </td>
+          <td class="paramname"><em>dwt</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -469,7 +469,7 @@ Variables</h2></td></tr>
 <p>This function writes data to a UART interface and expects a response, reading the response into the provided read buffer.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dwrt</td><td>Pointer to the write buffer containing the data to be sent. </td></tr>
+    <tr><td class="paramname">dwt</td><td>Pointer to the write buffer containing the data to be sent. </td></tr>
     <tr><td class="paramname">dread</td><td>Pointer to the read buffer where the response will be stored. </td></tr>
     <tr><td class="paramname">rsize</td><td>Size of the read buffer, which indicates the maximum number of bytes to read from the UART interface.</td></tr>
   </table>
@@ -480,28 +480,28 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="ab5345a6829daaaaf13a7eafc26244b3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5345a6829daaaaf13a7eafc26244b3a">&#9670;&nbsp;</a></span>ucom</h2>
+<a id="af1b15193290cef867a4448ab35cd3f82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1b15193290cef867a4448ab35cd3f82">&#9670;&nbsp;</a></span>u_com</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct <a class="el" href="structuser__com.html">user_com</a> ucom</td>
+          <td class="memname">struct <a class="el" href="structuser__com.html">user_com</a> u_com</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">    <a class="code" href="scpi__uart_8h.html#ab10a1ba308338c61ba9da7d034b7d4f7">USER_UART</a>,       </div>
-<div class="line">    <a class="code" href="scpi__uart_8h.html#a475e9358573ed20b335ae083b108261f">DEF_USER_BAUD</a>,   </div>
-<div class="line">    <a class="code" href="scpi__uart_8h.html#a9fd6e3b732812e729e72a6ec9203038d">DEF_USER_PARITY</a>, </div>
-<div class="line">    <a class="code" href="scpi__uart_8h.html#accaee9330a5b89340f788bd0ae2ba540">DEF_USER_BITS</a>,   </div>
-<div class="line">    <a class="code" href="scpi__uart_8h.html#a12c053b86a87119de60637ccc4dd4f86">DEF_USER_STOP</a>,   </div>
-<div class="line">    <a class="code" href="scpi__uart_8h.html#a7f410a5eaa51b5b7a962eb20abf96077">DEF_USER_HANDSHAKE</a>, </div>
-<div class="line">    <a class="code" href="scpi__uart_8h.html#a266e7368d402e301d4e3eefd57b913b1">DEF_USER_STATUS</a>, </div>
-<div class="line">    <a class="code" href="scpi__uart_8h.html#a475e9358573ed20b335ae083b108261f">DEF_USER_BAUD</a>,   </div>
-<div class="line">    <a class="code" href="scpi__uart_8h.html#a8039b06489690dc2aec2fc790af162ad">DEF_TIMEOUT_MS</a>,  </div>
-<div class="line">    <a class="code" href="scpi__uart_8h.html#acf576a875f3b53b45cd89698e34aeec7">DEF_LASTCHAR</a>     </div>
+<div class="line">    <a class="code" href="scpi__uart_8h.html#ab10a1ba308338c61ba9da7d034b7d4f7">USER_UART</a>,           </div>
+<div class="line">    <a class="code" href="scpi__uart_8h.html#a475e9358573ed20b335ae083b108261f">DEF_USER_BAUD</a>,       </div>
+<div class="line">    <a class="code" href="scpi__uart_8h.html#a9fd6e3b732812e729e72a6ec9203038d">DEF_USER_PARITY</a>,     </div>
+<div class="line">    <a class="code" href="scpi__uart_8h.html#accaee9330a5b89340f788bd0ae2ba540">DEF_USER_BITS</a>,       </div>
+<div class="line">    <a class="code" href="scpi__uart_8h.html#a12c053b86a87119de60637ccc4dd4f86">DEF_USER_STOP</a>,       </div>
+<div class="line">    <a class="code" href="scpi__uart_8h.html#a7f410a5eaa51b5b7a962eb20abf96077">DEF_USER_HANDSHAKE</a>,  </div>
+<div class="line">    <a class="code" href="scpi__uart_8h.html#a266e7368d402e301d4e3eefd57b913b1">DEF_USER_STATUS</a>,     </div>
+<div class="line">    <a class="code" href="scpi__uart_8h.html#a475e9358573ed20b335ae083b108261f">DEF_USER_BAUD</a>,       </div>
+<div class="line">    <a class="code" href="scpi__uart_8h.html#a8039b06489690dc2aec2fc790af162ad">DEF_TIMEOUT_MS</a>,      </div>
+<div class="line">    <a class="code" href="scpi__uart_8h.html#acf576a875f3b53b45cd89698e34aeec7">DEF_LASTCHAR</a>         </div>
 <div class="line">}</div>
 <div class="ttc" id="ascpi__uart_8h_html_a12c053b86a87119de60637ccc4dd4f86"><div class="ttname"><a href="scpi__uart_8h.html#a12c053b86a87119de60637ccc4dd4f86">DEF_USER_STOP</a></div><div class="ttdeci">#define DEF_USER_STOP</div><div class="ttdoc">Default number of stop bits.</div><div class="ttdef"><b>Definition:</b> scpi_uart.h:44</div></div>
 <div class="ttc" id="ascpi__uart_8h_html_a266e7368d402e301d4e3eefd57b913b1"><div class="ttname"><a href="scpi__uart_8h.html#a266e7368d402e301d4e3eefd57b913b1">DEF_USER_STATUS</a></div><div class="ttdeci">#define DEF_USER_STATUS</div><div class="ttdoc">Default status (disabled)</div><div class="ttdef"><b>Definition:</b> scpi_uart.h:46</div></div>
@@ -514,7 +514,7 @@ Variables</h2></td></tr>
 <div class="ttc" id="ascpi__uart_8h_html_acf576a875f3b53b45cd89698e34aeec7"><div class="ttname"><a href="scpi__uart_8h.html#acf576a875f3b53b45cd89698e34aeec7">DEF_LASTCHAR</a></div><div class="ttdeci">#define DEF_LASTCHAR</div><div class="ttdoc">Default last character for received strings.</div><div class="ttdef"><b>Definition:</b> scpi_uart.h:48</div></div>
 </div><!-- fragment -->
 <p>Global structure to hold user UART communication parameters. </p>
-<p>The structure <code>ucom</code> contains various configuration settings for the UART interface, including baud rate, parity, data bits, and other communication settings. This structure is initialized with default values. </p>
+<p>The structure <code>u_com</code> contains various configuration settings for the UART interface, including baud rate, parity, data bits, and other communication settings. This structure is initialized with default values. </p>
 
 </div>
 </div>

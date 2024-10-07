@@ -56,7 +56,7 @@ Build of this cmake project is performed with Visual Studio
 * The Files master.uf2 contains the firmware to be loaded on the Pico RP2040 board using USB cable and boot button.
 * When software loaded, the Pico board should be installed on the location marked MASTER on interconnectIO Board.
 * On board Pico Led will flash slowly (heartbeat) on power ON.
-* Loading master.uf2 will trigger the watchdog, resulting in a burst of beeps during the boot sequence to signal the watchdog timeout. Only cycling the power ON/OFF will reset the watchdog trigger flag."
+* Loading master.uf2 will trigger the watchdog, resulting in a burst of beeps during the boot sequence to signal the watchdog timeout. Only cycling the power ON/OFF will reset the watchdog trigger flag.
 
 ## Beep code
 
@@ -191,7 +191,7 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 |COM:SPI:Mode   | {0\|1\|2\|3\|4\|5\|6\|7}  | Set SPI mode + ChipSelect toggle mode (0:End of transmit, 1: At each byte) <br>mode 0: Cs=0, Cpol=0, CPha=0  <br> mode 1: Cs=0, Cpol=0, Cpha=1  <br> mode 2: Cs=0, Cpol=1, Cpha=0  <br> mode 3: Cs=0, Cpol=1, Cpha=1  <br> mode 4: Cs=1, Cpol=0, CPha=0  <br> mode 5: Cs=1, Cpol=0, Cpha=1  <br> mode 6: Cs=1, Cpol=1, Cpha=0  <br> mode 7: Cs=1, Cpol=1, Cpha=1  <br> 
 |COM:SPI:Mode? || read mode number used 
 |COM:I2C:WRIte      |\<data\> | Spi write data
-|COM:I2C:REAd:LENx? |\<opt:register\> | Spi read x bytes from optionnal register
+|COM:I2C:REAd:LENx? |\<opt:register\> | Spi read x bytes from optional register
 |COM:I2C:ADDRress |   \<Device address\> |   I2C Address to use to talk to the device
 |COM:I2C:ADDRress? ||  read address value
 |COM:I2C:Baudrate? ||  read I2C speed in Hz
@@ -239,9 +239,9 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 * Relay type are DPDT (Double Pole Double Throw). Relay could be connected in differential mode or configured in single ended mode
 * Relay address used reflect the difference between the differential and single mode.
 * Relay @10, @100 and @108 are the same physical relay.  
-* If relay @10 is closed, the high side of the relay (BK1_CH0_H) will be connected on high side of the commun point (BK1_COM_H). The low side of the relay (BK1_CH0_L) will be connected on the low side of the commun point (BK1_COM_L)
-* If relay @100 is closed, the high side of the relay (BK1_CH0_H) will be connected on high side of the commun point (BK1_COM_H). The low side of the relay (BK1_CH0_L) will be connected on the low side of the commun point (BK1_COM_L)
-*   If relay @108 is closed, the high side of the relay (BK1_CH0_H) will be connected on low side of the commun point (BK1_COM_L) because the reverse relay will be actuated on the same time of the relay @108. The low side of the relay (BK1_CH0_L) will be connected on the high side of the commun point (BK1_COM_H)
+* If relay @10 is closed, the high side of the relay (BK1_CH0_H) will be connected on high side of the common point (BK1_COM_H). The low side of the relay (BK1_CH0_L) will be connected on the low side of the common point (BK1_COM_L)
+* If relay @100 is closed, the high side of the relay (BK1_CH0_H) will be connected on high side of the common point (BK1_COM_H). The low side of the relay (BK1_CH0_L) will be connected on the low side of the common point (BK1_COM_L)
+*   If relay @108 is closed, the high side of the relay (BK1_CH0_H) will be connected on low side of the common point (BK1_COM_L) because the reverse relay will be actuated on the same time of the relay @108. The low side of the relay (BK1_CH0_L) will be connected on the high side of the common point (BK1_COM_H)
 * The 4 relay banks are identical and follow the same rules 
 
 

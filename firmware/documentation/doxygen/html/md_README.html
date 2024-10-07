@@ -128,13 +128,25 @@ Development</h1>
 <h1><a class="anchor" id="autotoc_md5"></a>
 Installation</h1>
 <ul>
-<li>The Files Master.uf2 contains the firmware to be loaded on the Pico RP2040 board using USB cable and boot button.</li>
+<li>The Files master.uf2 contains the firmware to be loaded on the Pico RP2040 board using USB cable and boot button.</li>
 <li>When software loaded, the Pico board should be installed on the location marked MASTER on interconnectIO Board.</li>
 <li>On board Pico Led will flash slowly (heartbeat) on power ON.</li>
+<li>Loading master.uf2 will trigger the watchdog, resulting in a burst of beeps during the boot sequence to signal the watchdog timeout. Only cycling the power ON/OFF will reset the watchdog trigger flag.</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md6"></a>
-SCPI command supported by the Interconnect IO Board</h1>
+Beep code</h1>
+<p>The boot sequence performs basic diagnostics. A failure in the tests will result in a burst of beeps. The error codes are as follows:</p>
+<ul>
+<li>1 Beep Burst: Master Pico's temperature is too high</li>
+<li>2 Beep Burst: Master Pico's system voltage (VSYS) is out of limits</li>
+<li>3 Beep Burst: Error in the internal I2C communication</li>
+<li>4 Beep Burst: Error reading parameters from I2C EEPROM; default values will be used</li>
+<li>5 Beep Burst: A watchdog timeout has occurred on the Master Pico.</li>
+</ul>
 <h1><a class="anchor" id="autotoc_md7"></a>
+SCPI command supported by the InterconnectIO Board</h1>
+<p>The main communication for the InterconnectIO Board is based on the SCPI standard, developed by Jan Breuer [<a href="https://www.jaybee.cz/scpi-parser/">https://www.jaybee.cz/scpi-parser/</a>]. According to the SCPI standard, some commands are mandatory, while others can be developed by the designer. In this section, we provide a list of the required SCPI commands as well as those developed specifically to control the InterconnectIO Board.</p>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Required SCPI commands</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -182,8 +194,8 @@ Required SCPI commands</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft">STATus:OPERation:ENABle?   </td><td class="markdownTableBodyLeft">queries the status enable register (OPERE) for the operation Data register   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md8"></a>
-SCPI command associated to the Interconnect IO Board</h1>
+<h1><a class="anchor" id="autotoc_md9"></a>
+SCPI command associated to the InterconnectIO Board</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">SCPI_COMMAND   </th><th class="markdownTableHeadLeft">PARAMETER   </th><th class="markdownTableHeadLeft">COMMENT    </th></tr>
@@ -319,7 +331,7 @@ Bit 0:&ensp; SLF Slew rate control 1=fast 0 = slow <br  />
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft">CFG:Read:Eeprom:STR?   </td><td class="markdownTableBodyLeft">'varnames string'   </td><td class="markdownTableBodyLeft">Reads string value from the designated parameter   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
 SCPI command associated to the communication</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -388,7 +400,7 @@ mode 0: Cs=0, Cpol=0, CPha=0 <br  />
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft">COM:I2C:WRIte   </td><td class="markdownTableBodyLeft">&lt;data&gt;   </td><td class="markdownTableBodyLeft">Spi write data    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft">COM:I2C:REAd:LENx?   </td><td class="markdownTableBodyLeft">&lt;opt:register&gt;   </td><td class="markdownTableBodyLeft">Spi read x bytes from optionnal register    </td></tr>
+<td class="markdownTableBodyLeft">COM:I2C:REAd:LENx?   </td><td class="markdownTableBodyLeft">&lt;opt:register&gt;   </td><td class="markdownTableBodyLeft">Spi read x bytes from optional register    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft">COM:I2C:ADDRress   </td><td class="markdownTableBodyLeft">&lt;Device address&gt;   </td><td class="markdownTableBodyLeft">I2C Address to use to talk to the device    </td></tr>
 <tr class="markdownTableRowEven">
@@ -402,7 +414,7 @@ mode 0: Cs=0, Cpol=0, CPha=0 <br  />
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft" colspan="2">COM:I2C:Databits?   </td><td class="markdownTableBodyLeft">read number of databits used on I2C communication   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 SCPI Complete Command example:</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -449,22 +461,20 @@ SCPI Complete Command example:</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft">COM:1WIRE:WRITE "2D4CE282200000CC, 500-1010-020, 000001, J1"   </td><td class="markdownTableBodyLeft">Lasered ROM + Board#+ Serial + Location   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md11"></a>
-Relay numbering scheme</h1>
 <h1><a class="anchor" id="autotoc_md12"></a>
-Differential relay will be located on lower address.</h1>
-<h1><a class="anchor" id="autotoc_md13"></a>
-Single ended relay to be connected to high or low side following the address.</h1>
+Relay numbering scheme</h1>
 <pre class="fragment">Relay bank 1   Differential: 10 @ 17    Single: 100 @ 107 (High) 108 @ 115 (Low)    
 Relay bank 2   Differential: 20 @ 27    Single: 200 @ 215 (High) 208 @ 215 (Low) 
 Relay bank 3   Differential: 30 @ 37    Single: 300 @ 315 (High) 308 @ 315 (Low) 
 Relay bank 4   Differential: 40 @ 47    Single: 400 @ 415 (High) 108 @ 415 (Low) 
 </pre><ul>
-<li>relay @10, @100 and @108 are the same physical relay. <br  />
+<li>Relay type are DPDT (Double Pole Double Throw). Relay could be connected in differential mode or configured in single ended mode</li>
+<li>Relay address used reflect the difference between the differential and single mode.</li>
+<li>Relay @10, @100 and @108 are the same physical relay. <br  />
 </li>
-<li>If relay @10 is closed, the high side of the relay (BK1_CH0_H) will be connected on high side of the commun point (BK1_COM_H). The low side of the relay (BK1_CH0_L) will be connected on the low side of the commun point (BK1_COM_L)</li>
-<li>If relay @100 is closed, the high side of the relay (BK1_CH0_H) will be connected on high side of the commun point (BK1_COM_H). The low side of the relay (BK1_CH0_L) will be connected on the low side of the commun point (BK1_COM_L)</li>
-<li>If relay @108 is closed, the high side of the relay (BK1_CH0_H) will be connected on low side of the commun point (BK1_COM_L) because the reverse relay will be actuated on the same time of the relay @108. The low side of the relay (BK1_CH0_L) will be connected on the high side of the commun point (BK1_COM_H)</li>
+<li>If relay @10 is closed, the high side of the relay (BK1_CH0_H) will be connected on high side of the common point (BK1_COM_H). The low side of the relay (BK1_CH0_L) will be connected on the low side of the common point (BK1_COM_L)</li>
+<li>If relay @100 is closed, the high side of the relay (BK1_CH0_H) will be connected on high side of the common point (BK1_COM_H). The low side of the relay (BK1_CH0_L) will be connected on the low side of the common point (BK1_COM_L)</li>
+<li>If relay @108 is closed, the high side of the relay (BK1_CH0_H) will be connected on low side of the common point (BK1_COM_L) because the reverse relay will be actuated on the same time of the relay @108. The low side of the relay (BK1_CH0_L) will be connected on the high side of the common point (BK1_COM_H)</li>
 <li>The 4 relay banks are identical and follow the same rules </li>
 </ul>
 </div></div><!-- contents -->

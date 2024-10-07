@@ -21,6 +21,15 @@
     "cmake.sourceDirectory": "${workspaceFolder}/firmware",
     "cmake.buildDirectory": "${workspaceFolder}/firmware/build",
     "cortex-debug.variableUseNaturalFormat": false,
-    "doxygen_runner.configuration_file_override": "${workspaceFolder}/Doxyfile"
-
+    "doxygen_runner.configuration_file_override": "${workspaceFolder}/Doxyfile",
+    "cSpell.words": [
+        "ADXL",
+        "EEMODEL",
+        "ioboard",
+        "JTAG",
+        "NOCERR",
+        "owid",
+        "RWTESTSIZE",
+        "SCHT"
+    ]
 }

@@ -13,7 +13,8 @@ Include dependency graph for i2c\+\_\+com.\+h\+:\nopagebreak
 \includegraphics[width=196pt]{i2c__com_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -184,8 +185,9 @@ This software is licensed under the BSD 3-\/Clause License. See the LICENSE file
 
 {\bfseries Value\+:}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\{\{0,1,2,3,4,5,6,7\}, \(\backslash\)}
-\DoxyCodeLine{\{10,11,12,13,14,15,16,17\}\}}
+\DoxyCodeLine{  \{                                                                                                                                                  \(\backslash\)}
+\DoxyCodeLine{    \{0, 1, 2, 3, 4, 5, 6, 7\}, \{ 10, 11, 12, 13, 14, 15, 16, 17 \}                                                                                     \(\backslash\)}
+\DoxyCodeLine{  \}}
 
 \end{DoxyCode}
 
@@ -262,10 +264,10 @@ I2C address for Pico Selftest. \mbox{\Hypertarget{i2c__com_8h_a0607138f5019ed355
 
 {\bfseries Value\+:}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{\{\{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7\},\(\backslash\)}
-\DoxyCodeLine{\{0,1,2,3,4,5,6,7,0,1,2,3,4,5,6,7\}, \(\backslash\)}
-\DoxyCodeLine{\{10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17\}, \(\backslash\)}
-\DoxyCodeLine{\{10,11,12,13,14,15,16,17,10,11,12,13,14,15,16,17\}, \}}
+\DoxyCodeLine{  \{                                                                                                                                                  \(\backslash\)}
+\DoxyCodeLine{    \{0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7\}, \{0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7\},                                              \(\backslash\)}
+\DoxyCodeLine{        \{10, 11, 12, 13, 14, 15, 16, 17, 10, 11, 12, 13, 14, 15, 16, 17\}, \{10, 11, 12, 13, 14, 15, 16, 17, 10, 11, 12, 13, 14, 15, 16, 17\},          \(\backslash\)}
+\DoxyCodeLine{  \}}
 
 \end{DoxyCode}
 
@@ -417,7 +419,7 @@ The function of the code is to read and write data on internal I2C port.
 \hline
 {\em wdata} & The byte data to send to device \\
 \hline
-{\em rback} & The readback data from the device \\
+{\em rback} & The read back data from the device \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

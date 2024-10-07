@@ -31,14 +31,13 @@ var NAVTREE =
       [ "Building", "md_README.html#autotoc_md3", null ],
       [ "Development", "md_README.html#autotoc_md4", null ],
       [ "Installation", "md_README.html#autotoc_md5", null ],
-      [ "SCPI command supported by the Interconnect IO Board", "md_README.html#autotoc_md6", null ],
-      [ "Required SCPI commands", "md_README.html#autotoc_md7", null ],
-      [ "SCPI command associated to the Interconnect IO Board", "md_README.html#autotoc_md8", null ],
-      [ "SCPI command associated to the communication", "md_README.html#autotoc_md9", null ],
-      [ "SCPI Complete Command example:", "md_README.html#autotoc_md10", null ],
-      [ "Relay numbering scheme", "md_README.html#autotoc_md11", null ],
-      [ "Differential relay will be located on lower address.", "md_README.html#autotoc_md12", null ],
-      [ "Single ended relay to be connected to high or low side following the address.", "md_README.html#autotoc_md13", null ]
+      [ "Beep code", "md_README.html#autotoc_md6", null ],
+      [ "SCPI command supported by the InterconnectIO Board", "md_README.html#autotoc_md7", null ],
+      [ "Required SCPI commands", "md_README.html#autotoc_md8", null ],
+      [ "SCPI command associated to the InterconnectIO Board", "md_README.html#autotoc_md9", null ],
+      [ "SCPI command associated to the communication", "md_README.html#autotoc_md10", null ],
+      [ "SCPI Complete Command example:", "md_README.html#autotoc_md11", null ],
+      [ "Relay numbering scheme", "md_README.html#autotoc_md12", null ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],

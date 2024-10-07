@@ -1,5 +1,5 @@
 <map id="firmware/src/fts_scpi.c" name="firmware/src/fts_scpi.c">
-<area shape="rect" id="node1" title="Software code used to interpret the SCPI command reveived from external." alt="" coords="1110,5,1277,32"/>
+<area shape="rect" id="node1" title="Software code used to interpret the SCPI command received from external." alt="" coords="1110,5,1277,32"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,87,72,114"/>
 <area shape="rect" id="node3" title=" " alt="" coords="97,87,167,114"/>
 <area shape="rect" id="node4" title=" " alt="" coords="191,87,262,114"/>

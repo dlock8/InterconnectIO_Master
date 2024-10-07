@@ -8,6 +8,7 @@ Software code used to perform action on Pico devices.
 {\ttfamily \#include $<$stdio.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}pico/binary\+\_\+info.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/structs/io\+\_\+bank0.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}include/scpi\+\_\+user\+\_\+config.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}hardware/i2c.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}include/i2c\+\_\+com.\+h\char`\"{}}\newline
@@ -165,7 +166,7 @@ The function of the code is to read and write data on internal I2C port.
 \hline
 {\em wdata} & The byte data to send to device \\
 \hline
-{\em rback} & The readback data from the device \\
+{\em rback} & The read back data from the device \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}

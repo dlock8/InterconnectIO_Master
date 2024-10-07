@@ -39,7 +39,7 @@ void \mbox{\hyperlink{scpi__spi_8c_a659466f5c52b4fd694f38c989d294af8}{scpi\+\_\+
 uint32\+\_\+t \mbox{\hyperlink{scpi__spi_8c_a87b874a337212219c48b1e44ffc77f5e}{scpi\+\_\+spi\+\_\+get\+\_\+baudrate}} ()
 \begin{DoxyCompactList}\small\item\em function to return the baudrate \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8c_aa0920b1ae2abba44bee0a9b320cca227}{scpi\+\_\+spi\+\_\+set\+\_\+chipselect}} (uint32\+\_\+t num)
-\begin{DoxyCompactList}\small\item\em Function to update the SPI chipselect to be used. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Function to update the SPI Chip\+Select to be used. \end{DoxyCompactList}\item 
 uint32\+\_\+t \mbox{\hyperlink{scpi__spi_8c_a9bdabaa83862186b19d30d6a128d2a61}{scpi\+\_\+spi\+\_\+get\+\_\+chipselect}} ()
 \begin{DoxyCompactList}\small\item\em function to return the chipselect gpio used \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8c_a2cb5079bd0fb6a96093c5f37f4572fd8}{scpi\+\_\+spi\+\_\+set\+\_\+databits}} (uint32\+\_\+t num)
@@ -47,7 +47,7 @@ uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8c_a2cb5079bd0fb6a96093c5f37f4572fd8}{sc
 uint32\+\_\+t \mbox{\hyperlink{scpi__spi_8c_a8f589a72b8492383e5f3b56566c7865c}{scpi\+\_\+spi\+\_\+get\+\_\+databits}} ()
 \begin{DoxyCompactList}\small\item\em function to return the databits value saved on structure \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8c_ac54dd17786f3ac8a65578d6cd470c1fe}{scpi\+\_\+spi\+\_\+set\+\_\+mode}} (uint8\+\_\+t mode)
-\begin{DoxyCompactList}\small\item\em function to set the mode to use for spi communication \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em function to set the mode to use for spi communication bozoinghghfjj \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8c_a0aad5a09bc2566f47180bf939d77ba2f}{scpi\+\_\+spi\+\_\+get\+\_\+mode}} ()
 \begin{DoxyCompactList}\small\item\em function who return the spi mode used in communication. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{scpi__spi_8c_a23385f64b89a24238ba50379892ed47a}{spi\+\_\+bytes\+\_\+to\+\_\+words}} (uint8\+\_\+t $\ast$byte\+\_\+array, uint16\+\_\+t $\ast$word\+\_\+array, size\+\_\+t length)
@@ -171,7 +171,7 @@ Function to update the baudrate speed on the structure, Baudrate will be updated
 
 
 
-Function to update the SPI chipselect to be used. 
+Function to update the SPI Chip\+Select to be used. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -179,7 +179,7 @@ Function to update the SPI chipselect to be used.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-uint8\+\_\+t error if number is not validbaudrate 
+uint8\+\_\+t error if number is not valid baudrate 
 \end{DoxyReturn}
 $<$ Loop to determine if the gpio required for become new Chip\+Select is valid
 
@@ -210,7 +210,7 @@ Function to update the value of databits to be used.
 
 
 
-function to set the mode to use for spi communication 
+function to set the mode to use for spi communication bozoinghghfjj 
 
 
 \begin{DoxyParams}{Parameters}
@@ -358,12 +358,12 @@ This variable is set to {\ttfamily true} when an SPI timeout occurs and is used 
 {\bfseries Initial value\+:}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{= \{}
-\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_ad92e1ad5fdc2ccbfa94c9a97e9731801}{DEF\_SPI\_USER}},    }
-\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_a5f89522e9b8c162a81770c882e871c8b}{DEF\_SPI\_BAUD}},    }
-\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_a28035e900f29737f2852f2039a51d39a}{DEF\_SPI\_DATABITS}},}
-\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_a4217b55d3e322f9327e0fbda933ea696}{DEF\_SPI\_CS}},      }
-\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_aef40ff40f2561db8ae3f5242d9b82bf9}{DEF\_SPI\_MODE}},    }
-\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_a447f512aa83392f754224e14ebde3fd8}{DEF\_SPI\_STATUS}}   }
+\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_ad92e1ad5fdc2ccbfa94c9a97e9731801}{DEF\_SPI\_USER}},      }
+\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_a5f89522e9b8c162a81770c882e871c8b}{DEF\_SPI\_BAUD}},      }
+\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_a28035e900f29737f2852f2039a51d39a}{DEF\_SPI\_DATABITS}},  }
+\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_a4217b55d3e322f9327e0fbda933ea696}{DEF\_SPI\_CS}},        }
+\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_aef40ff40f2561db8ae3f5242d9b82bf9}{DEF\_SPI\_MODE}},      }
+\DoxyCodeLine{    \mbox{\hyperlink{scpi__spi_8h_a447f512aa83392f754224e14ebde3fd8}{DEF\_SPI\_STATUS}}     }
 \DoxyCodeLine{\}}
 
 \end{DoxyCode}

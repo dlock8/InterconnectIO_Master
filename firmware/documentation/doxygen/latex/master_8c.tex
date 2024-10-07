@@ -5,27 +5,28 @@
 Main loop to control the Pico Master Device.  
 
 
+{\ttfamily \#include \char`\"{}include/master.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$stdio.\+h$>$}\newline
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
-{\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}pico/binary\+\_\+info.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}hardware/uart.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}hardware/adc.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}hardware/i2c.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}include/fts\+\_\+scpi.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}include/i2c\+\_\+com.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}include/master.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}include/test.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}include/functadv.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}hardware/uart.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}hardware/watchdog.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}userconfig.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/fts\+\_\+scpi.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/functadv.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/i2c\+\_\+com.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/test.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}lib/scpi-\/parser/libscpi/src/error.\+c\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+ina219/dev\+\_\+ina219.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+mcp4725/dev\+\_\+mcp4725.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico/binary\+\_\+info.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+24lc32/dev\+\_\+24lc32.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+ds2431/dev\+\_\+ds2431.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+ina219/dev\+\_\+ina219.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+mcp4725/dev\+\_\+mcp4725.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/sys/include/sys\+\_\+adc.\+h\char`\"{}}\newline
-Include dependency graph for master.\+c\+:\nopagebreak
+{\ttfamily \#include \char`\"{}userconfig.\+h\char`\"{}}\newline
+Include dependency graph for master.\+c\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -74,7 +75,6 @@ struct \{\\
 \>\mbox{\hyperlink{structMESSAGE}{MESSAGE}} \mbox{\hyperlink{master_8c_a212ceeefc46dd1a9604e02b868db2634}{messages}} \mbox{[}\mbox{\hyperlink{master_8c_a142810068f1b99cd93d3fc9f0e160e02}{QUEUE\_SIZE}}\mbox{]}\\
 \>\>{\em Array of messages stored in the queue. }\\
 \>char \mbox{\hyperlink{master_8c_aeac59056e9fe0881b3773cb2af260c41}{size}} \mbox{[}\mbox{\hyperlink{master_8c_a142810068f1b99cd93d3fc9f0e160e02}{QUEUE\_SIZE}}\mbox{]}\\
-\>\>{\em Array containing sizes of each message in the queue. }\\
 \>int \mbox{\hyperlink{master_8c_a9320720f4d683cc7c76f800be700ac35}{begin}}\\
 \>\>{\em Index of the first message in the queue. }\\
 \>int \mbox{\hyperlink{master_8c_abce9f5dc9c83f2639b72024fdee5d388}{end}}\\
@@ -97,7 +97,7 @@ Daniel Lockhead
 \begin{DoxyDate}{Date}
 2024
 \end{DoxyDate}
-The Master Pico is the main controller for the Interconnec IO Box. The master accept SCPI command the serial port and execute the command.
+The Master Pico is the main controller for the Interconnect\+IO Box. The master accept SCPI command the serial port and execute the command.
 
 \begin{DoxyCopyright}{Copyright}
 Copyright (c) 2024, D.\+Lockhead. All rights reserved.
@@ -225,4 +225,10 @@ Instance of the EEPROM configuration union. \mbox{\Hypertarget{master_8c_ab0465a
 
 Global circular queue for storing messages. 
 
-This variable manages a circular queue that holds messages and tracks their sizes. It uses indices to mark the beginning and end of the queue, and keeps track of the current number of messages (load). 
+This variable manages a circular queue that holds messages and tracks their sizes. It uses indices to mark the beginning and end of the queue, and keeps track of the current number of messages (load). \mbox{\Hypertarget{master_8c_aeac59056e9fe0881b3773cb2af260c41}\label{master_8c_aeac59056e9fe0881b3773cb2af260c41}} 
+\index{master.c@{master.c}!size@{size}}
+\index{size@{size}!master.c@{master.c}}
+\doxysubsubsection{\texorpdfstring{size}{size}}
+{\footnotesize\ttfamily char size\mbox{[}\mbox{\hyperlink{master_8c_a142810068f1b99cd93d3fc9f0e160e02}{QUEUE\+\_\+\+SIZE}}\mbox{]}}
+
+Array containing sizes of each message in the queue. 

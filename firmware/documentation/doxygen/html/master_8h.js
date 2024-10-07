@@ -36,6 +36,7 @@ var master_8h =
     [ "UART_ID", "master_8h.html#a1de69c73f829a03f46f5e7690da7e79a", null ],
     [ "UART_RX_PIN", "master_8h.html#aa37eca6fe61f6938d925975dff27c8fd", null ],
     [ "UART_TX_PIN", "master_8h.html#a6c82a6844388a551e8f06d249598989e", null ],
+    [ "WATCHDOG_TIMEOUT", "master_8h.html#abf89628d486477bd0db5a5890cd38a05", null ],
     [ "cfg", "master_8h.html#aff604f626fb9ec96578d8e620974f9f7", null ],
     [ "eep", "master_8h.html#a6ee16918c98b75fe7c46964a9b8c34ea", null ],
     [ "ee", "master_8h.html#a670da91be64127c92faac35c8300e814", null ]

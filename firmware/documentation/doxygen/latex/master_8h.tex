@@ -5,7 +5,8 @@
 Header file defining constants and macros used on the main file.  
 
 
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -22,6 +23,8 @@ union \mbox{\hyperlink{unioneef}{eef}}
 \doxysubsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
+\#define \mbox{\hyperlink{master_8h_abf89628d486477bd0db5a5890cd38a05}{WATCHDOG\+\_\+\+TIMEOUT}}~3000
+\begin{DoxyCompactList}\small\item\em maximum time before watchdog trig \end{DoxyCompactList}\item 
 \#define \mbox{\hyperlink{master_8h_a1de69c73f829a03f46f5e7690da7e79a}{UART\+\_\+\+ID}}~uart1
 \begin{DoxyCompactList}\small\item\em UART configuration and default settings. \end{DoxyCompactList}\item 
 \#define \mbox{\hyperlink{master_8h_ad4455691936f92fdd6c37566fc58ba1f}{BAUD\+\_\+\+RATE}}~115200
@@ -73,19 +76,19 @@ union \mbox{\hyperlink{unioneef}{eef}}
 \#define \mbox{\hyperlink{master_8h_aec0ccc9a5a885b633db093704aeb6391}{DEF\+\_\+\+EEPROM}}
 \begin{DoxyCompactList}\small\item\em Default values for the EEPROM structure. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{master_8h_a9ecda4f1d9ad2fc8648115a838a88339}\label{master_8h_a9ecda4f1d9ad2fc8648115a838a88339}} 
-\#define \mbox{\hyperlink{master_8h_a9ecda4f1d9ad2fc8648115a838a88339}{BEEP\+\_\+\+I2\+C\+\_\+\+FAIL}}~2
+\#define \mbox{\hyperlink{master_8h_a9ecda4f1d9ad2fc8648115a838a88339}{BEEP\+\_\+\+I2\+C\+\_\+\+FAIL}}~3
 \begin{DoxyCompactList}\small\item\em Define burst of Beep. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{master_8h_acea1b1ce0e9fdbf0490a886c516c1048}\label{master_8h_acea1b1ce0e9fdbf0490a886c516c1048}} 
-\#define \mbox{\hyperlink{master_8h_acea1b1ce0e9fdbf0490a886c516c1048}{BEEP\+\_\+\+EEP\+\_\+\+FAIL}}~3
+\#define \mbox{\hyperlink{master_8h_acea1b1ce0e9fdbf0490a886c516c1048}{BEEP\+\_\+\+EEP\+\_\+\+FAIL}}~4
 \begin{DoxyCompactList}\small\item\em Define burst of Beep. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{master_8h_acba0b7467dfc04c01e39baffd6773f7d}\label{master_8h_acba0b7467dfc04c01e39baffd6773f7d}} 
-\#define \mbox{\hyperlink{master_8h_acba0b7467dfc04c01e39baffd6773f7d}{BEEP\+\_\+\+VSYS\+\_\+\+OUT}}~4
+\#define \mbox{\hyperlink{master_8h_acba0b7467dfc04c01e39baffd6773f7d}{BEEP\+\_\+\+VSYS\+\_\+\+OUT}}~2
 \begin{DoxyCompactList}\small\item\em Define burst of Beep. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{master_8h_afcf992e55ac36e7ee54ef3dd15ee6383}\label{master_8h_afcf992e55ac36e7ee54ef3dd15ee6383}} 
-\#define \mbox{\hyperlink{master_8h_afcf992e55ac36e7ee54ef3dd15ee6383}{BEEP\+\_\+\+TEMP\+\_\+\+HIGH}}~5
+\#define \mbox{\hyperlink{master_8h_afcf992e55ac36e7ee54ef3dd15ee6383}{BEEP\+\_\+\+TEMP\+\_\+\+HIGH}}~1
 \begin{DoxyCompactList}\small\item\em Define burst of Beep. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{master_8h_ae6a25a9e43d693c323f49eb4361d9ade}\label{master_8h_ae6a25a9e43d693c323f49eb4361d9ade}} 
-\#define \mbox{\hyperlink{master_8h_ae6a25a9e43d693c323f49eb4361d9ade}{BEEP\+\_\+\+WATCHDOG}}~6
+\#define \mbox{\hyperlink{master_8h_ae6a25a9e43d693c323f49eb4361d9ade}{BEEP\+\_\+\+WATCHDOG}}~5
 \begin{DoxyCompactList}\small\item\em Define burst of Beep. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{master_8h_a9f270472d1b98c1f8b07966db54794a3}\label{master_8h_a9f270472d1b98c1f8b07966db54794a3}} 
 \#define \mbox{\hyperlink{master_8h_a9f270472d1b98c1f8b07966db54794a3}{MAX\+\_\+\+PICO\+\_\+\+TEMP}}~60
@@ -164,15 +167,15 @@ Number of data bits. \mbox{\Hypertarget{master_8h_aec0ccc9a5a885b633db093704aeb6
 
 {\bfseries Value\+:}
 \begin{DoxyCode}{0}
-\DoxyCodeLine{    \{ \(\backslash\)}
-\DoxyCodeLine{    EE\_CHECK\_CHAR,     \(\backslash\)}
-\DoxyCodeLine{    EE\_PARTNUMBER,     \(\backslash\)}
-\DoxyCodeLine{    EE\_SERIALNUMBER,   \(\backslash\)}
-\DoxyCodeLine{    EE\_MOD\_OPTION,     \(\backslash\)}
-\DoxyCodeLine{    EE\_CSER\_SPEED,     \(\backslash\)}
-\DoxyCodeLine{    EE\_SLAVE\_RUN,      \(\backslash\)}
-\DoxyCodeLine{    EE\_TESTBOARD\_NUM   \(\backslash\)}
-\DoxyCodeLine{\}}
+\DoxyCodeLine{  \{                                                                                                                                                  \(\backslash\)}
+\DoxyCodeLine{    EE\_CHECK\_CHAR,                                                                                                     \(\backslash\)}
+\DoxyCodeLine{        EE\_PARTNUMBER,                                                                                                     \(\backslash\)}
+\DoxyCodeLine{        EE\_SERIALNUMBER,                                                                                                 \(\backslash\)}
+\DoxyCodeLine{        EE\_MOD\_OPTION,                                                                                                          \(\backslash\)}
+\DoxyCodeLine{        EE\_CSER\_SPEED,                                                                                             \(\backslash\)}
+\DoxyCodeLine{        EE\_SLAVE\_RUN,                                                                                                          \(\backslash\)}
+\DoxyCodeLine{        EE\_TESTBOARD\_NUM                                                                                                    \(\backslash\)}
+\DoxyCodeLine{  \}}
 
 \end{DoxyCode}
 
@@ -315,7 +318,17 @@ GPIO pin for UART RX (Receive). \mbox{\Hypertarget{master_8h_a6c82a6844388a551e8
 
 UART GPIO pin configuration. 
 
-We are using GPIO pins 0 and 1 for UART transmission and reception, but other pins can be used as described in the datasheet. GPIO pin for UART TX (Transmit). 
+We are using GPIO pins 0 and 1 for UART transmission and reception, but other pins can be used as described in the datasheet. GPIO pin for UART TX (Transmit). \mbox{\Hypertarget{master_8h_abf89628d486477bd0db5a5890cd38a05}\label{master_8h_abf89628d486477bd0db5a5890cd38a05}} 
+\index{master.h@{master.h}!WATCHDOG\_TIMEOUT@{WATCHDOG\_TIMEOUT}}
+\index{WATCHDOG\_TIMEOUT@{WATCHDOG\_TIMEOUT}!master.h@{master.h}}
+\doxysubsubsection{\texorpdfstring{WATCHDOG\_TIMEOUT}{WATCHDOG\_TIMEOUT}}
+{\footnotesize\ttfamily \#define WATCHDOG\+\_\+\+TIMEOUT~3000}
+
+
+
+maximum time before watchdog trig 
+
+Watchdog set for 3 seconds. 
 
 \doxysubsection{Typedef Documentation}
 \mbox{\Hypertarget{master_8h_aff604f626fb9ec96578d8e620974f9f7}\label{master_8h_aff604f626fb9ec96578d8e620974f9f7}} 

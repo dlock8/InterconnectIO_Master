@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 
-// #define SCPI_LINE_ENDING    "\r\n"    /*   use <CR><LF> carriage return + line feed as termination charcters */
+// #define SCPI_LINE_ENDING    "\r\n"    /*   use <CR><LF> carriage return + line feed as termination characters */
 
 
 

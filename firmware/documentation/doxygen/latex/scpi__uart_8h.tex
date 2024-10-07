@@ -5,7 +5,8 @@
 Header file defining constants and macros for the uart communication.  
 
 
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -83,7 +84,7 @@ void \mbox{\hyperlink{scpi__uart_8h_a8e4f9f87014ede07790adcdee9218a07}{scpi\+\_\
 \begin{DoxyCompactList}\small\item\em function to configure the parameters of the user uart based on the data set on the uart structure \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{scpi__uart_8h_a92ecca314320f946136a7731e6abc3c0}\label{scpi__uart_8h_a92ecca314320f946136a7731e6abc3c0}} 
 void \mbox{\hyperlink{scpi__uart_8h_a92ecca314320f946136a7731e6abc3c0}{scpi\+\_\+uart\+\_\+disable}} (void)
-\begin{DoxyCompactList}\small\item\em function to disable the user uart and configure pins reserved by UART to normal GPIO, set as input. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em function to disable the user uart and configure developed pins reserved by UART to normal GPIO, set as input. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{scpi__uart_8h_a1beb9ac537fc7db2337e750b61004e06}{scpi\+\_\+uart\+\_\+status}} (void)
 \begin{DoxyCompactList}\small\item\em Function who return if the user uart is enabled or not. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{scpi__uart_8h_a8b9b7e507857261be73965271270d54f}{scpi\+\_\+uart\+\_\+set\+\_\+baudrate}} (uint32\+\_\+t speed)
@@ -97,13 +98,13 @@ uint32\+\_\+t \mbox{\hyperlink{scpi__uart_8h_a4940674ea5d55c2b968af3e4eee8dca3}{
 void \mbox{\hyperlink{scpi__uart_8h_abf113dcc339af90ccc3d4a63018e900e}{scpi\+\_\+uart\+\_\+set\+\_\+handshake}} (bool val)
 \begin{DoxyCompactList}\small\item\em Function to set or reset the uart handshake RTS-\/\+CTS. When disable the pins reserved the handshake are set for GPIO. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{scpi__uart_8h_a140d39ce403d0abb4a61ed75c87ac366}{scpi\+\_\+uart\+\_\+get\+\_\+handshake}} (void)
-\begin{DoxyCompactList}\small\item\em function to return the value of hanshake save on uart structure \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em function to return the value of handshake save on uart structure \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{scpi__uart_8h_a7532b79fc626aa1915547c4ec7246e17}{scpi\+\_\+uart\+\_\+set\+\_\+protocol}} (char $\ast$str)
 \begin{DoxyCompactList}\small\item\em Function to set the uart protocol according to parameter. The order of each parameter is not important. \end{DoxyCompactList}\item 
 const char $\ast$ \mbox{\hyperlink{scpi__uart_8h_a765bb33cc403ef78b571e0d6b5a06397}{scpi\+\_\+uart\+\_\+get\+\_\+protocol}} (void)
 \begin{DoxyCompactList}\small\item\em function who return the uart protocol used in communication. The string format is Data, parity, stop \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{scpi__uart_8h_a64d2478f69302269dd2157554ccdd1eb}{scpi\+\_\+uart\+\_\+write\+\_\+data}} (char $\ast$dwrt)
-\begin{DoxyCompactList}\small\item\em function to send data to uart without checking to receive data. The last charcater is saved for later. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em function to send data to uart without checking to receive data. The last character is saved for later. \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{scpi__uart_8h_aaa29248e0b2b7e6cac5308a706a2b4ae}{scpi\+\_\+uart\+\_\+write\+\_\+read\+\_\+data}} (char $\ast$strd, char $\ast$dpr, size\+\_\+t rsize)
 \begin{DoxyCompactList}\small\item\em Function to perform UART write and read operations. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -177,7 +178,7 @@ uint32\+\_\+t actual exact baudrate
 
 
 
-function to return the value of hanshake save on uart structure 
+function to return the value of handshake save on uart structure 
 
 \begin{DoxyReturn}{Returns}
 bool return if handshake is enabled or disabled 
@@ -195,7 +196,7 @@ function who return the uart protocol used in communication. The string format i
 \begin{DoxyReturn}{Returns}
 const char$\ast$ protocol string 
 \end{DoxyReturn}
-$<$ return prtpcol string\mbox{\Hypertarget{scpi__uart_8h_a4940674ea5d55c2b968af3e4eee8dca3}\label{scpi__uart_8h_a4940674ea5d55c2b968af3e4eee8dca3}} 
+$<$ return protocol string\mbox{\Hypertarget{scpi__uart_8h_a4940674ea5d55c2b968af3e4eee8dca3}\label{scpi__uart_8h_a4940674ea5d55c2b968af3e4eee8dca3}} 
 \index{scpi\_uart.h@{scpi\_uart.h}!scpi\_uart\_get\_timeout@{scpi\_uart\_get\_timeout}}
 \index{scpi\_uart\_get\_timeout@{scpi\_uart\_get\_timeout}!scpi\_uart.h@{scpi\_uart.h}}
 \doxysubsubsection{\texorpdfstring{scpi\_uart\_get\_timeout()}{scpi\_uart\_get\_timeout()}}
@@ -206,7 +207,7 @@ $<$ return prtpcol string\mbox{\Hypertarget{scpi__uart_8h_a4940674ea5d55c2b968af
 function to return the value of Timeout saved on user uart structure. 
 
 \begin{DoxyReturn}{Returns}
-uint32\+\_\+t timeout vslue in ms 
+uint32\+\_\+t timeout value in ms 
 \end{DoxyReturn}
 \mbox{\Hypertarget{scpi__uart_8h_a8b9b7e507857261be73965271270d54f}\label{scpi__uart_8h_a8b9b7e507857261be73965271270d54f}} 
 \index{scpi\_uart.h@{scpi\_uart.h}!scpi\_uart\_set\_baudrate@{scpi\_uart\_set\_baudrate}}
@@ -260,7 +261,7 @@ $<$ variable to contains error number. set to 0 (no error)
 
 $<$ variable to contents the uppercase of letter
 
-$<$ variable who content the numeric value of chracter number
+$<$ variable who content the numeric value of character number
 
 $<$ variable who content the validated value of parity, stop and data bits
 
@@ -272,7 +273,7 @@ $<$ flag to indicate of data bits has been received
 
 $<$ loop to pass over each character of the string to extract the parity, stop bits and data bits.
 
-$<$ if no error raized on 3 characters received
+$<$ if no error or 3 characters received
 
 $<$ save parity value on structure
 
@@ -314,15 +315,15 @@ True if uart is enabled
 \index{scpi\_uart.h@{scpi\_uart.h}!scpi\_uart\_write\_data@{scpi\_uart\_write\_data}}
 \index{scpi\_uart\_write\_data@{scpi\_uart\_write\_data}!scpi\_uart.h@{scpi\_uart.h}}
 \doxysubsubsection{\texorpdfstring{scpi\_uart\_write\_data()}{scpi\_uart\_write\_data()}}
-{\footnotesize\ttfamily uint8\+\_\+t scpi\+\_\+uart\+\_\+write\+\_\+data (\begin{DoxyParamCaption}\item[{char $\ast$}]{dwrt }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily uint8\+\_\+t scpi\+\_\+uart\+\_\+write\+\_\+data (\begin{DoxyParamCaption}\item[{char $\ast$}]{dwt }\end{DoxyParamCaption})}
 
 
 
-function to send data to uart without checking to receive data. The last charcater is saved for later. 
+function to send data to uart without checking to receive data. The last character is saved for later. 
 
 
 \begin{DoxyParams}{Parameters}
-{\em dwrt} & string to write on the uart \\
+{\em dwt} & string to write on the uart \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -332,7 +333,7 @@ uint8\+\_\+t Error code to success or error
 \index{scpi\_uart.h@{scpi\_uart.h}!scpi\_uart\_write\_read\_data@{scpi\_uart\_write\_read\_data}}
 \index{scpi\_uart\_write\_read\_data@{scpi\_uart\_write\_read\_data}!scpi\_uart.h@{scpi\_uart.h}}
 \doxysubsubsection{\texorpdfstring{scpi\_uart\_write\_read\_data()}{scpi\_uart\_write\_read\_data()}}
-{\footnotesize\ttfamily uint8\+\_\+t scpi\+\_\+uart\+\_\+write\+\_\+read\+\_\+data (\begin{DoxyParamCaption}\item[{char $\ast$}]{dwrt,  }\item[{char $\ast$}]{dread,  }\item[{size\+\_\+t}]{rsize }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily uint8\+\_\+t scpi\+\_\+uart\+\_\+write\+\_\+read\+\_\+data (\begin{DoxyParamCaption}\item[{char $\ast$}]{dwt,  }\item[{char $\ast$}]{dread,  }\item[{size\+\_\+t}]{rsize }\end{DoxyParamCaption})}
 
 
 
@@ -342,7 +343,7 @@ This function writes data to a UART interface and expects a response, reading th
 
 
 \begin{DoxyParams}{Parameters}
-{\em dwrt} & Pointer to the write buffer containing the data to be sent. \\
+{\em dwt} & Pointer to the write buffer containing the data to be sent. \\
 \hline
 {\em dread} & Pointer to the read buffer where the response will be stored. \\
 \hline

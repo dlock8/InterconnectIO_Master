@@ -100,10 +100,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="center"><img src="dev__ds2431_8h__dep__incl.png" border="0" usemap="#afirmware_2src_2pico__lib2_2src_2dev_2dev__ds2431_2dev__ds2431_8hdep" alt=""/></div>
 <map name="afirmware_2src_2pico__lib2_2src_2dev_2dev__ds2431_2dev__ds2431_8hdep" id="afirmware_2src_2pico__lib2_2src_2dev_2dev__ds2431_2dev__ds2431_8hdep">
 <area shape="rect" title="Header to perform communication with OneWire device." alt="" coords="285,5,468,61"/>
-<area shape="rect" href="fts__scpi_8c.html" title="Software code used to interpret the SCPI command reveived from external." alt="" coords="5,124,172,151"/>
+<area shape="rect" href="fts__scpi_8c.html" title="Software code used to interpret the SCPI command received from external." alt="" coords="5,124,172,151"/>
 <area shape="rect" href="master_8c.html" title="Main loop to control the Pico Master Device." alt="" coords="197,124,359,151"/>
 <area shape="rect" href="dev__ds2431_8c.html" title="Driver to perform communication with OneWire device." alt="" coords="384,109,567,165"/>
-<area shape="rect" href="test_8c.html" title="Software code used to validate the software and hardware developped on this project." alt="" coords="591,124,733,151"/>
+<area shape="rect" href="test_8c.html" title="Software code used to validate the software and hardware developed on this project." alt="" coords="591,124,733,151"/>
 </map>
 </div>
 </div>
@@ -745,7 +745,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Format EEprom mandatory (reserved 48 Bytes) </p>
-<pre class="fragment"> Address:  0 
+<pre class="fragment"> Address:  0
  Device_id, Board_part_number, Bd_serial_number, location (J1 or J2)
      16   2   12            2      6           2    2
 </pre><p>List of commands available for OneWire device DS2431. Command to write memory. </p>
@@ -840,8 +840,7 @@ Functions</h2></td></tr>
     <tr><td class="paramname">rinfo</td><td>Pointer who will contains the string read on Devices </td></tr>
     <tr><td class="paramname">start_address</td><td>Start Address on EEprom memory to start to read </td></tr>
     <tr><td class="paramname">length</td><td>Number of characters to read </td></tr>
-    <tr><td class="paramname">nbid</td><td>Number of expected device on the OneWire link Used on read loop to be sure we have read all expected devices <br  />
- </td></tr>
+    <tr><td class="paramname">nbid</td><td>Number of expected device on the OneWire link Used on read loop to be sure we have read all expected devices </td></tr>
   </table>
   </dd>
 </dl>

@@ -111,8 +111,7 @@ Main function to perform a read of all eeprom on 1-\/wire link.
 \hline
 {\em length} & Number of characters to read \\
 \hline
-{\em nbid} & Number of expected device on the One\+Wire link Used on read loop to be sure we have read all expected devices ~\newline
- \\
+{\em nbid} & Number of expected device on the One\+Wire link Used on read loop to be sure we have read all expected devices \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -181,12 +180,12 @@ $<$ Counter to number of bytes received
 {\bfseries Initial value\+:}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{= \{}
-\DoxyCodeLine{    \{ 0x09, \textcolor{stringliteral}{"{}DS2502"{}}, 4, 2, \textcolor{keyword}{true} \},   }
-\DoxyCodeLine{    \{ 0x0B, \textcolor{stringliteral}{"{}DS2505"{}}, 64, 2, \textcolor{keyword}{true} \},  }
-\DoxyCodeLine{    \{ 0x14, \textcolor{stringliteral}{"{}DS2430"{}}, 1, 1, \textcolor{keyword}{false} \},  }
-\DoxyCodeLine{    \{ 0x2D, \textcolor{stringliteral}{"{}DS2431"{}}, 4, 2, \textcolor{keyword}{false} \},  }
-\DoxyCodeLine{    \{ 0x23, \textcolor{stringliteral}{"{}DS2433"{}}, 16, 2, \textcolor{keyword}{false} \}, }
-\DoxyCodeLine{    \{ 0, 0, 0, 0, 0 \}                 }
+\DoxyCodeLine{    \{0x09, \textcolor{stringliteral}{"{}DS2502"{}}, 4, 2, \textcolor{keyword}{true}\},   }
+\DoxyCodeLine{    \{0x0B, \textcolor{stringliteral}{"{}DS2505"{}}, 64, 2, \textcolor{keyword}{true}\},  }
+\DoxyCodeLine{    \{0x14, \textcolor{stringliteral}{"{}DS2430"{}}, 1, 1, \textcolor{keyword}{false}\},  }
+\DoxyCodeLine{    \{0x2D, \textcolor{stringliteral}{"{}DS2431"{}}, 4, 2, \textcolor{keyword}{false}\},  }
+\DoxyCodeLine{    \{0x23, \textcolor{stringliteral}{"{}DS2433"{}}, 16, 2, \textcolor{keyword}{false}\}, }
+\DoxyCodeLine{    \{0, 0, 0, 0, 0\}                 }
 \DoxyCodeLine{\}}
 
 \end{DoxyCode}

@@ -1,6 +1,6 @@
 <map id="firmware/src/include/test.h" name="firmware/src/include/test.h">
 <area shape="rect" id="node1" title="Header file defining constants and macros for buffer and message management." alt="" coords="201,5,355,47"/>
-<area shape="rect" id="node2" href="$fts__scpi_8c.html" title="Software code used to interpret the SCPI command reveived from external." alt="" coords="5,95,172,121"/>
+<area shape="rect" id="node2" href="$fts__scpi_8c.html" title="Software code used to interpret the SCPI command received from external." alt="" coords="5,95,172,121"/>
 <area shape="rect" id="node3" href="$master_8c.html" title="Main loop to control the Pico Master Device." alt="" coords="197,95,359,121"/>
-<area shape="rect" id="node4" href="$test_8c.html" title="Software code used to validate the software and hardware developped on this project." alt="" coords="384,95,527,121"/>
+<area shape="rect" id="node4" href="$test_8c.html" title="Software code used to validate the software and hardware developed on this project." alt="" coords="384,95,527,121"/>
 </map>
