@@ -226,25 +226,31 @@ void on_uart_rx()
     }
   }
 }
+/**
+ * @brief 
+ * 
+ */
 
 /**
  * @brief Initialisation of the main communication uart (serial port)
  *        the SCPI command are received by the serial port.
  *        Baud rate is read from the Configuration EEPROM
  *        In case of error, default baud rate will be use
+ *
+ * @return int actual Baudrate
+ *
  */
-void init_main_com()
+int init_main_com()
 {
   // Communication UART initialization. The UART is used to receive SCPI
   // command Set up our UART with a basic baud rate.
   long numval;
   uint8_t valid;
 
-  valid = stringtonumber(ee.cfg.com_ser_speed, sizeof(ee.cfg.com_ser_speed),
-                         &numval);  // read communication speed on EEprom
+  valid = stringtonumber(ee.cfg.com_ser_speed, sizeof(ee.cfg.com_ser_speed),&numval);  // read communication speed on EEprom
   if (valid != 0)
   {
-    numval = 19200;
+    numval = 115200;
   }  // if value is not valid use default speed
 
   uart_init(UART_ID, numval);
@@ -257,7 +263,7 @@ void init_main_com()
   // Actually, we want a different speed
   // The call will return the actual baud rate selected, which will be as
   // close as possible to that requested
-  int __unused actual = uart_set_baudrate(UART_ID, numval);
+  int actual = uart_set_baudrate(UART_ID, numval);
 
   // Enable stdio (printf) over selected uart, good for debug
   // stdio_uart_init_full(UART_ID,numval,UART_TX_PIN,UART_RX_PIN);
@@ -285,6 +291,8 @@ void init_main_com()
   uart_set_irq_enables(UART_ID, true, false);
 
   rxser.ch = 0;  // reset global character counter
+
+  return actual;  // return actual Baudrate
 }
 /**
  * @brief Initializes the hardware to default settings.
@@ -389,6 +397,7 @@ int main(void)
   MESSAGE rec;
   char nb_char;
   int result;
+  int serspeed;
   float adcv[4];   //
   uint16_t ctr;    // counter used for flashing pico led
   uint16_t pulse;  // limit for flashing led frequency
@@ -407,7 +416,8 @@ int main(void)
 
   Hardware_Default_Setting();
 
-  init_main_com();  // Setup serial communication parameter
+  serspeed =init_main_com();  // Setup serial communication parameter
+
 
   uart_puts(UART_ID, "FTS> ");  // Send ready messages
   fprintf(stdout, "Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
@@ -424,6 +434,7 @@ int main(void)
                   1);  // Enable the watchdog with the timeout and auto-reset
 
   init_queue();  // initialise queue for SCPI message received
+
 
   rxser.ch = 0;  // reset global character counter
   ctr = 0;
@@ -448,20 +459,18 @@ int main(void)
     /** Heartbeat message on debug port*/
     if (mess > 1500)
     {
-      fprintf(stdout, "Heartbeat Master, version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
+      fprintf(stdout, "Heartbeat Master,Baudrate: %d, version: %d.%d\n", serspeed,IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
       mess = 0;
     }
 
     // loop to execute  SCPI command when char received by interrupt
     while (deque(&rec, &nb_char))
     {
-      gpio_put(PICO_DEFAULT_LED_PIN,
-               0);  // Turn OFF board led to show message reading
+      watchdog_update(); /** refresh watchdog */
+      gpio_put(PICO_DEFAULT_LED_PIN,0);  // Turn OFF board led to show message reading
 
-      result = SCPI_Input(&scpi_context, &rec.data[0],
-                          nb_char);  // send command to SCPI parser
-      fprintf(stdout, "SCPI Command: %s\n",
-              &rec.data[0]);  // send message to debug port
+      result = SCPI_Input(&scpi_context, &rec.data[0], nb_char);  // send command to SCPI parser
+      fprintf(stdout, "SCPI Command: %s\n",&rec.data[0]);  // send message to debug port
       sleep_ms(50);
       gpio_put(PICO_DEFAULT_LED_PIN, 1);  // Turn ON board led
     }

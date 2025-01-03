@@ -25,8 +25,7 @@ Main loop to control the Pico Master Device.
 {\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+mcp4725/dev\+\_\+mcp4725.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/sys/include/sys\+\_\+adc.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}userconfig.\+h\char`\"{}}\newline
-Include dependency graph for master.\+c\+:
-\nopagebreak
+Include dependency graph for master.\+c\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -59,8 +58,7 @@ bool \mbox{\hyperlink{master_8c_a6d1ccfb6a786c332e10a4f2c8e8765c1}{deque}} (\mbo
 \mbox{\Hypertarget{master_8c_ad7fec5b2b07b712822dc8182d1796c22}\label{master_8c_ad7fec5b2b07b712822dc8182d1796c22}} 
 void \mbox{\hyperlink{master_8c_ad7fec5b2b07b712822dc8182d1796c22}{on\+\_\+uart\+\_\+rx}} ()
 \begin{DoxyCompactList}\small\item\em RX Main communication interrupt handler. \end{DoxyCompactList}\item 
-\mbox{\Hypertarget{master_8c_a580986de5963328695cc677384f0454a}\label{master_8c_a580986de5963328695cc677384f0454a}} 
-void \mbox{\hyperlink{master_8c_a580986de5963328695cc677384f0454a}{init\+\_\+main\+\_\+com}} ()
+int \mbox{\hyperlink{master_8c_aea68381afe044625867caa3e9d3d5836}{init\+\_\+main\+\_\+com}} ()
 \begin{DoxyCompactList}\small\item\em Initialisation of the main communication uart (serial port) the SCPI command are received by the serial port. Baud rate is read from the Configuration EEPROM In case of error, default baud rate will be use. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{master_8c_a5f6549f2d2461465f770c1b277910225}{Hardware\+\_\+\+Default\+\_\+\+Setting}} ()
 \begin{DoxyCompactList}\small\item\em Initializes the hardware to default settings. \end{DoxyCompactList}\item 
@@ -171,6 +169,19 @@ This function is called by the main program and when the SCPI command $\ast$\+RS
 \begin{DoxyReturn}{Returns}
 None 
 \end{DoxyReturn}
+\mbox{\Hypertarget{master_8c_aea68381afe044625867caa3e9d3d5836}\label{master_8c_aea68381afe044625867caa3e9d3d5836}} 
+\index{master.c@{master.c}!init\_main\_com@{init\_main\_com}}
+\index{init\_main\_com@{init\_main\_com}!master.c@{master.c}}
+\doxysubsubsection{\texorpdfstring{init\_main\_com()}{init\_main\_com()}}
+{\footnotesize\ttfamily int init\+\_\+main\+\_\+com (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initialisation of the main communication uart (serial port) the SCPI command are received by the serial port. Baud rate is read from the Configuration EEPROM In case of error, default baud rate will be use. 
+
+\begin{DoxyReturn}{Returns}
+int actual Baudrate 
+\end{DoxyReturn}
 \mbox{\Hypertarget{master_8c_ae733fe874122894bac75e1be37326ceb}\label{master_8c_ae733fe874122894bac75e1be37326ceb}} 
 \index{master.c@{master.c}!init\_queue@{init\_queue}}
 \index{init\_queue@{init\_queue}!master.c@{master.c}}
@@ -201,6 +212,8 @@ counter for the heartbeat led
 Flashing led
 
 Heartbeat message on debug port
+
+refresh watchdog
 
 Never pass by here
 

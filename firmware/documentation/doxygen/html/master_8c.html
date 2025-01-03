@@ -180,10 +180,9 @@ Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="master_8c.html#ad7fec5b2b07b712822dc8182d1796c22">on_uart_rx</a> ()</td></tr>
 <tr class="memdesc:ad7fec5b2b07b712822dc8182d1796c22"><td class="mdescLeft">&#160;</td><td class="mdescRight">RX Main communication interrupt handler. <br /></td></tr>
 <tr class="separator:ad7fec5b2b07b712822dc8182d1796c22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a580986de5963328695cc677384f0454a"><td class="memItemLeft" align="right" valign="top"><a id="a580986de5963328695cc677384f0454a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="master_8c.html#a580986de5963328695cc677384f0454a">init_main_com</a> ()</td></tr>
-<tr class="memdesc:a580986de5963328695cc677384f0454a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialisation of the main communication uart (serial port) the SCPI command are received by the serial port. Baud rate is read from the Configuration EEPROM In case of error, default baud rate will be use. <br /></td></tr>
-<tr class="separator:a580986de5963328695cc677384f0454a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea68381afe044625867caa3e9d3d5836"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="master_8c.html#aea68381afe044625867caa3e9d3d5836">init_main_com</a> ()</td></tr>
+<tr class="memdesc:aea68381afe044625867caa3e9d3d5836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialisation of the main communication uart (serial port) the SCPI command are received by the serial port. Baud rate is read from the Configuration EEPROM In case of error, default baud rate will be use.  <a href="master_8c.html#aea68381afe044625867caa3e9d3d5836">More...</a><br /></td></tr>
+<tr class="separator:aea68381afe044625867caa3e9d3d5836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f6549f2d2461465f770c1b277910225"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="master_8c.html#a5f6549f2d2461465f770c1b277910225">Hardware_Default_Setting</a> ()</td></tr>
 <tr class="memdesc:a5f6549f2d2461465f770c1b277910225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the hardware to default settings.  <a href="master_8c.html#a5f6549f2d2461465f770c1b277910225">More...</a><br /></td></tr>
 <tr class="separator:a5f6549f2d2461465f770c1b277910225"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -334,6 +333,26 @@ false if the queue is full and the message could not be added. </dd></dl>
 
 </div>
 </div>
+<a id="aea68381afe044625867caa3e9d3d5836"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea68381afe044625867caa3e9d3d5836">&#9670;&nbsp;</a></span>init_main_com()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int init_main_com </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialisation of the main communication uart (serial port) the SCPI command are received by the serial port. Baud rate is read from the Configuration EEPROM In case of error, default baud rate will be use. </p>
+<dl class="section return"><dt>Returns</dt><dd>int actual Baudrate </dd></dl>
+
+</div>
+</div>
 <a id="ae733fe874122894bac75e1be37326ceb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae733fe874122894bac75e1be37326ceb">&#9670;&nbsp;</a></span>init_queue()</h2>
 
@@ -376,6 +395,7 @@ false if the queue is full and the message could not be added. </dd></dl>
 <p>counter for the heartbeat led</p>
 <p>Flashing led</p>
 <p>Heartbeat message on debug port</p>
+<p>refresh watchdog</p>
 <p>Never pass by here</p>
 
 </div>

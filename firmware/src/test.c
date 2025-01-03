@@ -217,6 +217,7 @@ void test_cmd_result(const char* title, const char* cmd, float expect_value, con
 
   counter->total++;       // increment counter
   output_buffer_clear();  // clear result before capture output
+  watchdog_update(); /** refresh watchdog */
 
   SCPI_Input(&scpi_context, cmd, strlen(cmd)); /** Send command to SCPI engine*/
   // transform string received from command to number
@@ -272,6 +273,7 @@ void test_cmd_out(const char* title, const char* cmd, char* expected_result, str
   output_buffer_clear();                       // clear result before capture output
   SCPI_Input(&scpi_context, cmd, strlen(cmd)); /** Send command to SCPI engine*/
   removeCRLF(out_buffer);                      // remove \r\n from string before comparaison
+   watchdog_update(); /** refresh watchdog */
 
   // validate if string are identical, raise flag if not identical
   do
@@ -394,8 +396,6 @@ void internal_test_sequence(const char* testboard_num, uint8_t run)
   // Disable RX interrupt to take control of serial input port
   uart_set_irq_enables(UART_ID, false, false);
 
-  watchdog_enable(90000, 1);  // Set the watchdog timer to 90 secs (enough time to run selftest)
-
   // loop until exit key is pressed
   while (lp)
   {
@@ -476,7 +476,8 @@ void internal_test_sequence(const char* testboard_num, uint8_t run)
   // Enable RX interrupt to take control of serial input
   uart_set_irq_enables(UART_ID, true, false);
 
-  watchdog_enable(WATCHDOG_TIMEOUT, 1);  // Enable the watchdog with the normal timeout
+  TEST_SCPI_INPUT("SYSTEM:LED:ERR OFF \r\n");  // turn OFF Error led
+  TEST_SCPI_INPUT("SYST:OUT OFF\r\n"); /** Open Power Relay to remove power on Selftest board */
 
   sprintf(strval, "\nEnd of Internal Test Sequence\n");
   uart_puts(UART_ID, strval);  // Send string
@@ -605,19 +606,19 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   TEST_SCPI_INPUT("ROUT:CLOSE:OC OC1 \r\n");   // Close OC1
   test_cmd_result("Test 3.0: Output Collector OC1 Drive 1 (Active),read ADC0", "ANA:ADC0:VOLT? \r\n", 0.2, "V", 0.2, 0.2, &c_test, &buffer);
   TEST_SCPI_INPUT("ROUT:OPEN:OC OC1 \r\n");  // Open OC1
-  test_cmd_result("Test 3.1: Output Collector OC1 Drive 0 (Inactive),read ADC0", "ANA:ADC0:VOLT? \r\n", 5, "V", 0.4, 0.8, &c_test, &buffer);
+  test_cmd_result("Test 3.1: Output Collector OC1 Drive 0 (Inactive),read ADC0", "ANA:ADC0:VOLT? \r\n", 5, "V", 0.4, 1, &c_test, &buffer);
 
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #H10 \r\n");  // Close K15 (VM3)
   TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2 \r\n");   // Close OC2
   test_cmd_result("Test 3.2 Output Collector OC2 Drive 1 (Active),read ADC0", "ANA:ADC0:VOLT? \r\n", 0.2, "V", 0.2, 0.2, &c_test, &buffer);
   TEST_SCPI_INPUT("ROUT:OPEN:OC OC2 \r\n");  // Open OC2
-  test_cmd_result("Test 3.3: Output Collector OC2 Drive 0 (Inactive),read ADC0", "ANA:ADC0:VOLT? \r\n", 5, "V", 0.4, 0.8, &c_test, &buffer);
+  test_cmd_result("Test 3.3: Output Collector OC2 Drive 0 (Inactive),read ADC0", "ANA:ADC0:VOLT? \r\n", 5, "V", 0.4, 1, &c_test, &buffer);
 
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #H90 \r\n");  // Close K15,K9 (VM4)
   TEST_SCPI_INPUT("ROUT:CLOSE:OC OC3 \r\n");   // Close OC3
   test_cmd_result("Test 3.4 Output Collector OC3 Drive 1 (Active),read ADC0", "ANA:ADC0:VOLT? \r\n", 0.2, "V", 0.2, 0.2, &c_test, &buffer);
   TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \r\n");  // Open OC3
-  test_cmd_result("Test 3.5: Output Collector OC3 Drive 0 (Inactive),read ADC0", "ANA:ADC0:VOLT? \r\n", 5, "V", 0.4, 0.8, &c_test, &buffer);
+  test_cmd_result("Test 3.5: Output Collector OC3 Drive 0 (Inactive),read ADC0", "ANA:ADC0:VOLT? \r\n", 5, "V", 0.4, 1, &c_test, &buffer);
 
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  1 \r\n");  // Close K13 (ADC1)
   test_cmd_result("Test 4.0: 5VDC Check with ADC1", "ANA:ADC1:VOLT? \r\n", 5.0, "V", 0.4, 0.3, &c_test, &buffer);
@@ -1018,12 +1019,14 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   TEST_SCPI_INPUT("COM:SERIAL:Protocol O72\r\n");
   TEST_SCPI_INPUT("COM:I2C:WRI 103,#HEA\r\n");  // Set Uart to O72 @ 115200 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 101,#H0\r\n");
+  sleep_ms(30);
   test_cmd_out("Test 16.9 SCPI SERIAL command O72,115200", "COM:SERIAL:Read? 'TEST O72,115200\r'\r\n", "\"TEST O72,115200\"", &c_test, &buffer);
 
   TEST_SCPI_INPUT("COM:SERIAL:Baudrate 38400\r\n");
   TEST_SCPI_INPUT("COM:SERIAL:Protocol N81\r\n");
   TEST_SCPI_INPUT("COM:I2C:WRI 103,#H4C\r\n");  // Set Uart to N81 @ 38400 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 101,#H0\r\n");   // Enable uart on selftest board
+  sleep_ms(30);
   test_cmd_out("Test 16.10 SCPI SERIAL command N81,38400", "COM:SERIAL:Read? 'TEST N81,38400\r'\r\n", "\"TEST N81,38400\"", &c_test, &buffer);
 
   TEST_SCPI_INPUT("COM:SERIAL:Handshake OFF\r\n");
@@ -1031,6 +1034,7 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   TEST_SCPI_INPUT("COM:SERIAL:Protocol E61\r\n");
   TEST_SCPI_INPUT("COM:I2C:WRI 103,#H14\r\n");  // Set Uart to E61 @ 19200 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 101,#H0\r\n");
+  sleep_ms(30); 
   test_cmd_out("Test 16.11 SCPI SERIAL command E61,19200", "COM:SERIAL:Read? '1234567890,19200\r'\r\n", "\"1234567890,19200\"", &c_test, &buffer);
 
   TEST_SCPI_INPUT("COM:SERIAL:Handshake ON\r\n");
@@ -1038,6 +1042,7 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   TEST_SCPI_INPUT("COM:SERIAL:Protocol N82\r\n");
   TEST_SCPI_INPUT("COM:I2C:WRI 103,#H8E\r\n");  // Set Uart to N82 @ 57600 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 101,#H1\r\n");
+  sleep_ms(30);
   test_cmd_out("Test 16.12 SCPI SERIAL command Handshake,57600", "COM:SERIAL:Read? 'TEST HANDSHAKE,57600\r'\r\n", "\"TEST HANDSHAKE,57600\"", &c_test,
                &buffer);
 

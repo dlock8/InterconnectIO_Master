@@ -6,7 +6,7 @@ var master_8c =
     [ "deque", "master_8c.html#a6d1ccfb6a786c332e10a4f2c8e8765c1", null ],
     [ "enque", "master_8c.html#ac889aaa985ae67d7929dedde5c510d9c", null ],
     [ "Hardware_Default_Setting", "master_8c.html#a5f6549f2d2461465f770c1b277910225", null ],
-    [ "init_main_com", "master_8c.html#a580986de5963328695cc677384f0454a", null ],
+    [ "init_main_com", "master_8c.html#aea68381afe044625867caa3e9d3d5836", null ],
     [ "init_queue", "master_8c.html#ae733fe874122894bac75e1be37326ceb", null ],
     [ "main", "master_8c.html#a840291bc02cba5474a4cb46a9b9566fe", null ],
     [ "on_uart_rx", "master_8c.html#ad7fec5b2b07b712822dc8182d1796c22", null ],
