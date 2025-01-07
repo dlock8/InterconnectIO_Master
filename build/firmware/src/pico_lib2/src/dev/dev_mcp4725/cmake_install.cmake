@@ -1,4 +1,4 @@
-# Install script for directory: /home/pi/pico/InterconnectIO_Master/firmware/src/pico_lib2/src/dev/dev_mcp4725
+# Install script for directory: /home/pi/InterconnectIO_Master/firmware/src/pico_lib2/src/dev/dev_mcp4725
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

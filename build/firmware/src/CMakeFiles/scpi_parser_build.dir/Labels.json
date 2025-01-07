@@ -2,34 +2,34 @@
 	"sources" : 
 	[
 		{
-			"file" : "/home/pi/pico/InterconnectIO_Master/build/firmware/src/CMakeFiles/scpi_parser_build"
+			"file" : "/home/pi/InterconnectIO_Master/build/firmware/src/CMakeFiles/scpi_parser_build"
 		},
 		{
-			"file" : "/home/pi/pico/InterconnectIO_Master/build/firmware/src/CMakeFiles/scpi_parser_build.rule"
+			"file" : "/home/pi/InterconnectIO_Master/build/firmware/src/CMakeFiles/scpi_parser_build.rule"
 		},
 		{
-			"file" : "/home/pi/pico/InterconnectIO_Master/build/firmware/src/CMakeFiles/scpi_parser_build-complete.rule"
+			"file" : "/home/pi/InterconnectIO_Master/build/firmware/src/CMakeFiles/scpi_parser_build-complete.rule"
 		},
 		{
-			"file" : "/home/pi/pico/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-build.rule"
+			"file" : "/home/pi/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-build.rule"
 		},
 		{
-			"file" : "/home/pi/pico/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-configure.rule"
+			"file" : "/home/pi/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-configure.rule"
 		},
 		{
-			"file" : "/home/pi/pico/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-download.rule"
+			"file" : "/home/pi/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-download.rule"
 		},
 		{
-			"file" : "/home/pi/pico/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-install.rule"
+			"file" : "/home/pi/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-install.rule"
 		},
 		{
-			"file" : "/home/pi/pico/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-mkdir.rule"
+			"file" : "/home/pi/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-mkdir.rule"
 		},
 		{
-			"file" : "/home/pi/pico/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-patch.rule"
+			"file" : "/home/pi/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-patch.rule"
 		},
 		{
-			"file" : "/home/pi/pico/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-update.rule"
+			"file" : "/home/pi/InterconnectIO_Master/build/firmware/src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-update.rule"
 		}
 	],
 	"target" : 

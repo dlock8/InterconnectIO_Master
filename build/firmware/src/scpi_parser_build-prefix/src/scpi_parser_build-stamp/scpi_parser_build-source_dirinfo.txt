@@ -4,6 +4,6 @@
 
 method=source_dir
 command=
-source_dir=/home/pi/pico/InterconnectIO_Master/firmware/src/lib/scpi-parser/libscpi
+source_dir=/home/pi/InterconnectIO_Master/firmware/src/lib/scpi-parser/libscpi
 work_dir=
 

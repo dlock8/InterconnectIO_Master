@@ -1,4 +1,4 @@
-# Install script for directory: /home/pi/pico/InterconnectIO_Master/firmware/src
+# Install script for directory: /home/pi/InterconnectIO_Master/firmware/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,6 +39,6 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/pi/pico/InterconnectIO_Master/build/firmware/src/pico_lib2/cmake_install.cmake")
+  include("/home/pi/InterconnectIO_Master/build/firmware/src/pico_lib2/cmake_install.cmake")
 endif()
 

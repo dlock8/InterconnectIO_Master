@@ -91,7 +91,7 @@ rule CXX_EXECUTABLE_LINKER__INTERCONNECTIO_MASTER_Release
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /home/pi/.pico-sdk/cmake/v3.29.9/bin/cmake --regenerate-during-build -S/home/pi/pico/InterconnectIO_Master -B/home/pi/pico/InterconnectIO_Master/build
+  command = /home/pi/.pico-sdk/cmake/v3.29.9/bin/cmake --regenerate-during-build -S/home/pi/InterconnectIO_Master -B/home/pi/InterconnectIO_Master/build
   description = Re-running CMake...
   generator = 1
 

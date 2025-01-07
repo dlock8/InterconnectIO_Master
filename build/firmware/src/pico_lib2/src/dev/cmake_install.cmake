@@ -1,4 +1,4 @@
-# Install script for directory: /home/pi/pico/InterconnectIO_Master/firmware/src/pico_lib2/src/dev
+# Install script for directory: /home/pi/InterconnectIO_Master/firmware/src/pico_lib2/src/dev
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,21 +39,21 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/pi/pico/InterconnectIO_Master/build/firmware/src/pico_lib2/src/dev/dev_mcp4725/cmake_install.cmake")
+  include("/home/pi/InterconnectIO_Master/build/firmware/src/pico_lib2/src/dev/dev_mcp4725/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/pi/pico/InterconnectIO_Master/build/firmware/src/pico_lib2/src/dev/dev_ina219/cmake_install.cmake")
+  include("/home/pi/InterconnectIO_Master/build/firmware/src/pico_lib2/src/dev/dev_ina219/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/pi/pico/InterconnectIO_Master/build/firmware/src/pico_lib2/src/dev/dev_24lc32/cmake_install.cmake")
+  include("/home/pi/InterconnectIO_Master/build/firmware/src/pico_lib2/src/dev/dev_24lc32/cmake_install.cmake")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/pi/pico/InterconnectIO_Master/build/firmware/src/pico_lib2/src/dev/dev_ds2431/cmake_install.cmake")
+  include("/home/pi/InterconnectIO_Master/build/firmware/src/pico_lib2/src/dev/dev_ds2431/cmake_install.cmake")
 endif()
 

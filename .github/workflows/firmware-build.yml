@@ -40,7 +40,7 @@ jobs:
           cd build
           PICO_SDK_PATH=../../pico-sdk cmake ..
           cmake --build . -j
-        working-directory: ./firmware
+        working-directory: .
 
       - name: Save binaries
         uses: actions/upload-artifact@v3

@@ -1,4 +1,4 @@
-# Install script for directory: /home/pi/pico/InterconnectIO_Master/firmware/src/pico_lib2/src/sys
+# Install script for directory: /home/pi/InterconnectIO_Master/firmware/src/pico_lib2/src/sys
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
