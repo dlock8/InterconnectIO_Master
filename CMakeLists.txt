@@ -17,8 +17,11 @@ set(PICO_BOARD pico CACHE STRING "Board type")
 # Main Cmake
 
 
-cmake_minimum_required(VERSION 3.18)
+# Display a message with the required CMake version
+message(STATUS "CMake minimum required version: 3.18")
 
+# Set the minimum required CMake version
+cmake_minimum_required(VERSION 3.18)
 
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -48,8 +51,6 @@ configure_file (
  "${PROJECT_BINARY_DIR}/firmware/src/include/userconfig.h"  ) 
 include_directories("${PROJECT_BINARY_DIR}/firmware/src/include") 
 
-
-
-add_subdirectory(firmware)
+add_subdirectory(firmware/src)
 
 

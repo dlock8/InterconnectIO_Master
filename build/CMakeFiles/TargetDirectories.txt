@@ -194,8 +194,6 @@
 /home/pi/pico/InterconnectIO_Master/build/pico-sdk/src/rp2_common/pico_stdlib/CMakeFiles/rebuild_cache.dir
 /home/pi/pico/InterconnectIO_Master/build/pico-sdk/docs/CMakeFiles/edit_cache.dir
 /home/pi/pico/InterconnectIO_Master/build/pico-sdk/docs/CMakeFiles/rebuild_cache.dir
-/home/pi/pico/InterconnectIO_Master/build/firmware/CMakeFiles/edit_cache.dir
-/home/pi/pico/InterconnectIO_Master/build/firmware/CMakeFiles/rebuild_cache.dir
 /home/pi/pico/InterconnectIO_Master/build/firmware/src/CMakeFiles/scpi_parser_build.dir
 /home/pi/pico/InterconnectIO_Master/build/firmware/src/CMakeFiles/INTERCONNECTIO_MASTER.dir
 /home/pi/pico/InterconnectIO_Master/build/firmware/src/CMakeFiles/edit_cache.dir
