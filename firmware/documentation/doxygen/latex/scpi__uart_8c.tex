@@ -11,8 +11,9 @@ Complete software code library to communicate to the user serial port using SCPI
 {\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}hardware/uart.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}hardware/irq.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}scpi\+\_\+uart.\+h\char`\"{}}\newline
-Include dependency graph for scpi\+\_\+uart.\+c\+:\nopagebreak
+{\ttfamily \#include \char`\"{}include/scpi\+\_\+uart.\+h\char`\"{}}\newline
+Include dependency graph for scpi\+\_\+uart.\+c\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -28,10 +29,10 @@ struct \mbox{\hyperlink{structuser__com}{user\+\_\+com}}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{scpi__uart_8c_a231b0bd8955930c242a0da8eb078fee6}\label{scpi__uart_8c_a231b0bd8955930c242a0da8eb078fee6}} 
-void \mbox{\hyperlink{scpi__uart_8c_a231b0bd8955930c242a0da8eb078fee6}{scpi\+\_\+uart\+\_\+enable}} ()
+void {\bfseries scpi\+\_\+uart\+\_\+enable} ()
 \begin{DoxyCompactList}\small\item\em function to configure the parameters of the user uart based on the data set on the uart structure \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{scpi__uart_8c_a9e6d59e0e19737f121dfcccfe269a90f}\label{scpi__uart_8c_a9e6d59e0e19737f121dfcccfe269a90f}} 
-void \mbox{\hyperlink{scpi__uart_8c_a9e6d59e0e19737f121dfcccfe269a90f}{scpi\+\_\+uart\+\_\+disable}} ()
+void {\bfseries scpi\+\_\+uart\+\_\+disable} ()
 \begin{DoxyCompactList}\small\item\em function to disable the user uart and configure developed pins reserved by UART to normal GPIO, set as input. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{scpi__uart_8c_a172f8fb84727d90afc2ca40faea62d0f}{scpi\+\_\+uart\+\_\+status}} ()
 \begin{DoxyCompactList}\small\item\em Function who return if the user uart is enabled or not. \end{DoxyCompactList}\item 
@@ -49,7 +50,7 @@ bool \mbox{\hyperlink{scpi__uart_8c_a6900c9ec067e00b9432ab92d47bea943}{scpi\+\_\
 \begin{DoxyCompactList}\small\item\em function to return the value of handshake save on uart structure \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{scpi__uart_8c_a7532b79fc626aa1915547c4ec7246e17}{scpi\+\_\+uart\+\_\+set\+\_\+protocol}} (char $\ast$str)
 \begin{DoxyCompactList}\small\item\em Function to set the uart protocol according to parameter. The order of each parameter is not important. \end{DoxyCompactList}\item 
-const char $\ast$ \mbox{\hyperlink{scpi__uart_8c_a660614784a2c00bf750b2b78b3fae1f4}{scpi\+\_\+uart\+\_\+get\+\_\+protocol}} ()
+const char $\ast$ \mbox{\hyperlink{scpi__uart_8c_a10b587fcd91c30f8e1625b3d236cf6df}{scpi\+\_\+uart\+\_\+get\+\_\+protocol}} ()
 \begin{DoxyCompactList}\small\item\em function who return the uart protocol used in communication. The string format is Data, parity, stop \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{scpi__uart_8c_a6c0e8e486d1af8b5bb549542d72af62f}{scpi\+\_\+uart\+\_\+write\+\_\+data}} (char $\ast$dwt)
 \begin{DoxyCompactList}\small\item\em function to send data to uart without checking to receive data. The last character is saved for later. \end{DoxyCompactList}\item 
@@ -105,11 +106,11 @@ function to return the value of handshake save on uart structure
 \begin{DoxyReturn}{Returns}
 bool return if handshake is enabled or disabled 
 \end{DoxyReturn}
-\mbox{\Hypertarget{scpi__uart_8c_a660614784a2c00bf750b2b78b3fae1f4}\label{scpi__uart_8c_a660614784a2c00bf750b2b78b3fae1f4}} 
+\mbox{\Hypertarget{scpi__uart_8c_a10b587fcd91c30f8e1625b3d236cf6df}\label{scpi__uart_8c_a10b587fcd91c30f8e1625b3d236cf6df}} 
 \index{scpi\_uart.c@{scpi\_uart.c}!scpi\_uart\_get\_protocol@{scpi\_uart\_get\_protocol}}
 \index{scpi\_uart\_get\_protocol@{scpi\_uart\_get\_protocol}!scpi\_uart.c@{scpi\_uart.c}}
 \doxysubsubsection{\texorpdfstring{scpi\_uart\_get\_protocol()}{scpi\_uart\_get\_protocol()}}
-{\footnotesize\ttfamily const char$\ast$ scpi\+\_\+uart\+\_\+get\+\_\+protocol (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily const char $\ast$ scpi\+\_\+uart\+\_\+get\+\_\+protocol (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
 
 
 
@@ -118,7 +119,7 @@ function who return the uart protocol used in communication. The string format i
 \begin{DoxyReturn}{Returns}
 const char$\ast$ protocol string 
 \end{DoxyReturn}
-$<$ return protocol string\mbox{\Hypertarget{scpi__uart_8c_a4a7f811e2dfaf126e4e7d665c1b26a13}\label{scpi__uart_8c_a4a7f811e2dfaf126e4e7d665c1b26a13}} 
+\texorpdfstring{$<$}{<} return protocol string\mbox{\Hypertarget{scpi__uart_8c_a4a7f811e2dfaf126e4e7d665c1b26a13}\label{scpi__uart_8c_a4a7f811e2dfaf126e4e7d665c1b26a13}} 
 \index{scpi\_uart.c@{scpi\_uart.c}!scpi\_uart\_get\_timeout@{scpi\_uart\_get\_timeout}}
 \index{scpi\_uart\_get\_timeout@{scpi\_uart\_get\_timeout}!scpi\_uart.c@{scpi\_uart.c}}
 \doxysubsubsection{\texorpdfstring{scpi\_uart\_get\_timeout()}{scpi\_uart\_get\_timeout()}}
@@ -179,33 +180,33 @@ Function to set the uart protocol according to parameter. The order of each para
 \begin{DoxyReturn}{Returns}
 uint8\+\_\+t return error if one of parameter is not in expected limit. 
 \end{DoxyReturn}
-$<$ variable to contains error number. set to 0 (no error)
+\texorpdfstring{$<$}{<} variable to contains error number. set to 0 (no error)
 
-$<$ variable to contents the uppercase of letter
+\texorpdfstring{$<$}{<} variable to contents the uppercase of letter
 
-$<$ variable who content the numeric value of character number
+\texorpdfstring{$<$}{<} variable who content the numeric value of character number
 
-$<$ variable who content the validated value of parity, stop and data bits
+\texorpdfstring{$<$}{<} variable who content the validated value of parity, stop and data bits
 
-$<$ flag to indicate of parity has been received
+\texorpdfstring{$<$}{<} flag to indicate of parity has been received
 
-$<$ flag to indicate of stop bits has been received
+\texorpdfstring{$<$}{<} flag to indicate of stop bits has been received
 
-$<$ flag to indicate of data bits has been received
+\texorpdfstring{$<$}{<} flag to indicate of data bits has been received
 
-$<$ loop to pass over each character of the string to extract the parity, stop bits and data bits.
+\texorpdfstring{$<$}{<} loop to pass over each character of the string to extract the parity, stop bits and data bits.
 
-$<$ if no error or 3 characters received
+\texorpdfstring{$<$}{<} if no error or 3 characters received
 
-$<$ save parity value on structure
+\texorpdfstring{$<$}{<} save parity value on structure
 
-$<$ save data bits value on structure
+\texorpdfstring{$<$}{<} save data bits value on structure
 
-$<$ save stops bits value on structure
+\texorpdfstring{$<$}{<} save stops bits value on structure
 
-$<$ if error not already found, define one
+\texorpdfstring{$<$}{<} if error not already found, define one
 
-$<$ return error number\mbox{\Hypertarget{scpi__uart_8c_a8c6e0b0b9a1aaa0c264b072b38aa70fc}\label{scpi__uart_8c_a8c6e0b0b9a1aaa0c264b072b38aa70fc}} 
+\texorpdfstring{$<$}{<} return error number\mbox{\Hypertarget{scpi__uart_8c_a8c6e0b0b9a1aaa0c264b072b38aa70fc}\label{scpi__uart_8c_a8c6e0b0b9a1aaa0c264b072b38aa70fc}} 
 \index{scpi\_uart.c@{scpi\_uart.c}!scpi\_uart\_set\_timeout@{scpi\_uart\_set\_timeout}}
 \index{scpi\_uart\_set\_timeout@{scpi\_uart\_set\_timeout}!scpi\_uart.c@{scpi\_uart.c}}
 \doxysubsubsection{\texorpdfstring{scpi\_uart\_set\_timeout()}{scpi\_uart\_set\_timeout()}}

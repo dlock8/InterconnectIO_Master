@@ -35,7 +35,7 @@ extern "C"
 #define DEF_I2C_USER i2c1   //!< i2c1 is the user communication channel to external
 #define DEF_I2C_BAUD 1E5    //!< i2c baudrate is set at 100Khz by default
 #define DEF_I2C_ADDR 0      //!< Default device Address
-#define DEF_I2C_DATABITS 8  //!< i2c number of bits used for comunication
+#define DEF_I2C_DATABITS 8  //!< i2c number of bits used for communication
 #define DEF_I2C_STATUS 0    //!< spi is disable by default
 
 /**

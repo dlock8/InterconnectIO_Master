@@ -398,7 +398,7 @@ scpi_result_t Relay_Chanlst(scpi_t* context, uint16_t* array)
           {
             return SCPI_RES_ERR;
           }
-          arr_idx++; /* inkrement array where we want to save our values to, not neccessary otherwise */
+          arr_idx++; /* increment array where we want to save our values to, not necessary otherwise */
           if (arr_idx >= MAXROW * MAXCOL)
           {
             return SCPI_RES_ERR;
@@ -1157,7 +1157,7 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t* context)
   }
 
   // Run only for read write parameter on eeprom
-  // etract varname and svalue
+  // extract varname and svalue
   if (tag == WEEP || tag == REEP)
   {
     res = SCPI_Parameter(context, &param1, true);  // Read first parameter
@@ -1292,7 +1292,7 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t* context)
 }
 
 /**
- * @brief Callback function to interpret the communcation command received from the SCPI port
+ * @brief Callback function to interpret the communication command received from the SCPI port
  *
  * @param context SCPI instance
  */

@@ -6,43 +6,36 @@ The hardware support for the firmware is on github location\+: \href{https://git
 
 The Master Pico software is the earth of interconnect\+IO board. The software receive SCPI command from the serial port, execute the action requested by the command and return answer to the user.\hypertarget{md_README_autotoc_md1}{}\doxysection{License}\label{md_README_autotoc_md1}
 This project is licensed under the BSD 3-\/Clause License. See the \href{./LICENSE}{\texttt{ LICENSE}} file for more details.\hypertarget{md_README_autotoc_md2}{}\doxysection{Project setup}\label{md_README_autotoc_md2}
-This project has been developped on raspberry pi 4 following installation instruction from this pdf \href{./documentation/getting-started-with-pico_C.pdf}{\texttt{ getting-\/started-\/with-\/pico\+\_\+\+C.\+pdf}}, a copy of the pdf is located on the main folder. Visual studio has been used for developpment and rasberry pi 4 for Pico debug. ~\newline
+This project was initially developed in 2020 on a Raspberry Pi 4, following the installation instructions from Getting Started with Pico\+\_\+\+C.\+pdf Version 1.\+4.
 
+The current version has been developed on a Raspberry Pi 5 using Visual Studio with the Raspberry Pi Pico extension, following the instructions in Getting Started with Pico\+\_\+\+C.\+pdf dated 15 October 2024.
 
-Initially based on \href{https://github.com/cronologic-de/webusb}{\texttt{ https\+://github.\+com/cronologic-\/de/webusb}}, the project has elvoved to be a complete SCPI instrument without frontend interface (next phase).
+For debugging, we utilize the GPIO pins of the Raspberry Pi 5, instead of the suggested debug probe.
+
+Initially based on \href{https://github.com/cronologic-de/webusb}{\texttt{ https\+://github.\+com/cronologic-\/de/webusb}}, the project has evolved to be a complete SCPI instrument without frontend interface (next phase).
 
 The compilation is performed using Visual Studio and the extension installed are\+:
 
 
 \begin{DoxyItemize}
-\item Cmake v0.\+0.\+17
-\item Cmake Tools v1.\+20.\+10
-\item Cortex-\/\+Debug v1.\+12.\+1
-\item debug-\/tracker-\/vscode v0.\+0.\+15
+\item Raspberry Pi Pico Visual Studio Code extension 0.\+17.\+2
 \item Doxygen Documentation Generator v1.\+4.\+0
 \item Doxygen runner v1.\+8.\+0
-\item Github Pull Request v0.\+96.\+0
-\item Hex Editor v1.\+10.\+0
-\item Memory\+View v0.\+0.\+25
-\item Periheral Viewer v1.\+4.\+6
-\item RTOS view v0.\+0.\+7
-\item C/\+C++ v1.\+21.\+6
-\end{DoxyItemize}
-
-I not sure if all extensions are required but is the one installed presently.\hypertarget{md_README_autotoc_md3}{}\doxysection{Building}\label{md_README_autotoc_md3}
+\end{DoxyItemize}\hypertarget{md_README_autotoc_md3}{}\doxysection{Building}\label{md_README_autotoc_md3}
 Build of this cmake project is performed with Visual Studio\hypertarget{md_README_autotoc_md4}{}\doxysection{Development}\label{md_README_autotoc_md4}
 
 \begin{DoxyItemize}
 \item \href{master.c}{\texttt{ {\ttfamily master.\+c}}} is the main source file for the firmware.
 \item \href{CMakeLists.txt}{\texttt{ {\ttfamily CMake\+Lists.\+txt}}} contains build instructions for CMake, including how to build the SCPI library.
 \item \href{pico_sdk_import.cmake}{\texttt{ {\ttfamily pico\+\_\+sdk\+\_\+import.\+cmake}}} was (as usual) copied verbatim from the Pico SDK and allows CMake to interact with the SDK’s functionality.
+\item \href{raspberrypi-swd.cfg}{\texttt{ {\ttfamily raspberrypi-\/swd.\+cfg}}} need to be copied on openocd interface folder (../.pico-\/sdk/openocd/0.\+12.\+0+dev/scripts/interface/) if GPIO pins is used to debug project.
 \end{DoxyItemize}\hypertarget{md_README_autotoc_md5}{}\doxysection{Installation}\label{md_README_autotoc_md5}
 
 \begin{DoxyItemize}
-\item The Files master.\+uf2 contains the firmware to be loaded on the Pico RP2040 board using USB cable and boot button.
+\item The Files INTERCONNECTIO\+\_\+\+MASTER.\+uf2 contains the firmware to be loaded on the Pico RP2040 board using USB cable and boot button.
 \item When software loaded, the Pico board should be installed on the location marked MASTER on interconnect\+IO Board.
 \item On board Pico Led will flash slowly (heartbeat) on power ON.
-\item Loading master.\+uf2 will trigger the watchdog, resulting in a burst of beeps during the boot sequence to signal the watchdog timeout. Only cycling the power ON/\+OFF will reset the watchdog trigger flag.
+\item Loading INTERCONNECTIO\+\_\+\+MASTER.\+uf2 will trigger the watchdog, resulting in a burst of beeps during the boot sequence to signal the watchdog timeout. Only cycling the power ON/\+OFF will reset the watchdog trigger flag.
 \end{DoxyItemize}\hypertarget{md_README_autotoc_md6}{}\doxysection{Beep code}\label{md_README_autotoc_md6}
 The boot sequence performs basic diagnostics. A failure in the tests will result in a burst of beeps. The error codes are as follows\+:
 
@@ -98,27 +91,27 @@ STATus\+:\+OPERation\+:ENABle?   &queries the status enable register (OPERE) for
 \hline
 \cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ PARAMETER   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-3}
 \endhead
-ROUTe\+:CLOSe   &($<$ch\+\_\+list$>$)   &Close relay based on number    \\\cline{1-3}
-ROUTe\+:\+CLOSe\+:EXCLusive   &($<$ch\+\_\+list$>$)   &open relay already closed on the bank and close relay listed    \\\cline{1-3}
+ROUTe\+:CLOSe   &(\texorpdfstring{$<$}{<}ch\+\_\+list\texorpdfstring{$>$}{>})   &Close relay based on number    \\\cline{1-3}
+ROUTe\+:\+CLOSe\+:EXCLusive   &(\texorpdfstring{$<$}{<}ch\+\_\+list\texorpdfstring{$>$}{>})   &open relay already closed on the bank and close relay listed    \\\cline{1-3}
 ROUTe\+:\+CLOSe\+:Rev   &\{BANK1-\/\+BANK4\}   &Close reverse relay to move the contact from HIGH side to LOW side of differential relay    \\\cline{1-3}
-ROUTe\+:OPEN   &($<$ch\+\_\+list$>$)   &Open relay from the channel list    \\\cline{1-3}
+ROUTe\+:OPEN   &(\texorpdfstring{$<$}{<}ch\+\_\+list\texorpdfstring{$>$}{>})   &Open relay from the channel list    \\\cline{1-3}
 ROUTe\+:\+OPEN\+:Rev   &\{BANK1-\/\+BANK4\}   &Open reverse relay to move the contact to HIGH side of differential relay    \\\cline{1-3}
 ROUTe\+:\+OPEN\+:ALL   &\{BANK1-\/\+BANK4$|$ALL\}   &Open all relays from a particular Bank or all relays from all banks    \\\cline{1-3}
-ROUTe\+:\+CHANnel\+:STATe?   &($<$ch\+\_\+list$>$)   &Return state of the relay in the channel list, 0\+: open relay, 1\+: Close relay    \\\cline{1-3}
+ROUTe\+:\+CHANnel\+:STATe?   &(\texorpdfstring{$<$}{<}ch\+\_\+list\texorpdfstring{$>$}{>})   &Return state of the relay in the channel list, 0\+: open relay, 1\+: Close relay    \\\cline{1-3}
 ROUTe\+:\+BANK\+:STATe?   &\{BANK1-\/\+BANK4\}   &Read decimal value of relays state on the particular bank. Each bank is a byte long    \\\cline{1-3}
 ROUTe\+:\+REV\+:STATe?   &\{BANK1-\/\+BANK4\}   &Read contact side of reverse relay, LOW Side = 0, HIGH side = 1    \\\cline{1-3}
 ROUTe\+:\+CLOSe\+:PWR   &\{LPR1$|$HPR1$|$HPR2$|$SSR1\}   &Close the designated power relay    \\\cline{1-3}
 ROUTe\+:\+OPEN\+:PWR   &\{LPR1$|$HPR1$|$HPR2$|$SSR1\}   &Open the designated power relay    \\\cline{1-3}
 ROUTe\+:\+STATe\+:PWR?   &\{LPR1$|$HPR1$|$HPR2$|$SSR1\}   &Read state of the power relay, 0\+: Open, 1\+:Closed    \\\cline{1-3}
 ROUTE\+:\+CLOSe\+:OC   &\{OC1$|$OC2$|$OC3\}   &Close or activate the designated open collector transistor    \\\cline{1-3}
-ROUTE\+:\+OPEN\+:OC   &\{OC1$|$OC2$|$OC3\}   &Open or desactivate the designated open collector transistor    \\\cline{1-3}
+ROUTE\+:\+OPEN\+:OC   &\{OC1$|$OC2$|$OC3\}   &Open or deactivate the designated open collector transistor    \\\cline{1-3}
 ROUTE\+:\+STATe\+:OC?   &\{OC1$|$OC2$|$OC3\}   &Read state of the the designated open collector transistor, 0\+: Open, 1\+:Closed    \\\cline{1-3}
 DIGital\+:\+In\+:PORTn?   &\{0-\/1\}   &Read Decimal value of the designated digital port (port0\+: 8 bits, port1\+: 8 bits)    \\\cline{1-3}
 DIGital\+:\+In\+:\+PORTn\+:BITn?   &\{0-\/1\}   &Read value of the bit position at the designated port    \\\cline{1-3}
-DIGital\+:\+Out\+:PORTn   &\{0-\/1\}\{$<$value$>$\}   &At the designated digital port, set the output to the value (byte)    \\\cline{1-3}
-DIGital\+:\+Out\+:\+PORTn\+:BItn   &\{0-\/1\} \{0-\/7\} \{$<$value$>$\}   &At the designated digital port and the designated bit, set the output to the value    \\\cline{1-3}
+DIGital\+:\+Out\+:PORTn   &\{0-\/1\}\{\texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}\}   &At the designated digital port, set the output to the value (byte)    \\\cline{1-3}
+DIGital\+:\+Out\+:\+PORTn\+:BItn   &\{0-\/1\} \{0-\/7\} \{\texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}\}   &At the designated digital port and the designated bit, set the output to the value    \\\cline{1-3}
 DIGital\+:\+DIRection\+:PORTn   &\{0-\/1\}\{$|$value$|$\}   &Set the direction of the designated port to the value (byte), 0\+: input, 1\+: output    \\\cline{1-3}
-DIGital\+:\+DIRection\+:\+PORTn\+:BITn   &\{0-\/1\} \{0-\/7\} \{$<$value$>$\}   &At the designated digital port and the designated bit, set the direction to the value    \\\cline{1-3}
+DIGital\+:\+DIRection\+:\+PORTn\+:BITn   &\{0-\/1\} \{0-\/7\} \{\texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}\}   &At the designated digital port and the designated bit, set the direction to the value    \\\cline{1-3}
 DIGital\+:\+DIRection\+:PORTn?   &\{0-\/1\}   &Read the direction value for the designated port    \\\cline{1-3}
 DIGital\+:\+DIRection\+:\+PORTn\+:BITn?   &\{0-\/1\} \{0-\/7\}   &Read the direction value for the designated port and the designated bit position    \\\cline{1-3}
 GPIO\+:\+DIRection\+:DEVice\#\+:GP\#   &\{0-\/3\} \{0-\/28\} \{0-\/1\}   &At the designated device and defined gpio number, set the direction to input (0) or output (1). ~\newline
@@ -128,7 +121,7 @@ DEVice0\+: Master\+\_\+\+Pico (SCPI interpreter) ~\newline
  DEVice3\+: Slave3\+\_\+\+Pico (relay bank 2 \& 4)    \\\cline{1-3}
 GPIO\+:\+Out\+:DEVice\#\+:GP\#   &\{0-\/3\} \{0-\/28\} \{0-\/1\}   &At the designated device and defined gpio number, set the output to the value.    \\\cline{1-3}
 GPIO\+:\+In\+:DEVice\#\+:GP\#?   &\{0-\/3\} \{0-\/28\}   &At the designated device and defined gpio number, read the value of the GPIO.    \\\cline{1-3}
-GPIO\+:\+SETPad\+:DEVice\#\+:GP\#   &\{0-\/3\} \{0-\/28\} \{$<$Value$>$\}   &At the designated device and defined gpio number, set the pad value.    \\\cline{1-3}
+GPIO\+:\+SETPad\+:DEVice\#\+:GP\#   &\{0-\/3\} \{0-\/28\} \{\texorpdfstring{$<$}{<}Value\texorpdfstring{$>$}{>}\}   &At the designated device and defined gpio number, set the pad value.    \\\cline{1-3}
 GPIO\+:\+GETPad\+:DEVice\#\+:GP\#?   &\{0-\/3\} \{0-\/28\}   &At the designated device and defined gpio number,read the pad value. ~\newline
  {\bfseries{PAD REGISTER DEFINITION}} ~\newline
  Bit 7\+: \enskip{} OD Output disable ~\newline
@@ -136,20 +129,20 @@ GPIO\+:\+GETPad\+:DEVice\#\+:GP\#?   &\{0-\/3\} \{0-\/28\}   &At the designated 
  Bit 5\+:4 \enskip{}DRIVE Strength 0x0\+: 2mA, 0x1\+: 4mA, 0x2\+: 8mA, 0x3\+: 12mA~\newline
  Bit 3\+:\enskip{} PUE Pull up enable ~\newline
 Bit 2\+:\enskip{} PDE Pull down enable~\newline
-Bit 1\+:\enskip{} SCHT Enable schnitt trigger~\newline
+Bit 1\+:\enskip{} SCHT Enable schmidt trigger~\newline
 Bit 0\+:\enskip{} SLF Slew rate control 1=fast 0 = slow ~\newline
     \\\cline{1-3}
-ANAlog\+:\+DAC\+:Volt   &$<$value$>$   &Set DAC output to the value    \\\cline{1-3}
-ANAlog\+:\+DAC\+:Save   &$<$Value$>$   &Save a default value for startup    \\\cline{1-3}
+ANAlog\+:\+DAC\+:Volt   &\texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}   &Set DAC output to the value    \\\cline{1-3}
+ANAlog\+:\+DAC\+:Save   &\texorpdfstring{$<$}{<}Value\texorpdfstring{$>$}{>}   &Save a default value for startup    \\\cline{1-3}
 \multicolumn{2}{|l|}{ANAlog\+:\+ADC0\+:Volt?   }&Read Voltage at ADC input 0    \\\cline{1-3}
 \multicolumn{2}{|l|}{ANAlog\+:\+ADC1\+:Volt?   }&Read Voltage at ADC input 1    \\\cline{1-3}
 \multicolumn{2}{|l|}{ANAlog\+:\+ADC\+:Vsys?   }&Read system voltage from Pico Master    \\\cline{1-3}
-\multicolumn{2}{|l|}{ANAlog\+:\+ADC\+:Temp?   }&Read Pico Master internal temperature in Celcius    \\\cline{1-3}
+\multicolumn{2}{|l|}{ANAlog\+:\+ADC\+:Temp?   }&Read Pico Master internal temperature in Celsius    \\\cline{1-3}
 \multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Volt?   }&Read voltage at load using power monitoring device    \\\cline{1-3}
 \multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Shunt?   }&Read voltage at the shunt resistor (0.\+1 ohm) using power monitoring device    \\\cline{1-3}
 \multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Ima?   }&Read current(m\+A) passing in the shunt resistor (calculation I = E/R)    \\\cline{1-3}
 \multicolumn{2}{|l|}{ANAlog\+:\+PWR\+:Pmw?   }&Read power(m\+W) at the load (calculation P = VI)    \\\cline{1-3}
-ANAlog\+:\+PWR\+:Cal   &$<$actual\+Value,expected\+Value$>$   &calibrate current(m\+A) on full range to get more precision    \\\cline{1-3}
+ANAlog\+:\+PWR\+:Cal   &\texorpdfstring{$<$}{<}actual\+Value,expected\+Value\texorpdfstring{$>$}{>}   &calibrate current(m\+A) on full range to get more precision    \\\cline{1-3}
 \multicolumn{2}{|l|}{SYSTem\+:\+DEVice\+:VERSion?   }&Return firmware version of Pico for Master, Slave1, Slave2 and Slave3    \\\cline{1-3}
 \multicolumn{2}{|l|}{SYSTem\+:BEEPer   }&Generate beep pulse    \\\cline{1-3}
 SYSTem\+:\+LED\+:ERRor   &\{0$|$1$|$OFF$|$ON\}   &Manual control of the read error led    \\\cline{1-3}
@@ -169,7 +162,7 @@ SYSTem\+:TESTboard   &\{0-\/5\}   &Selftest execute from menu below ~\newline
 CFG\+:\+Write\+:\+Eeprom\+:STR   &\textquotesingle{}varname string,value string\textquotesingle{}   &valid varname = ~\newline
  $\ast$$\ast$\textquotesingle{}partnumber\textquotesingle{}$\ast$$\ast$\+: partnumber of the Interconnect\+IO board, default\+: \textquotesingle{}500-\/1000-\/010\textquotesingle{} ~\newline
  $\ast$$\ast$\textquotesingle{}serialnumber\textquotesingle{}$\ast$$\ast$ \+: serial number of the Interconnect\+IO board, default\+: \textquotesingle{}00001\textquotesingle{} ~\newline
- $\ast$$\ast$\textquotesingle{}mod\+\_\+option\textquotesingle{}$\ast$$\ast$ \+: optionnal module installed on the Interconnect\+IO board, default\+: \textquotesingle{}DAC,PWR\textquotesingle{}~\newline
+ $\ast$$\ast$\textquotesingle{}mod\+\_\+option\textquotesingle{}$\ast$$\ast$ \+: optional module installed on the Interconnect\+IO board, default\+: \textquotesingle{}DAC,PWR\textquotesingle{}~\newline
  $\ast$$\ast$\textquotesingle{}com\+\_\+ser\+\_\+speed\textquotesingle{}$\ast$$\ast$ \+: baudrate used by the SCPI command serial port, default\+: \textquotesingle{}115200\textquotesingle{}~\newline
  $\ast$$\ast$\textquotesingle{}pico\+\_\+slaves\+\_\+run\textquotesingle{}$\ast$$\ast$ \+: flag to control the slaves RUN pin actuation. 0\+: Pico Slaves reset at each boot(disable USB), 1\+: Do not reset slaves at boot, default\+: \textquotesingle{}0\textquotesingle{}~\newline
  $\ast$$\ast$\textquotesingle{}testboard\+\_\+num\textquotesingle{}$\ast$$\ast$ \+: partnumber of the selftest board written on the onewire device , default\+: \textquotesingle{}500-\/1010-\/020\textquotesingle{}    \\\cline{1-3}
@@ -188,29 +181,29 @@ CFG\+:\+Read\+:\+Eeprom\+:STR?   &\textquotesingle{}varnames string\textquotesin
 \hline
 \cellcolor{\tableheadbgcolor}\textbf{ SCPI\+\_\+\+COMMAND   }&\cellcolor{\tableheadbgcolor}\textbf{ PARAMETER   }&\cellcolor{\tableheadbgcolor}\textbf{ COMMENT    }\\\cline{1-3}
 \endhead
-COM\+:1WIRE\+:CHECK?   &$<$value$>$   &value = Number of expected Onewire devices on a link, normally 1 or 2, Check if devices are detected    \\\cline{1-3}
+COM\+:1WIRE\+:CHECK?   &\texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}   &value = Number of expected Onewire devices on a link, normally 1 or 2, Check if devices are detected    \\\cline{1-3}
 COM\+:1WIRE\+:WRITE   &\{String 64 chars maximum starting with 64bits lasered ROM\}   &example\+: 2D4\+CE282200000\+CC, 500-\/1010-\/020, 000001, J1    \\\cline{1-3}
 COM\+:1WIRE\+:READ?   &\mbox{[}Nb of Onewire devices\mbox{]}   &read string of all the 1-\/Wire devices on the link, specify number of onewire to be read    \\\cline{1-3}
 COM\+:\+INITialize\+:ENAble   &\{SPI$|$SERIAL$|$I2C\}   &Configure designated communication port    \\\cline{1-3}
 COM\+:\+INITialize\+:DISable   &\{SPI$|$SERIAL$|$I2C\}   &Configure designated communication port to GPIO    \\\cline{1-3}
 COM\+:\+INITialize\+:STATus?   &\{SPI$|$SERIAL$|$I2C\}   &Read if the designated communication is enable or disable    \\\cline{1-3}
-COM\+:\+SERIAL\+:WRITE   &$<$svalues$>$   &send string, don\textquotesingle{}t wait for answer    \\\cline{1-3}
-COM\+:\+SERIAL\+:READ?   &$<$svalues$>$   &send string, wait for answer    \\\cline{1-3}
-COM\+:\+SERIAL\+:Baud   &$<$value$>$   &set baudrate speed    \\\cline{1-3}
+COM\+:\+SERIAL\+:WRITE   &\texorpdfstring{$<$}{<}svalues\texorpdfstring{$>$}{>}   &send string, don\textquotesingle{}t wait for answer    \\\cline{1-3}
+COM\+:\+SERIAL\+:READ?   &\texorpdfstring{$<$}{<}svalues\texorpdfstring{$>$}{>}   &send string, wait for answer    \\\cline{1-3}
+COM\+:\+SERIAL\+:Baud   &\texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}   &set baudrate speed    \\\cline{1-3}
 \multicolumn{2}{|l|}{COM\+:\+SERIAL\+:Baud?   }&read baudrate speed    \\\cline{1-3}
-COM\+:\+SERIAL\+:Protocol   &$<$svalues$>$   &exa\+: \{N81 O72 E61 8N1 etc ..\}. Three character to define prtocol to be use    \\\cline{1-3}
+COM\+:\+SERIAL\+:Protocol   &\texorpdfstring{$<$}{<}svalues\texorpdfstring{$>$}{>}   &exa\+: \{N81 O72 E61 8N1 etc ..\}. Three character to define protocol to be use    \\\cline{1-3}
 \multicolumn{2}{|l|}{COM\+:\+SERIAL\+:Protocol?   }&read the used protocol    \\\cline{1-3}
 COM\+:\+SERIAL\+:Handshake   &\{0$|$1$|$OFF$|$ON\}   &set the RTS-\/\+CTS handshake according to the value    \\\cline{1-3}
 \multicolumn{2}{|l|}{COM\+:\+SERIAL\+:Handshake?   }&read value corresponding to the handshake state, 0\+: disabled, 1\+: enabled    \\\cline{1-3}
-COM\+:\+SERIAL\+:Timeout   &$<$values$>$   &Timeout in ms (32bits), default is 1000    \\\cline{1-3}
+COM\+:\+SERIAL\+:Timeout   &\texorpdfstring{$<$}{<}values\texorpdfstring{$>$}{>}   &Timeout in ms (32bits), default is 1000    \\\cline{1-3}
 \multicolumn{2}{|l|}{COM\+:\+SERIAL\+:Timeout?   }&read value of the timeout    \\\cline{1-3}
-COM\+:\+SPI\+:WRIte   &$<$data$>$   &Spi write data (byte if databit =8 or word if databits = 16)    \\\cline{1-3}
-COM\+:\+SPI\+:\+REAd\+:LENx?   &$<$opt\+:register$>$   &Spi read x bytes    \\\cline{1-3}
-COM\+:\+SPI\+:Baudrate   &$<$value$>$   &Set baudrate speed in Hz    \\\cline{1-3}
+COM\+:\+SPI\+:WRIte   &\texorpdfstring{$<$}{<}data\texorpdfstring{$>$}{>}   &Spi write data (byte if databit =8 or word if databits = 16)    \\\cline{1-3}
+COM\+:\+SPI\+:\+REAd\+:LENx?   &\texorpdfstring{$<$}{<}opt\+:register\texorpdfstring{$>$}{>}   &Spi read x bytes    \\\cline{1-3}
+COM\+:\+SPI\+:Baudrate   &\texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}   &Set baudrate speed in Hz    \\\cline{1-3}
 \multicolumn{2}{|l|}{COM\+:\+SPI\+:Baudrate?   }&read SPI speed in Hz    \\\cline{1-3}
-COM\+:\+SPI\+:CS   &$<$gpio$>$   &Set Chipselect gpio,default is 5, valid num = \{0,1,5,6,7,12,13,14,15,16,17\}    \\\cline{1-3}
+COM\+:\+SPI\+:CS   &\texorpdfstring{$<$}{<}gpio\texorpdfstring{$>$}{>}   &Set Chipselect gpio,default is 5, valid num = \{0,1,5,6,7,12,13,14,15,16,17\}    \\\cline{1-3}
 \multicolumn{2}{|l|}{COM\+:\+SPI\+:CS?   }&Get Chipselect gpio number    \\\cline{1-3}
-COM\+:\+SPI\+:Databits   &$<$value$>$   &// number of data bits to read or write during SPI communication, normally 8 (byte long) or 16 (word long)    \\\cline{1-3}
+COM\+:\+SPI\+:Databits   &\texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}   &// number of data bits to read or write during SPI communication, normally 8 (byte long) or 16 (word long)    \\\cline{1-3}
 \multicolumn{2}{|l|}{COM\+:\+SPI\+:Databits?   }&read databit value    \\\cline{1-3}
 COM\+:\+SPI\+:Mode   &\{0$|$1$|$2$|$3$|$4$|$5$|$6$|$7\}   &Set SPI mode + Chip\+Select toggle mode (0\+:End of transmit, 1\+: At each byte) ~\newline
 mode 0\+: Cs=0, Cpol=0, CPha=0 ~\newline
@@ -223,13 +216,13 @@ mode 0\+: Cs=0, Cpol=0, CPha=0 ~\newline
  mode 7\+: Cs=1, Cpol=1, Cpha=1 ~\newline
     \\\cline{1-3}
 \multicolumn{2}{|l|}{COM\+:\+SPI\+:Mode?   }&read mode number used    \\\cline{1-3}
-COM\+:\+I2C\+:WRIte   &$<$data$>$   &Spi write data    \\\cline{1-3}
-COM\+:\+I2\+C\+:\+REAd\+:LENx?   &$<$opt\+:register$>$   &Spi read x bytes from optional register    \\\cline{1-3}
-COM\+:\+I2C\+:ADDRress   &$<$Device address$>$   &I2C Address to use to talk to the device    \\\cline{1-3}
+COM\+:\+I2C\+:WRIte   &\texorpdfstring{$<$}{<}data\texorpdfstring{$>$}{>}   &Spi write data    \\\cline{1-3}
+COM\+:\+I2\+C\+:\+REAd\+:LENx?   &\texorpdfstring{$<$}{<}opt\+:register\texorpdfstring{$>$}{>}   &Spi read x bytes from optional register    \\\cline{1-3}
+COM\+:\+I2C\+:ADDRress   &\texorpdfstring{$<$}{<}Device address\texorpdfstring{$>$}{>}   &I2C Address to use to talk to the device    \\\cline{1-3}
 \multicolumn{2}{|l|}{COM\+:\+I2C\+:ADDRress?   }&read address value    \\\cline{1-3}
 \multicolumn{2}{|l|}{COM\+:\+I2C\+:Baudrate?   }&read I2C speed in Hz    \\\cline{1-3}
-COM\+:\+I2C\+:Baudrate   &$<$value$>$   &Set speed in Hz    \\\cline{1-3}
-COM\+:\+I2C\+:Databits   &$<$value$>$   &Number of databits to write or read. Normally 8 (bytes) or 16 (word)    \\\cline{1-3}
+COM\+:\+I2C\+:Baudrate   &\texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}   &Set speed in Hz    \\\cline{1-3}
+COM\+:\+I2C\+:Databits   &\texorpdfstring{$<$}{<}value\texorpdfstring{$>$}{>}   &Number of databits to write or read. Normally 8 (bytes) or 16 (word)    \\\cline{1-3}
 \multicolumn{2}{|l|}{COM\+:\+I2C\+:Databits?   }&read number of databits used on I2C communication   \\\cline{1-3}
 \end{longtabu}
 \hypertarget{md_README_autotoc_md11}{}\doxysection{SCPI Complete Command example\+:}\label{md_README_autotoc_md11}

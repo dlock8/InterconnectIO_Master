@@ -9,6 +9,7 @@ Software code used to validate the software and hardware developed on this proje
 {\ttfamily \#include $<$stdlib.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}pico/binary\+\_\+info.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}include/scpi\+\_\+user\+\_\+config.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+ina219/dev\+\_\+ina219.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+mcp4725/dev\+\_\+mcp4725.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/dev/dev\+\_\+24lc32/dev\+\_\+24lc32.\+h\char`\"{}}\newline
@@ -22,10 +23,11 @@ Software code used to validate the software and hardware developed on this proje
 {\ttfamily \#include \char`\"{}include/fts\+\_\+scpi.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}include/i2c\+\_\+com.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}include/master.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}include/test.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}include/scpi\+\_\+spi.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}include/scpi\+\_\+i2c.\+h\char`\"{}}\newline
-Include dependency graph for test.\+c\+:\nopagebreak
+{\ttfamily \#include \char`\"{}include/test.\+h\char`\"{}}\newline
+Include dependency graph for test.\+c\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -79,7 +81,7 @@ void \mbox{\hyperlink{test_8c_a032a8eab3b1447960ec13ee39358c450}{test\+\_\+cmd\+
 char \mbox{\hyperlink{test_8c_a0c6f39b967bd2a9a74fd40a40cf54687}{read\+\_\+uart\+\_\+char}} ()
 \begin{DoxyCompactList}\small\item\em function to wait for read character from user. The loop refresh the watchdog timeout \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{test_8c_ac9d279cdda41da5b1e2775dbfeaae220}{internal\+\_\+test\+\_\+sequence}} (const char $\ast$testboard\+\_\+num, uint8\+\_\+t run)
-\begin{DoxyCompactList}\small\item\em Main routine to perform internal test using selftest board. The routine has been used to validate hardware and software during development if run=0, the menu will be displayed to operator to select which internal test to run. IF run $>$ 0, the internal test will run directly. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Main routine to perform internal test using selftest board. The routine has been used to validate hardware and software during development if run=0, the menu will be displayed to operator to select which internal test to run. IF run \texorpdfstring{$>$}{>} 0, the internal test will run directly. \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{test_8c_acb420da0ba7e8e1e84b61fec9b4de4b9}{test\+\_\+selftest}} (const char $\ast$testboard\+\_\+num, uint8\+\_\+t run)
 \begin{DoxyCompactList}\small\item\em 
 \begin{DoxyItemize}
@@ -135,7 +137,7 @@ bool \mbox{\hyperlink{test_8c_ada61a5d73ba9477f5805e729284f4e17}{adc\+\_\+test}}
 void \mbox{\hyperlink{test_8c_ae9ec3dc653dc7431f107092091e4dafc}{test\+\_\+spi\+\_\+adx}} ()
 \begin{DoxyCompactList}\small\item\em the software code below is not used by application but could be used, as example on how to work with SPI interface. This example was a proof of concept on SPI command available with a true device (ADXL345). \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{test_8c_a38960f95c19009813882cb32075767d8}\label{test_8c_a38960f95c19009813882cb32075767d8}} 
-void \mbox{\hyperlink{test_8c_a38960f95c19009813882cb32075767d8}{test\+\_\+i2c\+\_\+adx}} ()
+void {\bfseries test\+\_\+i2c\+\_\+adx} ()
 \begin{DoxyCompactList}\small\item\em the software code below is not used by application but could be used, as example on how to work with I2C interface. This example was a proof of concept on I2C command available with a true device (ADXL345) connected to interconnect io board \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{test_8c_a2820d2a0e21922a80ee5edaa25d95367}{test\+\_\+i2c\+\_\+ina219}} ()
 \begin{DoxyCompactList}\small\item\em the software code below is not used by application but could be used, as example on how to work with I2C interface. This example was a proof of concept on I2C command available with a true device (INA219). \end{DoxyCompactList}\item 
@@ -281,11 +283,11 @@ Initialisation of the index for circular buffer.
 {\em buffer} & Structure who contains the index and message \\
 \hline
 \end{DoxyParams}
-$<$ Initialize Start index of the buffer
+\texorpdfstring{$<$}{<} Initialize Start index of the buffer
 
-$<$ Initialize End index of the buffer
+\texorpdfstring{$<$}{<} Initialize End index of the buffer
 
-$<$ Initialize Flag indicating if the buffer is full\mbox{\Hypertarget{test_8c_ac9d279cdda41da5b1e2775dbfeaae220}\label{test_8c_ac9d279cdda41da5b1e2775dbfeaae220}} 
+\texorpdfstring{$<$}{<} Initialize Flag indicating if the buffer is full\mbox{\Hypertarget{test_8c_ac9d279cdda41da5b1e2775dbfeaae220}\label{test_8c_ac9d279cdda41da5b1e2775dbfeaae220}} 
 \index{test.c@{test.c}!internal\_test\_sequence@{internal\_test\_sequence}}
 \index{internal\_test\_sequence@{internal\_test\_sequence}!test.c@{test.c}}
 \doxysubsubsection{\texorpdfstring{internal\_test\_sequence()}{internal\_test\_sequence()}}
@@ -293,7 +295,7 @@ $<$ Initialize Flag indicating if the buffer is full\mbox{\Hypertarget{test_8c_a
 
 
 
-Main routine to perform internal test using selftest board. The routine has been used to validate hardware and software during development if run=0, the menu will be displayed to operator to select which internal test to run. IF run $>$ 0, the internal test will run directly. 
+Main routine to perform internal test using selftest board. The routine has been used to validate hardware and software during development if run=0, the menu will be displayed to operator to select which internal test to run. IF run \texorpdfstring{$>$}{>} 0, the internal test will run directly. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -643,9 +645,9 @@ Detailed report is send to stdout port (usb) Summary report is send to serial po
 \begin{DoxyReturn}{Returns}
 return value of 1 is selftest board is not detected 
 \end{DoxyReturn}
-$<$ Variable used by TEST\+\_\+\+SCPI\+\_\+\+INPUT
+\texorpdfstring{$<$}{<} Variable used by TEST\+\_\+\+SCPI\+\_\+\+INPUT
 
-$<$ array who will contains parts of SCPI command
+\texorpdfstring{$<$}{<} array who will contains parts of SCPI command
 
 Read 1-\/wire to detect if the selftest board is connected to interconnect IO
 

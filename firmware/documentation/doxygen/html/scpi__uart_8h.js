@@ -25,7 +25,7 @@ var scpi__uart_8h =
     [ "scpi_uart_enable", "scpi__uart_8h.html#a8e4f9f87014ede07790adcdee9218a07", null ],
     [ "scpi_uart_get_baudrate", "scpi__uart_8h.html#a5762f30985131b1602ccf52aa0f5747a", null ],
     [ "scpi_uart_get_handshake", "scpi__uart_8h.html#a140d39ce403d0abb4a61ed75c87ac366", null ],
-    [ "scpi_uart_get_protocol", "scpi__uart_8h.html#a765bb33cc403ef78b571e0d6b5a06397", null ],
+    [ "scpi_uart_get_protocol", "scpi__uart_8h.html#ae76db62a14ef10d4921e2739b5221ee5", null ],
     [ "scpi_uart_get_timeout", "scpi__uart_8h.html#a4940674ea5d55c2b968af3e4eee8dca3", null ],
     [ "scpi_uart_set_baudrate", "scpi__uart_8h.html#a8b9b7e507857261be73965271270d54f", null ],
     [ "scpi_uart_set_handshake", "scpi__uart_8h.html#abf113dcc339af90ccc3d4a63018e900e", null ],

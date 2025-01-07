@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"structCircularBuffer.html":[1,0,2],
 "structCircularBuffer.html#a7cbe9f3de6d1902a8753095943288b62":[1,0,2,1],
 "structCircularBuffer.html#a90f82238ec96a7b8585bb9802c69488e":[1,0,2,3],
 "structCircularBuffer.html#ab852896839be3591962d1b03c031f95d":[1,0,2,2],

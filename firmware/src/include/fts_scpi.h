@@ -84,7 +84,7 @@ extern "C"
 #define PWOPEN 25   //!< OPen power relay
 #define PWSTATE 26  //!< Read state of power relay
 #define OCCLOSE 27  //!< Active Open Collector
-#define OCOPEN 28   //!< Desactive Open Collector
+#define OCOPEN 28   //!< deactivate Open Collector
 #define OCSTATE 29  //!< Read state of Open Collector
 
 #define SBEEP 50  //!< Send Beep pulse

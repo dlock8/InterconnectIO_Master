@@ -30,7 +30,7 @@ struct \mbox{\hyperlink{structuser__spi}{user\+\_\+spi}}
 void \mbox{\hyperlink{scpi__spi_8c_a1c9cd652cc58e98115393248b95185cb}{scpi\+\_\+spi\+\_\+enable}} ()
 \begin{DoxyCompactList}\small\item\em function to configure the parameters of the user spi based on the data set on the spi structure \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{scpi__spi_8c_a7d19d25392ca2572735f7f2012400f9b}\label{scpi__spi_8c_a7d19d25392ca2572735f7f2012400f9b}} 
-void \mbox{\hyperlink{scpi__spi_8c_a7d19d25392ca2572735f7f2012400f9b}{scpi\+\_\+spi\+\_\+disable}} ()
+void {\bfseries scpi\+\_\+spi\+\_\+disable} ()
 \begin{DoxyCompactList}\small\item\em function to disable the user spi and configure pins reserved by SPI to normal GPIO, set as input. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{scpi__spi_8c_a0464322f4228d85608e432eb2f104536}{scpi\+\_\+spi\+\_\+status}} ()
 \begin{DoxyCompactList}\small\item\em Function who return if the user spi is enabled or not. \end{DoxyCompactList}\item 
@@ -47,7 +47,7 @@ uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8c_a2cb5079bd0fb6a96093c5f37f4572fd8}{sc
 uint32\+\_\+t \mbox{\hyperlink{scpi__spi_8c_a8f589a72b8492383e5f3b56566c7865c}{scpi\+\_\+spi\+\_\+get\+\_\+databits}} ()
 \begin{DoxyCompactList}\small\item\em function to return the databits value saved on structure \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8c_ac54dd17786f3ac8a65578d6cd470c1fe}{scpi\+\_\+spi\+\_\+set\+\_\+mode}} (uint8\+\_\+t mode)
-\begin{DoxyCompactList}\small\item\em function to set the mode to use for spi communication bozoinghghfjj \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em function to set the mode to use for spi communication \end{DoxyCompactList}\item 
 uint8\+\_\+t \mbox{\hyperlink{scpi__spi_8c_a0aad5a09bc2566f47180bf939d77ba2f}{scpi\+\_\+spi\+\_\+get\+\_\+mode}} ()
 \begin{DoxyCompactList}\small\item\em function who return the spi mode used in communication. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{scpi__spi_8c_a23385f64b89a24238ba50379892ed47a}{spi\+\_\+bytes\+\_\+to\+\_\+words}} (uint8\+\_\+t $\ast$byte\+\_\+array, uint16\+\_\+t $\ast$word\+\_\+array, size\+\_\+t length)
@@ -94,9 +94,9 @@ This software is licensed under the BSD 3-\/Clause License. See the LICENSE file
 
 function to configure the parameters of the user spi based on the data set on the spi structure 
 
-$<$ Configure the gpio who will be used as chipselect
+\texorpdfstring{$<$}{<} Configure the gpio who will be used as chipselect
 
-$<$ set to high by default\mbox{\Hypertarget{scpi__spi_8c_a87b874a337212219c48b1e44ffc77f5e}\label{scpi__spi_8c_a87b874a337212219c48b1e44ffc77f5e}} 
+\texorpdfstring{$<$}{<} set to high by default\mbox{\Hypertarget{scpi__spi_8c_a87b874a337212219c48b1e44ffc77f5e}\label{scpi__spi_8c_a87b874a337212219c48b1e44ffc77f5e}} 
 \index{scpi\_spi.c@{scpi\_spi.c}!scpi\_spi\_get\_baudrate@{scpi\_spi\_get\_baudrate}}
 \index{scpi\_spi\_get\_baudrate@{scpi\_spi\_get\_baudrate}!scpi\_spi.c@{scpi\_spi.c}}
 \doxysubsubsection{\texorpdfstring{scpi\_spi\_get\_baudrate()}{scpi\_spi\_get\_baudrate()}}
@@ -148,7 +148,7 @@ function who return the spi mode used in communication.
 \begin{DoxyReturn}{Returns}
 uint8\+\_\+t mode value 
 \end{DoxyReturn}
-$<$ return value saved in structure\mbox{\Hypertarget{scpi__spi_8c_a659466f5c52b4fd694f38c989d294af8}\label{scpi__spi_8c_a659466f5c52b4fd694f38c989d294af8}} 
+\texorpdfstring{$<$}{<} return value saved in structure\mbox{\Hypertarget{scpi__spi_8c_a659466f5c52b4fd694f38c989d294af8}\label{scpi__spi_8c_a659466f5c52b4fd694f38c989d294af8}} 
 \index{scpi\_spi.c@{scpi\_spi.c}!scpi\_spi\_set\_baudrate@{scpi\_spi\_set\_baudrate}}
 \index{scpi\_spi\_set\_baudrate@{scpi\_spi\_set\_baudrate}!scpi\_spi.c@{scpi\_spi.c}}
 \doxysubsubsection{\texorpdfstring{scpi\_spi\_set\_baudrate()}{scpi\_spi\_set\_baudrate()}}
@@ -181,13 +181,13 @@ Function to update the SPI Chip\+Select to be used.
 \begin{DoxyReturn}{Returns}
 uint8\+\_\+t error if number is not valid baudrate 
 \end{DoxyReturn}
-$<$ Loop to determine if the gpio required for become new Chip\+Select is valid
+\texorpdfstring{$<$}{<} Loop to determine if the gpio required for become new Chip\+Select is valid
 
-$<$ save in structure the new gpio
+\texorpdfstring{$<$}{<} save in structure the new gpio
 
-$<$ Configure the gpio who will be used as chipselect
+\texorpdfstring{$<$}{<} Configure the gpio who will be used as chipselect
 
-$<$ set to high by default\mbox{\Hypertarget{scpi__spi_8c_a2cb5079bd0fb6a96093c5f37f4572fd8}\label{scpi__spi_8c_a2cb5079bd0fb6a96093c5f37f4572fd8}} 
+\texorpdfstring{$<$}{<} set to high by default\mbox{\Hypertarget{scpi__spi_8c_a2cb5079bd0fb6a96093c5f37f4572fd8}\label{scpi__spi_8c_a2cb5079bd0fb6a96093c5f37f4572fd8}} 
 \index{scpi\_spi.c@{scpi\_spi.c}!scpi\_spi\_set\_databits@{scpi\_spi\_set\_databits}}
 \index{scpi\_spi\_set\_databits@{scpi\_spi\_set\_databits}!scpi\_spi.c@{scpi\_spi.c}}
 \doxysubsubsection{\texorpdfstring{scpi\_spi\_set\_databits()}{scpi\_spi\_set\_databits()}}
@@ -210,7 +210,7 @@ Function to update the value of databits to be used.
 
 
 
-function to set the mode to use for spi communication bozoinghghfjj 
+function to set the mode to use for spi communication 
 
 
 \begin{DoxyParams}{Parameters}
@@ -220,9 +220,9 @@ function to set the mode to use for spi communication bozoinghghfjj
 \begin{DoxyReturn}{Returns}
 uint8\+\_\+t error number 
 \end{DoxyReturn}
-$<$ save mode used in structure
+\texorpdfstring{$<$}{<} save mode used in structure
 
-$<$ set format\mbox{\Hypertarget{scpi__spi_8c_a0464322f4228d85608e432eb2f104536}\label{scpi__spi_8c_a0464322f4228d85608e432eb2f104536}} 
+\texorpdfstring{$<$}{<} set format\mbox{\Hypertarget{scpi__spi_8c_a0464322f4228d85608e432eb2f104536}\label{scpi__spi_8c_a0464322f4228d85608e432eb2f104536}} 
 \index{scpi\_spi.c@{scpi\_spi.c}!scpi\_spi\_status@{scpi\_spi\_status}}
 \index{scpi\_spi\_status@{scpi\_spi\_status}!scpi\_spi.c@{scpi\_spi.c}}
 \doxysubsubsection{\texorpdfstring{scpi\_spi\_status()}{scpi\_spi\_status()}}
@@ -261,19 +261,19 @@ main function called by SCPI command to send or receive data on SPI port
 \begin{DoxyReturn}{Returns}
 uint8\+\_\+t error code 
 \end{DoxyReturn}
-$<$ bytes command
+\texorpdfstring{$<$}{<} bytes command
 
-$<$ word command
+\texorpdfstring{$<$}{<} word command
 
-$<$ bytes command
+\texorpdfstring{$<$}{<} bytes command
 
-$<$ word command
+\texorpdfstring{$<$}{<} word command
 
-$<$ bytes command
+\texorpdfstring{$<$}{<} bytes command
 
-$<$ word command
+\texorpdfstring{$<$}{<} word command
 
-$<$ set flag to determine size of data read\mbox{\Hypertarget{scpi__spi_8c_a9564c7386c74b91ace471ec614fddbb4}\label{scpi__spi_8c_a9564c7386c74b91ace471ec614fddbb4}} 
+\texorpdfstring{$<$}{<} set flag to determine size of data read\mbox{\Hypertarget{scpi__spi_8c_a9564c7386c74b91ace471ec614fddbb4}\label{scpi__spi_8c_a9564c7386c74b91ace471ec614fddbb4}} 
 \index{scpi\_spi.c@{scpi\_spi.c}!spi\_alert\_function@{spi\_alert\_function}}
 \index{spi\_alert\_function@{spi\_alert\_function}!scpi\_spi.c@{scpi\_spi.c}}
 \doxysubsubsection{\texorpdfstring{spi\_alert\_function()}{spi\_alert\_function()}}
@@ -317,7 +317,7 @@ function who transform an array of bytes to an array of words.
 {\em length} & length of the byte array \\
 \hline
 \end{DoxyParams}
-$<$ transform 2 bytes in 1 word\mbox{\Hypertarget{scpi__spi_8c_a1a49534552d094cd1e724ab8940c035a}\label{scpi__spi_8c_a1a49534552d094cd1e724ab8940c035a}} 
+\texorpdfstring{$<$}{<} transform 2 bytes in 1 word\mbox{\Hypertarget{scpi__spi_8c_a1a49534552d094cd1e724ab8940c035a}\label{scpi__spi_8c_a1a49534552d094cd1e724ab8940c035a}} 
 \index{scpi\_spi.c@{scpi\_spi.c}!spi\_words\_to\_bytes@{spi\_words\_to\_bytes}}
 \index{spi\_words\_to\_bytes@{spi\_words\_to\_bytes}!scpi\_spi.c@{scpi\_spi.c}}
 \doxysubsubsection{\texorpdfstring{spi\_words\_to\_bytes()}{spi\_words\_to\_bytes()}}

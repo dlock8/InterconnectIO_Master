@@ -1,0 +1,117 @@
+\hypertarget{dev__ina219_8h_source}{}\doxysection{dev\+\_\+ina219.\+h}
+\label{dev__ina219_8h_source}\index{firmware/src/pico\_lib2/src/dev/dev\_ina219/dev\_ina219.h@{firmware/src/pico\_lib2/src/dev/dev\_ina219/dev\_ina219.h}}
+\mbox{\hyperlink{dev__ina219_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/**************************************************************************/}}
+\DoxyCodeLine{34 \textcolor{comment}{/**************************************************************************/}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#ifndef \_INA219\_H\_}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define \_INA219\_H\_}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{41  \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \{}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#include "{}../../sys/include/sys\_i2c.h"{}}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{comment}{/*=========================================================================}}
+\DoxyCodeLine{47 \textcolor{comment}{// I2C ADDRESS/BITS}}
+\DoxyCodeLine{48 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#define INA219\_ADDRESS      (0x40)  }}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define INA219\_READ         (0x01)  }}
+\DoxyCodeLine{52 \textcolor{comment}{/*=========================================================================}}
+\DoxyCodeLine{53 \textcolor{comment}{// CONFIG REGISTER (R/W)}}
+\DoxyCodeLine{54 \textcolor{comment}{// -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/}}
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#define INA219\_REG\_CONFIG                      (0x00)  }}
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#define INA219\_CONFIG\_RESET                    (0x8000)  }}
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#define INA219\_CONFIG\_BVOLTAGERANGE\_MASK       (0x4000)  }}
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#define INA219\_CONFIG\_BVOLTAGERANGE\_16V        (0x0000)  }}
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#define INA219\_CONFIG\_BVOLTAGERANGE\_32V        (0x4000)  }}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#define INA219\_CONFIG\_GAIN\_MASK                (0x1800)  }}
+\DoxyCodeLine{63 \textcolor{preprocessor}{\#define INA219\_CONFIG\_GAIN\_1\_40MV              (0x0000)  }}
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#define INA219\_CONFIG\_GAIN\_2\_80MV              (0x0800)  }}
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#define INA219\_CONFIG\_GAIN\_4\_160MV             (0x1000)  }}
+\DoxyCodeLine{66 \textcolor{preprocessor}{\#define INA219\_CONFIG\_GAIN\_8\_320MV             (0x1800)  }}
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#define INA219\_CONFIG\_BADCRES\_MASK             (0x0780)  }}
+\DoxyCodeLine{69 \textcolor{preprocessor}{\#define INA219\_CONFIG\_BADCRES\_9BIT             (0x0080)  }}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#define INA219\_CONFIG\_BADCRES\_10BIT            (0x0100)  }}
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#define INA219\_CONFIG\_BADCRES\_11BIT            (0x0200)  }}
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#define INA219\_CONFIG\_BADCRES\_12BIT            (0x0400)  }}
+\DoxyCodeLine{74 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_MASK             (0x0078)  }}
+\DoxyCodeLine{75 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_9BIT\_1S\_84US     (0x0000)  }}
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_10BIT\_1S\_148US   (0x0008)  }}
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_11BIT\_1S\_276US   (0x0010)  }}
+\DoxyCodeLine{78 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_12BIT\_1S\_532US   (0x0018)  }}
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_12BIT\_2S\_1060US  (0x0048)  }}
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_12BIT\_4S\_2130US  (0x0050)  }}
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_12BIT\_8S\_4260US  (0x0058)  }}
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_12BIT\_16S\_8510US (0x0060)  }}
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_12BIT\_32S\_17MS   (0x0068)  }}
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_12BIT\_64S\_34MS   (0x0070)  }}
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#define INA219\_CONFIG\_SADCRES\_12BIT\_128S\_69MS  (0x0078)  }}
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#define INA219\_CONFIG\_MODE\_POWERDOWN           (0x0000)  }}
+\DoxyCodeLine{89 \textcolor{preprocessor}{\#define INA219\_CONFIG\_MODE\_SVOLT\_TRIGGERED     (0x0001)  }}
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#define INA219\_CONFIG\_MODE\_BVOLT\_TRIGGERED     (0x0002)  }}
+\DoxyCodeLine{91 \textcolor{preprocessor}{\#define INA219\_CONFIG\_MODE\_SANDBVOLT\_TRIGGERED (0x0003)  }}
+\DoxyCodeLine{92 \textcolor{preprocessor}{\#define INA219\_CONFIG\_MODE\_ADCOFF              (0x0004)  }}
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#define INA219\_CONFIG\_MODE\_SVOLT\_CONTINUOUS    (0x0005)  }}
+\DoxyCodeLine{94 \textcolor{preprocessor}{\#define INA219\_CONFIG\_MODE\_BVOLT\_CONTINUOUS    (0x0006)  }}
+\DoxyCodeLine{95 \textcolor{preprocessor}{\#define INA219\_CONFIG\_MODE\_SANDBVOLT\_CONTINUOUS (0x0007)  }}
+\DoxyCodeLine{97 \textcolor{comment}{/*=========================================================================*/}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{comment}{/*========================================================================= }}
+\DoxyCodeLine{100 \textcolor{comment}{    SHUNT VOLTAGE REGISTER (R) }}
+\DoxyCodeLine{101 \textcolor{comment}{    -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/} }
+\DoxyCodeLine{102 \textcolor{preprocessor}{\#define INA219\_REG\_SHUNTVOLTAGE                (0x01)  }}
+\DoxyCodeLine{103 \textcolor{comment}{/*=========================================================================*/} }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \textcolor{comment}{/*========================================================================= }}
+\DoxyCodeLine{106 \textcolor{comment}{    BUS VOLTAGE REGISTER (R) }}
+\DoxyCodeLine{107 \textcolor{comment}{    -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/} }
+\DoxyCodeLine{108 \textcolor{preprocessor}{\#define INA219\_REG\_BUSVOLTAGE                  (0x02)  }}
+\DoxyCodeLine{109 \textcolor{comment}{/*=========================================================================*/} }
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{comment}{/*========================================================================= }}
+\DoxyCodeLine{112 \textcolor{comment}{    POWER REGISTER (R) }}
+\DoxyCodeLine{113 \textcolor{comment}{    -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/} }
+\DoxyCodeLine{114 \textcolor{preprocessor}{\#define INA219\_REG\_POWER                       (0x03)  }}
+\DoxyCodeLine{115 \textcolor{comment}{/*=========================================================================*/} }
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 \textcolor{comment}{/*========================================================================= }}
+\DoxyCodeLine{118 \textcolor{comment}{    CURRENT REGISTER (R) }}
+\DoxyCodeLine{119 \textcolor{comment}{    -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/} }
+\DoxyCodeLine{120 \textcolor{preprocessor}{\#define INA219\_REG\_CURRENT                     (0x04)  }}
+\DoxyCodeLine{121 \textcolor{comment}{/*=========================================================================*/} }
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{comment}{/*========================================================================= }}
+\DoxyCodeLine{124 \textcolor{comment}{    CALIBRATION REGISTER (R/W) }}
+\DoxyCodeLine{125 \textcolor{comment}{    -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/*/} }
+\DoxyCodeLine{126 \textcolor{preprocessor}{\#define INA219\_REG\_CALIBRATION                 (0x05)  }}
+\DoxyCodeLine{127 \textcolor{comment}{/*=========================================================================*/} }
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130 int16\_t \mbox{\hyperlink{dev__ina219_8h_ad1082efd7eef489c5ed57c7884eac570}{ina219Init}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{131 int16\_t \mbox{\hyperlink{dev__ina219_8h_a9dd812ec2d9030c7edaa1ea397d2c53e}{ina219GetShuntVoltage}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{132 int16\_t \mbox{\hyperlink{dev__ina219_8h_a439f8a8e2a42bbe0ca5b2b48da9a1e80}{ina219GetBusVoltage}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{133 int16\_t \mbox{\hyperlink{dev__ina219_8h_a1cc61b66b7d48f392e3f71196df47d16}{ina219GetPower}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{134 int16\_t \mbox{\hyperlink{dev__ina219_8h_a9cecf583ae9c089a9e251c60c2ead1cd}{ina219GetPower\_mW}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{135 int16\_t \mbox{\hyperlink{dev__ina219_8h_a6817c5f0df62fbc15d365d4278e9fedc}{ina219GetCurrent}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{136 int16\_t \mbox{\hyperlink{dev__ina219_8h_a8878cb36e1b8abff9203dfe682f3a067}{ina219GetCurrent\_mA}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{137 \textcolor{keywordtype}{bool}    \mbox{\hyperlink{dev__ina219_8h_a0106e7103c25bb310f1e2ec005bbad4e}{ina219CalibrateCurrent\_mA}}(\textcolor{keywordtype}{float},\textcolor{keywordtype}{float});}
+\DoxyCodeLine{138 \textcolor{keywordtype}{void}    \mbox{\hyperlink{dev__ina219_8h_af689fd46743cbb4d4453ff8a27141c4a}{ina219SetCalibration\_32V\_2A}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{139 \textcolor{keywordtype}{void}    \mbox{\hyperlink{dev__ina219_8h_a13e153c23838f8402313939b9e090349}{ina219SetCalibration\_32V\_1A}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{140 \textcolor{keywordtype}{void}    \mbox{\hyperlink{dev__ina219_8h_a0f3082d3ff4d3b02eeacde87f6508601}{ina219SetCalibration\_16V\_500mA}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{141 \textcolor{keywordtype}{void}    \mbox{\hyperlink{dev__ina219_8h_a0555986238248c917cdd71076aa56417}{ina219SetCalibration\_16V\_200mA}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{146  \}}
+\DoxyCodeLine{147 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{151 }
+
+\end{DoxyCode}

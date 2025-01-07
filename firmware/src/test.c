@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include "pico/stdlib.h"
 #include "pico/binary_info.h"
+#include "include/scpi_user_config.h"
 #include "pico_lib2/src/dev/dev_ina219/dev_ina219.h"
 #include "pico_lib2/src/dev/dev_mcp4725/dev_mcp4725.h"
 #include "pico_lib2/src/dev/dev_24lc32/dev_24lc32.h"
@@ -38,9 +39,10 @@
 #include "include/fts_scpi.h"
 #include "include/i2c_com.h"
 #include "include/master.h"
-#include "include/test.h"
 #include "include/scpi_spi.h"
 #include "include/scpi_i2c.h"
+#include "include/test.h"
+
 
 /**
  * @brief Output buffer for storing data to be sent.
@@ -273,8 +275,12 @@ void test_cmd_out(const char* title, const char* cmd, char* expected_result, str
   output_buffer_clear();                       // clear result before capture output
   SCPI_Input(&scpi_context, cmd, strlen(cmd)); /** Send command to SCPI engine*/
   removeCRLF(out_buffer);                      // remove \r\n from string before comparaison
+<<<<<<< HEAD
    watchdog_update(); /** refresh watchdog */
 
+=======
+  watchdog_update();
+>>>>>>> f06e9b7 (build with Visual Code pico extension and with sdk 2.1.0)
   // validate if string are identical, raise flag if not identical
   do
   {
@@ -323,7 +329,7 @@ void test_cmd_substring(const char* title, const char* cmd, char* expected_subst
   output_buffer_clear();                       // clear result before capture output
   SCPI_Input(&scpi_context, cmd, strlen(cmd)); /** Send command to SCPI engine*/
   removeCRLF(out_buffer);                      // remove \r\n from string before comparaison
-
+  watchdog_update();
   // validate if string are identical, raise flag if not identical
   if (strstr(out_buffer, expected_substring) == NULL)
   {
@@ -618,7 +624,12 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   TEST_SCPI_INPUT("ROUT:CLOSE:OC OC3 \r\n");   // Close OC3
   test_cmd_result("Test 3.4 Output Collector OC3 Drive 1 (Active),read ADC0", "ANA:ADC0:VOLT? \r\n", 0.2, "V", 0.2, 0.2, &c_test, &buffer);
   TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \r\n");  // Open OC3
+<<<<<<< HEAD
   test_cmd_result("Test 3.5: Output Collector OC3 Drive 0 (Inactive),read ADC0", "ANA:ADC0:VOLT? \r\n", 5, "V", 0.4, 1, &c_test, &buffer);
+=======
+  sleep_ms(1);
+  test_cmd_result("Test 3.5: Output Collector OC3 Drive 0 (Inactive),read ADC0", "ANA:ADC0:VOLT? \r\n", 5, "V", 0.4, 0.8, &c_test, &buffer);
+>>>>>>> f06e9b7 (build with Visual Code pico extension and with sdk 2.1.0)
 
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8  1 \r\n");  // Close K13 (ADC1)
   test_cmd_result("Test 4.0: 5VDC Check with ADC1", "ANA:ADC1:VOLT? \r\n", 5.0, "V", 0.4, 0.3, &c_test, &buffer);
@@ -1019,14 +1030,22 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   TEST_SCPI_INPUT("COM:SERIAL:Protocol O72\r\n");
   TEST_SCPI_INPUT("COM:I2C:WRI 103,#HEA\r\n");  // Set Uart to O72 @ 115200 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 101,#H0\r\n");
+<<<<<<< HEAD
   sleep_ms(30);
+=======
+  sleep_ms(30); 
+>>>>>>> f06e9b7 (build with Visual Code pico extension and with sdk 2.1.0)
   test_cmd_out("Test 16.9 SCPI SERIAL command O72,115200", "COM:SERIAL:Read? 'TEST O72,115200\r'\r\n", "\"TEST O72,115200\"", &c_test, &buffer);
 
   TEST_SCPI_INPUT("COM:SERIAL:Baudrate 38400\r\n");
   TEST_SCPI_INPUT("COM:SERIAL:Protocol N81\r\n");
   TEST_SCPI_INPUT("COM:I2C:WRI 103,#H4C\r\n");  // Set Uart to N81 @ 38400 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 101,#H0\r\n");   // Enable uart on selftest board
+<<<<<<< HEAD
   sleep_ms(30);
+=======
+  sleep_ms(30); 
+>>>>>>> f06e9b7 (build with Visual Code pico extension and with sdk 2.1.0)
   test_cmd_out("Test 16.10 SCPI SERIAL command N81,38400", "COM:SERIAL:Read? 'TEST N81,38400\r'\r\n", "\"TEST N81,38400\"", &c_test, &buffer);
 
   TEST_SCPI_INPUT("COM:SERIAL:Handshake OFF\r\n");
@@ -1042,7 +1061,11 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   TEST_SCPI_INPUT("COM:SERIAL:Protocol N82\r\n");
   TEST_SCPI_INPUT("COM:I2C:WRI 103,#H8E\r\n");  // Set Uart to N82 @ 57600 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 101,#H1\r\n");
+<<<<<<< HEAD
   sleep_ms(30);
+=======
+  sleep_ms(30); 
+>>>>>>> f06e9b7 (build with Visual Code pico extension and with sdk 2.1.0)
   test_cmd_out("Test 16.12 SCPI SERIAL command Handshake,57600", "COM:SERIAL:Read? 'TEST HANDSHAKE,57600\r'\r\n", "\"TEST HANDSHAKE,57600\"", &c_test,
                &buffer);
 
@@ -1649,7 +1672,7 @@ void test_command(void)
   /*          0x3   12 mA   */
   /*  Bit 3   PUE   Pull up enable   */
   /*  Bit 2   PDE   Pull down enable   */
-  /*  Bit 1   SCHT  Enable Schmitt trigger   */
+  /*  Bit 1   SCHT  Enable schmidt trigger   */
   /*  Bit 0   SLF   Slew rate control 1=fast 0 = slow */
 
   TEST_SCPI_INPUT("GPIO:SETP:DEV0:GP22 #H56 \r\n");  // init pad to know value
@@ -1680,7 +1703,7 @@ void test_command(void)
   test_cmd_out("Test 8.2 SCPI System command", "SYSTEM:LED:ERR?\r\n", "0", &c_test, &buffer);
 
   // command to read firmware version of all Pico (Master, Slave1,Slave2,Slave3)
-  test_cmd_out("Test 8.3 SCPI System command", "SYSTEM:DEV:VERS?\r\n", "\"1.0, 1.0, 1.0, 1.0\"", &c_test, &buffer);
+  test_cmd_out("Test 8.3 SCPI System command", "SYSTEM:DEV:VERS?\r\n", "\"1.1, 1.1, 1.1, 1.1\"", &c_test, &buffer);
 
   TEST_SCPI_INPUT("SYST:SLA OFF \r\n");
   test_cmd_out("Test 8.4 SCPI System command", "SYSTEM:SLA?\r\n", "0", &c_test, &buffer);

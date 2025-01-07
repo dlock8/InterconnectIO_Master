@@ -5,7 +5,7 @@ var scpi__uart_8c =
     [ "scpi_uart_enable", "scpi__uart_8c.html#a231b0bd8955930c242a0da8eb078fee6", null ],
     [ "scpi_uart_get_baudrate", "scpi__uart_8c.html#ac71c34a9bd3c9af0db03fa309dbed22e", null ],
     [ "scpi_uart_get_handshake", "scpi__uart_8c.html#a6900c9ec067e00b9432ab92d47bea943", null ],
-    [ "scpi_uart_get_protocol", "scpi__uart_8c.html#a660614784a2c00bf750b2b78b3fae1f4", null ],
+    [ "scpi_uart_get_protocol", "scpi__uart_8c.html#a10b587fcd91c30f8e1625b3d236cf6df", null ],
     [ "scpi_uart_get_timeout", "scpi__uart_8c.html#a4a7f811e2dfaf126e4e7d665c1b26a13", null ],
     [ "scpi_uart_set_baudrate", "scpi__uart_8c.html#a8b9b7e507857261be73965271270d54f", null ],
     [ "scpi_uart_set_handshake", "scpi__uart_8c.html#abf113dcc339af90ccc3d4a63018e900e", null ],

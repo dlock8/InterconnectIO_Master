@@ -145,7 +145,7 @@ uint32_t scpi_spi_get_baudrate()
  */
 uint8_t scpi_spi_set_chipselect(uint32_t num)
 {
-  uint8_t gpio_list[] = {0, 1, 5, 6, 7, 12, 13, 14, 15, 16, 17};  // List of valid gpio to be used as ChipSlect on Master pico
+  uint8_t gpio_list[] = {0, 1, 5, 6, 7, 12, 13, 14, 15, 16, 17};  // List of valid gpio to be used as Chipselect on Master pico
 
   bool valid = false;
   size_t sizeg = sizeof(gpio_list) / sizeof(gpio_list[0]);
@@ -217,7 +217,7 @@ uint32_t scpi_spi_get_databits()
 }
 
 /**
- * @brief function to set the mode to use for spi communication bozoinghghfjj
+ * @brief function to set the mode to use for spi communication 
  *
  * @param mode  value of mode to use
  * @return uint8_t error number

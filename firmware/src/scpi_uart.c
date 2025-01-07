@@ -21,7 +21,7 @@
 #include "pico/stdlib.h"
 #include "hardware/uart.h"
 #include "hardware/irq.h"
-#include "scpi_uart.h"
+#include "include/scpi_uart.h"
 
 /**
  * @brief structure to contents the parameters of the user UART

@@ -409,7 +409,7 @@ int main(void)
   stdio_init_all();
 
   // Required only if want to use serial ports as stdio
-  // stdio_uart_init_full(UART_ID,PICO_DEFAULT_UART_BAUD_RATE,PICO_DEFAULT_UART_TX_PIN,PICO_DEFAULT_UART_RX_PIN);
+ // stdio_uart_init_full(UART_ID,PICO_DEFAULT_UART_BAUD_RATE,PICO_DEFAULT_UART_TX_PIN,PICO_DEFAULT_UART_RX_PIN);
 
   init_scpi();
   setup_master();  // Initialize of internal I2C_communication
@@ -449,6 +449,9 @@ int main(void)
     ctr++; /** counter for the heartbeat led */
     mess++;
 
+ 
+ 
+
     /** Flashing led */
     if (ctr > pulse)
     {
@@ -459,7 +462,11 @@ int main(void)
     /** Heartbeat message on debug port*/
     if (mess > 1500)
     {
+<<<<<<< HEAD
       fprintf(stdout, "Heartbeat Master,Baudrate: %d, version: %d.%d\n", serspeed,IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
+=======
+      fprintf(stdout, "Heartbeat Master, version: %d.%d\n\r", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
+>>>>>>> f06e9b7 (build with Visual Code pico extension and with sdk 2.1.0)
       mess = 0;
     }
 
@@ -469,8 +476,15 @@ int main(void)
       watchdog_update(); /** refresh watchdog */
       gpio_put(PICO_DEFAULT_LED_PIN,0);  // Turn OFF board led to show message reading
 
+<<<<<<< HEAD
       result = SCPI_Input(&scpi_context, &rec.data[0], nb_char);  // send command to SCPI parser
       fprintf(stdout, "SCPI Command: %s\n",&rec.data[0]);  // send message to debug port
+=======
+      result = SCPI_Input(&scpi_context, &rec.data[0],
+                          nb_char);  // send command to SCPI parser
+      fprintf(stdout, "SCPI Command: %s\n\r",
+              &rec.data[0]);  // send message to debug port
+>>>>>>> f06e9b7 (build with Visual Code pico extension and with sdk 2.1.0)
       sleep_ms(50);
       gpio_put(PICO_DEFAULT_LED_PIN, 1);  // Turn ON board led
     }

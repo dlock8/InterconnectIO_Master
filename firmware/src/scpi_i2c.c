@@ -22,7 +22,7 @@
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 #include "pico_lib2/src/sys/include/sys_i2c.h"
-#include "scpi_i2c.h"
+#include "include/scpi_i2c.h"
 
 /**
  * @brief Structure to contain the parameters of the user I2C configuration.

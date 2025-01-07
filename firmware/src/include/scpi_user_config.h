@@ -28,8 +28,9 @@ extern "C" {
 #define USE_FULL_ERROR_LIST  1  ///< Enables the full list of error codes.
 #endif
 
-//#ifdef  SCPI_USER_CONFIG 
-//#define SCPI_USER_CONFIG   1
+#ifndef  SCPI_USER_CONFIG 
+#define SCPI_USER_CONFIG   1
+#endif
 
 // Added to use the custom list of errors
 #ifndef  USE_USER_ERROR_LIST 

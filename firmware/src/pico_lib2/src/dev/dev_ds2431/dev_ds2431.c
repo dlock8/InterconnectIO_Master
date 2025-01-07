@@ -356,7 +356,7 @@ static bool read_eeprom_id(uint8_t id[])
  * @param device_id     Array of 8 numbers who identify the device
  * @param data_buffer   The data buffer who contains the data read from eeprom
  * @param start_address The beginning address of the data to read
- * @param length        The lenght of data to read
+ * @param length        The length of data to read
  * @return true         no error found
  * @return false        error found
  */
@@ -395,14 +395,13 @@ static bool read_eeprom(uint8_t* device_id, uint8_t* data_buffer, int start_addr
  * @param device_id     Array of 8 numbers who identify the device
  * @param data_buffer   The data buffer who contains the data to write on eeprom
  * @param start_address The beginning address of the data to read
- * @param length        The lenght of data to read
+ * @param length        The length of data to read
  * @return true         no error found
  * @return false        error found
  */
 static uint8_t write_eeprom_8bytes(const uint8_t* device_id, const char* data_buffer, int start_address, int length)
 {
   volatile uint8_t ta[3];
-  // volatile uint8_t crcw[2];
   volatile uint8_t crcv[2];
   volatile uint8_t data_read[8];
 
@@ -453,8 +452,8 @@ static uint8_t write_eeprom_8bytes(const uint8_t* device_id, const char* data_bu
   crcv[0] = onewire_read_byte();  // Read CRC0
   crcv[1] = onewire_read_byte();  // Read CRC1
 
-  fprintf(stdout, "Scrathpad status,TA1: 0x%02x,TA2: 0x%02x, E/S: 0x%02x,CRC0: 0x%02x, CRC1: 0x%02x\n", ta[0], ta[1], ta[2], crcv[0], crcv[1]);
-  // Compare write and read scracthpad
+  fprintf(stdout, "scratchpad status,TA1: 0x%02x,TA2: 0x%02x, E/S: 0x%02x,CRC0: 0x%02x, CRC1: 0x%02x\n", ta[0], ta[1], ta[2], crcv[0], crcv[1]);
+  // Compare write and read scratchpad
   for (int i = 0; i < length; i++)
   {
     if (data_read[i] != data_buffer[i])
@@ -513,7 +512,7 @@ static uint8_t calculate_crc8(const uint8_t* data, size_t size)
 /**
  * @brief Search OneWire devices and save the 64bits lasered ROM on a array
  *
- * @param struct rom            Contains devide_id found during search on OneWire link
+ * @param struct rom            Contains device_id found during search on OneWire link
  * @param nb_devices_expected   Number of devices expected on OneWire link
  * @return true                 At least one device has been found
  */
@@ -538,7 +537,7 @@ static bool onewire_read_id(struct rom* romid, size_t nb_devices_expected)
     {
       fprintf(stdout, "OneWire presence detected\n");
       nb = 0;
-      onewire_search_reset();  // intialize search counter and variables
+      onewire_search_reset();  // initialize search counter and variables
       while (onewire_search(id))
       {
         romstr[0] = '\0';  // initialize array first character at 0
@@ -736,7 +735,7 @@ uint8_t onewire_check_devices(char** owdata, size_t nbid)
   char readstr[NB_TEST]; /**<  Contains string read from device */
   struct rom idr;        /**<  Structure who contains result of the search devices */
 
-  *owdata = (char*)malloc((16 + 16) * MAX_ONEWIRE);  // set size of pointer to comntains the ID of device
+  *owdata = (char*)malloc((16 + 16) * MAX_ONEWIRE);  // set size of pointer to contains the ID of device
 
   valid = onewire_read_id(&idr, nbid);  // search devices and read device id
   if (valid == false)
@@ -754,7 +753,7 @@ uint8_t onewire_check_devices(char** owdata, size_t nbid)
   }
 
   found = false;                            // preset the flag found
-  for (size_t nb = 0; nb < idr.nbid; nb++)  // lopp for each devices found on the search devices
+  for (size_t nb = 0; nb < idr.nbid; nb++)  // loop for each devices found on the search devices
   {
     if (idr.ecode[nb] == 0)
     {  // if no error detected

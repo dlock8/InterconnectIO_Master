@@ -1,0 +1,51 @@
+\hypertarget{dev__mcp4725_8h_source}{}\doxysection{dev\+\_\+mcp4725.\+h}
+\label{dev__mcp4725_8h_source}\index{firmware/src/pico\_lib2/src/dev/dev\_mcp4725/dev\_mcp4725.h@{firmware/src/pico\_lib2/src/dev/dev\_mcp4725/dev\_mcp4725.h}}
+\mbox{\hyperlink{dev__mcp4725_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#ifndef \_DEV\_MCP4725\_H\_}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#define \_DEV\_MCP4725\_H\_}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{22 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}}}
+\DoxyCodeLine{23 \{}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}../../sys/include/sys\_i2c.h"{}}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define VDD 3.3}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{46   \textcolor{keyword}{enum}}
+\DoxyCodeLine{47   \{}
+\DoxyCodeLine{48     \mbox{\hyperlink{dev__mcp4725_8h_a99fb83031ce9923c84392b4e92f956b5aea40557730e6ac7a6cc7a9391f07562e}{MCP4725\_ADDR0}} = 0x60,  }
+\DoxyCodeLine{49     \mbox{\hyperlink{dev__mcp4725_8h_a99fb83031ce9923c84392b4e92f956b5ae3fad3d40b4167b89d800fab9e2af6ff}{MCP4725\_ADDR1}} = 0x61   }
+\DoxyCodeLine{50   \};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{62   \textcolor{keyword}{enum}}
+\DoxyCodeLine{63   \{}
+\DoxyCodeLine{64     \mbox{\hyperlink{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04a3c197be061ed660757c6bbf81b6940b3}{MCP4725\_PD\_OFF}} = 0,  }
+\DoxyCodeLine{65     \mbox{\hyperlink{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04ac2e8f709fb12aa0c37843b039bb4dd4a}{MCP4725\_PD\_1}},        }
+\DoxyCodeLine{66     \mbox{\hyperlink{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04ac9a5eba5fe20609d2dfe8be67a34eb08}{MCP4725\_PD\_100}},      }
+\DoxyCodeLine{67     \mbox{\hyperlink{dev__mcp4725_8h_abc6126af1d45847bc59afa0aa3216b04abef291a5cf600adf1ff254df64ffc0a3}{MCP4725\_PD\_500}}       }
+\DoxyCodeLine{68   \};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{74   \textcolor{keywordtype}{void} \mbox{\hyperlink{dev__mcp4725_8h_acbc0fe8bfa2d1ab7669b85942365ec7f}{dev\_mcp4725\_pd}}(uint8\_t pd);}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{83   \textcolor{keywordtype}{bool} \mbox{\hyperlink{dev__mcp4725_8h_ae05d478c9e88a7ae7911f804e197cc6a}{dev\_mcp4725\_set\_raw}}(i2c\_inst\_t* i2c, uint8\_t addr, uint16\_t value);}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{95   \textcolor{keywordtype}{bool} \mbox{\hyperlink{dev__mcp4725_8h_a18c7b83ea36a97f6f74bf70f6d359ed0}{dev\_mcp4725\_set}}(i2c\_inst\_t* i2c, uint8\_t addr, \textcolor{keywordtype}{float} volt);}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{102   \textcolor{keywordtype}{float} \mbox{\hyperlink{dev__mcp4725_8h_a9a90c2af6bc2745bc5525014652e32e1}{dev\_mcp4725\_get}}(i2c\_inst\_t* i2c, uint8\_t addr);}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{111   \textcolor{keywordtype}{bool} \mbox{\hyperlink{dev__mcp4725_8h_af2f59127345c400e06ab51bc5ede3578}{dev\_mcp4725\_save}}(i2c\_inst\_t* i2c, uint8\_t addr, \textcolor{keywordtype}{float} volt);}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{114 \}}
+\DoxyCodeLine{115 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_DEV\_MCP4725\_H\_}}
+
+\end{DoxyCode}

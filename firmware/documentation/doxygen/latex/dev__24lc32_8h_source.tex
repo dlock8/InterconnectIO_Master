@@ -1,0 +1,93 @@
+\hypertarget{dev__24lc32_8h_source}{}\doxysection{dev\+\_\+24lc32.\+h}
+\label{dev__24lc32_8h_source}\index{firmware/src/pico\_lib2/src/dev/dev\_24lc32/dev\_24lc32.h@{firmware/src/pico\_lib2/src/dev/dev\_24lc32/dev\_24lc32.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{ * Copyright (c) 2022, Mezael Docoy}}
+\DoxyCodeLine{3 \textcolor{comment}{ * All rights reserved.}}
+\DoxyCodeLine{4 \textcolor{comment}{ *}}
+\DoxyCodeLine{5 \textcolor{comment}{ * Redistribution and use in source and binary forms, with or without}}
+\DoxyCodeLine{6 \textcolor{comment}{ * modification, are permitted provided that the following conditions are met:}}
+\DoxyCodeLine{7 \textcolor{comment}{ *}}
+\DoxyCodeLine{8 \textcolor{comment}{ * * Redistributions of source code must retain the above copyright notice, this}}
+\DoxyCodeLine{9 \textcolor{comment}{ *   list of conditions and the following disclaimer.}}
+\DoxyCodeLine{10 \textcolor{comment}{ *}}
+\DoxyCodeLine{11 \textcolor{comment}{ * * Redistributions in binary form must reproduce the above copyright notice,}}
+\DoxyCodeLine{12 \textcolor{comment}{ *   this list of conditions and the following disclaimer in the documentation}}
+\DoxyCodeLine{13 \textcolor{comment}{ *   and/or other materials provided with the distribution.}}
+\DoxyCodeLine{14 \textcolor{comment}{ *}}
+\DoxyCodeLine{15 \textcolor{comment}{ * * Neither the name of the copyright holder nor the names of its}}
+\DoxyCodeLine{16 \textcolor{comment}{ *   contributors may be used to endorse or promote products derived from}}
+\DoxyCodeLine{17 \textcolor{comment}{ *   this software without specific prior written permission.}}
+\DoxyCodeLine{18 \textcolor{comment}{ *}}
+\DoxyCodeLine{19 \textcolor{comment}{ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "{}AS IS"{}}}
+\DoxyCodeLine{20 \textcolor{comment}{ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE}}
+\DoxyCodeLine{21 \textcolor{comment}{ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE}}
+\DoxyCodeLine{22 \textcolor{comment}{ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE}}
+\DoxyCodeLine{23 \textcolor{comment}{ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR}}
+\DoxyCodeLine{24 \textcolor{comment}{ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF}}
+\DoxyCodeLine{25 \textcolor{comment}{ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS}}
+\DoxyCodeLine{26 \textcolor{comment}{ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN}}
+\DoxyCodeLine{27 \textcolor{comment}{ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)}}
+\DoxyCodeLine{28 \textcolor{comment}{ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE}}
+\DoxyCodeLine{29 \textcolor{comment}{ * POSSIBILITY OF SUCH DAMAGE.}}
+\DoxyCodeLine{30 \textcolor{comment}{ */}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#ifndef AT24CX\_I2C}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define AT24CX\_I2C}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{36 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \{}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#include "{}../../sys/include/sys\_i2c.h"{}}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 }
+\DoxyCodeLine{48 \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \{}
+\DoxyCodeLine{49     AT24CX\_ERR = -\/1,                 }
+\DoxyCodeLine{50     AT24CX\_OK,                       }
+\DoxyCodeLine{51     AT24CX\_NOT\_DETECTED,             }
+\DoxyCodeLine{52     AT24CX\_INVALID\_ADDRESS,           }
+\DoxyCodeLine{53     AT24CX\_INVALID\_PAGEWRITE\_ADDRESS  }
+\DoxyCodeLine{54 \} at24cx\_err\_t;}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{59 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{60     uint8\_t \mbox{\hyperlink{structat24cx__writedata__t_a7717a0a7eae77b6e6e6f865468e40338}{data}};                    }
+\DoxyCodeLine{61     uint8\_t data\_multi[128];         }
+\DoxyCodeLine{62     uint16\_t \mbox{\hyperlink{structat24cx__writedata__t_af603dc7c51ac7c0f136545cceeadd3e0}{address}};                }
+\DoxyCodeLine{63 \} \mbox{\hyperlink{structat24cx__writedata__t}{at24cx\_writedata\_t}};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{68 \textcolor{keyword}{typedef} \textcolor{keyword}{struct }\{}
+\DoxyCodeLine{69     uint8\_t \mbox{\hyperlink{structat24cx__dev__t_a6087cef114ad08fe68a4a22d2c09b1bf}{status}} : 1;              }
+\DoxyCodeLine{70     uint32\_t \mbox{\hyperlink{structat24cx__dev__t_ae0cf7dc0d87c1075dde28c05987dd68e}{byte\_size}};              }
+\DoxyCodeLine{71     uint16\_t \mbox{\hyperlink{structat24cx__dev__t_ac9f415427064b89d4681794535df4bf5}{page\_write\_size}};        }
+\DoxyCodeLine{72     uint8\_t \mbox{\hyperlink{structat24cx__dev__t_af78e01ea33774fd49de68c6aa52b713c}{i2c\_addres}};             }
+\DoxyCodeLine{73     uint16\_t \mbox{\hyperlink{structat24cx__dev__t_ae879ca6494e34f75b7d5b46494decc0e}{dev\_chip}};               }
+\DoxyCodeLine{74 \} \mbox{\hyperlink{structat24cx__dev__t}{at24cx\_dev\_t}};}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 }
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#define I2C\_ADDRESS\_AT24CX      0x50}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#define AT24CX\_WRITE\_CYCLE\_DELAY    5}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{94 \textcolor{keywordtype}{void} at24cx\_i2c\_device\_register(\mbox{\hyperlink{structat24cx__dev__t}{at24cx\_dev\_t}} *dev, uint16\_t \_dev\_chip, uint8\_t \_i2c\_addres);}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{100 at24cx\_err\_t at24cx\_i2c\_byte\_write(\mbox{\hyperlink{structat24cx__dev__t}{at24cx\_dev\_t}} dev, \mbox{\hyperlink{structat24cx__writedata__t}{at24cx\_writedata\_t}} dt);}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{106 at24cx\_err\_t at24cx\_i2c\_page\_write(\mbox{\hyperlink{structat24cx__dev__t}{at24cx\_dev\_t}} dev, \mbox{\hyperlink{structat24cx__writedata__t}{at24cx\_writedata\_t}} dt);}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{112 at24cx\_err\_t at24cx\_i2c\_byte\_read(\mbox{\hyperlink{structat24cx__dev__t}{at24cx\_dev\_t}} dev, \mbox{\hyperlink{structat24cx__writedata__t}{at24cx\_writedata\_t}} *dt);}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{118 at24cx\_err\_t at24cx\_i2c\_current\_address\_read(\mbox{\hyperlink{structat24cx__dev__t}{at24cx\_dev\_t}} dev, \mbox{\hyperlink{structat24cx__writedata__t}{at24cx\_writedata\_t}} *dt);}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{121 \}}
+\DoxyCodeLine{122 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{preprocessor}{\#endif }\textcolor{comment}{/* AT24CX\_I2C */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

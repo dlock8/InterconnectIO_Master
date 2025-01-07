@@ -35,7 +35,7 @@ extern "C"
 
 #define DEF_SPI_USER spi0      //!< spi0 is the user communication channel to external
 #define DEF_SPI_BAUD 1E5       //!< spi baudrate is set at 100Khz by default
-#define DEF_SPI_DATABITS 8     //!< spi number of bits used for comunication
+#define DEF_SPI_DATABITS 8     //!< spi number of bits used for communication
 #define DEF_SPI_CS 5           //!< spi gpio used to perform chipselect
 #define DEF_SPI_MODE 0         //!< define mode parameters: cs,cpol,cpha and MSB
 #define DEF_SPI_STATUS 0       //!< spi is disable by default

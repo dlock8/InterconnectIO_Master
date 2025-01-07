@@ -1,0 +1,67 @@
+\hypertarget{sys__i2c_8h_source}{}\doxysection{sys\+\_\+i2c.\+h}
+\label{sys__i2c_8h_source}\index{firmware/src/pico\_lib2/src/sys/include/sys\_i2c.h@{firmware/src/pico\_lib2/src/sys/include/sys\_i2c.h}}
+\mbox{\hyperlink{sys__i2c_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{19 \textcolor{comment}{/**************************************************************************/}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#ifndef \_SYS\_I2C\_H\_}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define \_SYS\_I2C\_H\_}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{37  \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \{}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#include <stdint.h>}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#include <stdbool.h>}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#include "{}hardware/i2c.h"{}}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#define I2C\_TIMEOUT\_CHAR 500}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 }
+\DoxyCodeLine{63 \textcolor{preprocessor}{\#define SYS\_SDA0 8}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#define SYS\_SCL0 9}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#define SYS\_SDA1 6}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{87 \textcolor{preprocessor}{\#define SYS\_SCL1 7}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89 }
+\DoxyCodeLine{99 \textcolor{keywordtype}{void} \mbox{\hyperlink{sys__i2c_8h_aedc183cad1f8e9940822213efe256114}{sys\_i2c\_setbaudrate}}(i2c\_inst\_t* i2c, uint32\_t baudrate);}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{108 \textcolor{keywordtype}{void} \mbox{\hyperlink{sys__i2c_8h_aa4c5aeb76145bf94e5a455722c43a568}{sys\_i2c\_init}}(i2c\_inst\_t* i2c, uint32\_t sda, uint32\_t scl, uint32\_t baudrate, \textcolor{keywordtype}{bool} pullup);}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{115 \textcolor{keywordtype}{void} \mbox{\hyperlink{sys__i2c_8h_a468f8927ef2be2ea04f63fed9a48c6bc}{sys\_i2c\_init\_def}}(i2c\_inst\_t* i2c, uint32\_t baudrate, \textcolor{keywordtype}{bool} pullup);}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{130 int32\_t \mbox{\hyperlink{sys__i2c_8h_a05496cc0c2d8e4ffd67289652d19b0f0}{sys\_i2c\_rbyte}}(i2c\_inst\_t* i2c, uint8\_t addr, uint8\_t* rb);}
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 }
+\DoxyCodeLine{141 int32\_t \mbox{\hyperlink{sys__i2c_8h_a363dd1c2de483d04a7287a4ae00cff80}{sys\_i2c\_wbyte}}(i2c\_inst\_t* i2c, uint8\_t addr, uint8\_t wb);}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{152 int32\_t \mbox{\hyperlink{sys__i2c_8h_ad5a80921a99e8ea446051073a7d3e7ce}{sys\_i2c\_rbyte\_reg}}(i2c\_inst\_t* i2c, uint8\_t addr, uint8\_t reg, uint8\_t* rb);}
+\DoxyCodeLine{153 }
+\DoxyCodeLine{163 int32\_t \mbox{\hyperlink{sys__i2c_8h_a0bce52d6743e05463bccd60ecfca5051}{sys\_i2c\_wbyte\_reg}}(i2c\_inst\_t* i2c, uint8\_t addr, uint8\_t reg, uint8\_t wb);}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165 }
+\DoxyCodeLine{175 int32\_t \mbox{\hyperlink{sys__i2c_8h_a2810577779f498a4feb4ac77ca881b9f}{sys\_i2c\_rbuf}}(i2c\_inst\_t* i2c, uint8\_t addr, uint8\_t* pBuf, uint32\_t len);}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{186 int32\_t \mbox{\hyperlink{sys__i2c_8h_a59f00ac8fb021f155d9390fe61d955a8}{sys\_i2c\_wbuf}}(i2c\_inst\_t* i2c, uint8\_t addr, \textcolor{keyword}{const} uint8\_t* pBuf, uint32\_t len);}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188 }
+\DoxyCodeLine{199 int32\_t \mbox{\hyperlink{sys__i2c_8h_a2b06ea2845fa47ece9fc4298a36fec8f}{sys\_i2c\_rbuf\_reg}}(i2c\_inst\_t* i2c, uint8\_t addr, uint8\_t reg, uint8\_t* pBuf, uint32\_t len);}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201 }
+\DoxyCodeLine{212 int32\_t \mbox{\hyperlink{sys__i2c_8h_a45b3ffba04dc633b9b332d1ccb68a53d}{sys\_i2c\_wbuf\_reg}}(i2c\_inst\_t* i2c, uint8\_t addr, uint8\_t reg, uint8\_t* pBuf, uint32\_t len);}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{225 int32\_t \mbox{\hyperlink{sys__i2c_8h_abde7dcba2bebdde2b8fe0371b5d8230c}{sys\_i2c\_wbuf\_rbuf}}(i2c\_inst\_t* i2c, uint8\_t addr, uint8\_t* wBuf, uint32\_t wlen,uint8\_t* rBuf, uint32\_t rlen);}
+\DoxyCodeLine{226 }
+\DoxyCodeLine{237 int32\_t \mbox{\hyperlink{sys__i2c_8h_a49400456e17c02908105ed9eac09e228}{sys\_i2c\_rbyte\_eeprom}}(i2c\_inst\_t* i2c, uint8\_t addr, uint8\_t* ee\_address, uint8\_t* pBuf, uint32\_t len);}
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239 }
+\DoxyCodeLine{240 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{241 \}}
+\DoxyCodeLine{242 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{243 }
+\DoxyCodeLine{244 \textcolor{preprocessor}{\#endif   }\textcolor{comment}{// \_SYS\_I2C\_H\_}}
+
+\end{DoxyCode}

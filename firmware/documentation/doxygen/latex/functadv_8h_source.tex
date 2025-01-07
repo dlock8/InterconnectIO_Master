@@ -1,0 +1,89 @@
+\hypertarget{functadv_8h_source}{}\doxysection{functadv.\+h}
+\label{functadv_8h_source}\index{firmware/src/include/functadv.h@{firmware/src/include/functadv.h}}
+\mbox{\hyperlink{functadv_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef \_FUNCTADV\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define \_FUNCTADV\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}hardware/i2c.h"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#define ADC0 26       }}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#define ADC1 27       }}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#define ADC2 28       }}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#define ADC3 29       }}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#define ADC\_REF 3.0f  }}
+\DoxyCodeLine{26 }
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define MINDACVOLT 0    }}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define MAXDACVOLT 3.3  }}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define NOERR 0  }}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define EOOR 1   }}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define EDE 2    }}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define ERE 3    }}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define ECE 4    }}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define EMP 5    }}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define EIVN 6   }}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define ENDE 7   }}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#define EBE 8    }}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#define ADD\_EEPROM\_BASE 0x40  }}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#define TEST\_EEPROM\_ADD 0x0   }}
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#define EE\_PAGESIZE 32        }}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#define EEMODEL 32            }}
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#define EESIZE 4096           }}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define GPIO\_CTRL\_REG (IO\_BANK0\_BASE + 0x04)  }}
+\DoxyCodeLine{51 \textcolor{preprocessor}{\#define GPIO\_CTRL\_MPY 8                       }}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#define GPIO\_IRQOVER\_BITS 28  }}
+\DoxyCodeLine{54 \textcolor{preprocessor}{\#define GPIO\_INOVER\_BITS 16   }}
+\DoxyCodeLine{55 \textcolor{preprocessor}{\#define GPIO\_OEOVER\_BITS 12   }}
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#define GPIO\_OUTOVER\_BITS 8   }}
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#define GPIO\_ALT\_BITS 0       }}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#define GPIO\_ALT\_SPI\_VAL 1    }}
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#define GPIO\_ALT\_UART\_VAL 2   }}
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#define GPIO\_ALT\_I2C\_VAL 3    }}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#define GPIO\_ALT\_PWM\_VAL 4    }}
+\DoxyCodeLine{63 \textcolor{preprocessor}{\#define GPIO\_ALT\_SIO\_VAL 5    }}
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#define GPIO\_ALT\_PIO0\_VAL 6   }}
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#define GPIO\_ALT\_PIO1\_VAL 7   }}
+\DoxyCodeLine{66 \textcolor{preprocessor}{\#define GPIO\_ALT\_USB\_VAL 9    }}
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#define GPIO\_ALT\_NONE\_VAL 31  }}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{preprocessor}{\#define GPIO\_SYNC\_BYPASS\_REG (SYSCFG\_BASE + 0x0C)  }}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#define PAD\_GPIO\_VOLTAGE\_REG (PADS\_BANK0\_BASE + 0x00)  }}
+\DoxyCodeLine{73 \textcolor{preprocessor}{\#define PAD\_GPIO\_REG (PADS\_BANK0\_BASE + 0x04)          }}
+\DoxyCodeLine{74 \textcolor{preprocessor}{\#define PAD\_GPIO\_MPY 4                                 }}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#define PAD\_GPIO\_SWC\_REG (PADS\_BANK0\_BASE + 0x7C)  }}
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#define PAD\_GPIO\_SWD\_REG (PADS\_BANK0\_BASE + 0x80)  }}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#define PAD\_VOLTAGE\_BIT 0  }}
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#define PAD\_OD\_BIT 7       }}
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#define PAD\_IE\_BIT 6       }}
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#define PAD\_DRIVE\_BITS 4   }}
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#define PAD\_PUE\_BIT 3      }}
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#define PAD\_PDE\_BIT 2      }}
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#define PAD\_SCHMITT\_BIT 1  }}
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#define PAD\_SLEW\_BIT 0     }}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#define min(a, b) ((a) < (b) ? (a) : (b))}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 uint8\_t \mbox{\hyperlink{functadv_8h_aeb2f97389a21ddcd9bb6f71b3e453412}{dac\_set}}(\textcolor{keywordtype}{float} value, \textcolor{keywordtype}{bool} save);}
+\DoxyCodeLine{100 \textcolor{keywordtype}{float} \mbox{\hyperlink{functadv_8h_a6c2cf0c9535f9fa71cdb14b806ffe05e}{read\_master\_adc}}(uint8\_t channel);}
+\DoxyCodeLine{101 \textcolor{keywordtype}{float} \mbox{\hyperlink{functadv_8h_acd4acc6743b6cabe7721f5d2aa3702bb}{read\_power}}(uint8\_t mode);}
+\DoxyCodeLine{102 \textcolor{keywordtype}{void} \mbox{\hyperlink{functadv_8h_a4cc4d88d31f1d255a19e35b88d50048f}{calibrate\_power}}(\textcolor{keywordtype}{float} actual, \textcolor{keywordtype}{float} expected);}
+\DoxyCodeLine{103 uint8\_t \mbox{\hyperlink{functadv_8h_a84b836efc8bc5a3e76177273b7992b3f}{cfg\_eeprom\_rw}}(\textcolor{keywordtype}{char} mode, uint32\_t eeaddr, uint8\_t eedatalen, \textcolor{keywordtype}{char}* data, uint8\_t datalen);}
+\DoxyCodeLine{104 \textcolor{keywordtype}{void} \mbox{\hyperlink{functadv_8h_a0a1dd209f11841a2690f544547c24cf2}{scan\_i2c\_bus}}(i2c\_inst\_t* i2c);}
+\DoxyCodeLine{105 uint8\_t \mbox{\hyperlink{functadv_8h_a334e43ee30644a3623e33207987bad9d}{cfg\_eeprom\_read\_full}}();}
+\DoxyCodeLine{106 uint8\_t \mbox{\hyperlink{functadv_8h_ae0302adfd83eb620eb11b76936403670}{cfg\_eeprom\_write\_default}}();}
+\DoxyCodeLine{107 uint8\_t \mbox{\hyperlink{functadv_8h_acfe7d8f6b31a062f1253cb4ecb10859e}{stringtonumber}}(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* str, \textcolor{keywordtype}{size\_t} lgs, \textcolor{keywordtype}{long}* result);}
+\DoxyCodeLine{108 \textcolor{keywordtype}{bool} \mbox{\hyperlink{functadv_8h_a990568f28f616bb1e19a49e1a8ac9950}{Boot\_check}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{109 \textcolor{keywordtype}{bool} \mbox{\hyperlink{functadv_8h_acb717495a9c37a468e5494f571ef1607}{IOBoard\_Selftest}}();}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{//}}
+
+\end{DoxyCode}

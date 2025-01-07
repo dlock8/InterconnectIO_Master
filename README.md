@@ -1,4 +1,4 @@
-# First TestStation InterconnectIO SCPI firmware
+# First TestStation InterconnectIO firmware Master 700-2000-011
 
 The complete FTS project is documented on a github website:  https://dlock8.github.io/FTS_Website/
 
@@ -17,28 +17,20 @@ This project is licensed under the BSD 3-Clause License. See the [LICENSE](./LIC
 
 ## Project setup
 
-This project has been developped on raspberry pi 4 following installation instruction from this pdf [getting-started-with-pico_C.pdf](./documentation/getting-started-with-pico_C.pdf),  a copy of the pdf is located on the main folder.
-Visual studio has been used for developpment and rasberry pi 4 for Pico debug.  
+This project was initially developed in 2020 on a Raspberry Pi 4, following the installation instructions from Getting Started with Pico_C.pdf Version 1.4.
 
-Initially based on https://github.com/cronologic-de/webusb, the project has elvoved to be a complete SCPI instrument 
+The current version has been developed on a Raspberry Pi 5 using Visual Studio with the Raspberry Pi Pico extension, following the instructions in Getting Started with Pico_C.pdf dated 15 October 2024.
+
+For debugging, we utilize the GPIO pins of the Raspberry Pi 5, instead of the suggested debug probe.
+
+Initially based on https://github.com/cronologic-de/webusb, the project has evolved to be a complete SCPI instrument 
 without frontend interface (next phase).
 
 The compilation is performed using Visual Studio and the extension installed are:
 
-* Cmake v0.0.17
-* Cmake Tools v1.20.10
-* Cortex-Debug v1.12.1
-* debug-tracker-vscode v0.0.15
+* Raspberry Pi Pico Visual Studio Code extension 0.17.2
 * Doxygen Documentation Generator v1.4.0
 * Doxygen runner v1.8.0
-* Github Pull Request v0.96.0
-* Hex Editor v1.10.0
-* MemoryView v0.0.25
-* Periheral Viewer v1.4.6
-* RTOS view v0.0.7
-* C/C++ v1.21.6
-
-I not sure if all extensions are required but is the one installed presently.
 
 
 ## Building
@@ -50,13 +42,15 @@ Build of this cmake project is performed with Visual Studio
 * [`master.c`](master.c) is the main source file for the firmware.
 * [`CMakeLists.txt`](CMakeLists.txt) contains build instructions for CMake, including how to build the SCPI library.
 * [`pico_sdk_import.cmake`](pico_sdk_import.cmake) was (as usual) copied verbatim from the Pico SDK and allows CMake to interact with the SDK’s functionality.
+* [`raspberrypi-swd.cfg`](raspberrypi-swd.cfg) need to be copied on openocd interface folder 
+(../.pico-sdk/openocd/0.12.0+dev/scripts/interface/) if GPIO pins is used to debug project.
 
 ## Installation
 
-* The Files master.uf2 contains the firmware to be loaded on the Pico RP2040 board using USB cable and boot button.
+* The Files INTERCONNECTIO_MASTER.uf2 contains the firmware to be loaded on the Pico RP2040 board using USB cable and boot button.
 * When software loaded, the Pico board should be installed on the location marked MASTER on interconnectIO Board.
 * On board Pico Led will flash slowly (heartbeat) on power ON.
-* Loading master.uf2 will trigger the watchdog, resulting in a burst of beeps during the boot sequence to signal the watchdog timeout. Only cycling the power ON/OFF will reset the watchdog trigger flag.
+* Loading INTERCONNECTIO_MASTER.uf2 will trigger the watchdog, resulting in a burst of beeps during the boot sequence to signal the watchdog timeout. Only cycling the power ON/OFF will reset the watchdog trigger flag.
 
 ## Beep code
 
@@ -119,7 +113,7 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 |ROUTe:OPEN:PWR |{LPR1\|HPR1\|HPR2\|SSR1}|  Open the designated power relay
 |ROUTe:STATe:PWR? |{LPR1\|HPR1\|HPR2\|SSR1}| Read state of the power relay, 0: Open, 1:Closed
 |ROUTE:CLOSe:OC |{OC1\|OC2\|OC3}|   Close or activate the designated open collector transistor
-|ROUTE:OPEN:OC |{OC1\|OC2\|OC3}|    Open or desactivate the designated open collector transistor
+|ROUTE:OPEN:OC |{OC1\|OC2\|OC3}|    Open or deactivate the designated open collector transistor
 |ROUTE:STATe:OC?|{OC1\|OC2\|OC3}|   Read state of the the designated open collector transistor, 0: Open, 1:Closed
 |DIGital:In:PORTn? |{0-1}|      Read Decimal value of the designated digital port (port0: 8 bits, port1: 8 bits)
 |DIGital:In:PORTn:BITn? |{0-1}| Read value of the bit position at the designated port 
@@ -133,13 +127,13 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 |GPIO:Out:DEVice#:GP#  |{0-3} {0-28} {0-1}|  At the designated device and defined gpio number, set the output to the value.
 |GPIO:In:DEVice#:GP#?  |{0-3} {0-28} |      At the designated device and defined gpio number, read the value of the GPIO.
 |GPIO:SETPad:DEVice#:GP# |{0-3} {0-28} {\<Value\>}| At the designated device and defined gpio number, set the pad value.
-|GPIO:GETPad:DEVice#:GP#? |{0-3} {0-28}|    At the designated device and defined gpio number,read the pad value. <br /> **PAD REGISTER DEFINITION** <br /> Bit 7: &ensp; OD Output disable <br /> Bit 6: &ensp; IE Input  enable  <br /> Bit 5:4 &ensp;DRIVE Strength 0x0: 2mA, 0x1: 4mA, 0x2: 8mA, 0x3: 12mA<br /> Bit 3:&ensp; PUE Pull up enable <br />Bit 2:&ensp; PDE Pull down enable<br />Bit 1:&ensp;   SCHT  Enable schnitt trigger<br />Bit 0:&ensp; SLF Slew rate control 1=fast 0 = slow <br />
+|GPIO:GETPad:DEVice#:GP#? |{0-3} {0-28}|    At the designated device and defined gpio number,read the pad value. <br /> **PAD REGISTER DEFINITION** <br /> Bit 7: &ensp; OD Output disable <br /> Bit 6: &ensp; IE Input  enable  <br /> Bit 5:4 &ensp;DRIVE Strength 0x0: 2mA, 0x1: 4mA, 0x2: 8mA, 0x3: 12mA<br /> Bit 3:&ensp; PUE Pull up enable <br />Bit 2:&ensp; PDE Pull down enable<br />Bit 1:&ensp;   SCHT  Enable schmidt trigger<br />Bit 0:&ensp; SLF Slew rate control 1=fast 0 = slow <br />
 |ANAlog:DAC:Volt | \<value\> | Set DAC output to the value
 |ANAlog:DAC:Save |\<Value\> |  Save a default value for startup
 |ANAlog:ADC0:Volt?||  Read Voltage at ADC input 0
 |ANAlog:ADC1:Volt?||  Read Voltage at ADC input 1
 |ANAlog:ADC:Vsys?||   Read system voltage from Pico Master
-|ANAlog:ADC:Temp?||   Read Pico Master internal temperature in Celcius
+|ANAlog:ADC:Temp?||   Read Pico Master internal temperature in Celsius
 |ANAlog:PWR:Volt?||   Read voltage at load using power monitoring device 
 |ANAlog:PWR:Shunt?||  Read voltage at the shunt resistor (0.1 ohm) using power monitoring device 
 |ANAlog:PWR:Ima?||    Read current(mA) passing in the shunt resistor (calculation I = E/R)
@@ -155,7 +149,7 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 |SYSTem:SLAves?||  0: All Pico Slaves disabled, 1: All Pico Slaves enabled
 |SYSTem:SLAves:STAtus? || read Pico device 'status byte' for slaves 1 to 3
 |SYSTem:TESTboard | {0-5}| Selftest execute from menu below <br /> **0** Input test number to execute (0 to exit) <br>  **1** Selftest using only selftest board, no check of onewire <br> **2** Selftest run only if selftest board is installed, onewire validation <br>  **3** Selftest using selftest board and loopback connector <br>  **4** Selftest of instruments in manual mode using selftest board <br>  **5** Test of SCPI command,selftest board is required
-|CFG:Write:Eeprom:STR | 'varname string,value string' | valid varname = <br> **'partnumber'**: partnumber of the InterconnectIO board, default: '500-1000-010' <br> **'serialnumber'** :  serial number of the InterconnectIO board, default: '00001' <br> **'mod_option'** :  optionnal module installed on the InterconnectIO board, default: 'DAC,PWR'<br> **'com_ser_speed'** :  baudrate used by the SCPI command serial port, default: '115200'<br> **'pico_slaves_run'** :  flag to control the slaves RUN pin actuation. 0: Pico Slaves reset at each boot(disable USB), 1: Do not reset slaves at boot, default: '0'<br> **'testboard_num'** :  partnumber of the selftest board written on the onewire device , default: '500-1010-020'
+|CFG:Write:Eeprom:STR | 'varname string,value string' | valid varname = <br> **'partnumber'**: partnumber of the InterconnectIO board, default: '500-1000-010' <br> **'serialnumber'** :  serial number of the InterconnectIO board, default: '00001' <br> **'mod_option'** :  optional module installed on the InterconnectIO board, default: 'DAC,PWR'<br> **'com_ser_speed'** :  baudrate used by the SCPI command serial port, default: '115200'<br> **'pico_slaves_run'** :  flag to control the slaves RUN pin actuation. 0: Pico Slaves reset at each boot(disable USB), 1: Do not reset slaves at boot, default: '0'<br> **'testboard_num'** :  partnumber of the selftest board written on the onewire device , default: '500-1010-020'
 |CFG:Write:Eeprom:Default  ||   Special command to write all default value to eeprom
 |CFG:Read:Eeprom:Full?  ||       Special command to read all data on eeprom
 |CFG:Read:Eeprom:STR?  |    'varnames string'|  Reads string value from the designated parameter
@@ -174,7 +168,7 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 |COM:SERIAL:READ?   | \<svalues\> |  send string, wait for answer
 |COM:SERIAL:Baud     |\<value\>    | set baudrate speed 
 |COM:SERIAL:Baud?|| read baudrate speed
-|COM:SERIAL:Protocol |\<svalues\> | exa: {N81  O72  E61 8N1 etc ..}. Three character to define prtocol to be use
+|COM:SERIAL:Protocol |\<svalues\> | exa: {N81  O72  E61 8N1 etc ..}. Three character to define protocol to be use
 |COM:SERIAL:Protocol?|| read the used protocol
 |COM:SERIAL:Handshake | {0\|1\|OFF\|ON} |  set the RTS-CTS handshake according to the value
 |COM:SERIAL:Handshake?|| read value corresponding to the handshake state, 0: disabled, 1: enabled 

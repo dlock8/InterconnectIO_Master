@@ -1,0 +1,60 @@
+\hypertarget{scpi__i2c_8h_source}{}\doxysection{scpi\+\_\+i2c.\+h}
+\label{scpi__i2c_8h_source}\index{firmware/src/include/scpi\_i2c.h@{firmware/src/include/scpi\_i2c.h}}
+\mbox{\hyperlink{scpi__i2c_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef \_SCPI\_I2C\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define \_SCPI\_I2C\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{19 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}}}
+\DoxyCodeLine{20 \{}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#define USER\_I2C\_SDA\_PIN 6}}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#define USER\_I2C\_SCL\_PIN 7}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#define DEF\_I2C\_USER i2c1   }}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define DEF\_I2C\_BAUD 1E5    }}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define DEF\_I2C\_ADDR 0      }}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define DEF\_I2C\_DATABITS 8  }}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define DEF\_I2C\_STATUS 0    }}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#define NOERR 0}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#define I2C\_GENERIC\_ERR -\/1}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{58 \textcolor{preprocessor}{\#define I2C\_TIMEOUT\_ERR -\/2}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{63 \textcolor{preprocessor}{\#define I2C\_ADDRESS\_NACK -\/3}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#define I2C\_DATA\_NACK -\/4}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{73 \textcolor{preprocessor}{\#define I2C\_BUS\_ERR -\/5}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{78 \textcolor{preprocessor}{\#define I2C\_MALLOC\_FAILURE 52}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#define I2C\_NOT\_ENABLED 53}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85   \textcolor{keywordtype}{void} \mbox{\hyperlink{scpi__i2c_8h_a639fdc51a3e50b4772d42b7793368cbc}{scpi\_i2c\_enable}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{86   \textcolor{keywordtype}{void} \mbox{\hyperlink{scpi__i2c_8h_a1b2a1d8a0227b38df2c042ce8d5b8b67}{scpi\_i2c\_disable}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{87   \textcolor{keywordtype}{bool} \mbox{\hyperlink{scpi__i2c_8h_af98e6fa769302f1e02f417cebba1ef6e}{scpi\_i2c\_status}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{88   \textcolor{keywordtype}{void} \mbox{\hyperlink{scpi__i2c_8h_a52fdbb304f278c99db17f76b9ce5a0b4}{scpi\_i2c\_set\_baudrate}}(uint32\_t speed);}
+\DoxyCodeLine{89   uint32\_t \mbox{\hyperlink{scpi__i2c_8h_a59a71878176cd7914a60d2bbd05a87ea}{scpi\_i2c\_get\_baudrate}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91   uint8\_t \mbox{\hyperlink{scpi__i2c_8h_a5c1e152a4a59d650aefc3534e9e603fd}{scpi\_i2c\_set\_databits}}(uint32\_t num);}
+\DoxyCodeLine{92   uint32\_t \mbox{\hyperlink{scpi__i2c_8h_ad71bdb9d77d707f25de3a2f3ca6bbadf}{scpi\_i2c\_get\_databits}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94   uint8\_t \mbox{\hyperlink{scpi__i2c_8h_a293c8d65eec0813d0d63223540e42b18}{scpi\_i2c\_set\_address}}(uint32\_t num);}
+\DoxyCodeLine{95   uint32\_t \mbox{\hyperlink{scpi__i2c_8h_aa549b022300c94e6862d3d94ac107538}{scpi\_i2c\_get\_address}}(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97   int8\_t \mbox{\hyperlink{scpi__i2c_8h_a76df3108d1a2c822fb1d43090b4274ca}{scpi\_i2c\_wri\_read\_data}}(uint8\_t* wdata, uint8\_t wlen, uint8\_t* rdata, uint8\_t rlen, \textcolor{keywordtype}{bool}* wflag);}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{100 \}}
+\DoxyCodeLine{101 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{// \_SCPI\_I2C\_H\_}}
+
+\end{DoxyCode}

@@ -23,22 +23,22 @@ struct \mbox{\hyperlink{structrom}{rom}}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{dev__ds2431_8h_ad5e649aa028bd3be75964322c1cc6ed0}\label{dev__ds2431_8h_ad5e649aa028bd3be75964322c1cc6ed0}} 
-\#define \mbox{\hyperlink{dev__ds2431_8h_ad5e649aa028bd3be75964322c1cc6ed0}{ONEWIRE\+\_\+\+PIN}}~10
+\#define {\bfseries ONEWIRE\+\_\+\+PIN}~10
 \begin{DoxyCompactList}\small\item\em GPIO pin connected to the One-\/\+Wire bus. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ds2431_8h_ada85ace4c581616bc14462510ac45308}\label{dev__ds2431_8h_ada85ace4c581616bc14462510ac45308}} 
-\#define \mbox{\hyperlink{dev__ds2431_8h_ada85ace4c581616bc14462510ac45308}{ADDR\+\_\+\+INFO}}~0
+\#define {\bfseries ADDR\+\_\+\+INFO}~0
 \begin{DoxyCompactList}\small\item\em Start address of the information string on EEPROM. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ds2431_8h_ac94f934c3a1db5b1405d62f7663f8442}\label{dev__ds2431_8h_ac94f934c3a1db5b1405d62f7663f8442}} 
-\#define \mbox{\hyperlink{dev__ds2431_8h_ac94f934c3a1db5b1405d62f7663f8442}{NB\+\_\+\+INFO}}~48
+\#define {\bfseries NB\+\_\+\+INFO}~48
 \begin{DoxyCompactList}\small\item\em Maximum characters allowed in the info field. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ds2431_8h_a8eb5531593f8b0ed7d1ead416f38aee6}\label{dev__ds2431_8h_a8eb5531593f8b0ed7d1ead416f38aee6}} 
-\#define \mbox{\hyperlink{dev__ds2431_8h_a8eb5531593f8b0ed7d1ead416f38aee6}{ADDR\+\_\+\+TEST}}~0x60
+\#define {\bfseries ADDR\+\_\+\+TEST}~0x60
 \begin{DoxyCompactList}\small\item\em Test address available to check read/write during testing. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ds2431_8h_a288cad066970ffc8ea1407a0decabde9}\label{dev__ds2431_8h_a288cad066970ffc8ea1407a0decabde9}} 
-\#define \mbox{\hyperlink{dev__ds2431_8h_a288cad066970ffc8ea1407a0decabde9}{NB\+\_\+\+TEST}}~32
+\#define {\bfseries NB\+\_\+\+TEST}~32
 \begin{DoxyCompactList}\small\item\em Size of the self-\/test field. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}\label{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}} 
-\#define \mbox{\hyperlink{dev__ds2431_8h_a2976a865ee778f90e7a031970625d152}{MAX\+\_\+\+ONEWIRE}}~2
+\#define {\bfseries MAX\+\_\+\+ONEWIRE}~2
 \begin{DoxyCompactList}\small\item\em Maximum number of devices on the 1-\/Wire bus at the same time. \end{DoxyCompactList}\item 
 \#define \mbox{\hyperlink{dev__ds2431_8h_ab205d2e85504c5af57e74849cfb53eef}{WRITEMEMORY}}~0x0F
 \begin{DoxyCompactList}\small\item\em Format EEprom mandatory (reserved 48 Bytes) \end{DoxyCompactList}\item 
@@ -377,15 +377,15 @@ Check presence of one\+Wire and check Read Write capacity.
 \begin{DoxyReturn}{Returns}
 uint8\+\_\+t Error number raised during operation 
 \end{DoxyReturn}
-$<$ to get error from the function
+\texorpdfstring{$<$}{<} to get error from the function
 
-$<$ flag to indicate of at least one One\+Wire device has been found
+\texorpdfstring{$<$}{<} flag to indicate of at least one One\+Wire device has been found
 
-$<$ Contains test string to write on device
+\texorpdfstring{$<$}{<} Contains test string to write on device
 
-$<$ Contains string read from device
+\texorpdfstring{$<$}{<} Contains string read from device
 
-$<$ Structure who contains result of the search devices\mbox{\Hypertarget{dev__ds2431_8h_a9842d8b3b4047b13c98cc8543af98012}\label{dev__ds2431_8h_a9842d8b3b4047b13c98cc8543af98012}} 
+\texorpdfstring{$<$}{<} Structure who contains result of the search devices\mbox{\Hypertarget{dev__ds2431_8h_a9842d8b3b4047b13c98cc8543af98012}\label{dev__ds2431_8h_a9842d8b3b4047b13c98cc8543af98012}} 
 \index{dev\_ds2431.h@{dev\_ds2431.h}!onewire\_read\_info@{onewire\_read\_info}}
 \index{onewire\_read\_info@{onewire\_read\_info}!dev\_ds2431.h@{dev\_ds2431.h}}
 \doxysubsubsection{\texorpdfstring{onewire\_read\_info()}{onewire\_read\_info()}}
@@ -409,11 +409,11 @@ Main function to perform a read of all eeprom on 1-\/wire link.
 \begin{DoxyReturn}{Returns}
 uint8\+\_\+t 
 \end{DoxyReturn}
-$<$ to get error from the function
+\texorpdfstring{$<$}{<} to get error from the function
 
-$<$ string to contents the result of the One\+Wire read
+\texorpdfstring{$<$}{<} string to contents the result of the One\+Wire read
 
-$<$ Structure of device id\mbox{\Hypertarget{dev__ds2431_8h_a133748d4159e147c2dd9ffb85a5929a1}\label{dev__ds2431_8h_a133748d4159e147c2dd9ffb85a5929a1}} 
+\texorpdfstring{$<$}{<} Structure of device id\mbox{\Hypertarget{dev__ds2431_8h_a133748d4159e147c2dd9ffb85a5929a1}\label{dev__ds2431_8h_a133748d4159e147c2dd9ffb85a5929a1}} 
 \index{dev\_ds2431.h@{dev\_ds2431.h}!onewire\_write\_info@{onewire\_write\_info}}
 \index{onewire\_write\_info@{onewire\_write\_info}!dev\_ds2431.h@{dev\_ds2431.h}}
 \doxysubsubsection{\texorpdfstring{onewire\_write\_info()}{onewire\_write\_info()}}
@@ -437,14 +437,14 @@ List of function visible by other program \end{quote}
 \begin{DoxyReturn}{Returns}
 uint8\+\_\+t Return error number (0 = No Error) 
 \end{DoxyReturn}
-$<$ Number of character in string
+\texorpdfstring{$<$}{<} Number of character in string
 
-$<$ contain substring to write on Onewire
+\texorpdfstring{$<$}{<} contain substring to write on Onewire
 
-$<$ Array of 8 bytes of the Device\+\_\+id
+\texorpdfstring{$<$}{<} Array of 8 bytes of the Device\+\_\+id
 
-$<$ Used to contains address to write on One\+Wire
+\texorpdfstring{$<$}{<} Used to contains address to write on One\+Wire
 
-$<$ Used in for-\/loop for extract device id from the string
+\texorpdfstring{$<$}{<} Used in for-\/loop for extract device id from the string
 
-$<$ Counter to number of bytes received
+\texorpdfstring{$<$}{<} Counter to number of bytes received

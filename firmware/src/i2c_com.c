@@ -775,7 +775,7 @@ bool gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, u
       command = GP_PAD_SET;     // command to send to read gpio value
       if (slave == PICO_MASTER_ADDRESS)
       {
-        //  hw_write_masked(&padsbank0_hw ->io[gpio],value,maskvalue); // Set Pad state
+
         hw_write_masked(&pads_bank0_hw->io[gpio], value, maskvalue);  // Set Pad state
         fprintf(stdout, "Cmd %02d, Set Pad State to Gpio: %02d ,State: 0x%01x \r\n", command, gpio, value);
       }

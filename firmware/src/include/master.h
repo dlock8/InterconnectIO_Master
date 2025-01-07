@@ -24,7 +24,7 @@ extern "C"
  * @brief maximum time before watchdog trig
  *
  */
-#define WATCHDOG_TIMEOUT 3000 /**< Watchdog set for 3 seconds. */
+#define WATCHDOG_TIMEOUT 5000 /**< Watchdog set for 5 seconds. */
 
 /**
  * @brief UART configuration and default settings.

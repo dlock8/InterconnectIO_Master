@@ -39,5 +39,6 @@ var master_8h =
     [ "WATCHDOG_TIMEOUT", "master_8h.html#abf89628d486477bd0db5a5890cd38a05", null ],
     [ "cfg", "master_8h.html#aff604f626fb9ec96578d8e620974f9f7", null ],
     [ "eep", "master_8h.html#a6ee16918c98b75fe7c46964a9b8c34ea", null ],
+    [ "Hardware_Default_Setting", "master_8h.html#a5f6549f2d2461465f770c1b277910225", null ],
     [ "ee", "master_8h.html#a670da91be64127c92faac35c8300e814", null ]
 ];

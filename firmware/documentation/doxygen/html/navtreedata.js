@@ -24,8 +24,8 @@
 */
 var NAVTREE =
 [
-  [ "InterconnectIO Master", "index.html", [
-    [ "First TestStation InterconnectIO SCPI firmware", "md_README.html", [
+  [ "InterconnectIO_Master", "index.html", [
+    [ "First TestStation InterconnectIO firmware Master 700-2000-011", "md_README.html", [
       [ "License", "md_README.html#autotoc_md1", null ],
       [ "Project setup", "md_README.html#autotoc_md2", null ],
       [ "Building", "md_README.html#autotoc_md3", null ],
@@ -67,7 +67,7 @@ var NAVTREEINDEX =
 "annotated.html",
 "fts__scpi_8h.html#a8b68fef04e40c0e39b1c3ae42033b698",
 "i2c__com_8h.html#ab088f05e0e9346b5a3a4fa3a06a6c33b",
-"structCircularBuffer.html#a7cbe9f3de6d1902a8753095943288b62"
+"structCircularBuffer.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

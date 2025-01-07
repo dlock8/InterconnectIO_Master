@@ -16,10 +16,10 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{test_8h_a6b20d41d6252e9871430c242cb1a56e7}\label{test_8h_a6b20d41d6252e9871430c242cb1a56e7}} 
-\#define \mbox{\hyperlink{test_8h_a6b20d41d6252e9871430c242cb1a56e7}{BUFFER\+\_\+\+SIZE}}~32
+\#define {\bfseries BUFFER\+\_\+\+SIZE}~32
 \begin{DoxyCompactList}\small\item\em Maximum depth size of the circular buffer. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{test_8h_ac146c3c7afc6f342ae4f476bd46d924a}\label{test_8h_ac146c3c7afc6f342ae4f476bd46d924a}} 
-\#define \mbox{\hyperlink{test_8h_ac146c3c7afc6f342ae4f476bd46d924a}{MESSAGE\+\_\+\+LENGTH}}~120
+\#define {\bfseries MESSAGE\+\_\+\+LENGTH}~120
 \begin{DoxyCompactList}\small\item\em Maximum number of characters per string. \end{DoxyCompactList}\item 
 \#define \mbox{\hyperlink{test_8h_af40a326b23c68a27cebe60f16634a2cb}{V}}~1
 \begin{DoxyCompactList}\small\item\em Constant for volts. \end{DoxyCompactList}\item 
@@ -43,7 +43,7 @@ uint8\+\_\+t \mbox{\hyperlink{test_8h_acb420da0ba7e8e1e84b61fec9b4de4b9}{test\+\
 \item Run test sequence to validate hardware with selftest board 
 \end{DoxyItemize}\end{DoxyCompactList}\item 
 void \mbox{\hyperlink{test_8h_ac9d279cdda41da5b1e2775dbfeaae220}{internal\+\_\+test\+\_\+sequence}} (const char $\ast$testboard\+\_\+num, uint8\+\_\+t run)
-\begin{DoxyCompactList}\small\item\em Main routine to perform internal test using selftest board. The routine has been used to validate hardware and software during development if run=0, the menu will be displayed to operator to select which internal test to run. IF run $>$ 0, the internal test will run directly. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Main routine to perform internal test using selftest board. The routine has been used to validate hardware and software during development if run=0, the menu will be displayed to operator to select which internal test to run. IF run \texorpdfstring{$>$}{>} 0, the internal test will run directly. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{test_8h_a7c4492986b11310638a7730bf6658532}{test\+\_\+inst\+\_\+manual}} ()
 \begin{DoxyCompactList}\small\item\em 
 \begin{DoxyItemize}
@@ -79,7 +79,7 @@ int \mbox{\hyperlink{test_8h_ac0f9727a7b6c5bf2aa0f549679faca6c}{onewiretest}} (v
 void \mbox{\hyperlink{test_8h_ab59e4f36eea91695b8662a4ced69a825}{test\+\_\+spi\+\_\+adx}} (void)
 \begin{DoxyCompactList}\small\item\em the software code below is not used by application but could be used, as example on how to work with SPI interface. This example was a proof of concept on SPI command available with a true device (ADXL345). \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{test_8h_a2e4b697185e545c7cf0ffd7864317e95}\label{test_8h_a2e4b697185e545c7cf0ffd7864317e95}} 
-void \mbox{\hyperlink{test_8h_a2e4b697185e545c7cf0ffd7864317e95}{test\+\_\+i2c\+\_\+adx}} (void)
+void {\bfseries test\+\_\+i2c\+\_\+adx} (void)
 \begin{DoxyCompactList}\small\item\em the software code below is not used by application but could be used, as example on how to work with I2C interface. This example was a proof of concept on I2C command available with a true device (ADXL345) connected to interconnect io board \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{test_8h_a026d0e0ebc5a0757923cb305d732fb94}{test\+\_\+i2c\+\_\+ina219}} (void)
 \begin{DoxyCompactList}\small\item\em the software code below is not used by application but could be used, as example on how to work with I2C interface. This example was a proof of concept on I2C command available with a true device (INA219). \end{DoxyCompactList}\item 
@@ -160,7 +160,7 @@ Volts.
 
 
 
-Main routine to perform internal test using selftest board. The routine has been used to validate hardware and software during development if run=0, the menu will be displayed to operator to select which internal test to run. IF run $>$ 0, the internal test will run directly. 
+Main routine to perform internal test using selftest board. The routine has been used to validate hardware and software during development if run=0, the menu will be displayed to operator to select which internal test to run. IF run \texorpdfstring{$>$}{>} 0, the internal test will run directly. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -342,9 +342,9 @@ Detailed report is send to stdout port (usb) Summary report is send to serial po
 \begin{DoxyReturn}{Returns}
 return value of 1 is selftest board is not detected 
 \end{DoxyReturn}
-$<$ Variable used by TEST\+\_\+\+SCPI\+\_\+\+INPUT
+\texorpdfstring{$<$}{<} Variable used by TEST\+\_\+\+SCPI\+\_\+\+INPUT
 
-$<$ array who will contains parts of SCPI command
+\texorpdfstring{$<$}{<} array who will contains parts of SCPI command
 
 Read 1-\/wire to detect if the selftest board is connected to interconnect IO
 

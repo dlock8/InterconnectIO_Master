@@ -106,28 +106,28 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{dev__ina219_8h_ad1082efd7eef489c5ed57c7884eac570}\label{dev__ina219_8h_ad1082efd7eef489c5ed57c7884eac570}} 
-int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_ad1082efd7eef489c5ed57c7884eac570}{ina219\+Init}} (void)
+int16\+\_\+t {\bfseries ina219\+Init} (void)
 \begin{DoxyCompactList}\small\item\em Initialises the I2C block. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ina219_8h_a9dd812ec2d9030c7edaa1ea397d2c53e}\label{dev__ina219_8h_a9dd812ec2d9030c7edaa1ea397d2c53e}} 
-int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a9dd812ec2d9030c7edaa1ea397d2c53e}{ina219\+Get\+Shunt\+Voltage}} (void)
+int16\+\_\+t {\bfseries ina219\+Get\+Shunt\+Voltage} (void)
 \begin{DoxyCompactList}\small\item\em Gets the shunt voltage (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ina219_8h_a439f8a8e2a42bbe0ca5b2b48da9a1e80}\label{dev__ina219_8h_a439f8a8e2a42bbe0ca5b2b48da9a1e80}} 
-int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a439f8a8e2a42bbe0ca5b2b48da9a1e80}{ina219\+Get\+Bus\+Voltage}} (void)
+int16\+\_\+t {\bfseries ina219\+Get\+Bus\+Voltage} (void)
 \begin{DoxyCompactList}\small\item\em Gets the Bus voltage (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ina219_8h_a1cc61b66b7d48f392e3f71196df47d16}\label{dev__ina219_8h_a1cc61b66b7d48f392e3f71196df47d16}} 
-int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a1cc61b66b7d48f392e3f71196df47d16}{ina219\+Get\+Power}} (void)
+int16\+\_\+t {\bfseries ina219\+Get\+Power} (void)
 \begin{DoxyCompactList}\small\item\em Gets the raw power value (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ina219_8h_a9cecf583ae9c089a9e251c60c2ead1cd}\label{dev__ina219_8h_a9cecf583ae9c089a9e251c60c2ead1cd}} 
-int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a9cecf583ae9c089a9e251c60c2ead1cd}{ina219\+Get\+Power\+\_\+mW}} (void)
+int16\+\_\+t {\bfseries ina219\+Get\+Power\+\_\+mW} (void)
 \begin{DoxyCompactList}\small\item\em Gets the power value in mW, taking into account the config settings and power LSB. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ina219_8h_a6817c5f0df62fbc15d365d4278e9fedc}\label{dev__ina219_8h_a6817c5f0df62fbc15d365d4278e9fedc}} 
-int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a6817c5f0df62fbc15d365d4278e9fedc}{ina219\+Get\+Current}} (void)
+int16\+\_\+t {\bfseries ina219\+Get\+Current} (void)
 \begin{DoxyCompactList}\small\item\em Gets the raw current value (16-\/bit signed integer, so +-\/32767) \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ina219_8h_a8878cb36e1b8abff9203dfe682f3a067}\label{dev__ina219_8h_a8878cb36e1b8abff9203dfe682f3a067}} 
-int16\+\_\+t \mbox{\hyperlink{dev__ina219_8h_a8878cb36e1b8abff9203dfe682f3a067}{ina219\+Get\+Current\+\_\+mA}} (void)
+int16\+\_\+t {\bfseries ina219\+Get\+Current\+\_\+mA} (void)
 \begin{DoxyCompactList}\small\item\em Gets the current value in mA, taking into account the config settings and current LSB. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{dev__ina219_8h_a0106e7103c25bb310f1e2ec005bbad4e}\label{dev__ina219_8h_a0106e7103c25bb310f1e2ec005bbad4e}} 
-bool \mbox{\hyperlink{dev__ina219_8h_a0106e7103c25bb310f1e2ec005bbad4e}{ina219\+Calibrate\+Current\+\_\+mA}} (float, float)
+bool {\bfseries ina219\+Calibrate\+Current\+\_\+mA} (float, float)
 \begin{DoxyCompactList}\small\item\em Compute the Corrected Full scale calibration based on measurement made by external Ampmeter. The new calibration value will be written the calibration register. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{dev__ina219_8h_af689fd46743cbb4d4453ff8a27141c4a}{ina219\+Set\+Calibration\+\_\+32\+V\+\_\+2A}} (void)
 \begin{DoxyCompactList}\small\item\em Configures to INA219 to be able to measure up to 32V and 2A of current. Each unit of current corresponds to 100uA, and each unit of power corresponds to 2mW. Counter overflow occurs at 3.\+2A. \end{DoxyCompactList}\item 

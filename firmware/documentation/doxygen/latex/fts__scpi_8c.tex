@@ -42,7 +42,7 @@ size\+\_\+t \mbox{\hyperlink{fts__scpi_8c_a3645008c6823af2701d99f6ed8dbe745}{SCP
 scpi\+\_\+result\+\_\+t \mbox{\hyperlink{fts__scpi_8c_a227bd87e4d70c678726de2bc952fce8e}{SCPI\+\_\+\+Reset}} (scpi\+\_\+t $\ast$context)
 \begin{DoxyCompactList}\small\item\em function to execute the reset of the interconnect IO board following the SCPI command. Only master Pico is reset because the Pico slaves are reset during boot-\/up \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{fts__scpi_8c_a2ed9955bb22ad94c13ec34edc9221443}\label{fts__scpi_8c_a2ed9955bb22ad94c13ec34edc9221443}} 
-void \mbox{\hyperlink{fts__scpi_8c_a2ed9955bb22ad94c13ec34edc9221443}{SCPI\+\_\+\+Beep}} ()
+void {\bfseries SCPI\+\_\+\+Beep} ()
 \begin{DoxyCompactList}\small\item\em Send a beep tone following a SCPI command or internal function. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{fts__scpi_8c_a8f1450d6537fd16a2aee2464e2c1389d}{Error\+Beep}} (uint8\+\_\+t nbeep)
 \begin{DoxyCompactList}\small\item\em Send a burst of beep code to alert for boot error. \end{DoxyCompactList}\item 
@@ -53,7 +53,7 @@ void \mbox{\hyperlink{fts__scpi_8c_af42bc85669ec90cef60c7e9ff2559982}{Reg\+Bit\+
 scpi\+\_\+result\+\_\+t \mbox{\hyperlink{fts__scpi_8c_acf3067fd6de75a9dbecc0d7a9d2520a2}{Relay\+\_\+\+Chanlst}} (scpi\+\_\+t $\ast$context, uint16\+\_\+t $\ast$array)
 \begin{DoxyCompactList}\small\item\em Parses a list of channel numbers and stores them in a 1-\/dimensional array. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{fts__scpi_8c_ae1d030d34d5920300f08fbe69d1ee7f7}\label{fts__scpi_8c_ae1d030d34d5920300f08fbe69d1ee7f7}} 
-void \mbox{\hyperlink{fts__scpi_8c_ae1d030d34d5920300f08fbe69d1ee7f7}{init\+\_\+scpi}} ()
+void {\bfseries init\+\_\+scpi} ()
 \begin{DoxyCompactList}\small\item\em initialization of the SCPI library \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
@@ -71,7 +71,7 @@ scpi\+\_\+interface\+\_\+t \mbox{\hyperlink{fts__scpi_8c_a1169c4a1863fd98b478b89
 const scpi\+\_\+choice\+\_\+def\+\_\+t \mbox{\hyperlink{fts__scpi_8c_a37caa61a74fce476d4d72c7d3ed9a889}{scpi\+\_\+special\+\_\+all\+\_\+numbers\+\_\+def}} \mbox{[}$\,$\mbox{]}
 \begin{DoxyCompactList}\small\item\em List of special string not already defined on SCPI parser. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{fts__scpi_8c_a5e7d16395b247e2e2a10d526b97b76cb}\label{fts__scpi_8c_a5e7d16395b247e2e2a10d526b97b76cb}} 
-scpi\+\_\+command\+\_\+t \mbox{\hyperlink{fts__scpi_8c_a5e7d16395b247e2e2a10d526b97b76cb}{scpi\+\_\+commands}} \mbox{[}$\,$\mbox{]}
+scpi\+\_\+command\+\_\+t {\bfseries scpi\+\_\+commands} \mbox{[}$\,$\mbox{]}
 \begin{DoxyCompactList}\small\item\em The SCPI commands supported by the pico master and the callbacks they use. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 

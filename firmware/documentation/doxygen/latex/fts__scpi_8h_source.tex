@@ -1,0 +1,220 @@
+\hypertarget{fts__scpi_8h_source}{}\doxysection{fts\+\_\+scpi.\+h}
+\label{fts__scpi_8h_source}\index{firmware/src/include/fts\_scpi.h@{firmware/src/include/fts\_scpi.h}}
+\mbox{\hyperlink{fts__scpi_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#ifndef \_FTS\_SCPI\_H\_}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define \_FTS\_SCPI\_H\_}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}scpi/scpi.h"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{22 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}}}
+\DoxyCodeLine{23 \{}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define SCPI\_INPUT\_BUFFER\_SIZE 256 }}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define SCPI\_ERROR\_QUEUE\_SIZE 20 }}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#define SCPI\_IDN1 "{}FirstTestStation"{}} }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#define SCPI\_IDN2 "{}InterconnectIO"{}}   }
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#define SCPI\_IDN3 "{}2022A"{}}            }
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#define SCPI\_IDN4 "{}1.0"{}}              }
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#define MAXROW 36 }}
+\DoxyCodeLine{52 \textcolor{preprocessor}{\#define MAXCOL 1 }}
+\DoxyCodeLine{57 \textcolor{preprocessor}{\#define MAXDIM 1 }}
+\DoxyCodeLine{59 \textcolor{preprocessor}{\#define RCLOSE 1   }}
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#define RCLEX 2    }}
+\DoxyCodeLine{61 \textcolor{preprocessor}{\#define ROPEN 3    }}
+\DoxyCodeLine{62 \textcolor{preprocessor}{\#define ROPALL 4   }}
+\DoxyCodeLine{63 \textcolor{preprocessor}{\#define RSTATE 5   }}
+\DoxyCodeLine{64 \textcolor{preprocessor}{\#define BSTATE 6   }}
+\DoxyCodeLine{65 \textcolor{preprocessor}{\#define SESTATE 7  }}
+\DoxyCodeLine{66 \textcolor{preprocessor}{\#define SECLOSE 8  }}
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#define SEOPEN 9   }}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{preprocessor}{\#define SDIR 10     }}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#define SBDIR 11    }}
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#define SOUT 12     }}
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#define SBOUT 13    }}
+\DoxyCodeLine{73 \textcolor{preprocessor}{\#define RIN 14      }}
+\DoxyCodeLine{74 \textcolor{preprocessor}{\#define RBIN 15     }}
+\DoxyCodeLine{75 \textcolor{preprocessor}{\#define RDIR 16     }}
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#define RBDIR 17    }}
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#define GPSDIR 18   }}
+\DoxyCodeLine{78 \textcolor{preprocessor}{\#define GPRDIR 19   }}
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#define GPOUT 20    }}
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#define GPIN 21     }}
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#define GPSPAD 22   }}
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#define GPGPAD 23   }}
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#define PWCLOSE 24  }}
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#define PWOPEN 25   }}
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#define PWSTATE 26  }}
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#define OCCLOSE 27  }}
+\DoxyCodeLine{87 \textcolor{preprocessor}{\#define OCOPEN 28   }}
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#define OCSTATE 29  }}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#define SBEEP 50  }}
+\DoxyCodeLine{91 \textcolor{preprocessor}{\#define SVER 51   }}
+\DoxyCodeLine{92 \textcolor{preprocessor}{\#define SLERR 52  }}
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#define SRUN 53   }}
+\DoxyCodeLine{94 \textcolor{preprocessor}{\#define SOE 54    }}
+\DoxyCodeLine{95 \textcolor{preprocessor}{\#define GLERR 55  }}
+\DoxyCodeLine{96 \textcolor{preprocessor}{\#define GRUN 56   }}
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#define GOE 57    }}
+\DoxyCodeLine{98 \textcolor{preprocessor}{\#define GSTA 58   }}
+\DoxyCodeLine{99 \textcolor{preprocessor}{\#define STBR 59   }}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{preprocessor}{\#define SDAC 63   }}
+\DoxyCodeLine{102 \textcolor{preprocessor}{\#define WDAC 64   }}
+\DoxyCodeLine{103 \textcolor{preprocessor}{\#define RADC0 65  }}
+\DoxyCodeLine{104 \textcolor{preprocessor}{\#define RADC1 66  }}
+\DoxyCodeLine{105 \textcolor{preprocessor}{\#define RADC3 67  }}
+\DoxyCodeLine{106 \textcolor{preprocessor}{\#define RADC4 68  }}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108 \textcolor{preprocessor}{\#define RPV 70  }}
+\DoxyCodeLine{109 \textcolor{preprocessor}{\#define RPS 71  }}
+\DoxyCodeLine{110 \textcolor{preprocessor}{\#define RPI 72  }}
+\DoxyCodeLine{111 \textcolor{preprocessor}{\#define RPP 73  }}
+\DoxyCodeLine{112 \textcolor{preprocessor}{\#define CPI 74  }}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114 \textcolor{preprocessor}{\#define WEEP 78  }}
+\DoxyCodeLine{115 \textcolor{preprocessor}{\#define REEP 79  }}
+\DoxyCodeLine{116 \textcolor{preprocessor}{\#define WDEF 80  }}
+\DoxyCodeLine{117 \textcolor{preprocessor}{\#define RFUL 81  }}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 \textcolor{preprocessor}{\#define W1W 84  }}
+\DoxyCodeLine{120 \textcolor{preprocessor}{\#define R1W 85  }}
+\DoxyCodeLine{121 \textcolor{preprocessor}{\#define C1W 86  }}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{preprocessor}{\#define CIE 88  }}
+\DoxyCodeLine{124 \textcolor{preprocessor}{\#define CID 89  }}
+\DoxyCodeLine{125 \textcolor{preprocessor}{\#define CRI 90  }}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{preprocessor}{\#define CSWD 100  }}
+\DoxyCodeLine{128 \textcolor{preprocessor}{\#define CSRD 101  }}
+\DoxyCodeLine{129 \textcolor{preprocessor}{\#define CSWB 102  }}
+\DoxyCodeLine{130 \textcolor{preprocessor}{\#define CSRB 103  }}
+\DoxyCodeLine{131 \textcolor{preprocessor}{\#define CSWP 104  }}
+\DoxyCodeLine{132 \textcolor{preprocessor}{\#define CSRP 105  }}
+\DoxyCodeLine{133 \textcolor{preprocessor}{\#define CSWH 106  }}
+\DoxyCodeLine{134 \textcolor{preprocessor}{\#define CSRH 107  }}
+\DoxyCodeLine{135 \textcolor{preprocessor}{\#define CSWT 108  }}
+\DoxyCodeLine{136 \textcolor{preprocessor}{\#define CSRT 109  }}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138 \textcolor{preprocessor}{\#define SPWD 111   }}
+\DoxyCodeLine{139 \textcolor{preprocessor}{\#define SPRD 112   }}
+\DoxyCodeLine{140 \textcolor{preprocessor}{\#define SPWF 113   }}
+\DoxyCodeLine{141 \textcolor{preprocessor}{\#define SPRF 114   }}
+\DoxyCodeLine{142 \textcolor{preprocessor}{\#define SPWDB 115  }}
+\DoxyCodeLine{143 \textcolor{preprocessor}{\#define SPRDB 116  }}
+\DoxyCodeLine{144 \textcolor{preprocessor}{\#define SPWM 117   }}
+\DoxyCodeLine{145 \textcolor{preprocessor}{\#define SPRM 118   }}
+\DoxyCodeLine{146 \textcolor{preprocessor}{\#define SPWCS 119  }}
+\DoxyCodeLine{147 \textcolor{preprocessor}{\#define SPRCS 120  }}
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 \textcolor{preprocessor}{\#define ICWD 131   }}
+\DoxyCodeLine{150 \textcolor{preprocessor}{\#define ICRD 132   }}
+\DoxyCodeLine{151 \textcolor{preprocessor}{\#define ICWA 133   }}
+\DoxyCodeLine{152 \textcolor{preprocessor}{\#define ICRA 134   }}
+\DoxyCodeLine{153 \textcolor{preprocessor}{\#define ICWF 135   }}
+\DoxyCodeLine{154 \textcolor{preprocessor}{\#define ICRF 136   }}
+\DoxyCodeLine{155 \textcolor{preprocessor}{\#define ICWDB 137  }}
+\DoxyCodeLine{156 \textcolor{preprocessor}{\#define ICRDB 138  }}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{preprocessor}{\#define SCPI\_BANK1 1     }}
+\DoxyCodeLine{159 \textcolor{preprocessor}{\#define SCPI\_BANK2 2     }}
+\DoxyCodeLine{160 \textcolor{preprocessor}{\#define SCPI\_BANK3 3     }}
+\DoxyCodeLine{161 \textcolor{preprocessor}{\#define SCPI\_BANK4 4     }}
+\DoxyCodeLine{162 \textcolor{preprocessor}{\#define SCPI\_BANK\_ALL 5  }}
+\DoxyCodeLine{163 \textcolor{preprocessor}{\#define SCPI\_LPR1 6      }}
+\DoxyCodeLine{164 \textcolor{preprocessor}{\#define SCPI\_LPR2 7      }}
+\DoxyCodeLine{165 \textcolor{preprocessor}{\#define SCPI\_HPR1 8      }}
+\DoxyCodeLine{166 \textcolor{preprocessor}{\#define SCPI\_SSR1 9      }}
+\DoxyCodeLine{167 \textcolor{preprocessor}{\#define SCPI\_OC1 10      }}
+\DoxyCodeLine{168 \textcolor{preprocessor}{\#define SCPI\_OC2 11      }}
+\DoxyCodeLine{169 \textcolor{preprocessor}{\#define SCPI\_OC3 12      }}
+\DoxyCodeLine{170 }
+\DoxyCodeLine{171 \textcolor{preprocessor}{\#define SCPI\_SERIAL 15  }}
+\DoxyCodeLine{172 \textcolor{preprocessor}{\#define SCPI\_SPI 16     }}
+\DoxyCodeLine{173 \textcolor{preprocessor}{\#define SCPI\_I2C 17     }}
+\DoxyCodeLine{174 }
+\DoxyCodeLine{175 \textcolor{preprocessor}{\#define GPIO\_LPR1 8  }}
+\DoxyCodeLine{176 \textcolor{preprocessor}{\#define GPIO\_LPR2 9  }}
+\DoxyCodeLine{177 \textcolor{preprocessor}{\#define GPIO\_HPR1 8  }}
+\DoxyCodeLine{178 \textcolor{preprocessor}{\#define GPIO\_SSR1 9  }}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180 \textcolor{preprocessor}{\#define GPIO\_OC1 28  }}
+\DoxyCodeLine{181 \textcolor{preprocessor}{\#define GPIO\_OC2 28  }}
+\DoxyCodeLine{182 \textcolor{preprocessor}{\#define GPIO\_OC3 28  }}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 \textcolor{preprocessor}{\#define GPIO\_BEEP 11  }}
+\DoxyCodeLine{185 \textcolor{preprocessor}{\#define GPIO\_RUN 18   }}
+\DoxyCodeLine{186 \textcolor{preprocessor}{\#define GPIO\_LED 19   }}
+\DoxyCodeLine{187 \textcolor{preprocessor}{\#define GPIO\_SYNC 22  }}
+\DoxyCodeLine{188 \textcolor{preprocessor}{\#define GPIO\_OE 28    }}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190 \textcolor{preprocessor}{\#define BEEP\_TIME 10  }}
+\DoxyCodeLine{191 }
+\DoxyCodeLine{192 \textcolor{preprocessor}{\#define ESR\_USER\_BIT 6  }}
+\DoxyCodeLine{193 \textcolor{preprocessor}{\#define ESR\_PON\_BIT 7   }}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{196 \textcolor{preprocessor}{\#define ARB\_ODD\_ERR 1  }}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198   \textcolor{comment}{/* Reset Block for master}}
+\DoxyCodeLine{199 \textcolor{comment}{}}
+\DoxyCodeLine{200 \textcolor{comment}{  [Block to reset]  [Bit]}}
+\DoxyCodeLine{201 \textcolor{comment}{      USB               24}}
+\DoxyCodeLine{202 \textcolor{comment}{      UART 1            23}}
+\DoxyCodeLine{203 \textcolor{comment}{      UART 0            22}}
+\DoxyCodeLine{204 \textcolor{comment}{      Timer         21}}
+\DoxyCodeLine{205 \textcolor{comment}{      TB Manager        20}}
+\DoxyCodeLine{206 \textcolor{comment}{      SysInfo           19}}
+\DoxyCodeLine{207 \textcolor{comment}{      System Config 18}}
+\DoxyCodeLine{208 \textcolor{comment}{      SPI 1         17}}
+\DoxyCodeLine{209 \textcolor{comment}{      SPI 0         16}}
+\DoxyCodeLine{210 \textcolor{comment}{      RTC               15}}
+\DoxyCodeLine{211 \textcolor{comment}{      PWM               14}}
+\DoxyCodeLine{212 \textcolor{comment}{      PLL USB           13}}
+\DoxyCodeLine{213 \textcolor{comment}{      PLL System        12}}
+\DoxyCodeLine{214 \textcolor{comment}{      PIO 1         11}}
+\DoxyCodeLine{215 \textcolor{comment}{      PIO 0         10}}
+\DoxyCodeLine{216 \textcolor{comment}{      Pads -\/ QSPI       9}}
+\DoxyCodeLine{217 \textcolor{comment}{      Pads -\/ bank 0 8}}
+\DoxyCodeLine{218 \textcolor{comment}{      JTAG          7}}
+\DoxyCodeLine{219 \textcolor{comment}{      IO Bank 1     6}}
+\DoxyCodeLine{220 \textcolor{comment}{      IO Bank 0     5}}
+\DoxyCodeLine{221 \textcolor{comment}{      I2C 1         4}}
+\DoxyCodeLine{222 \textcolor{comment}{      I2C 0         3}}
+\DoxyCodeLine{223 \textcolor{comment}{      DMA               2}}
+\DoxyCodeLine{224 \textcolor{comment}{      Bus Control       1}}
+\DoxyCodeLine{225 \textcolor{comment}{      ADC 0         0}}
+\DoxyCodeLine{226 \textcolor{comment}{  */}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 \textcolor{preprocessor}{\#define RESETS\_MASTER 0b000000000000000111111111  }}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{236   \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16}{\_reg\_info\_index\_t}}}
+\DoxyCodeLine{237   \{}
+\DoxyCodeLine{238     \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a8f537657cf625ed1ea7f224639d6d4a8}{BOOT\_I2C}} = 0,      }
+\DoxyCodeLine{239     \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16ac49b3f0f3a861b803178d483955ba18c}{VSYS\_OUT}},          }
+\DoxyCodeLine{240     \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a00965bfcd12beed8c703e266a4764b08}{MTEMP\_HIGH}},        }
+\DoxyCodeLine{241     \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16a50bb1c96cf063973ae1a350020060827}{WATCH\_TRIG}},        }
+\DoxyCodeLine{242     \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16ac0c428d120f285c783efcd4f8b301b9c}{EEPROM\_ERROR}}       }
+\DoxyCodeLine{243   \} \mbox{\hyperlink{fts__scpi_8h_a85982a9f4f3912bfe0ba4286cd813ff2}{reg\_info\_index\_t}};  }
+\DoxyCodeLine{244 }
+\DoxyCodeLine{249   \textcolor{keyword}{typedef} \textcolor{keyword}{enum} \mbox{\hyperlink{fts__scpi_8h_a85fa31158420e2df60514439dac40c16}{\_reg\_info\_index\_t}} \mbox{\hyperlink{fts__scpi_8h_a85982a9f4f3912bfe0ba4286cd813ff2}{reg\_info\_index\_t}};  }
+\DoxyCodeLine{250 }
+\DoxyCodeLine{251   \textcolor{keyword}{extern} scpi\_t \mbox{\hyperlink{fts__scpi_8h_ac6f639c26fd1c7e210c2da424cfe628d}{scpi\_context}};}
+\DoxyCodeLine{252   \textcolor{keyword}{extern} \textcolor{keywordtype}{char} \mbox{\hyperlink{fts__scpi_8h_ab0b900a9b90448f4db8951d9e8353b50}{scpi\_input\_buffer}}[];}
+\DoxyCodeLine{253   \textcolor{keyword}{extern} scpi\_error\_t \mbox{\hyperlink{fts__scpi_8h_a2d3eb17031f61e52026122e3ddec687f}{scpi\_error\_queue}}[];}
+\DoxyCodeLine{254   \textcolor{keyword}{extern} scpi\_command\_t \mbox{\hyperlink{fts__scpi_8h_a5e7d16395b247e2e2a10d526b97b76cb}{scpi\_commands}}[];}
+\DoxyCodeLine{255 }
+\DoxyCodeLine{256   \textcolor{comment}{// size\_t write\_scpi(scpi\_t *context, const char *data, size\_t len);}}
+\DoxyCodeLine{257   scpi\_result\_t \mbox{\hyperlink{fts__scpi_8h_acf3067fd6de75a9dbecc0d7a9d2520a2}{Relay\_Chanlst}}(scpi\_t* context, uint16\_t* array);}
+\DoxyCodeLine{258   \textcolor{keywordtype}{void} \mbox{\hyperlink{fts__scpi_8h_ae1d030d34d5920300f08fbe69d1ee7f7}{init\_scpi}}();}
+\DoxyCodeLine{259   \textcolor{keywordtype}{void} \mbox{\hyperlink{fts__scpi_8h_a8f1450d6537fd16a2aee2464e2c1389d}{ErrorBeep}}(uint8\_t nbeep);}
+\DoxyCodeLine{260   \textcolor{keywordtype}{void} \mbox{\hyperlink{fts__scpi_8h_af42bc85669ec90cef60c7e9ff2559982}{RegBitHdwrErr}}(\mbox{\hyperlink{fts__scpi_8h_a85982a9f4f3912bfe0ba4286cd813ff2}{reg\_info\_index\_t}} index, \textcolor{keywordtype}{bool} scbit);}
+\DoxyCodeLine{261   \textcolor{keyword}{static} \textcolor{keywordtype}{size\_t} output\_buffer\_write(\textcolor{keyword}{const} \textcolor{keywordtype}{char}* data, \textcolor{keywordtype}{size\_t} len);}
+\DoxyCodeLine{262 }
+\DoxyCodeLine{263 \textcolor{preprocessor}{\#endif  }}
+
+\end{DoxyCode}

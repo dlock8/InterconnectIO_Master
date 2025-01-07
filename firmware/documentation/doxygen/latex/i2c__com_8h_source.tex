@@ -1,0 +1,79 @@
+\hypertarget{i2c__com_8h_source}{}\doxysection{i2c\+\_\+com.\+h}
+\label{i2c__com_8h_source}\index{firmware/src/include/i2c\_com.h@{firmware/src/include/i2c\_com.h}}
+\mbox{\hyperlink{i2c__com_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef \_I2C\_COM\_H\_}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define \_I2C\_COM\_H\_}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#ifdef \_\_cplusplus}}
+\DoxyCodeLine{19 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}}}
+\DoxyCodeLine{20 \{}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}hardware/i2c.h"{}}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define PICO\_MASTER\_ADDRESS 0x00   }}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#define PICO\_PORT\_ADDRESS 0x21     }}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#define PICO\_RELAY1\_ADDRESS 0x22   }}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#define PICO\_RELAY2\_ADDRESS 0x23   }}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define PICO\_SELFTEST\_ADDRESS 0x20 }}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#define REG\_STATUS 100 }}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#define I2C\_BAUDRATE 100000   }}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define I2C\_MASTER\_SDA\_PIN 20 }}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#define I2C\_MASTER\_SCL\_PIN 21 }}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#define RBK                                                                                                                                          \(\backslash\)}}
+\DoxyCodeLine{51 \textcolor{preprocessor}{  \{                                                                                                                                                  \(\backslash\)}}
+\DoxyCodeLine{52 \textcolor{preprocessor}{    \{0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7\}, \{0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7\},                                              \(\backslash\)}}
+\DoxyCodeLine{53 \textcolor{preprocessor}{        \{10, 11, 12, 13, 14, 15, 16, 17, 10, 11, 12, 13, 14, 15, 16, 17\}, \{10, 11, 12, 13, 14, 15, 16, 17, 10, 11, 12, 13, 14, 15, 16, 17\},          \(\backslash\)}}
+\DoxyCodeLine{54 \textcolor{preprocessor}{  \}}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{60 \textcolor{preprocessor}{\#define DIGP                                                                                                                                         \(\backslash\)}}
+\DoxyCodeLine{61 \textcolor{preprocessor}{  \{                                                                                                                                                  \(\backslash\)}}
+\DoxyCodeLine{62 \textcolor{preprocessor}{    \{0, 1, 2, 3, 4, 5, 6, 7\}, \{ 10, 11, 12, 13, 14, 15, 16, 17 \}                                                                                     \(\backslash\)}}
+\DoxyCodeLine{63 \textcolor{preprocessor}{  \}}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#define SE\_BK1 19 }}
+\DoxyCodeLine{69 \textcolor{preprocessor}{\#define SE\_BK2 18 }}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#define SE\_BK3 19 }}
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#define SE\_BK4 18 }}
+\DoxyCodeLine{75 \textcolor{preprocessor}{\#define MJR\_VERSION 01       }}
+\DoxyCodeLine{76 \textcolor{preprocessor}{\#define MIN\_VERSION 02       }}
+\DoxyCodeLine{77 \textcolor{preprocessor}{\#define OPEN\_RELAY 10        }}
+\DoxyCodeLine{78 \textcolor{preprocessor}{\#define CLOSE\_RELAY 11       }}
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#define OPEN\_RELAY\_BANK 12   }}
+\DoxyCodeLine{80 \textcolor{preprocessor}{\#define STATE\_RELAY 15       }}
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#define STATE\_BANK 13        }}
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#define DIG\_DIR\_MASK 80      }}
+\DoxyCodeLine{83 \textcolor{preprocessor}{\#define DIG\_OUT 81           }}
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#define DIG\_IN 85            }}
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#define DIR\_GP\_OUT 20        }}
+\DoxyCodeLine{86 \textcolor{preprocessor}{\#define DIR\_GP\_IN 21         }}
+\DoxyCodeLine{87 \textcolor{preprocessor}{\#define DIR\_GP\_READ 25       }}
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#define DIG\_GP\_OUT\_CLEAR 10  }}
+\DoxyCodeLine{89 \textcolor{preprocessor}{\#define DIG\_GP\_OUT\_SET 11    }}
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#define DIG\_GP\_IN 15         }}
+\DoxyCodeLine{91 \textcolor{preprocessor}{\#define GP\_PAD\_VALUE 60      }}
+\DoxyCodeLine{92 \textcolor{preprocessor}{\#define GP\_PAD\_SET 61        }}
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#define GP\_PAD\_READ 65       }}
+\DoxyCodeLine{94 \textcolor{preprocessor}{\#define GP\_FUNCTION 75       }}
+\DoxyCodeLine{95 \textcolor{preprocessor}{\#define SL\_DEV\_STATUS 100    }}
+\DoxyCodeLine{96 \textcolor{preprocessor}{\#define ENABLE\_UART 101      }}
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#define DISABLE\_UART 102     }}
+\DoxyCodeLine{98 \textcolor{preprocessor}{\#define SET\_UART\_PROT 103    }}
+\DoxyCodeLine{99 \textcolor{preprocessor}{\#define GET\_UART\_CFG 105     }}
+\DoxyCodeLine{100 \textcolor{preprocessor}{\#define ENABLE\_SPI 111       }}
+\DoxyCodeLine{101 \textcolor{preprocessor}{\#define DISABLE\_SPI 112      }}
+\DoxyCodeLine{102 \textcolor{preprocessor}{\#define SET\_SPI\_CFG 113      }}
+\DoxyCodeLine{103 \textcolor{preprocessor}{\#define GET\_SPI\_CFG 115      }}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105   \textcolor{keywordtype}{void} \mbox{\hyperlink{i2c__com_8h_a1e7d8ca7c172d2950dee50f279d07ec9}{setup\_master}}();}
+\DoxyCodeLine{106   \textcolor{keywordtype}{bool} \mbox{\hyperlink{i2c__com_8h_a3f9110484e69200a1424e98797a5e12e}{send\_master}}(i2c\_inst\_t* i2c, uint8\_t i2c\_add, uint8\_t cmd, uint16\_t wdata, uint16\_t* rback);}
+\DoxyCodeLine{107   \textcolor{keywordtype}{bool} \mbox{\hyperlink{i2c__com_8h_a6ab31ae372e2f5df7d1d2791fc42491a}{relay\_execute}}(uint16\_t* list, uint8\_t action, uint16\_t* answer);}
+\DoxyCodeLine{108   \textcolor{keywordtype}{bool} \mbox{\hyperlink{i2c__com_8h_a2dc087f9c9da6f696935dc364f9003e2}{digital\_execute}}(uint8\_t action, uint8\_t port, uint8\_t bit, uint8\_t value, uint16\_t* answer);}
+\DoxyCodeLine{109   \textcolor{keywordtype}{bool} \mbox{\hyperlink{i2c__com_8h_ab088f05e0e9346b5a3a4fa3a06a6c33b}{gpio\_execute}}(uint8\_t action, uint8\_t device, uint8\_t gpio, uint8\_t value, uint16\_t* answer);}
+\DoxyCodeLine{110   \textcolor{keywordtype}{bool} \mbox{\hyperlink{i2c__com_8h_a96f4bb6ce057649e766460dfecebc542}{system\_execute}}(uint8\_t action, uint16\_t* answer);}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 \textcolor{preprocessor}{\#endif  }\textcolor{comment}{//}}
+
+\end{DoxyCode}

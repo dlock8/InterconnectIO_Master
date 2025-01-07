@@ -1,0 +1,87 @@
+\hypertarget{scpi__user__config_8h_source}{}\doxysection{scpi\+\_\+user\+\_\+config.\+h}
+\label{scpi__user__config_8h_source}\index{firmware/src/include/scpi\_user\_config.h@{firmware/src/include/scpi\_user\_config.h}}
+\mbox{\hyperlink{scpi__user__config_8h}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#ifndef \_\_SCPI\_USER\_CONFIG\_H\_}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#define \_\_SCPI\_USER\_CONFIG\_H\_}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#ifdef   \_\_cplusplus}}
+\DoxyCodeLine{20 \textcolor{keyword}{extern} \textcolor{stringliteral}{"{}C"{}} \{}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{comment}{// \#define SCPI\_LINE\_ENDING    "{}\(\backslash\)r\(\backslash\)n"{}    /*   use <CR><LF> carriage return + line feed as termination characters */}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#ifndef  USE\_FULL\_ERROR\_LIST }}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#define USE\_FULL\_ERROR\_LIST  1  }}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#ifndef  SCPI\_USER\_CONFIG }}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#define SCPI\_USER\_CONFIG   1}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{comment}{// Added to use the custom list of errors}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#ifndef  USE\_USER\_ERROR\_LIST }}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#define USE\_USER\_ERROR\_LIST 1 }}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 }
+\DoxyCodeLine{47 \textcolor{preprocessor}{\#define LIST\_OF\_USER\_ERRORS \(\backslash\)}}
+\DoxyCodeLine{48 \textcolor{preprocessor}{    X(SCPI\_RELAYS\_LIST\_ERROR,   -\/185,  "{}Relays channel list error. single dimension only"{}})   \(\backslash\)}
+\DoxyCodeLine{49     X(RELAY\_NUMBERING\_ERROR,    -\/186,  "{}A Relay channel is invalid and raise an error"{})   \(\backslash\)}
+\DoxyCodeLine{50     X(I2C\_COMMUNICATION\_ERROR,  -\/106,  "{}I2C internal communication error, run selftest"{})            \(\backslash\)}
+\DoxyCodeLine{51     X(VSYS\_OUT\_LIMITS,          -\/302,  "{}Voltage VSYS of Master Pico is out limit, run selftest"{})   \(\backslash\)}
+\DoxyCodeLine{52     X(TEMP\_MASTER\_HIGH,         -\/303,  "{}Internal Temperature of Master Pico is too High, run selftest"{})   \(\backslash\)}
+\DoxyCodeLine{53     X(WATCHDOG\_TRIG,            -\/304,  "{}Master Pico Watchdog Trig"{})   \(\backslash\)}
+\DoxyCodeLine{54     X(SELFTEST\_FAIL,            -\/305,  "{}Selftest failed"{})   \(\backslash\)}
+\DoxyCodeLine{55     X(NB\_ONEWIRE,               -\/371,  "{}Number of Onewire devices is different of expected number"{})  \(\backslash\)}
+\DoxyCodeLine{56     X(STR\_ONEWIRE,              -\/372,  "{}The Write data is different of the Read data on Onewire devices"{})  \(\backslash\)}
+\DoxyCodeLine{57     X(WR\_ONEWIRE,               -\/373,  "{}Error raise during Write -\/ Read on Onewire devices"{})  \(\backslash\)}
+\DoxyCodeLine{58     X(WRITE\_ONEWIRE,            -\/374,  "{}Error raise during Write action on Onewire devices"{})  \(\backslash\)}
+\DoxyCodeLine{59     X(NO\_ONEWIRES,              -\/375,  "{}Presence of Onewire devices has not been detected"{}) \(\backslash\)}
+\DoxyCodeLine{60     X(READ\_ONEWIRES,            -\/376,  "{}Error raise during read of Onewire devices"{}) \(\backslash\)}
+\DoxyCodeLine{61     X(HEX\_VALIDID,              -\/377,  "{}Onewire device ID contains illegal character (hexadecimal only)"{}) \(\backslash\)}
+\DoxyCodeLine{62     X(UART\_NUMBER\_ERROR,        -\/378,  "{}Uart protocol number is invalid, check value for Data\_bits or Stop\_bits"{}) \(\backslash\)}
+\DoxyCodeLine{63     X(UART\_LETTER\_ERROR,        -\/379,  "{}Uart protocol letter is invalid, check letter used to define parity (expected: O,N,E)"{}) \(\backslash\)}
+\DoxyCodeLine{64     X(UART\_PROTOCOL\_ERROR,      -\/380,  "{}Uart protocol value is invalid, expect 3 characters on any orders ex: 8N1,7O1"{}) \(\backslash\)}
+\DoxyCodeLine{65     X(UART\_RX\_ERROR,            -\/381,  "{}Uart serial communication error, Timeout occur on waiting to receive char"{}) \(\backslash\)}
+\DoxyCodeLine{66     X(UART\_LASTCHAR\_ERROR,      -\/382,  "{}Uart Timeout occur on waiting to receive last character of string (last char is the same of Tx)"{}) \(\backslash\)}
+\DoxyCodeLine{67     X(UART\_RXBUFFER\_ERROR,      -\/383,  "{}Uart Receiver buffer overrun. String received too long"{}) \(\backslash\)}
+\DoxyCodeLine{68     X(UART\_ENABLE\_ERROR,        -\/384,  "{}Uart Serial communication not enabled, send command to enable SERIAL"{} ) \(\backslash\)}
+\DoxyCodeLine{69     X(SPI\_MODE\_ERROR,           -\/385,  "{}SPI mode number is invalid, expect Mode value between 0 and 7"{}) \(\backslash\)}
+\DoxyCodeLine{70     X(SPI\_CS\_ERROR,             -\/386,  "{}SPI chipselect gpio number is invalid."{} ) \(\backslash\)}
+\DoxyCodeLine{71     X(SPI\_TIMEOUT\_ERROR,        -\/387,  "{}SPI timeout error (no device?)"{} ) \(\backslash\)}
+\DoxyCodeLine{72     X(SPI\_ENABLE\_ERROR,         -\/388,  "{}SPI master not enabled, send command to enable SPI"{} ) \(\backslash\)}
+\DoxyCodeLine{73     X(MEMORY\_ALLOCATION\_ERROR,  -\/389,  "{}Internal error, memory allocation raise error."{} ) \(\backslash\)}
+\DoxyCodeLine{74     X(ARB\_WORD\_FORMAT\_ERROR,    -\/390,  "{}Arbitrary block data length is odd, expect even number for word size."{} ) \(\backslash\)}
+\DoxyCodeLine{75     X(I2C\_GENERIC\_ERROR,        -\/391,  "{}I2C Generic Error (Error not defined)."{} ) \(\backslash\)}
+\DoxyCodeLine{76     X(I2C\_TIMEOUT\_ERROR,        -\/392,  "{}I2C Operation timed out."{} ) \(\backslash\)}
+\DoxyCodeLine{77     X(I2C\_ADDRESS\_NACK\_ERROR,   -\/393,  "{}I2C No acknowledgment from the addressed device (Address NACK)."{} ) \(\backslash\)}
+\DoxyCodeLine{78     X(I2C\_DATA\_NACK\_ERROR,      -\/394,  "{}I2C No acknowledgment after sending data.(Data NACK)"{} ) \(\backslash\)}
+\DoxyCodeLine{79     X(I2C\_BUS\_ERROR,            -\/395,  "{}An error occurred on the I2C bus.(Bus Error)"{} ) \(\backslash\)}
+\DoxyCodeLine{80     X(I2C\_ENABLE\_ERROR,         -\/396,  "{}I2C master not enabled, send command to enable I2C"{} ) \(\backslash\)}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{comment}{// Definition of each bit of the Operation Condition Event Register (QER) }}
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#define OPER\_BOOT\_FAIL           0  }}
+\DoxyCodeLine{85 \textcolor{preprocessor}{\#define OPER\_SELFTEST\_FAIL       1  }}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{comment}{// Definition of each bit of the Questionable Condition Register (QCN) }}
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#define QCR\_EEP\_READ\_ERROR      0  }}
+\DoxyCodeLine{89 \textcolor{preprocessor}{\#define QCR\_I2C\_COM             1  }}
+\DoxyCodeLine{90 \textcolor{preprocessor}{\#define QCR\_MTEMP\_HIGH          2  }}
+\DoxyCodeLine{91 \textcolor{preprocessor}{\#define QCR\_VSYS\_OUTLIMIT       3  }}
+\DoxyCodeLine{92 \textcolor{preprocessor}{\#define QCR\_WATCHDOG            4  }}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#ifdef   \_\_cplusplus}}
+\DoxyCodeLine{98 \}}
+\DoxyCodeLine{99 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{preprocessor}{\#endif   }\textcolor{comment}{/* \#define \_\_SCPI\_USER\_CONFIG\_H\_ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

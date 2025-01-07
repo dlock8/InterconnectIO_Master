@@ -12,8 +12,9 @@ Complete software code library to communicate to the user I2C port using SCPI co
 {\ttfamily \#include \char`\"{}pico/stdlib.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}hardware/i2c.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}pico\+\_\+lib2/src/sys/include/sys\+\_\+i2c.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}scpi\+\_\+i2c.\+h\char`\"{}}\newline
-Include dependency graph for scpi\+\_\+i2c.\+c\+:\nopagebreak
+{\ttfamily \#include \char`\"{}include/scpi\+\_\+i2c.\+h\char`\"{}}\newline
+Include dependency graph for scpi\+\_\+i2c.\+c\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -29,10 +30,10 @@ struct \mbox{\hyperlink{structuser__i2c}{user\+\_\+i2c}}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{scpi__i2c_8c_ac08acb90760acdc4d068aa21f62cf81a}\label{scpi__i2c_8c_ac08acb90760acdc4d068aa21f62cf81a}} 
-void \mbox{\hyperlink{scpi__i2c_8c_ac08acb90760acdc4d068aa21f62cf81a}{scpi\+\_\+i2c\+\_\+enable}} ()
+void {\bfseries scpi\+\_\+i2c\+\_\+enable} ()
 \begin{DoxyCompactList}\small\item\em function to configure the parameters of the user I2C based on the data set on the I2C structure \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{scpi__i2c_8c_a6d1b23a57be569e291c65c0258b5fc44}\label{scpi__i2c_8c_a6d1b23a57be569e291c65c0258b5fc44}} 
-void \mbox{\hyperlink{scpi__i2c_8c_a6d1b23a57be569e291c65c0258b5fc44}{scpi\+\_\+i2c\+\_\+disable}} ()
+void {\bfseries scpi\+\_\+i2c\+\_\+disable} ()
 \begin{DoxyCompactList}\small\item\em function to disable the user spi and configure pins reserved by SPI to normal GPIO, set as input. \end{DoxyCompactList}\item 
 bool \mbox{\hyperlink{scpi__i2c_8c_af0ae935f112602bcfff696bccc5e6c94}{scpi\+\_\+i2c\+\_\+status}} ()
 \begin{DoxyCompactList}\small\item\em Function who return if the user I2C is enabled or not. \end{DoxyCompactList}\item 
@@ -199,7 +200,7 @@ This function handles I2C communication by writing data to the I2C bus and readi
 \begin{DoxyReturn}{Returns}
 int8\+\_\+t Error code. Returns a negative value if an error occurs. 
 \end{DoxyReturn}
-$<$ set flag to return the size of data (byte or word)
+\texorpdfstring{$<$}{<} set flag to return the size of data (byte or word)
 
 \doxysubsection{Variable Documentation}
 \mbox{\Hypertarget{scpi__i2c_8c_a5d113da08beab5ac1358d31c4ae9ab8d}\label{scpi__i2c_8c_a5d113da08beab5ac1358d31c4ae9ab8d}} 

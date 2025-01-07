@@ -41,10 +41,10 @@ struct \mbox{\hyperlink{structMESSAGE}{MESSAGE}}
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\Hypertarget{master_8c_aeca90e1c1c62b70670514ffc18c9dfd4}\label{master_8c_aeca90e1c1c62b70670514ffc18c9dfd4}} 
-\#define \mbox{\hyperlink{master_8c_aeca90e1c1c62b70670514ffc18c9dfd4}{MESSAGE\+\_\+\+SIZE}}~92
+\#define {\bfseries MESSAGE\+\_\+\+SIZE}~92
 \begin{DoxyCompactList}\small\item\em Maximum size of message to be send on the USB port for debug. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{master_8c_a142810068f1b99cd93d3fc9f0e160e02}\label{master_8c_a142810068f1b99cd93d3fc9f0e160e02}} 
-\#define \mbox{\hyperlink{master_8c_a142810068f1b99cd93d3fc9f0e160e02}{QUEUE\+\_\+\+SIZE}}~12
+\#define {\bfseries QUEUE\+\_\+\+SIZE}~12
 \begin{DoxyCompactList}\small\item\em Maximum message received and not processed. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
@@ -56,9 +56,14 @@ void \mbox{\hyperlink{master_8c_ae733fe874122894bac75e1be37326ceb}{init\+\_\+que
 bool \mbox{\hyperlink{master_8c_a6d1ccfb6a786c332e10a4f2c8e8765c1}{deque}} (\mbox{\hyperlink{structMESSAGE}{MESSAGE}} $\ast$message, char $\ast$\mbox{\hyperlink{master_8c_aeac59056e9fe0881b3773cb2af260c41}{size}})
 \begin{DoxyCompactList}\small\item\em Removes a message from the front of the queue. \end{DoxyCompactList}\item 
 \mbox{\Hypertarget{master_8c_ad7fec5b2b07b712822dc8182d1796c22}\label{master_8c_ad7fec5b2b07b712822dc8182d1796c22}} 
-void \mbox{\hyperlink{master_8c_ad7fec5b2b07b712822dc8182d1796c22}{on\+\_\+uart\+\_\+rx}} ()
+void {\bfseries on\+\_\+uart\+\_\+rx} ()
 \begin{DoxyCompactList}\small\item\em RX Main communication interrupt handler. \end{DoxyCompactList}\item 
+<<<<<<< HEAD
 int \mbox{\hyperlink{master_8c_aea68381afe044625867caa3e9d3d5836}{init\+\_\+main\+\_\+com}} ()
+=======
+\mbox{\Hypertarget{master_8c_a580986de5963328695cc677384f0454a}\label{master_8c_a580986de5963328695cc677384f0454a}} 
+void {\bfseries init\+\_\+main\+\_\+com} ()
+>>>>>>> f06e9b7 (build with Visual Code pico extension and with sdk 2.1.0)
 \begin{DoxyCompactList}\small\item\em Initialisation of the main communication uart (serial port) the SCPI command are received by the serial port. Baud rate is read from the Configuration EEPROM In case of error, default baud rate will be use. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{master_8c_a5f6549f2d2461465f770c1b277910225}{Hardware\+\_\+\+Default\+\_\+\+Setting}} ()
 \begin{DoxyCompactList}\small\item\em Initializes the hardware to default settings. \end{DoxyCompactList}\item 
@@ -70,14 +75,14 @@ int \mbox{\hyperlink{master_8c_a840291bc02cba5474a4cb46a9b9566fe}{main}} (void)
 \begin{tabbing}
 xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
 struct \{\\
-\>\mbox{\hyperlink{structMESSAGE}{MESSAGE}} \mbox{\hyperlink{master_8c_a212ceeefc46dd1a9604e02b868db2634}{messages}} \mbox{[}\mbox{\hyperlink{master_8c_a142810068f1b99cd93d3fc9f0e160e02}{QUEUE\_SIZE}}\mbox{]}\\
+\>\mbox{\hyperlink{structMESSAGE}{MESSAGE}} {\bfseries messages} \mbox{[}\mbox{\hyperlink{master_8c_a142810068f1b99cd93d3fc9f0e160e02}{QUEUE\_SIZE}}\mbox{]}\\
 \>\>{\em Array of messages stored in the queue. }\\
 \>char \mbox{\hyperlink{master_8c_aeac59056e9fe0881b3773cb2af260c41}{size}} \mbox{[}\mbox{\hyperlink{master_8c_a142810068f1b99cd93d3fc9f0e160e02}{QUEUE\_SIZE}}\mbox{]}\\
-\>int \mbox{\hyperlink{master_8c_a9320720f4d683cc7c76f800be700ac35}{begin}}\\
+\>int {\bfseries begin}\\
 \>\>{\em Index of the first message in the queue. }\\
-\>int \mbox{\hyperlink{master_8c_abce9f5dc9c83f2639b72024fdee5d388}{end}}\\
+\>int {\bfseries end}\\
 \>\>{\em Index where the next message will be added. }\\
-\>int \mbox{\hyperlink{master_8c_a4ba74c1822743f8cac000c1eb4542510}{current\_load}}\\
+\>int {\bfseries current\_load}\\
 \>\>{\em Current number of messages in the queue. }\\
 \} \mbox{\hyperlink{master_8c_ab0465a95499aab048b02601cd65e1ad6}{queue}}\\
 
@@ -232,7 +237,7 @@ Instance of the EEPROM configuration union. \mbox{\Hypertarget{master_8c_ab0465a
 \index{master.c@{master.c}!queue@{queue}}
 \index{queue@{queue}!master.c@{master.c}}
 \doxysubsubsection{\texorpdfstring{}{}}
-{\footnotesize\ttfamily struct \{ ... \}  queue}
+{\footnotesize\ttfamily struct  \{ ... \}  queue}
 
 
 
