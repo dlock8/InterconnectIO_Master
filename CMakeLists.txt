@@ -24,13 +24,9 @@ cmake_minimum_required(VERSION 3.18)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
-
-# Set CMP0076 policy
-#cmake_policy(SET CMP0076 NEW)
-
-
 include(pico_sdk_import.cmake)
 pico_sdk_init()
+
 
 
 project(INTERCONNECTIO_MASTER C CXX ASM)
@@ -51,6 +47,7 @@ configure_file (
   "${PROJECT_SOURCE_DIR}/firmware/src/include/userconfig.h.in"
  "${PROJECT_BINARY_DIR}/firmware/src/include/userconfig.h"  ) 
 include_directories("${PROJECT_BINARY_DIR}/firmware/src/include") 
+
 
 
 add_subdirectory(firmware)

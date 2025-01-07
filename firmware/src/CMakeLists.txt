@@ -31,12 +31,6 @@ add_dependencies(${PROJECT_NAME} scpi_parser)
 
 
 
-pico_add_extra_outputs(${PROJECT_NAME})
-
-pico_enable_stdio_usb(${PROJECT_NAME} 1)
-pico_enable_stdio_uart(${PROJECT_NAME} 0) # temporary enable (1) to debug
-
-
 
 add_library(fts_scpi INTERFACE) #DL
 target_include_directories(fts_scpi INTERFACE ./include)
@@ -84,6 +78,13 @@ target_link_libraries(${PROJECT_NAME}
 	scpi_i2c                  # I2C-specific SCPI functions
 	lib2_sys                  # External system library
 )
+
+pico_add_extra_outputs(${PROJECT_NAME})
+
+pico_enable_stdio_usb(${PROJECT_NAME} 1)
+pico_enable_stdio_uart(${PROJECT_NAME} 0) # temporary enable (1) to debug
+
+
 
 
 # Ensure output files are copied after build
