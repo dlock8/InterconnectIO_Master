@@ -1,11 +1,6 @@
 {
     "version": "0.2.0",
     "configurations": [
-<<<<<<< HEAD
-        
-    
-=======
->>>>>>> f06e9b7 (build with Visual Code pico extension and with sdk 2.1.0)
         {
             "name": "Pico Debug (Cortex-Debug)",
             "cwd": "${userHome}/.pico-sdk/openocd/0.12.0+dev/scripts",
@@ -17,7 +12,7 @@
             "gdbPath": "${command:raspberry-pi-pico.getGDBPath}",
             "device": "${command:raspberry-pi-pico.getChipUppercase}",
             "configFiles": [
-                "interface/raspberrypi-swd.cfg",
+                "interface/cmsis-dap.cfg",
                 "target/${command:raspberry-pi-pico.getTarget}.cfg"
             ],
             "svdFile": "${userHome}/.pico-sdk/sdk/2.1.0/src/${command:raspberry-pi-pico.getChip}/hardware_regs/${command:raspberry-pi-pico.getChipUppercase}.svd",

@@ -1,3 +1,4 @@
+
 # == DO NOT EDIT THE FOLLOWING LINES for the Raspberry Pi Pico VS Code Extension to work ==
 if(WIN32)
     set(USERHOME $ENV{USERPROFILE})
@@ -28,7 +29,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 
 include(pico_sdk_import.cmake)
-pico_sdk_init()
+
 
 
 
@@ -38,6 +39,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 
 set(PICOTOOL_FETCH_FROM_GIT_PATH "~/pico")  # the directory where you want picotool to be fetched
+
+pico_sdk_init()
 
 set (IO_MASTER_VERSION_MAJOR 1)
 set (IO_MASTER_VERSION_MINOR 1)
