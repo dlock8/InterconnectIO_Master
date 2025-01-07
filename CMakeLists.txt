@@ -14,31 +14,43 @@ endif()
 # ====================================================================================
 set(PICO_BOARD pico CACHE STRING "Board type")
 
-
-
 # Main Cmake
-
-
 
 
 cmake_minimum_required(VERSION 3.18)
 
+
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+
+
 # Set CMP0076 policy
-cmake_policy(SET CMP0076 NEW)
+#cmake_policy(SET CMP0076 NEW)
+
 
 include(pico_sdk_import.cmake)
 pico_sdk_init()
+
 
 project(INTERCONNECTIO_MASTER C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 
-
-
 set(PICOTOOL_FETCH_FROM_GIT_PATH "~/pico")  # the directory where you want picotool to be fetched
+
+set (IO_MASTER_VERSION_MAJOR 1)
+set (IO_MASTER_VERSION_MINOR 1)
+
+add_definitions(-DSCPI_USER_CONFIG=1)  #DL  flag to add scpi_user_config.h
+
+
+# Configure Major and minor version 
+configure_file (
+  "${PROJECT_SOURCE_DIR}/firmware/src/include/userconfig.h.in"
+ "${PROJECT_BINARY_DIR}/firmware/src/include/userconfig.h"  ) 
+include_directories("${PROJECT_BINARY_DIR}/firmware/src/include") 
 
 
 add_subdirectory(firmware)

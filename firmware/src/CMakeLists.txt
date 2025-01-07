@@ -1,19 +1,6 @@
 # Project Cmakelist
 
 
-set (IO_MASTER_VERSION_MAJOR 1)
-set (IO_MASTER_VERSION_MINOR 1)
-
-add_definitions(-DSCPI_USER_CONFIG=1)  #DL  flag to add scpi_user_config.h
-
-
-# Configure Major and minor version 
-configure_file (
-  "${PROJECT_SOURCE_DIR}/firmware/src/include/userconfig.h.in"
- "${PROJECT_BINARY_DIR}/firmware/src/include/userconfig.h"  ) 
-include_directories("${PROJECT_BINARY_DIR}/firmware/src/include") 
-
-
 # External Project Setup for SCPI parser
 include(ExternalProject)
 set(scpi_parser_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib/scpi-parser/libscpi")
@@ -42,8 +29,7 @@ add_executable(${PROJECT_NAME} ${SOURCES_FILES})
 # Add the dependencies for your executable
 add_dependencies(${PROJECT_NAME} scpi_parser)
 
-message(STATUS "Source= ${PROJECT_SOURCE_DIR}")
-message(STATUS "Binary=${PROJECT_BINARY_DIR}")
+
 
 pico_add_extra_outputs(${PROJECT_NAME})
 
