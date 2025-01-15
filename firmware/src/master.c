@@ -177,6 +177,7 @@ static struct
 {
   MESSAGE rx;  ///< The received message containing character data.
   uint8_t ch;  ///< Character counter to track the number of characters received.
+  bool echo;   ///< Flag to enable or disable echoing of received characters.
 } rxser;       ///< Global instance for handling received serial data
 
 eep ee;  ///< Global variable representing the EEPROM data
@@ -193,7 +194,7 @@ void on_uart_rx()
     uart_read_blocking(UART_ID, &rxser.rx.data[rxser.ch],
                        1);  // read one character and save on array
     // Can we send it back?
-    if (uart_is_writable(UART_ID))
+    if (uart_is_writable(UART_ID) && rxser.echo)
     {
       // send back
       uart_putc(UART_ID, rxser.rx.data[rxser.ch]);  // Send ECHO
@@ -244,7 +245,8 @@ int init_main_com()
 {
   // Communication UART initialization. The UART is used to receive SCPI
   // command Set up our UART with a basic baud rate.
-  long numval;
+  long numval,echoval;
+
   uint8_t valid;
 
   valid = stringtonumber(ee.cfg.com_ser_speed, sizeof(ee.cfg.com_ser_speed),&numval);  // read communication speed on EEprom
@@ -252,6 +254,12 @@ int init_main_com()
   {
     numval = 115200;
   }  // if value is not valid use default speed
+
+  valid = stringtonumber(ee.cfg.com_ser_echo, sizeof(ee.cfg.com_ser_echo),&echoval);  // read communication echo flag on EEprom
+  if (valid == 0) {  // if parameter read correctly
+    rxser.echo = (echoval == 1) ? true : false;   // set echo flag
+  }
+
 
   uart_init(UART_ID, numval);
 
@@ -341,7 +349,7 @@ void Hardware_Default_Setting()
   if (valid == true)
   {  // if no error on boot Check, validate eeprom
     // Read EEprom  configuration
-    // cfg_eeprom_write_default();  // if new parameter added, write on
+   //  cfg_eeprom_write_default();  // if new parameter added, write on
     // eeprom
     int result = cfg_eeprom_read_full();  // read configuration eeprom
     status = (result == 0) ? TRUE : FALSE;

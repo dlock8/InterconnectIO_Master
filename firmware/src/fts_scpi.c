@@ -1116,6 +1116,7 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t* context)
       {SERIALNUMBER, offsetof(cfg, serialnumber), sizeof(((cfg*)0)->serialnumber), FALSE},
       {MOD_OPTION, offsetof(cfg, mod_option), sizeof(((cfg*)0)->mod_option), FALSE},
       {COM_SER_SPEED, offsetof(cfg, com_ser_speed), sizeof(((cfg*)0)->com_ser_speed), TRUE},
+      {COM_SER_ECHO, offsetof(cfg, com_ser_echo), sizeof(((cfg*)0)->com_ser_echo), TRUE},
       {PSLAVE_RUN, offsetof(cfg, slave_force_run), sizeof(((cfg*)0)->slave_force_run), TRUE},
       {TESTBOARD_NUM, offsetof(cfg, testboard_num), sizeof(((cfg*)0)->testboard_num), FALSE},
   };

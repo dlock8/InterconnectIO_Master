@@ -69,6 +69,7 @@ extern "C"
 #define SERIALNUMBER "SERIALNUMBER"   /**< EEPROM Serial number. */
 #define MOD_OPTION "MOD_OPTION"       /**< EEPROM Module options. */
 #define COM_SER_SPEED "COM_SER_SPEED" /**< EEPROM Communication serial speed. */
+#define COM_SER_ECHO "COM_SER_ECHO"   /**< EEPROM Serial Echo Flag. */
 #define PSLAVE_RUN "PICO_SLAVES_RUN"  /**< EEPROM Pico slaves run status. */
 #define TESTBOARD_NUM "TESTBOARD_NUM" /**< EEPROM Test board part number. */
 
@@ -86,8 +87,10 @@ extern "C"
     char serialnumber[6];    /**< Serial number stored in EEPROM. */
     char mod_option[15];     /**< Module options stored in EEPROM. */
     char com_ser_speed[7];   /**< Communication serial speed. */
+    char com_ser_echo[2];    /**< Serial echo flag for SCPI port. */
     char slave_force_run[2]; /**< Force master RUN_EN = 1, useful for debugging slave Pico devices. */
     char testboard_num[13];  /**< Part number of the self-test board. */
+  
   } cfg;
 
   /**
@@ -119,8 +122,10 @@ extern "C"
 #define EE_SERIALNUMBER "00001"         /**< Serial number of the device */
 #define EE_MOD_OPTION "DAC,PWR"         /**< Module options (e.g., DAC, Power) */
 #define EE_CSER_SPEED "115200"          /**< Communication serial speed (e.g., baud rate) */
+#define EE_CSER_ECHO "0"                /**< Communication flag, Echo ON: 1,  Echo OFF: 0 */
 #define EE_SLAVE_RUN "0"                /**< Slave run status (0 = Disable, 1 = Enable) */
 #define EE_TESTBOARD_NUM "500-1010-020" /**< Part number of the self-test board */
+
 
 /**
  * @brief Default values for the EEPROM structure.
@@ -128,16 +133,17 @@ extern "C"
  * This macro assigns default values to the EEPROM structure.
  * New parameters can be added at the end of the list as needed.
  */
-#define DEF_EEPROM                                                                                                                                   \
-  {                                                                                                                                                  \
-    EE_CHECK_CHAR,       /**< EEPROM Check Character */                                                                                              \
-        EE_PARTNUMBER,   /**< EEPROM Part Number */                                                                                                  \
-        EE_SERIALNUMBER, /**< EEPROM Serial Number */                                                                                                \
-        EE_MOD_OPTION,   /**< Module Option */                                                                                                       \
-        EE_CSER_SPEED,   /**< Communication Serial Speed */                                                                                          \
-        EE_SLAVE_RUN,    /**< Slave Run Flag */                                                                                                      \
-        EE_TESTBOARD_NUM /**< Test Board Number */                                                                                                   \
-  }
+#define DEF_EEPROM                                                                                                            \
+{                                                                                                                             \
+    EE_CHECK_CHAR,       /**< EEPROM Check Character */                                                                       \
+    EE_PARTNUMBER,       /**< EEPROM Part Number */                                                                           \
+    EE_SERIALNUMBER,     /**< EEPROM Serial Number */                                                                         \
+    EE_MOD_OPTION,       /**< Module Option */                                                                                \
+    EE_CSER_SPEED,       /**< Communication Serial Speed */                                                                   \
+    EE_CSER_ECHO,        /**< Communication serial echo as integer */                                                         \
+    EE_SLAVE_RUN,        /**< Slave Run Flag */                                                                               \
+    EE_TESTBOARD_NUM     /**< Test Board Number */                                                                            \
+}
 
   //!< Add parameter on struct ParamInfo  file fts_scpi.c  around line 990
 
