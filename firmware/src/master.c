@@ -75,8 +75,7 @@ typedef struct
 struct
 {                                // Global structure for circular queue
   MESSAGE messages[QUEUE_SIZE];  //!< Array of messages stored in the queue.
-  char size[QUEUE_SIZE];         //!< Array containing sizes of each message in the
-                                 //!< queue.
+  char size[QUEUE_SIZE];         //!< Array containing sizes of each message in the queue.
   int begin;                     //!< Index of the first message in the queue.
   int end;                       //!< Index where the next message will be added.
   int current_load;              //!< Current number of messages in the queue.
@@ -105,7 +104,7 @@ bool enque(MESSAGE* message, char mess_size)
     }
     queue.messages[queue.end] = *message;  // Add the message to the queue
     queue.size[queue.end] = mess_size;     // Store the message size
-    queue.end++;                           // Move to the next position
+    queue.end = (queue.end + 1) % QUEUE_SIZE;  // Circular increment
     queue.current_load++;                  // Increment the current load
     return true;                           // Return success
   }
@@ -153,10 +152,9 @@ bool deque(MESSAGE* message, char* size)
     *message = queue.messages[queue.begin];
     *size = queue.size[queue.begin];
     memset(&queue.messages[queue.begin], 0, sizeof(MESSAGE));
+    queue.size[queue.begin] = 0;
     queue.begin = (queue.begin + 1) % QUEUE_SIZE;
-    queue.size[queue.current_load] = 0;
     queue.current_load--;
-
     return true;
   }
   else
@@ -202,9 +200,6 @@ void on_uart_rx()
     // if line feed received or carriage return
     if (rxser.rx.data[rxser.ch] == 0x0a || rxser.rx.data[rxser.ch] == 0x0d)
     {  // if line feed received
-      enque(&rxser.rx,
-            rxser.ch + 1);  // save received data & size on message queue
-
       if (rxser.rx.data[rxser.ch] == 0x0a)
       {
         eol = 0x0d;
@@ -219,6 +214,8 @@ void on_uart_rx()
         // start on a newline
         uart_putc(UART_ID, eol);  // Send character
       }
+      rxser.rx.data[rxser.ch+1] = 0x0; // add null termination
+      enque(&rxser.rx,rxser.ch+2);  // save received data & size on message queue
       rxser.ch = 0;  // Message received, clear counter
     }
     else
@@ -430,8 +427,9 @@ int main(void)
 
   serspeed =init_main_com();  // Setup serial communication parameter
 
-
-  uart_puts(UART_ID, "FTS> ");  // Send ready messages
+  if (rxser.echo == true) {
+     uart_puts(UART_ID, "FTS> ");  // Send ready messages
+  }
   fprintf(stdout, "Master Version: %d.%d\n", IO_MASTER_VERSION_MAJOR, IO_MASTER_VERSION_MINOR);
 
   valid = watchdog_caused_reboot();  // Check if reboot come from watchdog
@@ -481,10 +479,12 @@ int main(void)
     {
       watchdog_update(); /** refresh watchdog */
       gpio_put(PICO_DEFAULT_LED_PIN,0);  // Turn OFF board led to show message reading
+      if (nb_char == 0) {
+        sleep_ms(50);
+      }
 
-      strl = strlen(&rec.data[0]);  // get the length of the message
-      fprintf(stdout, "SCPI Command: %s",&rec.data[0]);  // send message to debug port
-      result = SCPI_Input(&scpi_context, &rec.data[0],strl);  // send command to SCPI parser
+      fprintf(stdout, "SCPI Command: %s \r\n",&rec.data[0]);  // send message to debug port
+      result = SCPI_Input(&scpi_context, &rec.data[0],nb_char-1);  // send command to SCPI parser
 
       sleep_ms(50);
       gpio_put(PICO_DEFAULT_LED_PIN, 1);  // Turn ON board led

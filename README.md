@@ -187,9 +187,9 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 
 | SCPI_COMMAND| PARAMETER | COMMENT
 | :-----| :-----| :----- |
-|COM:1WIRE:CHECK? |\<value\>| value = Number of expected Onewire devices on a link, normally 1 or 2,  Check if devices are detected|
-|COM:1WIRE:WRITE |{String 64 chars maximum starting with 64bits lasered ROM}| example: 2D4CE282200000CC, 500-1010-020, 000001, J1
-|COM:1WIRE:READ?  |[Nb of Onewire devices] | read string of all the 1-Wire devices on the link, specify number of onewire to be read
+|COM:OWire:Check? |\<value\>| value = Number of expected Onewire devices on a link, normally 1 or 2,  Check if devices are detected|
+|COM:OWire:Write |{String 64 chars maximum starting with 64bits lasered ROM}| example: 2D4CE282200000CC, 500-1010-020, 000001, J1
+|COM:OWire:Read?  |[Nb of Onewire devices] | read string of all the 1-Wire devices on the link, specify number of onewire to be read
 |COM:INITialize:ENAble  |{SPI\|SERIAL\|I2C}|  Configure designated communication port
 |COM:INITialize:DISable  |{SPI\|SERIAL\|I2C}|  Configure designated communication port to GPIO
 |COM:INITialize:STATus? | {SPI\|SERIAL\|I2C}| Read if the designated communication is enable or disable
