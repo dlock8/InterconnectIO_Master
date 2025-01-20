@@ -223,7 +223,10 @@ void on_uart_rx()
     }
     else
     {
+      if (rxser.rx.data[0] != 0) // if first character is not null
+      {
       rxser.ch++;
+      }
     }
   }
 }
@@ -406,6 +409,7 @@ int main(void)
   char nb_char;
   int result;
   int serspeed;
+  int strl;
   float adcv[4];   //
   uint16_t ctr;    // counter used for flashing pico led
   uint16_t pulse;  // limit for flashing led frequency
@@ -458,8 +462,6 @@ int main(void)
     mess++;
 
  
- 
-
     /** Flashing led */
     if (ctr > pulse)
     {
@@ -480,9 +482,10 @@ int main(void)
       watchdog_update(); /** refresh watchdog */
       gpio_put(PICO_DEFAULT_LED_PIN,0);  // Turn OFF board led to show message reading
 
-      result = SCPI_Input(&scpi_context, &rec.data[0],nb_char);  // send command to SCPI parser
-      fprintf(stdout, "SCPI Command: %s\n\r",
-              &rec.data[0]);  // send message to debug port
+      strl = strlen(&rec.data[0]);  // get the length of the message
+      fprintf(stdout, "SCPI Command: %s",&rec.data[0]);  // send message to debug port
+      result = SCPI_Input(&scpi_context, &rec.data[0],strl);  // send command to SCPI parser
+
       sleep_ms(50);
       gpio_put(PICO_DEFAULT_LED_PIN, 1);  // Turn ON board led
     }
