@@ -34,6 +34,7 @@
 #include "hardware/resets.h"
 #include "include/functadv.h"
 
+
 #include "userconfig.h"  // contains Major and Minor version
 
 /**
@@ -67,13 +68,24 @@ scpi_error_t scpi_error_queue[SCPI_ERROR_QUEUE_SIZE];  ///< Queue for SCPI error
  * @param len  Length of the answer
  * @return size_t length
  */
-static size_t output_buffer_write(const char* data, size_t len)
-{
-  memcpy(out_buffer + out_buffer_pos, data, len);
-  out_buffer_pos += len;
-  out_buffer[out_buffer_pos] = '\0';
-  return len;
+size_t output_buffer_write(const char* data, size_t len) {
+    // Ensure we do not write beyond the buffer's capacity
+    size_t available_space = MAX_OUT_BUFFER - out_buffer_pos;
+    size_t write_len = (len > available_space) ? available_space : len;
+
+    // Copy the data into the buffer
+    memcpy(out_buffer + out_buffer_pos, data, write_len);
+    out_buffer_pos += write_len;
+
+    // Null-terminate the buffer to safely handle strings
+    out_buffer[out_buffer_pos] = '\0';
+
+    // For debugging: print the current buffer position
+   //fprintf(stdout, "Buffer pos: %zu len %d \n", out_buffer_pos, write_len);
+
+    return write_len;
 }
+
 
 /**
  * @brief The function write the SCPI answer to the main serial port.
@@ -84,17 +96,27 @@ static size_t output_buffer_write(const char* data, size_t len)
  * @param len     Length of the string
  * @return size_t True if string written with success
  */
-size_t SCPI_write(scpi_t* context, const char* data, size_t len)
-{
-  char outbuf[SCPI_INPUT_BUFFER_SIZE];  // Global variable output buffer used to test code
+size_t SCPI_write(scpi_t* context, const char* data, size_t len) {
+    char outbuf[SCPI_INPUT_BUFFER_SIZE];  // Global variable output buffer used to test code
 
-  strncpy(outbuf, data, SCPI_INPUT_BUFFER_SIZE);  // save data string to temporay buffer
-  outbuf[len] = '\0';                             // add string termination
-  uart_puts(UART_ID, outbuf);                     // send answer to serial port
-  output_buffer_write(data, len);                 // USED BY TEST to capture output of the command
+    // Ensure the length does not exceed the buffer size
+    if (len >= SCPI_INPUT_BUFFER_SIZE) {
+        len = SCPI_INPUT_BUFFER_SIZE - 1;
+    }
 
-  return fwrite(data, 1, len, stdout);  // send answer to usb port for help debug
+    strncpy(outbuf, data, len);  // Save data string to temporary buffer
+    outbuf[len] = '\0';  // Add string termination
+
+    // Ensure UART is ready to send data before calling uart_puts
+    while (!uart_is_writable(UART_ID)) {
+        // Wait for the UART to be ready to send data
+        tight_loop_contents();  // Use this if you want to prevent the CPU from idling in an infinite loop
+    }
+    uart_puts(UART_ID, outbuf);  // Send answer to serial port
+    output_buffer_write(data, len);  // Used by test to capture output of the command
+    return fwrite(data, 1, len, stdout);  // Send answer to USB port for debugging
 }
+
 
 /**
  * @brief AIRCR Register for triggering a system reset.
@@ -1292,6 +1314,7 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t* context)
   }
 }
 
+
 /**
  * @brief Callback function to interpret the communication command received from the SCPI port
  *
@@ -1480,12 +1503,16 @@ static scpi_result_t Callback_com_scpi(scpi_t* context)
   {
     case C1W:
       ecode = onewire_check_devices(&sdata, eid);  // check presence of one wire
+      fprintf(stdout, "onewire_check_devices_bef\n");
       SCPI_ResultText(context, sdata);
+      fprintf(stdout, "onewire_check_devices_aft\n");
       break;
 
     case R1W:
       ecode = onewire_read_info(&sdata, ADDR_INFO, NB_INFO, eid);
+       fprintf(stdout, "--- onewire_read_info bef\n");
       SCPI_ResultText(context, sdata);
+             fprintf(stdout, "==== onewire_read_info aft\n");
       break;
 
     case W1W:

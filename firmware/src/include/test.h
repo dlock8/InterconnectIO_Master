@@ -51,7 +51,13 @@
  */
 #define S 4  ///< mV
 
-extern char out_buffer[1024];
+/**
+ * @def  test buffer size
+ * @brief Maximum size of the buffer used to store the SCPI answer
+ */
+#define MAX_OUT_BUFFER 1024
+
+extern char out_buffer[MAX_OUT_BUFFER];
 extern size_t out_buffer_pos;
 
 bool test_ioboard();

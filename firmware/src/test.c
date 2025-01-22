@@ -48,9 +48,9 @@
  * @brief Output buffer for storing data to be sent.
  *
  * This buffer holds the data that will be sent via the output channel (e.g., serial or communication port).
- * It has a fixed size of 1024 bytes.
+ * It has a fixed size of MAX_OUT_BUFFER.
  */
-char out_buffer[1024];
+char out_buffer[MAX_OUT_BUFFER];
 
 /**
  * @brief Current position in the output buffer.
