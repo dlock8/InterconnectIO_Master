@@ -1503,16 +1503,12 @@ static scpi_result_t Callback_com_scpi(scpi_t* context)
   {
     case C1W:
       ecode = onewire_check_devices(&sdata, eid);  // check presence of one wire
-      fprintf(stdout, "onewire_check_devices_bef\n");
       SCPI_ResultText(context, sdata);
-      fprintf(stdout, "onewire_check_devices_aft\n");
       break;
 
     case R1W:
       ecode = onewire_read_info(&sdata, ADDR_INFO, NB_INFO, eid);
-       fprintf(stdout, "--- onewire_read_info bef\n");
       SCPI_ResultText(context, sdata);
-             fprintf(stdout, "==== onewire_read_info aft\n");
       break;
 
     case W1W:

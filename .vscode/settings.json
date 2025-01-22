@@ -36,47 +36,21 @@
     "raspberry-pi-pico.useCmakeTools": false,
     "raspberry-pi-pico.cmakePath": "${HOME}/.pico-sdk/cmake/v3.29.9/bin/cmake",
     "raspberry-pi-pico.ninjaPath": "${HOME}/.pico-sdk/ninja/v1.12.1/ninja",
-    "cSpell.words": [
-        "AIRCR",
-        "cdat",
-        "Chanlst",
-        "CSRB",
-        "CSRD",
-        "CSRH",
-        "CSRP",
-        "CSRT",
-        "CSWB",
-        "CSWD",
-        "CSWH",
-        "CSWP",
-        "CSWT",
-        "eeprom",
-        "Hdwr",
-        "ICRD",
-        "ICWA",
-        "ICWDB",
-        "ICWF",
-        "MAXDIM",
-        "nbeep",
-        "NOCERR",
-        "OPERC",
-        "Pico",
-        "QUESC",
-        "regf",
-        "retv",
-        "RSTATE",
-        "RXBUFFER",
-        "scbit",
-        "scpi",
-        "scpierror",
-        "SESTATE",
-        "SPRD",
-        "SPRF",
-        "SPWCS",
-        "SPWDB",
-        "SPWF",
-        "SPWM",
-        "testboard",
-        "wdata"
-    ]
+    "cSpell.languageSettings": [
+            {
+                "languageId": "cpp",
+                "enabled": true,
+                "patterns": [
+                    {
+                        "name": "comments",
+                        "pattern": "(\\/\\/.*|\\/\\*[^]*?\\*\\/)"
+                    },
+                    {
+                        "name": "define macros",
+                        "pattern": "#define\\s+\\w+"
+                    }
+                ]
+            }
+        ]
+
 }
