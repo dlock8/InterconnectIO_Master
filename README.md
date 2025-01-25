@@ -138,9 +138,9 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 |ROUTe:CHANnel:STATe?| (@<ch_list>)|  Return state of the relay in the channel list,  0: open relay, 1: Close relay
 |ROUTe:BANK:STATe?| {BANK1-BANK4}|  Read decimal value of relays state on the particular bank. Each bank is a byte long
 |ROUTe:REV:STATe? |{BANK1-BANK4}| Read contact side of reverse relay, LOW Side = 0, HIGH side = 1
-|ROUTe:CLOSe:PWR |{LPR1\|HPR1\|HPR2\|SSR1}|  Close the designated power relay
-|ROUTe:OPEN:PWR |{LPR1\|HPR1\|HPR2\|SSR1}|  Open the designated power relay
-|ROUTe:STATe:PWR? |{LPR1\|HPR1\|HPR2\|SSR1}| Read state of the power relay, 0: Open, 1:Closed
+|ROUTe:CLOSe:PWR |{LPR1\|LPR2\|HPR1\|SSR1}|  Close the designated power relay
+|ROUTe:OPEN:PWR |{LPR1\|LPR2\|HPR1\|SSR1}|  Open the designated power relay
+|ROUTe:STATe:PWR? |{LPR1\|LPR2\|HPR`\|SSR1}| Read state of the power relay, 0: Open, 1:Closed
 |ROUTE:CLOSe:OC |{OC1\|OC2\|OC3}|   Close or activate the designated open collector transistor
 |ROUTE:OPEN:OC |{OC1\|OC2\|OC3}|    Open or deactivate the designated open collector transistor
 |ROUTE:STATe:OC?|{OC1\|OC2\|OC3}|   Read state of the the designated open collector transistor, 0: Open, 1:Closed

@@ -1513,7 +1513,6 @@ static scpi_result_t Callback_com_scpi(scpi_t* context)
 
     case W1W:
       ecode = onewire_write_info(winfo, ADDR_INFO);
-      SCPI_ResultText(context, sdata);
       break;
 
     case CSWB:
