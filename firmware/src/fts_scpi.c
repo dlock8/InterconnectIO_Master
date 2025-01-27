@@ -877,8 +877,8 @@ static scpi_result_t Callback_system_scpi(scpi_t* context)
       if (res)
       {  // if no failure detected
         // Build string to be returned base on the array of byte received
-        sprintf(pv, "Slave1: 0x%x, Slave2: 0x%x, Slave3: 0x%x", ans[0], ans[1], ans[2]);
-        fprintf(stdout, pv);           // print string version for the 3 slaves
+        sprintf(pv, "Slave1, Slave2, Slave3: 0x%x : 0x%x : 0x%x", ans[0], ans[1], ans[2]);
+        fprintf(stdout, pv);           // print string status byte for the 3 slaves
         fprintf(stdout, "\n");         // print newline
         SCPI_ResultText(context, pv);  // sent result
       }
@@ -886,6 +886,10 @@ static scpi_result_t Callback_system_scpi(scpi_t* context)
       {
         // if failure found during command
         fprintf(stdout, "System execute error: %d\r\n", ans);
+        sprintf(pv, "-1");
+        SCPI_ResultText(context, pv);  // return Error
+
+        ans[0] = I2C_COMMUNICATION_ERROR;
         SCPI_ErrorPush(context, ans[0]);
         return SCPI_RES_ERR;
       }
@@ -1166,7 +1170,7 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t* context)
         // copy parameter to string
         strncpy(sfull, &ee.data[members[i].offset], members[i].size);
         sfull[members[i].size] = '\0';                       // add end of string to temporary buffer
-        sprintf(pstr, "%s = %s\n", members[i].name, sfull);  // build string to return
+        sprintf(pstr, "%s = %s | ", members[i].name, sfull);  // build string to return
         // fprintf(stdout,"Parameter %s\n",pstr);
         SCPI_ResultCharacters(context, pstr, strlen(pstr));  // return value
       }
