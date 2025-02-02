@@ -137,7 +137,7 @@ size_t SCPI_write(scpi_t* context, const char* data, size_t len) {
 scpi_result_t SCPI_Reset(scpi_t* context)
 {
   (void)context;
-  fprintf(stdout, "*Reset execute begin\r\n");
+  fprintf(stdout, "*Reset execute begin\n");
 
   // perform a system reset using  Application Interrupt and Reset Control Register (AIRCR)
   // Trigger a system reset via the SCB_AIRCR register
@@ -155,7 +155,7 @@ scpi_result_t SCPI_Reset(scpi_t* context)
 static scpi_result_t SCPI_Flush(scpi_t* context)
 {
   (void)context;
-  // fprintf(stdout, "SCPI Flush\r\n");
+  // fprintf(stdout, "SCPI Flush\n");
   return SCPI_RES_OK;
 }
 
@@ -211,7 +211,7 @@ int SCPI_Error(scpi_t* context, int_fast16_t err)
   {
     SCPI_Beep();            // Beep for signal error
     gpio_put(GPIO_LED, 1);  // Turn ON led Error
-    fprintf(stdout, "**ERROR: %d, \"%s\"\r\n", (int16_t)err, SCPI_ErrorTranslate(err));
+    fprintf(stdout, "**ERROR: %d, \"%s\"\n", (int16_t)err, SCPI_ErrorTranslate(err));
   }
 
   return SCPI_RES_OK;
@@ -238,7 +238,7 @@ static scpi_result_t SCPI_Control(scpi_t* context, scpi_ctrl_name_t ctrl, scpi_r
 {
   (void)context;
 
-  fprintf(stdout, "SCPI Control\r\n");
+  fprintf(stdout, "SCPI Control\n");
 
   if (SCPI_CTRL_SRQ == ctrl)
   {
@@ -246,7 +246,7 @@ static scpi_result_t SCPI_Control(scpi_t* context, scpi_ctrl_name_t ctrl, scpi_r
   }
   else
   {
-    fprintf(stdout, "**CTRL %02x: 0x%X (%d)\r\n", ctrl, val, val);
+    fprintf(stdout, "**CTRL %02x: 0x%X (%d)\n", ctrl, val, val);
   }
   return SCPI_RES_OK;
 }
@@ -297,7 +297,7 @@ const scpi_choice_def_t scpi_special_all_numbers_def[] = {
  */
 static scpi_result_t SCPI_CallbackTstQ(scpi_t* context)
 {
-  fprintf(stdout, "Board internal Selftest execute \r\n");
+  fprintf(stdout, "Board internal Selftest execute \n");
   IOBoard_Selftest();  // function to execute the internal selftest
   return SCPI_RES_OK;
 }
@@ -484,7 +484,7 @@ scpi_result_t Relay_Chanlst(scpi_t* context, uint16_t* array)
     {
       fprintf(stdout, "%d,", array[i]);
     }
-    fprintf(stdout, "\r\n");
+    fprintf(stdout, "\n");
   }
   return SCPI_RES_OK;
 }
@@ -510,7 +510,7 @@ static scpi_result_t Callback_Relay_scpi(scpi_t* context)
 
   tag = SCPI_CmdTag(context);  // extract tag from the command
 
-  fprintf(stdout, "tagvalue: %d\r\n", tag);
+  fprintf(stdout, "tagvalue: %d\n", tag);
 
   flag = Relay_Chanlst(context, array);  // extract list of relay
   if (flag == SCPI_RES_ERR)
@@ -522,7 +522,7 @@ static scpi_result_t Callback_Relay_scpi(scpi_t* context)
   fres = relay_execute(array, tag, answer);  // Perform action requested
   if (!fres)
   {
-    fprintf(stdout, "Relay error: %d\r\n", answer);
+    fprintf(stdout, "Relay error: %d\n", answer);
     SCPI_ErrorPush(context, answer[0]);
     return SCPI_RES_ERR;
   }
@@ -536,7 +536,7 @@ static scpi_result_t Callback_Relay_scpi(scpi_t* context)
       i++;
     } while (array[i] > 0);
     printf(str);
-    printf("\r\n");
+    printf("\n");
   }
 
   fprintf(stdout, "Channel List from main: ");
@@ -546,7 +546,7 @@ static scpi_result_t Callback_Relay_scpi(scpi_t* context)
     fprintf(stdout, "%d,", array[i]);
     i++;
   } while (array[i] > 0);
-  fprintf(stdout, "\r\n Channel List completed \r\n ");
+  fprintf(stdout, "\n Channel List completed \n ");
 
   return SCPI_RES_OK;
 }
@@ -571,7 +571,7 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t* context)
 
   while (SCPI_ParamNumber(context, scpi_special_all_numbers_def, &paramRelay, FALSE))
   {
-    // fprintf(stdout,"on switch \r\n");
+    // fprintf(stdout,"on switch \n");
     if (paramRelay.special)
     {
       switch (paramRelay.content.tag)
@@ -678,7 +678,7 @@ static scpi_result_t Callback_Relay_all_scpi(scpi_t* context)
       SCPI_ResultUInt8(context, answer[i]);  // return SCPI value
       i++;
     } while (array[i] > 0);
-    fprintf(stdout, "\r\n");  // send new line
+    fprintf(stdout, "\n");  // send new line
   }
 
   return SCPI_RES_OK;
@@ -700,7 +700,7 @@ static scpi_result_t Callback_Digital_scpi(scpi_t* context)
   uint32_t value = 0;
   int32_t numbers[2] = {0, 0};  // initialise array to get a know value in case of only 1 number
 
-  fprintf(stdout, "On digital execute \r\n");
+  fprintf(stdout, "On digital execute \n");
   res = SCPI_Parameter(context, &param1, FALSE);
 
   if (res)
@@ -715,14 +715,14 @@ static scpi_result_t Callback_Digital_scpi(scpi_t* context)
 
   SCPI_CommandNumbers(context, numbers, 2, 2);  // fill array with command number
 
-  fprintf(stdout, "Digital TEST numbers %d %d\r\n", numbers[0], numbers[1]);
+  fprintf(stdout, "Digital TEST numbers %d %d\n", numbers[0], numbers[1]);
 
   tag = SCPI_CmdTag(context);  // extract tag from the command
 
   if (numbers[0] > 1 || numbers[1] > 7)
   {  // if port or bit number is out of limit, return error
     answer[0] = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE;
-    fprintf(stdout, "Error on command: Data out of range for PORT{0-1} or BIT{0-7}  \r\n");
+    fprintf(stdout, "Error on command: Data out of range for PORT{0-1} or BIT{0-7}  \n");
     SCPI_ErrorPush(context, answer[0]);
     return SCPI_RES_ERR;
   }
@@ -731,7 +731,7 @@ static scpi_result_t Callback_Digital_scpi(scpi_t* context)
 
   if (!res)
   {  // if failure found during command
-    fprintf(stdout, "Digital error: %d\r\n", answer);
+    fprintf(stdout, "Digital error: %d\n", answer);
     SCPI_ErrorPush(context, answer[0]);
     return SCPI_RES_ERR;
   }
@@ -739,7 +739,7 @@ static scpi_result_t Callback_Digital_scpi(scpi_t* context)
   if (tag == RDIR || tag == RBDIR || tag == RIN || tag == RBIN)
   {  // if returned value is expected
 
-    fprintf(stdout, "Value read:  0x%x,\r\n", answer[0]);  // return value on debug port
+    fprintf(stdout, "Value read:  0x%x,\n", answer[0]);  // return value on debug port
     SCPI_ResultUInt8(context, answer[0]);                  // return SCPI value
   }
 
@@ -761,7 +761,7 @@ static scpi_result_t Callback_gpio_scpi(scpi_t* context)
   uint8_t tag;
   uint32_t value = 0;
 
-  fprintf(stdout, "On gpio execute \r\n");
+  fprintf(stdout, "On gpio execute \n");
   res = SCPI_Parameter(context, &param1, FALSE);
 
   if (res)
@@ -776,14 +776,14 @@ static scpi_result_t Callback_gpio_scpi(scpi_t* context)
 
   SCPI_CommandNumbers(context, numbers, 2, 2);  // Create array of number
 
-  fprintf(stdout, "GPIO TEST numbers %d %d\r\n", numbers[0], numbers[1]);
+  fprintf(stdout, "GPIO TEST numbers %d %d\n", numbers[0], numbers[1]);
 
   tag = SCPI_CmdTag(context);  // extract tag from the command
 
   if (numbers[0] > 3 || numbers[1] > 28)
   {  // if device or gpio number is out of limit, return error
     answer[0] = SCPI_ERROR_ILLEGAL_PARAMETER_VALUE;
-    fprintf(stdout, "Error on command: Data out of range for DEVice{0-3} or GPio{0-28} \r\n");
+    fprintf(stdout, "Error on command: Data out of range for DEVice{0-3} or GPio{0-28} \n");
     SCPI_ErrorPush(context, answer[0]);
     return SCPI_RES_ERR;
   }
@@ -792,14 +792,14 @@ static scpi_result_t Callback_gpio_scpi(scpi_t* context)
 
   if (!res)
   {  // if failure found during command
-    fprintf(stdout, "Gpio execute error: %d\r\n", answer);
+    fprintf(stdout, "Gpio execute error: %d\n", answer);
     SCPI_ErrorPush(context, answer[0]);
     return SCPI_RES_ERR;
   }
 
   if (tag == GPIN || tag == GPRDIR || tag == GPGPAD)
   {                                                             // if returned value is expected
-    fprintf(stdout, "GPIO Value read:  0x%x,\r\n", answer[0]);  // return value on debug port
+    fprintf(stdout, "GPIO Value read:  0x%x,\n", answer[0]);  // return value on debug port
     SCPI_ResultUInt8(context, answer[0]);                       // return SCPI value
   }
 
@@ -822,7 +822,7 @@ static scpi_result_t Callback_system_scpi(scpi_t* context)
   uint32_t value = 0;
   float fval;
 
-  fprintf(stdout, "On system execute \r\n");
+  fprintf(stdout, "On system execute \n");
 
   res = SCPI_Parameter(context, &param1, FALSE);
 
@@ -847,12 +847,12 @@ static scpi_result_t Callback_system_scpi(scpi_t* context)
   switch (tag)
   {
     case SBEEP:
-      fprintf(stdout, "Scpi command beep \r\n");
+      fprintf(stdout, "Scpi command beep \n");
       SCPI_Beep();
       break;
 
     case SVER:
-      fprintf(stdout, "Scpi command pico version \r\n");
+      fprintf(stdout, "Scpi command pico version \n");
       res = system_execute(tag, ans);  // get arrays of version
       if (res)
       {  // if no failure detected
@@ -865,14 +865,14 @@ static scpi_result_t Callback_system_scpi(scpi_t* context)
       else
       {
         // if failure found during command
-        fprintf(stdout, "System execute error: %d\r\n", ans);
+        fprintf(stdout, "System execute error: %d\n", ans);
         SCPI_ErrorPush(context, ans[0]);
         return SCPI_RES_ERR;
       }
       break;
 
     case GSTA:
-      fprintf(stdout, "Scpi command to get pico device status \r\n");
+      fprintf(stdout, "Scpi command to get pico device status \n");
       res = system_execute(tag, ans);  // get arrays of version
       if (res)
       {  // if no failure detected
@@ -885,7 +885,7 @@ static scpi_result_t Callback_system_scpi(scpi_t* context)
       else
       {
         // if failure found during command
-        fprintf(stdout, "System execute error: %d\r\n", ans);
+        fprintf(stdout, "System execute error: %d\n", ans);
         sprintf(pv, "-1");
         SCPI_ResultText(context, pv);  // return Error
 
@@ -896,18 +896,18 @@ static scpi_result_t Callback_system_scpi(scpi_t* context)
       break;
 
     case SLERR:  // Ctrl of led error
-      fprintf(stdout, "Set Error led on gpio %d to: %d \r\n", GPIO_LED, value);
+      fprintf(stdout, "Set Error led on gpio %d to: %d \n", GPIO_LED, value);
       gpio_put(GPIO_LED, value);
       break;
 
     case GLERR:  // Read led error
       value = gpio_get(GPIO_LED);
-      fprintf(stdout, "Read Error led on gpio %d ,value: %d \r\n", GPIO_LED, value);
+      fprintf(stdout, "Read Error led on gpio %d ,value: %d \n", GPIO_LED, value);
       SCPI_ResultUInt8(context, value);  // return SCPI value
       break;
 
     case SRUN:  // System Pico RUN_EN,
-      fprintf(stdout, "Set Pico RUN_EN gpio %d to: %d \r\n", GPIO_RUN, value);
+      fprintf(stdout, "Set Pico RUN_EN gpio %d to: %d \n", GPIO_RUN, value);
       gpio_put(GPIO_RUN, value);
       if (!value)
       {  // Set or Clear User Request bit on ESR (set when slaves are disabled)
@@ -921,12 +921,12 @@ static scpi_result_t Callback_system_scpi(scpi_t* context)
 
     case GRUN:  // Read Run enable value
       value = gpio_get(GPIO_RUN);
-      fprintf(stdout, "Read Slave Run_EN on gpio %d ,value: %d \r\n", GPIO_RUN, value);
+      fprintf(stdout, "Read Slave Run_EN on gpio %d ,value: %d \n", GPIO_RUN, value);
       SCPI_ResultUInt8(context, value);  // return SCPI value
       break;
 
     case SOE:  // System Output enable
-      fprintf(stdout, "Set Output Enable gpio %d to: %d \r\n", GPIO_OE, value);
+      fprintf(stdout, "Set Output Enable gpio %d to: %d \n", GPIO_OE, value);
       gpio_put(GPIO_OE, value);
       if (value)
       {  // Set or Clear Power ON bit on ESR
@@ -940,12 +940,12 @@ static scpi_result_t Callback_system_scpi(scpi_t* context)
 
     case GOE:  // Read System Ouput enable
       value = gpio_get(GPIO_OE);
-      fprintf(stdout, "Read System Output Enable on gpio %d ,value: %d \r\n", GPIO_OE, value);
+      fprintf(stdout, "Read System Output Enable on gpio %d ,value: %d \n", GPIO_OE, value);
       SCPI_ResultUInt8(context, value);  // return SCPI value
       break;
 
     case STBR:
-      fprintf(stdout, "Run Internal Selftest # %d\r\n", value);
+      fprintf(stdout, "Run Internal Selftest # %d\n", value);
       context->buffer.position = 0;
       internal_test_sequence(ee.cfg.testboard_num, value);
       SCPI_Reset(context);  // reset hardware after selftest
@@ -973,7 +973,7 @@ static scpi_result_t Callback_analog_scpi(scpi_t* context)
   float value2 = 0;
   bool retv;
 
-  fprintf(stdout, "On analog execute \r\n");
+  fprintf(stdout, "On analog execute \n");
 
   tag = SCPI_CmdTag(context);  // extract tag from the command
 
@@ -1106,6 +1106,7 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t* context)
 {
   scpi_bool_t res;
   scpi_parameter_t param1;
+  scpi_parameter_t param2;
   uint16_t answer;  // will contains the answer returned by command
   uint8_t tag;
   char* split;
@@ -1145,9 +1146,16 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t* context)
       {COM_SER_ECHO, offsetof(cfg, com_ser_echo), sizeof(((cfg*)0)->com_ser_echo), TRUE},
       {PSLAVE_RUN, offsetof(cfg, slave_force_run), sizeof(((cfg*)0)->slave_force_run), TRUE},
       {TESTBOARD_NUM, offsetof(cfg, testboard_num), sizeof(((cfg*)0)->testboard_num), FALSE},
+      {PARAMETER1, offsetof(cfg, parameter1), sizeof(((cfg*)0)->parameter1), FALSE},
+      {PARAMETER2, offsetof(cfg, parameter2), sizeof(((cfg*)0)->parameter2), FALSE},
+      {PARAMETER3, offsetof(cfg, parameter3), sizeof(((cfg*)0)->parameter3), FALSE},
+      {PARAMETER4, offsetof(cfg, parameter4), sizeof(((cfg*)0)->parameter4), FALSE},
+      {PARAMETER5, offsetof(cfg, parameter5), sizeof(((cfg*)0)->parameter5), FALSE},
+      {TEST, offsetof(cfg, test), sizeof(((cfg*)0)->test), FALSE}
+
   };
 
-  fprintf(stdout, "\n\nOn eeprom execute \r\n");
+  fprintf(stdout, "\n\nOn eeprom execute \n");
   tag = SCPI_CmdTag(context);  // extract tag from the command
 
   // calculate the number of members
@@ -1164,13 +1172,13 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t* context)
       {
         break;
       }  // if error do not execute the eeprom reading
-      fprintf(stdout, "\n\nEEprom full content: \r\n");
+      fprintf(stdout, "\n\nEEprom full content: \n");
       for (i = 0; i < numMembers; ++i)
       {
         // copy parameter to string
         strncpy(sfull, &ee.data[members[i].offset], members[i].size);
         sfull[members[i].size] = '\0';                       // add end of string to temporary buffer
-        sprintf(pstr, "%s = %s | ", members[i].name, sfull);  // build string to return
+        sprintf(pstr, "%s = %s  ", members[i].name, sfull);  // build string to return
         // fprintf(stdout,"Parameter %s\n",pstr);
         SCPI_ResultCharacters(context, pstr, strlen(pstr));  // return value
       }
@@ -1187,21 +1195,30 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t* context)
   // extract varname and svalue
   if (tag == WEEP || tag == REEP)
   {
+ 
     res = SCPI_Parameter(context, &param1, true);  // Read first parameter
     if (res == false)
     {
       return SCPI_RES_ERR;
     }  // if no parameter read, raise error and exit
 
+  
     // Split the string to distinguishes between varnames and the svalue
-    split = strtok(param1.ptr, " ',");
+    split = strtok(param1.ptr, " ', \n");
     strcpy(varname, split);
     strupr(varname);
     fprintf(stdout, "EEprom varname = %s\n", varname);
 
     if (tag == WEEP)
-    {                                   // if tag  = Write command
-      split = strtok(NULL, " ',\r\n");  // Extract second parameter from the command
+    {             
+      res = SCPI_Parameter(context, &param2, true);  // Read second parameter
+      if (res == false)
+      {
+        return SCPI_RES_ERR;
+      }  // if no parameter read, raise error and exit
+
+                            // if tag  = Write command
+      split = strtok(param2.ptr, " ',\n");  // Extract second parameter from the command
       strcpy(svalue, split);            // copy second parameter to svalue
       strupr(svalue);                   // change lowercase to upper case
       if (svalue[0] == '\0')
@@ -1215,7 +1232,6 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t* context)
       }
     }
   }
-
   if (mode == 'w' || mode == 'r')
   {
     bool found = false;  // set flag default value
@@ -1343,14 +1359,14 @@ static scpi_result_t Callback_com_scpi(scpi_t* context)
   char winfo[SCPI_INPUT_BUFFER_SIZE];  // big string to contents filtered data
   char ustr[SCPI_INPUT_BUFFER_SIZE];   // big string to get temporary data
 
-  fprintf(stdout, "\nOn communication execute \r\n");
+  fprintf(stdout, "\nOn communication execute \n");
 
   winfo[0] = '\0';
 
   ecode = NOERR;
   tag = SCPI_CmdTag(context);  // extract tag from the command
 
-  fprintf(stdout, "Tag = %d \r\n", tag);
+  fprintf(stdout, "Tag = %d \n", tag);
 
   if (tag == CSWH)
   {
@@ -1446,17 +1462,17 @@ static scpi_result_t Callback_com_scpi(scpi_t* context)
             if (tag == CIE)
             {
               scpi_spi_enable();
-              fprintf(stdout, "Enable SPI communication\r\n");
+              fprintf(stdout, "Enable SPI communication\n");
             }
             if (tag == CID)
             {
               scpi_spi_disable();
-              fprintf(stdout, "Disable SPI communication\r\n");
+              fprintf(stdout, "Disable SPI communication\n");
             }
             if (tag == CRI)
             {
               bval = scpi_spi_status();
-              fprintf(stdout, "Read status SPI communication: %d\r\n", bval);
+              fprintf(stdout, "Read status SPI communication: %d\n", bval);
               SCPI_ResultBool(context, bval);
             }
             break;
@@ -1465,17 +1481,17 @@ static scpi_result_t Callback_com_scpi(scpi_t* context)
             if (tag == CIE)
             {
               scpi_uart_enable();
-              fprintf(stdout, "Enable SERIAL communication\r\n");
+              fprintf(stdout, "Enable SERIAL communication\n");
             }
             if (tag == CID)
             {
               scpi_uart_disable();
-              fprintf(stdout, "Disable SERIAL communication\r\n");
+              fprintf(stdout, "Disable SERIAL communication\n");
             }
             if (tag == CRI)
             {
               bval = scpi_uart_status();
-              fprintf(stdout, "Read status SERIAL communication: %d\r\n", bval);
+              fprintf(stdout, "Read status SERIAL communication: %d\n", bval);
               SCPI_ResultBool(context, bval);
             }
             break;
@@ -1484,17 +1500,17 @@ static scpi_result_t Callback_com_scpi(scpi_t* context)
             if (tag == CIE)
             {
               scpi_i2c_enable();
-              fprintf(stdout, "Enable I2C communication\r\n");
+              fprintf(stdout, "Enable I2C communication\n");
             }
             if (tag == CID)
             {
               scpi_i2c_disable();
-              fprintf(stdout, "Disable I2C communication\r\n");
+              fprintf(stdout, "Disable I2C communication\n");
             }
             if (tag == CRI)
             {
               bval = scpi_i2c_status();
-              fprintf(stdout, "Read status I2C communication: %d\r\n", bval);
+              fprintf(stdout, "Read status I2C communication: %d\n", bval);
               SCPI_ResultBool(context, bval);
             }
             break;
@@ -1520,35 +1536,35 @@ static scpi_result_t Callback_com_scpi(scpi_t* context)
       break;
 
     case CSWB:
-      fprintf(stdout, "Serial set Baudrate to %d\r\n", val);
+      fprintf(stdout, "Serial set Baudrate to %d\n", val);
       scpi_uart_set_baudrate(val);
       break;
 
     case CSRB:
       val = scpi_uart_get_baudrate();
-      fprintf(stdout, "Serial readback actual Baudrate, speed= %d\r\n", val);
+      fprintf(stdout, "Serial readback actual Baudrate, speed= %d\n", val);
       SCPI_ResultInt32(context, val);
       break;
 
     case CSWT:
-      fprintf(stdout, "Serial set Timeout_ms to %d\r\n", val);
+      fprintf(stdout, "Serial set Timeout_ms to %d\n", val);
       scpi_uart_set_timeout(val);
       break;
 
     case CSRT:
       val = scpi_uart_get_timeout();
-      fprintf(stdout, "Serial readback Timeout_ms: %d\r\n", val);
+      fprintf(stdout, "Serial readback Timeout_ms: %d\n", val);
       SCPI_ResultInt32(context, val);
       break;
 
     case CSWH:
-      fprintf(stdout, "Serial set RTS-CTS Handshake to %d\r\n", val);
+      fprintf(stdout, "Serial set RTS-CTS Handshake to %d\n", val);
       scpi_uart_set_handshake(val);
       break;
 
     case CSRH:
       bval = scpi_uart_get_handshake();
-      fprintf(stdout, "Serial readback RTS-CTS Handshake: %d\r\n", bval);
+      fprintf(stdout, "Serial readback RTS-CTS Handshake: %d\n", bval);
       SCPI_ResultBool(context, bval);
       break;
 
@@ -1556,22 +1572,22 @@ static scpi_result_t Callback_com_scpi(scpi_t* context)
       ecode = scpi_uart_set_protocol(winfo);
       if (ecode != NOERR)
       {
-        fprintf(stdout, "Serial protocol error with value: %s\r\n", &winfo);
+        fprintf(stdout, "Serial protocol error with value: %s\n", &winfo);
       }
       else
       {
-        fprintf(stdout, "Serial set protocol to: %s\r\n", &winfo);
+        fprintf(stdout, "Serial set protocol to: %s\n", &winfo);
       }
       break;
 
     case CSRP:
       dpr = scpi_uart_get_protocol();
-      fprintf(stdout, "Serial readback protocol: %s\r\n", dpr);
+      fprintf(stdout, "Serial readback protocol: %s\n", dpr);
       SCPI_ResultText(context, dpr);
       break;
 
     case CSWD:  // Write data to uart only, the answer is discarded
-      fprintf(stdout, "Serial transmit data: %s\r\n", &winfo);
+      fprintf(stdout, "Serial transmit data: %s\n", &winfo);
       ecode = scpi_uart_write_data(winfo);  // write data, do not expect answer
       break;
 
@@ -1579,12 +1595,12 @@ static scpi_result_t Callback_com_scpi(scpi_t* context)
       ecode = scpi_uart_write_read_data(winfo, ustr, SCPI_INPUT_BUFFER_SIZE);  // write data, expect answer
       if (ecode != NOCERR)
       {
-        fprintf(stdout, "Serial Error with string: %s\r\n", winfo);
+        fprintf(stdout, "Serial Error with string: %s\n", winfo);
       }
       else
       {
-        fprintf(stdout, "Serial transmit data: %s\r\n", &winfo);
-        fprintf(stdout, "Serial Received data: %s\r\n", &ustr);
+        fprintf(stdout, "Serial transmit data: %s\n", &winfo);
+        fprintf(stdout, "Serial Received data: %s\n", &ustr);
         SCPI_ResultText(context, ustr);  // return string with or without error
       }
       break;
@@ -1706,12 +1722,12 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t* context)
   size_t lenblk = 0;  // Length of received data
   readlen[0] = 0;     // initialize
 
-  fprintf(stdout, "\nOn synchronous communication execute \r\n");
+  fprintf(stdout, "\nOn synchronous communication execute \n");
 
   ecode = NOERR;
   tag = SCPI_CmdTag(context);  // extract tag from the command
 
-  // fprintf(stdout, "Tag = %d \r\n", tag);
+  // fprintf(stdout, "Tag = %d \n", tag);
 
   //!< Tag to read single data
   if (tag == SPWCS || tag == SPWDB || tag == SPWF || tag == SPWM || tag == ICWDB || tag == ICWF || tag == ICWA)
@@ -1732,7 +1748,7 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t* context)
   if (tag == SPWD || tag == SPRD || tag == ICWD || tag == ICRD)
   {
     SCPI_CommandNumbers(context, readlen, 1, 0);  // extract number of bytes to read
-    fprintf(stdout, "On Command, Nb of byte/word  to Read: %d \r\n", readlen[0]);
+    fprintf(stdout, "On Command, Nb of byte/word  to Read: %d \n", readlen[0]);
 
     // Loop to extract all data from the parameters
     while (SCPI_Parameter(context, &param1, FALSE))
@@ -1798,7 +1814,7 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t* context)
         for (int i = 0; i < plen; i++)
         {
           wdata[idx] = (lval >> (8 * (plen - 1 - i))) & 0xff;
-          fprintf(stdout, "Byte from string: 0x%02x \r\n", wdata[idx]);
+          fprintf(stdout, "Byte from string: 0x%02x \n", wdata[idx]);
           idx++;
         }
       }
@@ -1817,30 +1833,30 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t* context)
   switch (tag)
   {
     case SPWD:
-      fprintf(stdout, "SPI write data only, nbw to write: %d\r\n", idx);
+      fprintf(stdout, "SPI write data only, nbw to write: %d\n", idx);
       ecode = scpi_spi_wri_read_data(wdata, idx, rdata, readlen[0], &wordsize);
       break;
 
     case SPRD:
       if (idx == 0)
       {
-        fprintf(stdout, "SPI read data only, Nb byte/word: %d\r\n", readlen[0]);
+        fprintf(stdout, "SPI read data only, Nb byte/word: %d\n", readlen[0]);
       }
       else
       {
-        fprintf(stdout, "SPI write & read data, nb write %d, nb byte/word read: %d\r\n", idx, readlen[0]);
+        fprintf(stdout, "SPI write & read data, nb write %d, nb byte/word read: %d\n", idx, readlen[0]);
       }
       ecode = scpi_spi_wri_read_data(wdata, idx, rdata, readlen[0], &wordsize);
       break;
 
     case SPWF:
-      fprintf(stdout, "SPI set Baudrate to %d\r\n", val);
+      fprintf(stdout, "SPI set Baudrate to %d\n", val);
       scpi_spi_set_baudrate(val);
       break;
 
     case SPRF:
       val = scpi_spi_get_baudrate();
-      fprintf(stdout, "SPI readback Baudrate, speed= %d\r\n", val);
+      fprintf(stdout, "SPI readback Baudrate, speed= %d\n", val);
       retv = true;
       break;
 
@@ -1848,17 +1864,17 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t* context)
       ecode = scpi_spi_set_chipselect(val);
       if (ecode == 0)
       {
-        fprintf(stdout, "SPI set Chipselect to %d\r\n", val);
+        fprintf(stdout, "SPI set Chipselect to %d\n", val);
       }
       else
       {
-        fprintf(stdout, "Unable to set SPI chipselect to gpio:  %d\r\n", val);
+        fprintf(stdout, "Unable to set SPI chipselect to gpio:  %d\n", val);
       }
       break;
 
     case SPRCS:
       val = scpi_spi_get_chipselect();
-      fprintf(stdout, "SPI readback chipselect gpio= %d\r\n", val);
+      fprintf(stdout, "SPI readback chipselect gpio= %d\n", val);
       retv = true;
       break;
 
@@ -1866,67 +1882,67 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t* context)
       ecode = scpi_spi_set_databits(val);
       if (ecode == 0)
       {
-        fprintf(stdout, "SPI set databits to %d\r\n", val);
+        fprintf(stdout, "SPI set databits to %d\n", val);
       }
       else
       {
-        fprintf(stdout, "Unable to set SPI databits to:  %d\r\n", val);
+        fprintf(stdout, "Unable to set SPI databits to:  %d\n", val);
       }
       break;
 
     case SPRDB:
       val = scpi_spi_get_databits();
-      fprintf(stdout, "SPI readback databits=  %d\r\n", val);
+      fprintf(stdout, "SPI readback databits=  %d\n", val);
       retv = true;
       break;
 
     case SPWM:
-      fprintf(stdout, "SPI set Mode to %d\r\n", val);
+      fprintf(stdout, "SPI set Mode to %d\n", val);
       ecode = scpi_spi_set_mode(val);
       break;
 
     case SPRM:
       val = scpi_spi_get_mode();
-      fprintf(stdout, "SPI Mode is set to = %d\r\n", val);
+      fprintf(stdout, "SPI Mode is set to = %d\n", val);
       retv = true;
       break;
 
     case ICWD:
-      fprintf(stdout, "I2C write data only, nbw to write: %d\r\n", idx);
+      fprintf(stdout, "I2C write data only, nbw to write: %d\n", idx);
       ecode = scpi_i2c_wri_read_data(wdata, idx, rdata, readlen[0], &wordsize);
       break;
 
     case ICRD:
       if (idx == 0)
       {
-        fprintf(stdout, "I2C read data only, Nb byte/word: %d\r\n", readlen[0]);
+        fprintf(stdout, "I2C read data only, Nb byte/word: %d\n", readlen[0]);
       }
       else
       {
-        fprintf(stdout, "I2C write & read data, nb write %d, nb byte/word read: %d\r\n", idx, readlen[0]);
+        fprintf(stdout, "I2C write & read data, nb write %d, nb byte/word read: %d\n", idx, readlen[0]);
       }
       ecode = scpi_i2c_wri_read_data(wdata, idx, rdata, readlen[0], &wordsize);
       break;
 
     case ICWF:
-      fprintf(stdout, "I2C set Baudrate to %d\r\n", val);
+      fprintf(stdout, "I2C set Baudrate to %d\n", val);
       scpi_i2c_set_baudrate(val);
       break;
 
     case ICRF:
       val = scpi_i2c_get_baudrate();
-      fprintf(stdout, "I2C readback Baudrate, speed= %d\r\n", val);
+      fprintf(stdout, "I2C readback Baudrate, speed= %d\n", val);
       retv = true;
       break;
 
     case ICWA:
-      fprintf(stdout, "I2C set Device Address to 0x%x\r\n", val);
+      fprintf(stdout, "I2C set Device Address to 0x%x\n", val);
       scpi_i2c_set_address(val);
       break;
 
     case ICRA:
       val = scpi_i2c_get_address();
-      fprintf(stdout, "I2C readback Device Address, addr= 0x%x\r\n", val);
+      fprintf(stdout, "I2C readback Device Address, addr= 0x%x\n", val);
       retv = true;
       break;
 
@@ -1934,17 +1950,17 @@ static scpi_result_t Callback_sync_com_scpi(scpi_t* context)
       ecode = scpi_i2c_set_databits(val);
       if (ecode == 0)
       {
-        fprintf(stdout, "I2C set databits to %d\r\n", val);
+        fprintf(stdout, "I2C set databits to %d\n", val);
       }
       else
       {
-        fprintf(stdout, "Unable to set I2C databits to:  %d\r\n", val);
+        fprintf(stdout, "Unable to set I2C databits to:  %d\n", val);
       }
       break;
 
     case ICRDB:
       val = scpi_i2c_get_databits();
-      fprintf(stdout, "I2C readback databits=  %d\r\n", val);
+      fprintf(stdout, "I2C readback databits=  %d\n", val);
       retv = true;
       break;
   }

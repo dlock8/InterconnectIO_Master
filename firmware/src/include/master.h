@@ -72,6 +72,12 @@ extern "C"
 #define COM_SER_ECHO "COM_SER_ECHO"   /**< EEPROM Serial Echo Flag. */
 #define PSLAVE_RUN "PICO_SLAVES_RUN"  /**< EEPROM Pico slaves run status. */
 #define TESTBOARD_NUM "TESTBOARD_NUM" /**< EEPROM Test board part number. */
+#define PARAMETER1 "PARAMETER1"       /**< EEPROM user defined field. */
+#define PARAMETER2 "PARAMETER2"        /**< EEPROM user defined field. */
+#define PARAMETER3 "PARAMETER3"       /**< EEPROM user defined field. */
+#define PARAMETER4 "PARAMETER4"       /**< EEPROM user defined field. */
+#define PARAMETER5 "PARAMETER5"       /**< EEPROM user defined field. */
+#define TEST "TEST"                   /**< EEPROM test field. */
 
   /**
    * @brief EEPROM configuration structure.
@@ -90,6 +96,12 @@ extern "C"
     char com_ser_echo[2];    /**< Serial echo flag for SCPI port. */
     char slave_force_run[2]; /**< Force master RUN_EN = 1, useful for debugging slave Pico devices. */
     char testboard_num[13];  /**< Part number of the self-test board. */
+    char parameter1[15];     /**< not defined parameter. */
+    char parameter2[15];     /**< not defined parameter. */
+    char parameter3[15];     /**< not defined parameter. */
+    char parameter4[15];     /**< not defined parameter. */
+    char parameter5[15];     /**< not defined parameter. */
+    char test[10];            /**< reserved to test eeprom */
   
   } cfg;
 
@@ -125,6 +137,12 @@ extern "C"
 #define EE_CSER_ECHO "0"                /**< Communication flag, Echo ON: 1,  Echo OFF: 0 */
 #define EE_SLAVE_RUN "0"                /**< Slave run status (0 = Disable, 1 = Enable) */
 #define EE_TESTBOARD_NUM "500-1010-020" /**< Part number of the self-test board */
+#define EE_PARAMETER1 "NOT_DEFINED1"     /**< User available parameter */
+#define EE_PARAMETER2 "NOT_DEFINED2"     /**< User available parameter */
+#define EE_PARAMETER3 "NOT_DEFINED3"     /**< User available parameter */
+#define EE_PARAMETER4 "NOT_DEFINED4"     /**< User available parameter */
+#define EE_PARAMETER5 "NOT_DEFINED5"     /**< User available parameter */
+#define EE_TEST       "TEST"            /**< User to test read write of EEprom */
 
 
 /**
@@ -133,16 +151,23 @@ extern "C"
  * This macro assigns default values to the EEPROM structure.
  * New parameters can be added at the end of the list as needed.
  */
-#define DEF_EEPROM                                                                                                            \
-{                                                                                                                             \
-    EE_CHECK_CHAR,       /**< EEPROM Check Character */                                                                       \
-    EE_PARTNUMBER,       /**< EEPROM Part Number */                                                                           \
-    EE_SERIALNUMBER,     /**< EEPROM Serial Number */                                                                         \
-    EE_MOD_OPTION,       /**< Module Option */                                                                                \
-    EE_CSER_SPEED,       /**< Communication Serial Speed */                                                                   \
-    EE_CSER_ECHO,        /**< Communication serial echo as integer */                                                         \
-    EE_SLAVE_RUN,        /**< Slave Run Flag */                                                                               \
-    EE_TESTBOARD_NUM     /**< Test Board Number */                                                                            \
+#define DEF_EEPROM                                                              \
+{                                                                               \
+    EE_CHECK_CHAR,       /**< EEPROM Check Character */                         \
+    EE_PARTNUMBER,       /**< EEPROM Part Number */                             \
+    EE_SERIALNUMBER,     /**< EEPROM Serial Number */                           \
+    EE_MOD_OPTION,       /**< Module Option */                                  \
+    EE_CSER_SPEED,       /**< Communication Serial Speed */                     \
+    EE_CSER_ECHO,        /**< Communication serial echo as integer */           \
+    EE_SLAVE_RUN,        /**< Slave Run Flag */                                 \
+    EE_TESTBOARD_NUM,     /**< Test Board Number */                             \
+    EE_PARAMETER1,        /**< not defined paramater*/                          \
+    EE_PARAMETER2,        /**< not defined paramater*/                          \
+    EE_PARAMETER3,        /**< not defined paramater*/                          \
+    EE_PARAMETER4,        /**< not defined paramater*/                          \
+    EE_PARAMETER5,        /**< not defined paramater*/                          \
+    EE_TEST               /**< used to test eeprom r/w*/                        \
+                                                                                \
 }
 
   //!< Add parameter on struct ParamInfo  file fts_scpi.c  around line 990

@@ -189,8 +189,7 @@ void on_uart_rx()
   char eol;
   while (uart_is_readable(UART_ID))
   {
-    uart_read_blocking(UART_ID, &rxser.rx.data[rxser.ch],
-                       1);  // read one character and save on array
+    uart_read_blocking(UART_ID, &rxser.rx.data[rxser.ch],1);  // read one character and save on array
     // Can we send it back?
     if (uart_is_writable(UART_ID) && rxser.echo)
     {
@@ -199,23 +198,9 @@ void on_uart_rx()
     }
     // if line feed received or carriage return
     if (rxser.rx.data[rxser.ch] == 0x0a || rxser.rx.data[rxser.ch] == 0x0d)
-    {  // if line feed received
-      if (rxser.rx.data[rxser.ch] == 0x0a)
-      {
-        eol = 0x0d;
-      }
-      else
-      {
-        eol = 0x0a;
-      }
-      if (uart_is_writable(UART_ID))
-      {
-        // send carriage return or line feed to terminal for be sure to
-        // start on a newline
-        uart_putc(UART_ID, eol);  // Send character
-      }
-      rxser.rx.data[rxser.ch+1] = 0x0; // add null termination
-      enque(&rxser.rx,rxser.ch+2);  // save received data & size on message queue
+    {  // if end of line is received
+      rxser.rx.data[rxser.ch+1] = 0x0; // add null termination after carriage return
+      enque(&rxser.rx,rxser.ch+1);  // save received data & size on message queue
       rxser.ch = 0;  // Message received, clear counter
     }
     else
@@ -415,6 +400,9 @@ int main(void)
   eep eed = DEF_EEPROM;  // Assign default value to structure eeprom
   pulse = 200;           // slow led flashing frequency
 
+      // Re-enable SWD by writing to the appropriate register
+    *(volatile uint32_t *)(0x4001c000) = 0x00000007;
+
   stdio_init_all();
 
   // Required only if want to use serial ports as stdio
@@ -484,8 +472,7 @@ int main(void)
       }
 
       fprintf(stdout, "SCPI Command: %s \r\n",&rec.data[0]);  // send message to debug port
-      result = SCPI_Input(&scpi_context, &rec.data[0],nb_char-1);  // send command to SCPI parser
-
+      result = SCPI_Input(&scpi_context, &rec.data[0],nb_char);  // send command to SCPI parser
       sleep_ms(50);
       gpio_put(PICO_DEFAULT_LED_PIN, 1);  // Turn ON board led
     }
