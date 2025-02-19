@@ -32,7 +32,7 @@
 /**
  * @brief Maximum characters allowed in the info field.
  */
-#define NB_INFO 48
+#define NB_INFO 64
 
 /**
  * @brief Test address available to check read/write during testing.
@@ -73,11 +73,11 @@ struct rom
 };
 
 /**
- * @brief  Format EEprom mandatory (reserved 48 Bytes)
+ * @brief  Format EEprom mandatory (reserved 64 Bytes)
  *
  *      Address:  0
- *      Device_id, Board_part_number, Bd_serial_number, location (J1 or J2)
- *          16   2   12            2      6           2    2
+ *      Device_id, ProductName, Partnumber, SerialNumber, location (J1 or J2)
+ *          16   2   22       2  12       2      6      2    2
  */
 
 /**

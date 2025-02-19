@@ -178,7 +178,7 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 |SYSTem:SLAves?||  0: All Pico Slaves disabled, 1: All Pico Slaves enabled
 |SYSTem:SLAves:STAtus? || read Pico device 'status byte' for slaves 1 to 3
 |SYSTem:TESTboard | {0-5}| Selftest execute from menu below <br /> **0** Input test number to execute (0 to exit) <br>  **1** Selftest using only selftest board, no check of onewire <br> **2** Selftest run only if selftest board is installed, onewire validation <br>  **3** Selftest using selftest board and loopback connector <br>  **4** Selftest of instruments in manual mode using selftest board <br>  **5** Test of SCPI command,selftest board is required
-|CFG:Write:Eeprom:STR | 'varname string,value string' | valid varname = <br> **'partnumber'**: partnumber of the InterconnectIO board, default: '500-1000-010' <br> **'serialnumber'** :  serial number of the InterconnectIO board, default: '00001' <br> **'mod_option'** :  optional module installed on the InterconnectIO board, default: 'DAC,PWR'<br> **'com_ser_speed'** :  baudrate used by the SCPI command serial port, default: '115200'<br>  **'com_ser_echo'** :  Serial port echo ON (1) or OFF (0), default: '0'<br>**'pico_slaves_run'** :  flag to control the slaves RUN pin actuation. 0: Pico Slaves reset at each boot(disable USB), 1: Do not reset slaves at boot, default: '0'<br> **'testboard_num'** :  partnumber of the selftest board written on the onewire device , default: '500-1010-020'
+|CFG:Write:Eeprom:STR | 'varname string ,value string' | valid varname = <br> **'partnumber'**: partnumber of the InterconnectIO board, default: '500-1000-010' <br> **'serialnumber'** :  serial number of the InterconnectIO board, default: '00001' <br> **'mod_option'** :  optional module installed on the InterconnectIO board, default: 'DAC,PWR'<br> **'com_ser_speed'** :  baudrate used by the SCPI command serial port, default: '115200'<br>  **'com_ser_echo'** :  Serial port echo ON (1) or OFF (0), default: '0'<br>**'pico_slaves_run'** :  flag to control the slaves RUN pin actuation. 0: Pico Slaves reset at each boot(disable USB), 1: Do not reset slaves at boot, default: '0'<br> **'testboard_num'** :  partnumber of the selftest board written on the onewire device , default: '500-1010-020'
 |CFG:Write:Eeprom:Default  ||   Special command to write all default value to eeprom
 |CFG:Read:Eeprom:Full?  ||       Special command to read all data on eeprom
 |CFG:Read:Eeprom:STR?  |    'varnames string'|  Reads string value from the designated parameter
@@ -188,7 +188,7 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 | SCPI_COMMAND| PARAMETER | COMMENT
 | :-----| :-----| :----- |
 |COM:OWire:Check? |\<value\>| value = Number of expected Onewire devices on a link, normally 1 or 2,  Check if devices are detected|
-|COM:OWire:Write |{String 64 chars maximum starting with 64bits lasered ROM}| example: 2D4CE282200000CC, 500-1010-020, 000001, J1
+|COM:OWire:Write |{String 64 chars maximum starting with 64bits lasered ROM}| example: 2D4CE282200000CC, SELFTEST, 500-1010-020, 000001, J1
 |COM:OWire:Read?  |[Nb of Onewire devices] | read string of all the 1-Wire devices on the link, specify number of onewire to be read
 |COM:INITialize:ENAble  |{SPI\|SERIAL\|I2C}|  Configure designated communication port
 |COM:INITialize:DISable  |{SPI\|SERIAL\|I2C}|  Configure designated communication port to GPIO
@@ -248,7 +248,7 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 |GPIO:GETPad:DEVice1:GP8? | Read PAD value (8 bits) on gpio 8 on Device 1 (Slave_1) 
 |SYSTem:BEEPer   | Turn ON momentary the beeper
 |SYSTEM:DEVice:VERsion? | Read version of each Pico devices [0,1,2,3], return string <br>  ex: 1.0, 1.0, 1.0 1.0
-|COM:1WIRE:WRITE "2D4CE282200000CC, 500-1010-020, 000001, J1"|Lasered ROM +  Board#+ Serial + Location
+|COM:1WIRE:WRITE "2D4CE282200000CC, SELFTEST,500-1010-020, 000001, J1"|Lasered ROM +  Board#+ Serial + Location
 
 
 

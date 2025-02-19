@@ -106,8 +106,6 @@ bool relay_execute(uint16_t* list, uint8_t action, uint16_t* answer)
   volatile uint8_t i2c_add, gpio, ser;
   volatile uint16_t relay;
   bool rfd, smf, exf, se;
-  bool seflg[4] = {false, false, false, false};    // SE flag to close or open the SE relay
-  bool sestate[4] = {false, false, false, false};  // actual value of se relay state
   volatile int gpior[4][16] = RBK;                 // table of gpio corresponding to relay
   uint16_t rdata;
 
@@ -118,172 +116,80 @@ bool relay_execute(uint16_t* list, uint8_t action, uint16_t* answer)
     relay = list[i];
     rfd = false;  // set flag for relay found
     printf("Channel: %d ,\r\n", list[i]);
+
+    //BANK1
     if (relay >= 100 && relay <= 115 || relay >= 10 && relay <= 17)
     {
       i2c_add = PICO_RELAY1_ADDRESS;  // assign card to send command
+      ser = SE_BK1;     // assign gpio for REV relay
+      se = (relay > 107);            // Only close REV relay if relay > 107
+      rfd = true;       // set flag true (relay found)
+
       if (relay >= 100)
       {
         gpio = gpior[0][relay - 100];  // remove offset and get gpio reference
-        if (relay > 107)
-        {             // if number require Se relay to be close
-          se = true;  // Close relay SE
-        }
-        else
-        {
-          se = false;
-        }  // open relay SE
       }
       else
       {
         gpio = gpior[0][relay - 10];  // remove offset and get gpio reference
-        se = false;                   // Open Relay SE
       }
-      // Check if Se relay need to be actuated
-      if (seflg[0] == true)
-      {  // if not the first actuation of SE relay
-        if (sestate[0] != se)
-        {                   // check if state changed
-          ser = SE_BK1;     // assign gpio for Single ended relay
-          sestate[0] = se;  // update value of relay
-        }
-        else
-        {
-          ser = 0;
-        }  // value not changed, no need to toggle SE relay
-      }
-      else
-      {
-        ser = SE_BK1;     // assign gpio for Single ended relay
-        sestate[0] = se;  // update value of relay
-      }
-      seflg[0] = true;  // set flag for se relay updated
-      rfd = true;       // set flag true (relay found)
     }
 
+     //BANK2
     if (relay >= 200 && relay <= 215 || relay >= 20 && relay <= 27)
     {
       i2c_add = PICO_RELAY2_ADDRESS;  // assign card to send command
+      ser = SE_BK2;     // assign gpio for REV relay
+      se = (relay > 207);            // Only close REV relay if relay > 207
+      rfd = true;       // set flag true (relay found)
+
       if (relay >= 200)
       {
         gpio = gpior[1][relay - 200];  // remove offset and get gpio reference
-        // condition to toggle SE relay only one time by call
-        if (relay > 207)
-        {             // if number require Se relay to be close
-          se = true;  // Close relay SE
-        }
-        else
-        {
-          se = false;
-        }  // open relay SE
       }
       else
       {
         gpio = gpior[1][relay - 20];  // remove offset and get gpio reference
-        se = false;                   // open relay SE
       }
-      // Check if Se relay need to be actuated
-      if (seflg[1] == true)
-      {  // if not the first actuation of SE relay
-        if (sestate[1] != se)
-        {                   // check if state changed
-          ser = SE_BK2;     // assign gpio for Single ended relay
-          sestate[1] = se;  // update value of relay
-        }
-        else
-        {
-          ser = 0;
-        }  // value not changed, no need to toggle SE relay
-      }
-      else
-      {
-        ser = SE_BK2;     // assign gpio for Single ended relay
-        sestate[1] = se;  // update value of relay
-      }
-      seflg[1] = true;  // set flag for se relay updated
-      rfd = true;       // set flag true (relay found)
     }
+
+
+     //BANK3
     if (relay >= 300 && relay <= 315 || relay >= 30 && relay <= 37)
     {
       i2c_add = PICO_RELAY1_ADDRESS;  // assign card to send command
+      ser = SE_BK3;     // assign gpio for REV relay
+      se = (relay > 307);            // Only close REV relay if relay > 307
+      rfd = true;       // set flag true (relay found)
+
       if (relay >= 300)
       {
         gpio = gpior[2][relay - 300];  // remove offset and get gpio reference
-        if (relay > 307)
-        {             // if number require Se relay to be close
-          se = true;  // Close relay SE
-        }
-        else
-        {
-          se = false;
-        }  // open relay SE
       }
       else
       {
         gpio = gpior[2][relay - 30];  // remove offset and get gpio reference
-        se = false;                   // Open Relay SE
       }
-      // Check if Se relay need to be actuated
-      if (seflg[3] == true)
-      {  // if not the first actuation of SE relay
-        if (sestate[2] != se)
-        {                   // check if state changed
-          ser = SE_BK3;     // assign gpio for Single ended relay
-          sestate[2] = se;  // update value of relay
-        }
-        else
-        {
-          ser = 0;
-        }  // value not changed, no need to toggle SE relay
-      }
-      else
-      {
-        ser = SE_BK3;     // assign gpio for Single ended relay
-        sestate[2] = se;  // update value of relay
-      }
-      seflg[2] = true;  // set flag for se relay updated
-      rfd = true;       // set flag true (relay found)
     }
+
+     //BANK4
     if (relay >= 400 && relay <= 415 || relay >= 40 && relay <= 47)
     {
       i2c_add = PICO_RELAY2_ADDRESS;  // assign card to send command
+      ser = SE_BK4;     // assign gpio for REV relay
+      se = (relay > 407);            // Only close REV relay if relay > 407
+      rfd = true;       // set flag true (relay found)
+
       if (relay >= 400)
       {
         gpio = gpior[3][relay - 400];  // remove offset and get gpio reference
-        if (relay > 407)
-        {             // if number require Se relay to be close
-          se = true;  // Close relay SE
-        }
-        else
-        {
-          se = false;
-        }  // open relay SE
       }
       else
       {
         gpio = gpior[3][relay - 40];  // remove offset and get gpio reference
-        se = false;                   // Open Relay SE
       }
-      // Check if Se relay need to be actuated
-      if (seflg[3] == true)
-      {  // if not the first actuation of SE relay
-        if (sestate[3] != se)
-        {                   // check if state changed
-          ser = SE_BK4;     // assign gpio for Single ended relay
-          sestate[3] = se;  // update value of relay
-        }
-        else
-        {
-          ser = 0;
-        }  // value not changed, no need to toggle SE relay
-      }
-      else
-      {
-        ser = SE_BK4;     // assign gpio for Single ended relay
-        sestate[3] = se;  // update value of relay
-      }
-      seflg[3] = true;  // set flag for se relay updated
-      rfd = true;       // set flag true (relay found)
     }
+
 
     if (relay >= 500 && relay <= 530)
     {                               // Device on Pico slave 1
@@ -562,7 +468,7 @@ bool digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, u
         {
           answer[0] = rdata;
           return false;
-        }                       // Save error and return
+        }  // Save error and return
         portd += (rdata << i);  // save value based on bit position
       }
       answer[0] = portd;
@@ -594,7 +500,7 @@ bool digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, u
       {
         answer[0] = rdata;
         return false;
-      }                   // Save error and return
+      }  // Save error and return
       answer[0] = rdata;  // return answer
       break;
 
@@ -633,7 +539,7 @@ bool digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, u
       {
         answer[0] = rdata;
         return false;
-      }                   // Save error and return
+      }  // Save error and return
       answer[0] = rdata;  // return read value
       break;
 
@@ -645,7 +551,7 @@ bool digital_execute(uint8_t action, uint8_t port, uint8_t bit, uint8_t value, u
       {
         answer[0] = rdata;
         return false;
-      }                   // Save error and return
+      }  // Save error and return
       answer[0] = rdata;  // return read value
       break;
   }
@@ -775,7 +681,6 @@ bool gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, u
       command = GP_PAD_SET;     // command to send to read gpio value
       if (slave == PICO_MASTER_ADDRESS)
       {
-
         hw_write_masked(&pads_bank0_hw->io[gpio], value, maskvalue);  // Set Pad state
         fprintf(stdout, "Cmd %02d, Set Pad State to Gpio: %02d ,State: 0x%01x \r\n", command, gpio, value);
       }
@@ -785,7 +690,7 @@ bool gpio_execute(uint8_t action, uint8_t device, uint8_t gpio, uint8_t value, u
         if (!smf)
         {
           return false;
-        }                                                       // Error return
+        }  // Error return
         smf = send_master(i2c0, slave, command, gpio, answer);  // send i2c command to slave
         if (!smf)
         {

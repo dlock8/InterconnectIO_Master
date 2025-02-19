@@ -1,0 +1,5 @@
+/home/pi/pico/InterconnectIO/InterconnectIO_Master/firmware/build/_deps/picotool/picotool
+/home/pi/pico/InterconnectIO/InterconnectIO_Master/firmware/build/_deps/picotool/picotoolTargets.cmake
+/home/pi/pico/InterconnectIO/InterconnectIO_Master/firmware/build/_deps/picotool/picotoolTargets-release.cmake
+/home/pi/pico/InterconnectIO/InterconnectIO_Master/firmware/build/_deps/picotool/picotoolConfig.cmake
+/home/pi/pico/InterconnectIO/InterconnectIO_Master/firmware/build/_deps/picotool/picotoolConfigVersion.cmake

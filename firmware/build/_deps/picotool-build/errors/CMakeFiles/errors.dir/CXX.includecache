@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/pi/pico/InterconnectIO/InterconnectIO_Master/firmware/build/_deps/picotool-src/errors/errors.cpp
+cstdarg
+-
+errors.h
+/home/pi/pico/InterconnectIO/InterconnectIO_Master/firmware/build/_deps/picotool-src/errors/errors.h
+
+/home/pi/pico/InterconnectIO/InterconnectIO_Master/firmware/build/_deps/picotool-src/errors/errors.h
+string
+-
+

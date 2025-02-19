@@ -66,8 +66,8 @@ extern "C"
  *  @{
  */
 #define SE_BK1 19 /**< GPIO for single-ended relay of bank 1. */
-#define SE_BK2 18 /**< GPIO for single-ended relay of bank 2. */
-#define SE_BK3 19 /**< GPIO for single-ended relay of bank 3. */
+#define SE_BK2 19 /**< GPIO for single-ended relay of bank 2. */
+#define SE_BK3 18 /**< GPIO for single-ended relay of bank 3. */
 #define SE_BK4 18 /**< GPIO for single-ended relay of bank 4. */
 /** @} */
 
@@ -101,6 +101,7 @@ extern "C"
 #define DISABLE_SPI 112      //!< Command to disable SPI communication
 #define SET_SPI_CFG 113      //!< Command to set SPI configuration
 #define GET_SPI_CFG 115      //!< Command to get SPI configuration
+
 
   void setup_master();
   bool send_master(i2c_inst_t* i2c, uint8_t i2c_add, uint8_t cmd, uint16_t wdata, uint16_t* rback);

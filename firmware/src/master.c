@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 #include "hardware/adc.h"
 #include "hardware/i2c.h"
@@ -400,8 +401,7 @@ int main(void)
   eep eed = DEF_EEPROM;  // Assign default value to structure eeprom
   pulse = 200;           // slow led flashing frequency
 
-      // Re-enable SWD by writing to the appropriate register
-    *(volatile uint32_t *)(0x4001c000) = 0x00000007;
+ 
 
   stdio_init_all();
 

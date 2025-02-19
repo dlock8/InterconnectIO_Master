@@ -1218,7 +1218,7 @@ static scpi_result_t Callback_eeprom_scpi(scpi_t* context)
       }  // if no parameter read, raise error and exit
 
                             // if tag  = Write command
-      split = strtok(param2.ptr, " ',\n");  // Extract second parameter from the command
+      split = strtok(param2.ptr, "\" ',\n");  // Extract second parameter from the command
       strcpy(svalue, split);            // copy second parameter to svalue
       strupr(svalue);                   // change lowercase to upper case
       if (svalue[0] == '\0')

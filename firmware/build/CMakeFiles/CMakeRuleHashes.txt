@@ -1,0 +1,19 @@
+# Hashes of file build rules.
+02e03e6fa498cca183fcb9a8d5cda9a1 pico-sdk/src/rp2040/boot_stage2/CMakeFiles/picotoolBuild-complete
+8594ac15f32c1bdf797d4ffe5203b093 pico-sdk/src/rp2040/boot_stage2/bs2_default.bin
+efe66a0369133cf7fce73abf33783fc4 pico-sdk/src/rp2040/boot_stage2/bs2_default_padded_checksummed.S
+9b7bd78defde3f2e4b430047451fe582 pico-sdk/src/rp2040/boot_stage2/picotool/src/picotoolBuild-stamp/picotoolBuild-configure
+c69c7497450da3b66e4c152ad5a84a55 pico-sdk/src/rp2040/boot_stage2/picotool/src/picotoolBuild-stamp/picotoolBuild-download
+dbed01e51968289a575e57fe5e7c848b pico-sdk/src/rp2040/boot_stage2/picotool/src/picotoolBuild-stamp/picotoolBuild-install
+492c3cb4959922d87a2041a2370b9fbe pico-sdk/src/rp2040/boot_stage2/picotool/src/picotoolBuild-stamp/picotoolBuild-mkdir
+2f7bdc8e90315cd0d0bf802b116ddf28 pico-sdk/src/rp2040/boot_stage2/picotool/src/picotoolBuild-stamp/picotoolBuild-patch
+ebe655ba178bceb0231b9644518907f4 pico-sdk/src/rp2040/boot_stage2/picotool/src/picotoolBuild-stamp/picotoolBuild-test
+a323a167a7a8b069cc1c911ec78d06c3 pico-sdk/src/rp2040/boot_stage2/picotool/src/picotoolBuild-stamp/picotoolBuild-update
+1f33ea09a5c7c6dc4c45f41ab401c9bb src/CMakeFiles/scpi_parser_build-complete
+fa7f350376bd0b3ad0ecc60455869b59 src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-build
+de63db42be9afd6c6f521137210df21c src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-configure
+66bfe0225097a7ad5360aa55e2af596a src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-download
+0258c5079d99bfe7478ad7de98c9c952 src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-install
+d6fec8691dd4cb28497318f69239ca84 src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-mkdir
+75c2b994ebd6424faebe16d17103f2c9 src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-patch
+30625ab1643d29e4c95832de50484144 src/scpi_parser_build-prefix/src/scpi_parser_build-stamp/scpi_parser_build-update

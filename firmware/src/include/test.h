@@ -61,8 +61,8 @@ extern char out_buffer[MAX_OUT_BUFFER];
 extern size_t out_buffer_pos;
 
 bool test_ioboard();
-uint8_t test_selftest(const char* testboard_num, uint8_t run);
-void internal_test_sequence(const char* testboard_num, uint8_t run);
+uint8_t test_selftest(char* testboard_num, uint8_t run);
+void internal_test_sequence(char* testboard_num, uint8_t run);
 void test_inst_manual();
 bool test_eeprom();
 void test_ina219(void);

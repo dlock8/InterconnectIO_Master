@@ -43,7 +43,6 @@
 #include "include/scpi_i2c.h"
 #include "include/test.h"
 
-
 /**
  * @brief Output buffer for storing data to be sent.
  *
@@ -219,7 +218,7 @@ void test_cmd_result(const char* title, const char* cmd, float expect_value, con
 
   counter->total++;       // increment counter
   output_buffer_clear();  // clear result before capture output
-  watchdog_update(); /** refresh watchdog */
+  watchdog_update();      /** refresh watchdog */
 
   SCPI_Input(&scpi_context, cmd, strlen(cmd)); /** Send command to SCPI engine*/
   // transform string received from command to number
@@ -275,7 +274,7 @@ void test_cmd_out(const char* title, const char* cmd, char* expected_result, str
   output_buffer_clear();                       // clear result before capture output
   SCPI_Input(&scpi_context, cmd, strlen(cmd)); /** Send command to SCPI engine*/
   removeCRLF(out_buffer);                      // remove \n from string before comparaison
-  watchdog_update(); /** refresh watchdog */
+  watchdog_update();                           /** refresh watchdog */
 
   // validate if string are identical, raise flag if not identical
   do
@@ -386,7 +385,7 @@ char read_uart_char()
  * @param testboard_num  Partnumber of the selftest board to be validated using 1-wire data
  * @param run  Test number to run, if equal to 0, the test menu will be displayed
  */
-void internal_test_sequence(const char* testboard_num, uint8_t run)
+void internal_test_sequence(char* testboard_num, uint8_t run)
 {
   int result;
   int rtn;
@@ -479,7 +478,7 @@ void internal_test_sequence(const char* testboard_num, uint8_t run)
   uart_set_irq_enables(UART_ID, true, false);
 
   TEST_SCPI_INPUT("SYSTEM:LED:ERR OFF \n");  // turn OFF Error led
-  TEST_SCPI_INPUT("SYST:OUT OFF\n"); /** Open Power Relay to remove power on Selftest board */
+  TEST_SCPI_INPUT("SYST:OUT OFF\n");         /** Open Power Relay to remove power on Selftest board */
 
   sprintf(strval, "\nEnd of Internal Test Sequence\n");
   uart_puts(UART_ID, strval);  // Send string
@@ -495,9 +494,10 @@ void internal_test_sequence(const char* testboard_num, uint8_t run)
  *
  *    @return    return value of 1 is selftest board is not detected
  */
-uint8_t test_selftest(const char* testboard_num, uint8_t run)
+uint8_t test_selftest(char* testboard_num, uint8_t run)
 {
   int result; /**< Variable used by TEST_SCPI_INPUT */
+
 
   char strval[120]; /**< array who will contains parts of SCPI command */
 
@@ -525,11 +525,11 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
     char* pos = strstr(strdata, testboard_num);
     if (pos != NULL)
     {
-      printf("Testboard string found at position: %ld\n", *pos);
+      fprintf(stdout, "Testboard string found at position: %ld\n", *pos);
     }
     else
     {
-      printf("Testboard string not found.\n");
+      fprintf(stdout, "Testboard string not found,expected %s\n", testboard_num);
       return 1;
     }
   }
@@ -573,7 +573,7 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   TEST_SCPI_INPUT("SYSTEM:LED:ERR OFF \n");  // turn OFF Error led
 
   TEST_SCPI_INPUT("SYST:OUT ON\n"); /** Close Power Relay et apply 5V to Selftest board */
-  sleep_ms(250);                      /** Wait to let time to relay to close and power the selftest board */
+  sleep_ms(250);                    /** Wait to let time to relay to close and power the selftest board */
   test_cmd_result("Test 1.1: 5VDC Check with ADC0", "ANA:ADC0:VOLT? \n", 5.0, "V", 0.3, 0.3, &c_test, &buffer);
 
   // Port 0 validation
@@ -644,10 +644,10 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   test_cmd_result("Test 5.2: PWR Module check current on 10 ohm(R2), read I(mA):", "ANA:PWR:I? \n", 500, "mA", 50, 50, &c_test, &buffer);
 
   // Perform Calibration of the PWR module INA219
-  float readv;                                             // contains the current value read from last command
-  sscanf((out_buffer), "%f", &(readv));                    // transform string in output_buffer to float number
+  float readv;                                           // contains the current value read from last command
+  sscanf((out_buffer), "%f", &(readv));                  // transform string in output_buffer to float number
   sprintf(strval, "ANAlog:PWR:Cal %.2f, 500\n", readv);  // build calibration string to be used as command
-  TEST_SCPI_INPUT(strval);                                 // send command
+  TEST_SCPI_INPUT(strval);                               // send command
   test_cmd_result("Test 5.3: PWR Module check current on 10 ohm(R2), read I(mA):", "ANA:PWR:I? \n", 500, "mA", 5, 5, &c_test, &buffer);
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \n");  // Open K4
   TEST_SCPI_INPUT("ANAlog:PWR:Cal 500,500\n");  // reset value to default value
@@ -721,7 +721,9 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   for (i = 0; i < 8; i++)
   {
     /** Test the High side of relay*/
-    TEST_SCPI_INPUT("DIG:OUT:PORT0 #H03 \n");            // Close K7,K8 (PS7)
+    TEST_SCPI_INPUT("DIG:OUT:PORT0 #H0B \n");  // Close K7,K8,K14
+    TEST_SCPI_INPUT("ROUT:CLOSE:OC OC3 \n");   // Close K12 (PS8)
+
     sprintf(strval, "ROUT:CLOSE (@10%d,20%d)\n", i, i);  // build channel string
     TEST_SCPI_INPUT(strval);
     sprintf(strval, "Test %d.%d Relay BK1-BK2 CH%d-H Close Test, read I(mA)", t, j++, i);  // build verification string
@@ -744,10 +746,10 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
 
     sprintf(strval, "ROUT:OPEN (@20%d)\n", i);  // build channel string
     TEST_SCPI_INPUT(strval);
+    TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \n");  // OPen K12
 
     /** Test the LOW side of relay*/
-    TEST_SCPI_INPUT("DIG:OUT:PORT0 #H0B \n");  // Close K7,K8,K14 (PS8)
-    TEST_SCPI_INPUT("ROUT:CLOSE:OC OC3 \n");   // Close K12 (PS6)
+    TEST_SCPI_INPUT("DIG:OUT:PORT0 #H03 \n");  // Close K7,K8, open K12(PS7)
 
     sprintf(strval, "ROUT:CLOSE (@10%d,20%d)\n", i, i);  // build channel string
     TEST_SCPI_INPUT(strval);
@@ -771,12 +773,14 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
 
     sprintf(strval, "ROUT:OPEN (@20%d)\n", i);  // build channel string
     TEST_SCPI_INPUT(strval);
-    TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \n");  // OPen K12 (PS6)
-  }                                            // end of loop for BK1-BK2 relay test
+
+  }  // end of loop for BK1-BK2 relay test
 
   // Check for the COM relay H Side
-  TEST_SCPI_INPUT("DIG:OUT:PORT0 #H0B \n");    // Close K7,K8,K14 (PS7)
+  TEST_SCPI_INPUT("DIG:OUT:PORT0 #H0B \n");    // Close K7,K8,K14
+  TEST_SCPI_INPUT("ROUT:CLOSE:OC OC3 \n");     // Close K12 (PS8)
   TEST_SCPI_INPUT("ROUT:CLOSE (@108,208)\n");  // Close BK1-Bk2 CH0 relays and SE relays
+  sleep_ms(30);
   test_cmd_result("Test 11.0: Relay BK1-BK2 COM-H Close Test,read I(mA)", "ANA:PWR:I? \n", 50, "mA", 5, 20, &c_test, &buffer);
 
   TEST_SCPI_INPUT("ROUT:OPEN (@208)\n");  // Open SE relay
@@ -789,8 +793,8 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   test_cmd_result("Test 11.3: Relay BK1-BK2, BK1-COM-H Open Test,read I(mA)", "ANA:PWR:I? \n", 0, "mA", 0.2, 0.2, &c_test, &buffer);
 
   // Check for the COM relay L Side
-  TEST_SCPI_INPUT("DIG:OUT:PORT0 #H03 \n");    // Close K7,K8,K14 (PS7)
-  TEST_SCPI_INPUT("ROUT:CLOSE:OC OC3 \n");     // Close K12 (PS6)
+  TEST_SCPI_INPUT("DIG:OUT:PORT0 #H03 \n");    // Close K7,K8
+  TEST_SCPI_INPUT("ROUT:OPEN:OC OC3 \n");      // Open K12 (PS7)
   TEST_SCPI_INPUT("ROUT:CLOSE (@108,208)\n");  // Close BK1-Bk2 CH0 relays and SE relays
   test_cmd_result("Test 11.4: Relay BK1-BK2 COM-L Close Test,read I(mA)", "ANA:PWR:I? \n", 50, "mA", 5, 20, &c_test, &buffer);
 
@@ -812,8 +816,8 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   for (i = 0; i < 8; i++)
   {
     /** Test the High side of relay*/
-    TEST_SCPI_INPUT("DIG:OUT:PORT0 #H03 \n");  // Close K7,K8
-    TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2 \n");   // Close K11 (PS9)
+    TEST_SCPI_INPUT("DIG:OUT:PORT0 #H13 \n");     // Close K7,K8,K11,K12 (PS10),K15
+    TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2,OC3 \n");  // Close K11,K12
 
     sprintf(strval, "ROUT:CLOSE (@30%d,40%d)\n", i, i);  // build channel string
     TEST_SCPI_INPUT(strval);
@@ -838,11 +842,12 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
 
     sprintf(strval, "ROUT:OPEN (@40%d)\n", i);  // build channel string
     TEST_SCPI_INPUT(strval);
-    TEST_SCPI_INPUT("ROUT:OPEN:OC OC2 \n");
+    TEST_SCPI_INPUT("ROUT:OPEN:OC OC2,OC3 \n");  // OPen K11,K12
 
     /** Test the LOW side of relay*/
-    TEST_SCPI_INPUT("DIG:OUT:PORT0 #H13 \n");     // Close K7,K8,K11,K12 (PS10),K15
-    TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2,OC3 \n");  // Close K11,K12
+    TEST_SCPI_INPUT("DIG:OUT:PORT0 #H03 \n");  // Close K7,K8
+    TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2 \n");   // Close K11 (PS9)
+
     sleep_ms(30);
 
     sprintf(strval, "ROUT:CLOSE (@30%d,40%d)\n", i, i);  // build channel string
@@ -867,12 +872,15 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
 
     sprintf(strval, "ROUT:OPEN (@40%d)\n", i);  // build channel string
     TEST_SCPI_INPUT(strval);
-    TEST_SCPI_INPUT("ROUT:OPEN:OC OC2,OC3 \n");  // OPen K11,K12
+  
+    TEST_SCPI_INPUT("ROUT:OPEN:OC OC2 \n");
   }
 
   // Check for the COM relay H Side
+ 
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #H13 \n");    // Close K7,K8,K15
-  TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2 \n");     // Close K11 (PS9)
+  TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2,OC3 \n");  // Close K11,K12 (PS10)
+
   TEST_SCPI_INPUT("ROUT:CLOSE (@308,408)\n");  // Close BK3-Bk4 CH0 relays and SE relays
   sleep_ms(30);
   test_cmd_result("Test 13.0: Relay BK3-BK4 COM-H Close Test,read I(mA)", "ANA:PWR:I? \n", 50, "mA", 5, 20, &c_test, &buffer);
@@ -885,10 +893,12 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
 
   TEST_SCPI_INPUT("ROUT:OPEN (@308)\n");  // Open SE relay
   test_cmd_result("Test 13.3: Relay BK3-BK4, BK3-COM-H Open Test,read I(mA)", "ANA:PWR:I? \n", 0, "mA", 0.2, 0.2, &c_test, &buffer);
+  TEST_SCPI_INPUT("ROUT:OPEN:OC OC2,OC3 \n");  // OPen K11,K12
 
   // Check for the COM relay L Side
+
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #H03 \n");     // Close K7,K8,
-  TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2,OC3 \n");  // Close K11,K12 (PS10)
+  TEST_SCPI_INPUT("ROUT:CLOSE:OC OC2 \n");     // Close K11, open K12 (PS9)
   TEST_SCPI_INPUT("ROUT:CLOSE (@308,408)\n");   // Close BK3-Bk4 CH0 relays and SE relays
   sleep_ms(30);
   test_cmd_result("Test 13.4: Relay BK3-BK4 COM-L Close Test,read I(mA)", "ANA:PWR:I? \n", 50, "mA", 5, 20, &c_test, &buffer);
@@ -901,7 +911,7 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
 
   TEST_SCPI_INPUT("ROUT:OPEN (@308)\n");  // Open SE relay
   test_cmd_result("Test 13.7: Relay BK3-BK4, BK3-COM-L Open Test,read I(mA)", "ANA:PWR:I? \n", 0, "mA", 0.2, 0.2, &c_test, &buffer);
-  TEST_SCPI_INPUT("ROUT:OPEN:OC OC2,OC3 \n");  // OPen K11,K12
+  TEST_SCPI_INPUT("ROUT:OPEN:OC OC2 \n");  // OPen K11
 
   // Test of I2C. I2C is used to communicate with selftest board, the test option are limited because
   // we don't want to lost communication with selftest board
@@ -949,7 +959,7 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
 
   TEST_SCPI_INPUT("COM:I2C:WRI 113,#H18\n");  // Set SPI Mode 0 and Databits = 16 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 111,1 \n");    // Enable SPI on selftest board
-  sleep_ms(250);                                // delay necessary after the enable, why?
+  sleep_ms(250);                              // delay necessary after the enable, why?
   TEST_SCPI_INPUT("COM:SPI:READ:LEN1? #H1234\n");
   test_cmd_out("Test 15.8: SPI COM, Selftest Word Write-read", "COM:SPI:READ:LEN1? #H0001\n", "60875", &c_test, &buffer);
 
@@ -1022,14 +1032,14 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   TEST_SCPI_INPUT("COM:SERIAL:Protocol O72\n");
   TEST_SCPI_INPUT("COM:I2C:WRI 103,#HEA\n");  // Set Uart to O72 @ 115200 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 101,#H0\n");
-  sleep_ms(30); 
+  sleep_ms(30);
   test_cmd_out("Test 16.9 SCPI SERIAL command O72,115200", "COM:SERIAL:Read? 'TEST O72,115200\r'\n", "\"TEST O72,115200\"", &c_test, &buffer);
 
   TEST_SCPI_INPUT("COM:SERIAL:Baudrate 38400\n");
   TEST_SCPI_INPUT("COM:SERIAL:Protocol N81\n");
   TEST_SCPI_INPUT("COM:I2C:WRI 103,#H4C\n");  // Set Uart to N81 @ 38400 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 101,#H0\n");   // Enable uart on selftest board
-  sleep_ms(30); 
+  sleep_ms(30);
   test_cmd_out("Test 16.10 SCPI SERIAL command N81,38400", "COM:SERIAL:Read? 'TEST N81,38400\r'\n", "\"TEST N81,38400\"", &c_test, &buffer);
 
   TEST_SCPI_INPUT("COM:SERIAL:Handshake OFF\n");
@@ -1037,7 +1047,7 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   TEST_SCPI_INPUT("COM:SERIAL:Protocol E61\n");
   TEST_SCPI_INPUT("COM:I2C:WRI 103,#H14\n");  // Set Uart to E61 @ 19200 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 101,#H0\n");
-  sleep_ms(30); 
+  sleep_ms(30);
   test_cmd_out("Test 16.11 SCPI SERIAL command E61,19200", "COM:SERIAL:Read? '1234567890,19200\r'\n", "\"1234567890,19200\"", &c_test, &buffer);
 
   TEST_SCPI_INPUT("COM:SERIAL:Handshake ON\n");
@@ -1045,7 +1055,7 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
   TEST_SCPI_INPUT("COM:SERIAL:Protocol N82\n");
   TEST_SCPI_INPUT("COM:I2C:WRI 103,#H8E\n");  // Set Uart to N82 @ 57600 on selftest board
   TEST_SCPI_INPUT("COM:I2C:WRI 101,#H1\n");
-  sleep_ms(30); 
+  sleep_ms(30);
   test_cmd_out("Test 16.12 SCPI SERIAL command Handshake,57600", "COM:SERIAL:Read? 'TEST HANDSHAKE,57600\r'\n", "\"TEST HANDSHAKE,57600\"", &c_test,
                &buffer);
 
@@ -1054,7 +1064,7 @@ uint8_t test_selftest(const char* testboard_num, uint8_t run)
 
   // 1-WIRE test section
   test_cmd_substring("Test 17.0 1-WIRE command Check Device", "COM:OW:Check? 2\n", "VALID_OWID: 2D", &c_test, &buffer);
-  test_cmd_substring("Test 17.1 1-WIRE command Check Device", "COM:OW:READ? 2\n", "500-1010", &c_test, &buffer);
+  test_cmd_substring("Test 17.1 1-WIRE command Check Device", "COM:OW:READ? 2\n", testboard_num, &c_test, &buffer);
 
   // Validate service GPIO between Interconnect and Selftest board
 
@@ -1199,7 +1209,7 @@ void test_inst_manual()
   TEST_SCPI_INPUT("SYSTEM:LED:ERR OFF \n");  // turn OFF Error led
 
   TEST_SCPI_INPUT("SYST:OUT ON\n"); /** Close Power Relay et apply 5V to Selftest board */
-  sleep_ms(250);                      /** Wait to let time to relay to close and power the selftest board */
+  sleep_ms(250);                    /** Wait to let time to relay to close and power the selftest board */
 
   // Disable RX interrupt to take control of serial input
   uart_set_irq_enables(UART_ID, false, false);
@@ -1228,7 +1238,7 @@ void test_inst_manual()
   sprintf(strval, "Test 25.1 Verify if DMM ohmmeter value is between 20 and 23 Ohm, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                                // wait for input char
+  sleep_ms(500);                              // wait for input char
   TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP0 0 \n");  // Open K6
 
   // Using DMM in resistance mode, measure selftest relays path when VM1 is grounded by K4
@@ -1238,7 +1248,7 @@ void test_inst_manual()
   sprintf(strval, "Test 25.2 Verify if DMM ohmmeter value is between 0 and 5 Ohm, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                                  // wait for input char
+  sleep_ms(500);                                // wait for input char
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \n");  // Open K4
 
   // Using PWR_5V, validate Voltmeter function of DMM
@@ -1246,7 +1256,7 @@ void test_inst_manual()
   sprintf(strval, "\nSet DMM to Voltmeter,press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                             // wait for input char
+  sleep_ms(500);                           // wait for input char
   TEST_SCPI_INPUT("ROUT:OPEN:OC OC1 \n");  // Open K10
   sprintf(strval, "Test 25.3 Verify if DMM Voltmeter value is between 4.75V and 5.25V, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
@@ -1257,7 +1267,7 @@ void test_inst_manual()
   sprintf(strval, "\nConnect DMM to Current (I:J20-1 & -:J20-3) . Set for Current measurement, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                                // wait for input char
+  sleep_ms(500);                              // wait for input char
   TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP1 1 \n");  // Close K5
   sprintf(strval, "Test 25.4 Verify if DMM Ammeter value is between 48mA and 52mA, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
@@ -1272,7 +1282,7 @@ void test_inst_manual()
   sprintf(strval, "Test 25.5 Verify if DMM Ammeter value is between 300mA and 400mA, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                                  // wait for input char
+  sleep_ms(500);                                // wait for input char
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \n");  // Open K4
   TEST_SCPI_INPUT("GPIO:OUT:DEV0:GP1 0 \n");    // Open K5
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP8 0 \n");    // Open K13
@@ -1288,12 +1298,12 @@ void test_inst_manual()
   sprintf(strval, "Test 25.6 Verify if DMM value value is between 0V  and 0.1 Volt, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                                  // wait for input char
+  sleep_ms(500);                                // wait for input char
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  1 \n");  // DVM_TRIG =1
   sprintf(strval, "Test 25.7 Verify if DMM value value is between 2V  and 3.3 Volt, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                                  // wait for input char
+  sleep_ms(500);                                // wait for input char
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \n");  // DVM_TRIG =0
 
   // Test Of PS1 and PS2 power supply source
@@ -1306,35 +1316,35 @@ void test_inst_manual()
   sprintf(strval, "Connect 12Vdc Power supply to PS1 (+:J17-1 & -:J17:3), press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                                  // wait for input char
+  sleep_ms(500);                                // wait for input char
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  1 \n");  // Close K4
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #HBD \n");     // Close K3,K8,K14,K15,K16,K9
   TEST_SCPI_INPUT("ROUT:CLOSE:OC OC1 \n");      // close K10 to set PS4
   sprintf(strval, "Test 26.0 Verify if DMM value value is between 0V  and 0.1 Volt, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                                // wait for input char
+  sleep_ms(500);                              // wait for input char
   TEST_SCPI_INPUT("ROUT:CLOSE:PWR SSR1 \n");  // Connect PS4 to 10 ohm and read to VM6
   sprintf(strval, "Test 26.1 Verify if DMM value value is between 5V and 6V, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                               // wait for input char
+  sleep_ms(500);                             // wait for input char
   TEST_SCPI_INPUT("ROUT:OPEN:PWR SSR1 \n");  // Connect PS4 to 10 ohm and read to VM6
 
   sprintf(strval, "\nConnect 10Vdc Power supply to PS2 (+:J17-2 & -:J17:4), press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                                // wait for input char
+  sleep_ms(500);                              // wait for input char
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP9 1 \n");  // Close K1
   sprintf(strval, "Test 26.2 Verify if DMM value value is between 0V  and 0.1 Volt, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                                // wait for input char
+  sleep_ms(500);                              // wait for input char
   TEST_SCPI_INPUT("ROUT:CLOSE:PWR SSR1 \n");  // Connect PS4 to 10 ohm and read to VM6
   sprintf(strval, "Test 26.3 Verify if DMM value value is between 4V and 5V, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                                  // wait for input char
+  sleep_ms(500);                                // wait for input char
   TEST_SCPI_INPUT("ROUT:OPEN:PWR SSR1 \n");     // Connect PS4 to 10 ohm and read to VM6
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  0 \n");  // Open K4
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \n");     // Open K3,K8,K14,K15,K16,K9
@@ -1347,7 +1357,7 @@ void test_inst_manual()
   sprintf(strval, "Set Vertical channel to 1V and timebase to 500us, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                               // wait for input char
+  sleep_ms(500);                             // wait for input char
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #H02 \n");  // Close K7
   TEST_SCPI_INPUT("COM:I2C:WRI 80,1\n");     // Set PWM ON
   TEST_SCPI_INPUT("COM:I2C:WRI 81,1\n");     // Set PWM Freq to 1Khz
@@ -1361,14 +1371,14 @@ void test_inst_manual()
   sprintf(strval, "Set Vertical channel to 1V and timebase to 5us, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                               // wait for input char
+  sleep_ms(500);                             // wait for input char
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #H06 \n");  // Close K3,K7
   TEST_SCPI_INPUT("COM:I2C:WRI 80,1\n");     // Set PWM ON
   TEST_SCPI_INPUT("COM:I2C:WRI 81,100\n");   // Set PWM Freq to 100Khz
   sprintf(strval, "Test 27.1 Verify on SCOPE CH2 if 3.3V@100KHz square wave is present, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                               // wait for input char
+  sleep_ms(500);                             // wait for input char
   TEST_SCPI_INPUT("COM:I2C:WRI 80,0\n");     // Set PWM OFF
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \n");  // Open K3,K7
 
@@ -1394,12 +1404,12 @@ void test_inst_manual()
   sprintf(strval, "Set Signal Generator to 10KHz triangle at 5Vpp, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                               // wait for input char
+  sleep_ms(500);                             // wait for input char
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #H40 \n");  // Close K2
   sprintf(strval, "Test 29.0 Verify on SCOPE CH1 if 5Vpp @10KHz triangle is present, press enter\n");
   uart_puts(UART_ID, strval);  // Send string
   c = read_uart_char();
-  sleep_ms(500);                               // wait for input char
+  sleep_ms(500);                             // wait for input char
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #H40 \n");  // Open K2
 
   // Test of USB connector using USB Flash Drive connected to USB connector on selftest board
@@ -1427,7 +1437,7 @@ void test_inst_manual()
   sleep_ms(500);  // wait for input char
 
   TEST_SCPI_INPUT("SYST:OUT OFF\n"); /** Open Power Relay et remove 5V to Selftest board */
-  sleep_ms(250);                       /** Wait to let time to relay to close and power the selftest board */
+  sleep_ms(250);                     /** Wait to let time to relay to close and power the selftest board */
 
   // Enable RX interrupt to take control of serial input
   uart_set_irq_enables(UART_ID, true, false);
@@ -1730,10 +1740,10 @@ void test_command(void)
   test_cmd_result("Test 9.3: ADC, read TEMP", "ANA:ADC:Temp? \n", 50, "C", 30, 20, &c_test, &buffer);
 
   TEST_SCPI_INPUT("DIG:OUT:PORT0 #H00 \n");  // Open K2
-  sleep_ms(100);                               // let time to relay to stabilize
+  sleep_ms(100);                             // let time to relay to stabilize
   test_cmd_result("Test 9.4: PWR, read Bus Volt ", "ANA:PWR:Volt? \n", 5, "V", 0.3, 0.2, &c_test, &buffer);
   TEST_SCPI_INPUT("GPIO:OUT:DEV1:GP18  1 \n");  // Close K4
-  sleep_ms(100);                                  // let time to relay to stabilize
+  sleep_ms(100);                                // let time to relay to stabilize
   test_cmd_result("Test 9.5: PWR, read Bus Volt ", "ANA:PWR:Volt? \n", 0.1, "V", 0.1, 0.2, &c_test, &buffer);
   test_cmd_result("Test 9.6: PWR, read Shunt mV ", "ANA:PWR:Shunt? \n", 50, "mV", 10, 10, &c_test, &buffer);
   test_cmd_result("Test 9.7: PWR, read Pmw", "ANA:PWR:Pmw? \n", 500, "mW", 200, 200, &c_test, &buffer);
