@@ -153,6 +153,7 @@ The main communication for the InterconnectIO Board is based on the SCPI standar
 |DIGital:DIRection:PORTn? |{0-1} | Read the direction value for the designated port
 |DIGital:DIRection:PORTn:BITn? |{0-1} {0-7}| Read the direction value for the designated port and the designated bit position
 |GPIO:DIRection:DEVice#:GP# |{0-3} {0-28} {0-1}|    At the designated device and defined gpio number, set the direction to input (0) or output (1). <br />DEVice0: Master_Pico (SCPI interpreter) <br /> DEVice1: Slave1_Pico (Digital Port 0 & 1) <br /> DEVice2: Slave2_Pico (relay bank 1 & 3) <br /> DEVice3: Slave3_Pico (relay bank 2 & 4)
+|GPIO:DIRection:DEVice#:GP#? |{0-3} {0-28} {0-1}|    At the designated device and defined gpio number, read the direction to input (0) or output (1). 
 |GPIO:Out:DEVice#:GP#  |{0-3} {0-28} {0-1}|  At the designated device and defined gpio number, set the output to the value.
 |GPIO:In:DEVice#:GP#?  |{0-3} {0-28} |      At the designated device and defined gpio number, read the value of the GPIO.
 |GPIO:SETPad:DEVice#:GP# |{0-3} {0-28} {\<Value\>}| At the designated device and defined gpio number, set the pad value.
